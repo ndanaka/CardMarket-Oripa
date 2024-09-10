@@ -38,6 +38,7 @@ const UserLayout = (props) => {
           return (
             <Route
               path={prop.path}
+              key={key}
               element={<Navigate to="/auth/login" replace />}
             />
           );

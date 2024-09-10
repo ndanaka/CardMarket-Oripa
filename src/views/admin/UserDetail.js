@@ -76,7 +76,7 @@ function UserDetail() {
         <div className="flex flex-wrap justify-between">
           <div className="w-full">
             <GroupHeader text="point_log" />
-            <table class="w-full">
+            <table className="w-full">
               <thead className="bg-admin_theme_color font-bold text-gray-200">
                 <tr>
                   <th>{t('no')}</th>

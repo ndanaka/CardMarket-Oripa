@@ -134,7 +134,7 @@ function Category() {
             onChange={(e) => setDes(e.target.value)}
           ></input>
         </div>
-        <AgreeButton name={t("add") + t("category")} class="" onClick={addCategory} />
+        <AgreeButton name={t("add") + t("category")} className="" onClick={addCategory} />
       </div>
       <div className="m-auto w-full md:w-[70%]">
         <table className="border-2 m-auto w-full">

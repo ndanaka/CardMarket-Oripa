@@ -24,7 +24,7 @@ const AdminNavbar = () => {
           <div toggler="#navbar-collapse-main">
             <div className="flex">
               <Link className="text-white nav-link-icon px-2" to="/" tag={Link}>
-              <i class="fa-solid fa-globe"></i>
+              <i className="fa-solid fa-globe"></i>
                 <span className="text-sm text-white px-2">{t('dashboard')}</span>
               </Link>
               <Link
@@ -32,7 +32,7 @@ const AdminNavbar = () => {
                 to="/auth/register"
                 tag={Link}
               >
-                <i class="fa-solid fa-user-plus"></i>
+                <i className="fa-solid fa-user-plus"></i>
                 <span className="nav-link-inner--text text-white px-2">
                   {t("register")}
                 </span>
@@ -42,7 +42,7 @@ const AdminNavbar = () => {
                 to="/auth/login"
                 tag={Link}
               >
-                <i class="fa-solid fa-key"></i>
+                <i className="fa-solid fa-key"></i>
                 <span className="nav-link-inner--text text-white px-2">
                   {t('login')}
                 </span>

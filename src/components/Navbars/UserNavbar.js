@@ -66,7 +66,7 @@ const UserNavbar = () => {
                       onClick={() => navigate("/user/pur-point")}
                       className="-translate-x-[50%]"
                     ></img>
-                    {/* <i class="fa-solid fa-plus font-extrabold text-base text-white -translate-x-[170%]"></i> */}
+                    {/* <i className="fa-solid fa-plus font-extrabold text-base text-white -translate-x-[170%]"></i> */}
                   </div>
                 )}
 
@@ -154,7 +154,7 @@ const UserNavbar = () => {
                       onClick={() => logout()}
                       className="flex justify-between items-center"
                     >
-                      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                      <i className="fa-solid fa-arrow-right-from-bracket"></i>
                       <span className="w-4/6 text-left font-bold font-NanumGothic">
                         {t("logout")}
                       </span>

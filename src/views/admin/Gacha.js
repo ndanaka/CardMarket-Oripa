@@ -218,7 +218,7 @@ function Gacha() {
         </div>
         <AgreeButton
           name={t("add")}
-          addclass="inline-block float-right"
+          addclassName="inline-block float-right"
           onClick={addGacha}
         />
       </div>

@@ -151,7 +151,7 @@ const Register = () => {
                 <InputGroup className="input-group-alternative mb-1">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                      <i class="fa-solid fa-graduation-cap"></i>
+                      <i className="fa-solid fa-graduation-cap"></i>
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
@@ -167,7 +167,7 @@ const Register = () => {
                 </InputGroup>
                 {showErrMessage && !formData.name ? (
                   <span className="flex text-sm text-red-600">
-                    <i class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
+                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
                     Name is Required
                   </span>
                 ) : null}
@@ -176,7 +176,7 @@ const Register = () => {
                 <InputGroup className="input-group-alternative mb-1">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                      <i class="fa-solid fa-envelope"></i>
+                      <i className="fa-solid fa-envelope"></i>
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
@@ -193,12 +193,12 @@ const Register = () => {
                 </InputGroup>
                 {showErrMessage && !formData.email ? (
                   <span className="flex text-sm text-red-600">
-                    <i class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
+                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
                     "Email is Requried"
                   </span>
                 ) : showErrMessage && !emailRegex.test(formData.email) ? (
                   <span className="flex text-sm text-red-600">
-                    <i class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
+                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
                     "Email is Requried"
                   </span>
                 ) : null}
@@ -207,7 +207,7 @@ const Register = () => {
                 <InputGroup className="input-group-alternative mb-1">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                      <i class="fa-solid fa-unlock-keyhole"></i>
+                      <i className="fa-solid fa-unlock-keyhole"></i>
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
@@ -234,17 +234,17 @@ const Register = () => {
                 </InputGroup>
                 {showErrMessage && !formData.password ? (
                   <span className="flex text-sm text-red-600">
-                    <i class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
+                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
                     Password is Required
                   </span>
                 ) : null}
               </FormGroup>
 
               <div className="flex justify-between items-center my-2">
-                <div class="form-check form-check-inline">
-                  <label class="form-check-label">
+                <div className="form-check form-check-inline">
+                  <label className="form-check-label">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       name=""
                       id=""

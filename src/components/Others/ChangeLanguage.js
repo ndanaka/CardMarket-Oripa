@@ -10,11 +10,11 @@ function ChangeLanguage() {
   };
   return (
     <div className="flex">
-      <div class="flex form-group">
+      <div className="flex form-group">
         
         <label htmlFor="selLanguage"><i className="fa-solid fa-language text-2xl mr-2"></i></label>
         <select
-          class="form-control form-control-sm w-32"
+          className="form-control form-control-sm w-32"
           name="selLanguage"
           id="selLanguage"
           onChange={(e) => changeLanguage(e.currentTarget.value)}

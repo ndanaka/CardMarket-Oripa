@@ -47,7 +47,7 @@ function Delivering() {
         <PageHeader text={t('delivering')} />
       </div>
       <div className="w-full mt-3 mx-auto overflow-auto">
-        <table class="w-full">
+        <table className="w-full">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <tr>
               <th>{t('no')}</th>

@@ -155,10 +155,10 @@ const Profile = () => {
                 </div>
                 <div className="w-full">
                   <GroupHeader text="About me" />
-                  <div class="form-group px-2">
+                  <div className="form-group px-2">
                     <label for="description">My Description</label>
                     <textarea
-                      class="form-control w-full text-gray-700"
+                      className="form-control w-full text-gray-700"
                       name="description"
                       id="description"
                       value={userData.description}

@@ -101,7 +101,7 @@ const Login = () => {
               <InputGroup className="input-group-alternative">
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                    <i class="fa-solid fa-envelope"></i>
+                    <i className="fa-solid fa-envelope"></i>
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
@@ -117,7 +117,7 @@ const Login = () => {
               <InputGroup className="input-group-alternative">
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                    <i class="fa-solid fa-unlock-keyhole"></i>
+                    <i className="fa-solid fa-unlock-keyhole"></i>
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input

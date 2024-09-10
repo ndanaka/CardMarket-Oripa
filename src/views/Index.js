@@ -13,6 +13,7 @@ import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ChangeLanguage from "../components/Others/ChangeLanguage";
 import { useTranslation } from "react-i18next";
 import ImageCarousel from "../components/Others/ImageCarousel";
+
 const Index = () => {
   const [category, setCategory] = useState(null); //category list
   const [gacha, setGacha] = useState(null); //gacah list
@@ -32,10 +33,12 @@ const Index = () => {
     {id: 1, imgUrl: "theme/carousel/rank_banner.png"},
     {id: 2, imgUrl: "theme/carousel/point.png"},
   ]
+
   useEffect(() => {
     getCategory();
     getGacha();
   }, []);
+  
   useEffect(() => {
     setFilteredGacha(gacha?.filter(
       (gacha) =>

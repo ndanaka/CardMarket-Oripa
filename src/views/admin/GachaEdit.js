@@ -313,10 +313,10 @@ const GachaEdit = () => {
           >
             {t('load_prizes')}
           </button>
-          <div class="form-check form-check-inline">
-            <label class="form-check-label">
+          <div className="form-check form-check-inline">
+            <label className="form-check-label">
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="checkbox"
                 checked={isLastPrize}
                 onChange={() => setIsLastPrize((prev) => !prev)}
