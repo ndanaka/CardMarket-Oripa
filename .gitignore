@@ -1,0 +1,19 @@
+# dependencies
+/node_modules
+package-lock.json
+/build
+.eslintcache
+
+# local env files
+.env*.local
+
+# misc
+.DS_Store
+*.pem
+
+#log file
+*.log
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

@@ -1,0 +1,91 @@
+{
+  "name": "Oripa",
+  "version": "1.2.3",
+  "description": "Oripa site by React",
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "reactjs",
+    "oripa"
+  ],
+  "scripts": {
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "react/jsx-uses-react": "off",
+      "react/react-in-jsx-scope": "off"
+    }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "6.4.0",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@tailwindcss/typography": "^0.5.8",
+    "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0",
+    "axios": "^1.4.0",
+    "bootstrap": "^5.3.3",
+    "chart.js": "2.9.4",
+    "classnames": "2.3.2",
+    "eslint": "8.45.0",
+    "jotai": "^2.9.3",
+    "moment": "2.29.4",
+    "nouislider": "15.4.0",
+    "papaparse": "^5.4.1",
+    "react": "^18.3.1",
+    "react-chartjs-2": "2.11.2",
+    "react-copy-to-clipboard": "5.1.0",
+    "react-datetime": "3.2.0",
+    "react-dom": "^18.3.1",
+    "react-icon": "^1.0.0",
+    "react-icons": "^5.3.0",
+    "react-router-dom": "^6.11.2",
+    "react-scripts": "^5.0.1",
+    "reactstrap": "8.10.0",
+    "sass": "1.62.1",
+    "sass-loader": "^16.0.1",
+    "save-dev": "^0.0.1-security",
+    "swiper": "^11.1.12",
+    "tailwindcss": "^3.4.1",
+    "universal-cookie": "^4.0.4"
+  },
+  "optionalDependencies": {
+    "eslint-plugin-flowtype": "8.0.3",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.8",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "8.45.0",
+    "eslint-config-next": "14.2.4",
+    "eslint-webpack-plugin": "4.0.1",
+    "formik": "^2.4.6",
+    "i18next": "^23.14.0",
+    "postcss": "^8",
+    "react-i18next": "^15.0.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5",
+    "yup": "^1.4.0"
+  },
+  "overrides": {
+    "svgo": "3.0.2",
+    "fsevents": "2.3.2",
+    "chokidar": "3.5.3"
+  }
+}
