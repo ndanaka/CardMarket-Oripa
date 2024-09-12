@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import { useAtom } from "jotai";
 import { UserAtom } from "../../store/user";
 import "../../assets/css/index.css";
-import LoginImg from "../../assets/img/icons/login.png"
+import LoginImg from "../../assets/img/icons/login.png";
 import { useTranslation } from "react-i18next";
 // reactstrap components
 import {
@@ -27,10 +27,11 @@ const UserNavbar = () => {
     setUser({});
     navigate("/auth/login");
   };
+
   const nav_login = () => {
-    console.log("nav_login");
     navigate("/auth/login");
   };
+
   return (
     <div className="w-full bg-theme_color py-2 px-4 fixed z-10">
       <div className="w-full navbar-dark">
@@ -54,7 +55,7 @@ const UserNavbar = () => {
           <Nav className="flex" navbar>
             {user.name ? (
               <div className="flex items-center px-2">
-                {user.role == "admin" ? null : (
+                {user.role === "admin" ? null : (
                   <div className="flex items-center mx-4">
                     <div className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4">
                       {user.point_remain}
@@ -93,7 +94,7 @@ const UserNavbar = () => {
                       </div>
                     </DropdownItem>
                     <hr></hr>
-                    {user.role == "admin" ? (
+                    {user.role === "admin" ? (
                       <DropdownItem
                         to="/admin/index"
                         tag={Link}
@@ -133,7 +134,7 @@ const UserNavbar = () => {
                         >
                           <i className="fa-solid fa-award"></i>
                           <span className="w-4/6 text-left font-Lexend font-bold">
-                            {t('my') + " " + t('cards')}
+                            {t("my") + " " + t("cards")}
                           </span>
                         </DropdownItem>
                         <DropdownItem
@@ -143,7 +144,7 @@ const UserNavbar = () => {
                         >
                           <i className="fa-solid fa-truck"></i>
                           <span className="w-4/6 text-left font-Lexend font-bold">
-                          {t('my') + " " + t('delivery')} 
+                            {t("my") + " " + t("delivery")}
                           </span>
                         </DropdownItem>
                       </>
@@ -164,9 +165,14 @@ const UserNavbar = () => {
               </div>
             ) : (
               <Media>
-                <div> 
-                <img src={LoginImg} width={50} height={50} onClick={nav_login}></img>
-               </div>
+                <div>
+                  <img
+                    src={LoginImg}
+                    width={50}
+                    height={50}
+                    onClick={nav_login}
+                  ></img>
+                </div>
               </Media>
             )}
           </Nav>

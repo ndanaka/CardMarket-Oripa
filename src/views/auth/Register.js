@@ -10,6 +10,7 @@ import {
   InputGroupText,
   InputGroup,
 } from "reactstrap";
+
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../../utils/toastUtil";
 import { useTranslation } from "react-i18next";
@@ -24,12 +25,12 @@ const Register = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  console.log("formdata", formData);
+
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
   };
+
   const isFormValidate = () => {
-    console.log("isFomValidate");
     if (
       formData.name &&
       formData.email &&
@@ -41,17 +42,19 @@ const Register = () => {
   };
 
   const handleChangeFormData = (e) => {
-    if (e.target.name == "password") checkPasswordStrength(e.target.value);
+    if (e.target.name === "password") checkPasswordStrength(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
     isFormValidate();
   };
+
   const emailVerify = () => {
-    console.log("emailVerfiy");
     setShowErrMessage(true);
+
     if (!isFormValidate()) return;
-    console.log("formData Validate")
+
     setIsEmailVerifyPanel(true);
   };
+
   const handleSubmit = () => {
     if (!isFormValidate()) return;
     api
@@ -95,7 +98,7 @@ const Register = () => {
 
     setStrength(strengthLevel);
   };
-  console.log("isEmailVerifyPanel", isEmailVerifyPanel);
+
   return (
     <>
       {isEmailVerifyPanel ? (

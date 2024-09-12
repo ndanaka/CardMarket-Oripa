@@ -15,8 +15,8 @@ const GachaEdit = () => {
   const [loadFlag, setLoadFlag] = useState(false); //flag fro loading registered prize
   const [isLastPrize, setIsLastPrize] = useState(false); //flag for setting prize as lastPrize
   const [trigger, setTrigger] = useState(false);
-  const {user} = GetUser();
-  const {t} = useTranslation();
+  const { user } = GetUser();
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { gachaId } = location.state || {};
@@ -52,8 +52,8 @@ const GachaEdit = () => {
   };
   //upload bulk prizes from csv file
   const uploadPrize = () => {
-    if(user.authority.gacha != 2 && user.authority.gacha != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     setAuthToken();
@@ -77,14 +77,14 @@ const GachaEdit = () => {
   };
   //unset registered prizes from gacha
   const unsetPrize = (i) => {
-    if(user.authority.gacha != 3 && user.authority.gacha != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.gacha !== 3 && user.authority.gacha !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     api
       .post("/admin/gacha/unset_prize/", {
         gachaId: gachaId,
-        prizeId: i == -1 ? gacha.last_prize._id : gacha.remain_prizes[i]._id,
+        prizeId: i === -1 ? gacha.last_prize._id : gacha.remain_prizes[i]._id,
         flag: i, // if i is -1, handle unset last prize
       })
       .then((res) => {
@@ -101,8 +101,8 @@ const GachaEdit = () => {
 
   //set prize from registerd prizes by manualy
   const setprizes = (id) => {
-    if(user.authority.gacha != 2 && user.authority.gacha != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     api
@@ -130,7 +130,7 @@ const GachaEdit = () => {
           className="fa fa-chevron-left float-left"
           onClick={() => navigate("/admin/gacha")}
         ></i>
-        <span className="text-center">{t('gacha') + " " + t('detail')}</span>
+        <span className="text-center">{t("gacha") + " " + t("detail")}</span>
       </div>
       <hr className="w-5/6 my-2 text-sm mx-auto"></hr>
 
@@ -138,13 +138,13 @@ const GachaEdit = () => {
       <div className="mx-auto mt-5 overflow-auto">
         <table className="border-[1px] m-auto">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
-            <th>{t('no')}</th>
-            <th>{t('image')}</th>
-            <th>{t('name')}</th>
-            <th>{t('price')}</th>
-            <th>{t('total')+ " " + t("number")}</th>
+            <th>{t("no")}</th>
+            <th>{t("image")}</th>
+            <th>{t("name")}</th>
+            <th>{t("price")}</th>
+            <th>{t("total") + " " + t("number")}</th>
             <th>{t("category")}</th>
-            <th>{t('created') + " " +  t('date')}</th>
+            <th>{t("created") + " " + t("date")}</th>
           </thead>
           <tbody>
             {gacha ? (
@@ -170,7 +170,7 @@ const GachaEdit = () => {
               </tr>
             ) : (
               <tr>
-                <td colSpan="6">{t('nogacha')}</td>
+                <td colSpan="6">{t("nogacha")}</td>
               </tr>
             )}
           </tbody>
@@ -180,7 +180,7 @@ const GachaEdit = () => {
 
       {/* Gacha Prizes */}
       <div>
-        <div className="text-lg">{t('prize') + " " + t('list')}</div>
+        <div className="text-lg">{t("prize") + " " + t("list")}</div>
         <div className="flex flex-wrap justify-evenly  items-stretch">
           {gacha?.remain_prizes?.length > 0
             ? gacha.remain_prizes.map((prize, i) => (
@@ -205,7 +205,9 @@ const GachaEdit = () => {
         </div>
 
         {/* last prize */}
-        <div className="my-2 text-left text-lg">{t('last') + " " + t('prize')}</div>
+        <div className="my-2 text-left text-lg">
+          {t("last") + " " + t("prize")}
+        </div>
         {gacha?.last_prize ? (
           <div className="group relative mt-2 mr-1">
             <PrizeCard
@@ -228,10 +230,10 @@ const GachaEdit = () => {
       {/* setting prize to gacha */}
       <div className="mx-auto w-full">
         <hr className="my-2 text-sm"></hr>
-        <div className="text-left text-lg text-slate-600">{t('set') + " " + t('prize')}</div>
-        <div className="text-theme_text_color mt-4">
-          {t('set_CSV')}
+        <div className="text-left text-lg text-slate-600">
+          {t("set") + " " + t("prize")}
         </div>
+        <div className="text-theme_text_color mt-4">{t("set_CSV")}</div>
         <hr className="w-full text-theme_text_color"></hr>
         <div className="flex flex-wrap justify-between items-center w-5/6 mt-2">
           <div className="button-38 my-1">
@@ -255,18 +257,18 @@ const GachaEdit = () => {
             className={`button-22 my-1 ${prizes ? "" : "disable"}`}
             onClick={uploadPrize}
           >
-            {t('upload') + " " + t('all') + " " + t('prize')}
+            {t("upload") + " " + t("all") + " " + t("prize")}
           </button>
         </div>
         <div className="mt-3 overflow-auto">
           <table className="border-[1px]  mx-auto mt-2 w-full">
             <thead className="bg-admin_theme_color font-bold text-gray-200">
               <tr>
-                <th>{t('no')}</th>
-                <th>{t('name')}</th>
-                <th>{t('rarity')}</th>
-                <th>{t('cashback') + " " + t("point")}</th>
-                <th>{t('image')}</th>
+                <th>{t("no")}</th>
+                <th>{t("name")}</th>
+                <th>{t("rarity")}</th>
+                <th>{t("cashback") + " " + t("point")}</th>
+                <th>{t("image")}</th>
               </tr>
             </thead>
             <tbody>
@@ -292,7 +294,7 @@ const GachaEdit = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6">{t('noprize')}</td>
+                  <td colSpan="6">{t("noprize")}</td>
                 </tr>
               )}
             </tbody>
@@ -301,7 +303,7 @@ const GachaEdit = () => {
       </div>
       <div className="w-full mt-5 overflow-auto">
         <div className="text-theme_text_color mx-auto">
-          {t('set_registered_prize')}
+          {t("set_registered_prize")}
           <hr className="w-full text-theme_text_color my-1"></hr>
         </div>
         <div className="flex justify-between items-end mx-auto my-2">
@@ -311,7 +313,7 @@ const GachaEdit = () => {
               setLoadFlag(true);
             }}
           >
-            {t('load_prizes')}
+            {t("load_prizes")}
           </button>
           <div className="form-check form-check-inline">
             <label className="form-check-label">
@@ -321,7 +323,7 @@ const GachaEdit = () => {
                 checked={isLastPrize}
                 onChange={() => setIsLastPrize((prev) => !prev)}
               />
-              {t('set_as_lastPrize')}
+              {t("set_as_lastPrize")}
             </label>
           </div>
         </div>

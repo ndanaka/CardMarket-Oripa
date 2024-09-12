@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 import PageHeader from "../../components/Forms/PageHeader";
 import { useNavigate } from "react-router-dom";
 function Delivering() {
-  const {user} = GetUser();
+  const { user } = GetUser();
   const [deliverData, setDeliverData] = useState();
-  const navigate = useNavigate()
-  const {t} = useTranslation();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   useEffect(() => {
     getDeliverData();
   }, []);
@@ -22,8 +22,8 @@ function Delivering() {
       .catch((err) => console.log(err));
   };
   const handlesetStatus = (i) => {
-    if(user.authority.delivering != 2 && user.authority.delivering != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.delivering !== 2 && user.authority.delivering !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     console.log("handlesetStatus", i);
@@ -44,18 +44,18 @@ function Delivering() {
   return (
     <div className="w-full p-3">
       <div className="w-full md:w-[70%] mx-auto">
-        <PageHeader text={t('delivering')} />
+        <PageHeader text={t("delivering")} />
       </div>
       <div className="w-full mt-3 mx-auto overflow-auto">
         <table className="w-full">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <tr>
-              <th>{t('no')}</th>
-              <th>{t('user') + " " + t('name')}</th>
-              <th>{t('gacha')}</th>
-              <th>{t('prize')}</th>
-              <th>{t('gacha') + " " + t('date')}</th>
-              <th>{t('status')}</th>
+              <th>{t("no")}</th>
+              <th>{t("user") + " " + t("name")}</th>
+              <th>{t("gacha")}</th>
+              <th>{t("prize")}</th>
+              <th>{t("gacha") + " " + t("date")}</th>
+              <th>{t("status")}</th>
             </tr>
           </thead>
           <tbody>
@@ -75,9 +75,9 @@ function Delivering() {
                     <td>
                       <button
                         className={`py-1 px-2 rounded-sm text-center text-gray-200 ${
-                          data.status == "pending"
+                          data.status === "pending"
                             ? "bg-blue-600"
-                            : data.status == "delivering"
+                            : data.status === "delivering"
                             ? "bg-indigo-600"
                             : "bg-purple-600"
                         }`}

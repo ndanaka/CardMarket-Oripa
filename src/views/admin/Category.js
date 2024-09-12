@@ -14,7 +14,7 @@ function Category() {
   const [editRow, setEditRow] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [delId, setDelId] = useState(null);
-  const {user} = GetUser();
+  const { user } = GetUser();
   const { t } = useTranslation();
   const handleDelete = () => {
     // Logic for deleting the item
@@ -31,7 +31,7 @@ function Category() {
     api
       .get("admin/get_category")
       .then((res) => {
-        if (res.data.status == 1) {
+        if (res.data.status === 1) {
           setCategory(res.data.category);
         }
       })
@@ -41,8 +41,8 @@ function Category() {
   };
 
   const addCategory = () => {
-    if(user.authority.category != 2 && user.authority.category != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.category !== 2 && user.authority.category !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     if (name && description) {
@@ -52,7 +52,7 @@ function Category() {
           description: description,
         })
         .then((res) => {
-          if (res.data.status == 1) {
+          if (res.data.status === 1) {
             get_category();
             showToast(res.data.msg, "success");
           }
@@ -64,8 +64,8 @@ function Category() {
   };
 
   const categoryEdit = () => {
-    if(user.authority.category != 2 && user.authority.category != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.category !== 2 && user.authority.category !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     const id = category[editRow]._id;
@@ -87,8 +87,8 @@ function Category() {
   };
 
   const categoryDel = () => {
-    if(user.authority.category != 3 && user.authority.category != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.category !== 3 && user.authority.category !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     api
@@ -117,33 +117,41 @@ function Category() {
   return (
     <div className="p-3 ">
       <div className="w-full md:w-[70%] mx-auto">
-        <PageHeader text={t('category')} />
+        <PageHeader text={t("category")} />
       </div>
       <div className="flex flex-wrap justify-around items-end p-2 w-full md:w-[70%] m-auto">
         <div className="my-1 w-full md:w-[35%]">
-          <label className="text-gray-700 px-2">{t('category') +" "+  t('name')}: </label>
+          <label className="text-gray-700 px-2">
+            {t("category") + " " + t("name")}:{" "}
+          </label>
           <input
             className="p-1 w-full form-control"
             onChange={(e) => setName(e.target.value)}
           ></input>
         </div>
         <div className="my-1 w-full md:w-[35%]">
-          <label className="text-gray-700 px-2">{t('category') +" "+  t('description')}: </label>
+          <label className="text-gray-700 px-2">
+            {t("category") + " " + t("description")}:{" "}
+          </label>
           <input
             className="p-1 w-full form-control"
             onChange={(e) => setDes(e.target.value)}
           ></input>
         </div>
-        <AgreeButton name={t("add") + t("category")} className="" onClick={addCategory} />
+        <AgreeButton
+          name={t("add") + t("category")}
+          className=""
+          onClick={addCategory}
+        />
       </div>
       <div className="m-auto w-full md:w-[70%]">
         <table className="border-2 m-auto w-full">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <tr>
-              <th>{t('no')}</th>
-              <th>{t('name')}</th>
-              <th>{t('description')}</th>
-              <th>{t('action')}</th>
+              <th>{t("no")}</th>
+              <th>{t("name")}</th>
+              <th>{t("description")}</th>
+              <th>{t("action")}</th>
             </tr>
           </thead>
           <tbody>

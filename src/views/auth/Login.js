@@ -43,7 +43,7 @@ const Login = () => {
           showToast(res.data.msg);
           console.log("Login user----->", res.data.user);
           setUser(res.data.user);
-          if (res.data.user.role == "admin") navigate("/admin/index");
+          if (res.data.user.role === "admin") navigate("/admin/index");
           else navigate("/user/index");
         } else showToast(res.data.msg, "error");
       })
@@ -55,7 +55,6 @@ const Login = () => {
   return (
     <>
       <div className="w-full md:w-3/6 mx-auto rounded-lg bg-white shadow border-0 my-5">
-        
         <div className="bg-transparent py-3 mt-2">
           <div className="text-muted text-center pb-2">
             <small>{t("sign_in")}</small>

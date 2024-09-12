@@ -6,7 +6,7 @@ import AuthLayout from "./layouts/Auth.js";
 import UserLayout from "./layouts/UserLayout.js";
 import { Navigate } from "react-router-dom";
 import { initializeToast } from "./utils/toastUtil.js";
-import '../src/utils/i18next.js'; // Import i18n configuration
+import "../src/utils/i18next.js"; // Import i18n configuration
 export default function App() {
   useEffect(() => {
     initializeToast();

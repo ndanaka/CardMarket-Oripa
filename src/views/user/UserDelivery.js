@@ -7,11 +7,12 @@ import PrizeCard from "../../components/Others/PrizeCard";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 import formatDate from "../../utils/formatDate";
+
 function UserDelivery() {
   const { user } = GetUser();
   const [deliver, setDeliver] = useState();
   const [flag, setFlag] = useState(false); //return card confirm span flag
-  console.log("flag", flag);
+
   useEffect(() => {
     setAuthToken();
     getDeliver();
@@ -36,11 +37,12 @@ function UserDelivery() {
       .then((res) => {
         if (res.data.status === 1) {
           getDeliver();
-          showToast("Return Prize Successful")
-        } else showToast("Return Prize Failed:", res.data.msg)
+          showToast("Return Prize Successful");
+        } else showToast("Return Prize Failed:", res.data.msg);
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="w-full mt-16">
       <SubHeader text="My Delivery" />
@@ -50,7 +52,7 @@ function UserDelivery() {
           <div className="px-3">
             {deliver?.length > 0 ? (
               deliver
-                .filter((data) => data.status == "pending")
+                .filter((data) => data.status === "pending")
                 .map((data, i) => {
                   return (
                     <div className="my-1">
@@ -68,7 +70,7 @@ function UserDelivery() {
                                   img_url={card.img_url}
                                 />
                                 <div className="absolute bottom-0 w-full bg-gray-200 hidden group-hover:block transition-all duration-300 text-base text-gray-800 text-center cursor-pointer z-3 py-2 animate-[displayEase_linear]">
-                                  {flag == true ? (
+                                  {flag === true ? (
                                     <div className="flex justify-center">
                                       <i
                                         className="fa fa-check text-2xl font-extrabold text-green-600 px-2"
@@ -107,7 +109,7 @@ function UserDelivery() {
           <div className="px-3">
             {deliver?.length > 0 ? (
               deliver
-                .filter((data) => data.status == "delivering")
+                .filter((data) => data.status === "delivering")
                 .map((data, i) => {
                   return (
                     <div className="my-1">

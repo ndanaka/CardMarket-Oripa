@@ -25,10 +25,11 @@ const AdminNavbar = (props) => {
     setUser({});
     navigate("/auth/login");
   };
+
   const nav_login = () => {
-    console.log("nav_login");
     navigate("/auth/login");
   };
+
   return (
     <div className="w-full bg-admin_theme_color py-2 px-4">
       <div className="w-full navbar-dark">

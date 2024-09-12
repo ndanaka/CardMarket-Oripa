@@ -64,7 +64,7 @@ function Administrators() {
       .delete(`/admin/del_admin/${adminId}`)
       .then((res) => {
         // console.log(res.data.status);
-        if (res.data.status == 1) {
+        if (res.data.status === 1) {
           showToast("Admin deleted successfully.");
           getAdminList();
         } else {
@@ -84,17 +84,16 @@ function Administrators() {
   const change_auth = (key, d) => {
     //0:no authority, 1:only read, 2:write, 3:delete, 4:full control
     //check/uncheck read authority
-    if (d == 1) {
-      if (authority[key] == 0) setAuthority({ ...authority, [key]: 1 });
+    if (d === 1) {
+      if (authority[key] === 0) setAuthority({ ...authority, [key]: 1 });
       else setAuthority({ ...authority, [key]: 0 });
-    } 
-    //change write/delete authority
-    else if(d == 2){
-      if(authority[key] == 3) setAuthority({ ...authority, [key]: 4 });
-      else setAuthority({ ...authority, [key]: 2 });
     }
-    else {
-      if(authority[key] == 2) setAuthority({ ...authority, [key]: 4 });
+    //change write/delete authority
+    else if (d === 2) {
+      if (authority[key] === 3) setAuthority({ ...authority, [key]: 4 });
+      else setAuthority({ ...authority, [key]: 2 });
+    } else {
+      if (authority[key] === 2) setAuthority({ ...authority, [key]: 4 });
       else setAuthority({ ...authority, [key]: 3 });
     }
     console.log("change_auth/authority-->", authority);
@@ -255,7 +254,7 @@ function Administrators() {
                         <input
                           type="checkbox"
                           name={key}
-                          checked={value && (value <= 4)}
+                          checked={value && value <= 4}
                           onChange={() => change_auth(key, 1)}
                         ></input>
                       </td>
@@ -263,7 +262,7 @@ function Administrators() {
                         <input
                           type="checkbox"
                           name={key}
-                          checked={value && (value == 2 || value == 4)}
+                          checked={value && (value === 2 || value === 4)}
                           onChange={() => change_auth(key, 2)}
                         ></input>
                       </td>
@@ -271,7 +270,7 @@ function Administrators() {
                         <input
                           type="checkbox"
                           name={key}
-                          checked={value && (value == 3 || value == 4)}
+                          checked={value && (value === 3 || value === 4)}
                           onChange={() => change_auth(key, 3)}
                         ></input>
                       </td>
