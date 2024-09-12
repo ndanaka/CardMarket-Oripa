@@ -18,7 +18,6 @@ export const showToast = (
   color = "success",
   duration = 3000
 ) => {
-  console.log("showToast");
   if (!toastRoot) {
     console.error("Toast not initialized. Call initializeToast() first.");
     return;

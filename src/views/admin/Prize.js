@@ -20,12 +20,12 @@ const Prize = () => {
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [trigger, setTrigger] = useState(null); //for PrizeList component refresh
   const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const {user} = GetUser();
+  const { user } = GetUser();
   const { t } = useTranslation();
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
-    if (file != undefined) {
+    if (file !== undefined) {
       setFormData({ ...formData, file: file });
       const reader = new FileReader();
 
@@ -48,8 +48,8 @@ const Prize = () => {
   /* Add/Update prize with image file uploading
   If formData.id has value, this function perform as update one */
   const uploadPrize = async () => {
-    if(user.authority.prize != 2 && user.authority.prize != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.prize !== 2 && user.authority.prize !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     setAuthToken();
@@ -70,8 +70,8 @@ const Prize = () => {
   };
 
   const updatePrize = () => {
-    if(user.authority.prize != 2 && user.authority.prize != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.prize !== 2 && user.authority.prize !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     setCuFlag(1);

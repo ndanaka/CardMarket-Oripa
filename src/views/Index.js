@@ -30,33 +30,42 @@ const Index = () => {
   const navigate = useNavigate();
 
   const carouselItems = [
-    {id: 1, imgUrl: "theme/carousel/rank_banner.png"},
-    {id: 2, imgUrl: "theme/carousel/point.png"},
-  ]
+    { id: 1, imgUrl: "theme/carousel/rank_banner.png" },
+    { id: 2, imgUrl: "theme/carousel/point.png" },
+  ];
 
   useEffect(() => {
     getCategory();
     getGacha();
   }, []);
-  
+
   useEffect(() => {
-    setFilteredGacha(gacha?.filter(
-      (gacha) =>
-        gacha.isRelease == true &&
-        (categoryFilter == "all" ? true : gacha.category == categoryFilter)
-    ));
-    if(filter?.length > 0) {
-      if(filter.includes('all')) return;
-      if(filter.includes('last_prize')) {
-        setFilteredGacha(gacha?.filter((gacha) => gacha.last_prize != undefined && gacha.last_prize != null))
+    setFilteredGacha(
+      gacha?.filter(
+        (gacha) =>
+          gacha.isRelease === true &&
+          (categoryFilter === "all" ? true : gacha.category === categoryFilter)
+      )
+    );
+
+    if (filter?.length > 0) {
+      if (filter.includes("all")) return;
+      if (filter.includes("last_prize")) {
+        setFilteredGacha(
+          gacha?.filter(
+            (gacha) =>
+              gacha.last_prize !== undefined && gacha.last_prize !== null
+          )
+        );
       }
     }
-  },[gacha, categoryFilter, filter])
+  }, [gacha, categoryFilter, filter]);
+
   const getCategory = () => {
     api
       .get("admin/get_category")
       .then((res) => {
-        if (res.data.status == 1) {
+        if (res.data.status === 1) {
           setCategory(res.data.category);
         }
       })
@@ -64,6 +73,7 @@ const Index = () => {
         console.log(err);
       });
   };
+
   const getGacha = () => {
     api
       .get("/admin/gacha")
@@ -74,6 +84,7 @@ const Index = () => {
         // console.log(err);
       });
   };
+
   const updateUserData = () => {
     setAuthToken();
     api
@@ -87,10 +98,12 @@ const Index = () => {
         console.log(err);
       });
   };
+
   //handle gacha draw
   const handleDraw = () => {
     setAuthToken();
     setIsOpen(false);
+
     api
       .post("/admin/gacha/draw_gacha", {
         gachaId: gacha[selGacha[0]]._id,
@@ -108,18 +121,22 @@ const Index = () => {
       })
       .catch((err) => console.log(err));
   };
+
   const showCards = () => {
     setShowCardFlag(true);
   };
+
   const openModal = () => {
     setIsOpen(true);
   };
+
   const handleSetfilter = (filterItem) => {
-    if(filter.includes(filterItem)){
-      const newFilter = filter.filter(item => item !== filterItem);
+    if (filter.includes(filterItem)) {
+      const newFilter = filter.filter((item) => item !== filterItem);
       setFilter(newFilter);
     } else setFilter([...filter, filterItem]);
-  }
+  };
+
   return (
     <>
       <div className="w-full md:w-[70%] md:mx-2 mt-16 mx-auto p-2">
@@ -127,12 +144,16 @@ const Index = () => {
           <ChangeLanguage />
         </div>
         <div className="flex w-1/2 my-4">
-          <ImageCarousel items={carouselItems}/>
+          <ImageCarousel items={carouselItems} />
         </div>
         {/* display categoy */}
         <div className="w-full flex justify-start overflow-auto my-3 text-red-800 shadow-md shadow-gray-200">
           <button
-            className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${categoryFilter == 'all'? 'bg-gray-100 text-red-900 border-b-4' : ''} `}
+            className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
+              categoryFilter === "all"
+                ? "bg-gray-100 text-red-900 border-b-4"
+                : ""
+            } `}
             onClick={() => setCategoryFilter("all")}
           >
             {t("All")}
@@ -142,7 +163,11 @@ const Index = () => {
                 <button
                   key={i}
                   id={data.id}
-                  className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${categoryFilter == data.name? 'bg-gray-100 text-red-900 border-b-4' : ''} `}
+                  className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
+                    categoryFilter === data.name
+                      ? "bg-gray-100 text-red-900 border-b-4"
+                      : ""
+                  } `}
                   onClick={() => setCategoryFilter(data.name)}
                 >
                   {data.name}
@@ -151,9 +176,32 @@ const Index = () => {
             : null}{" "}
         </div>
         <div className="w-full flex justify-start items-center overflow-auto my-1">
-          <div className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${filter.includes('all')? 'bg-red-600 text-white ':''}`} onClick={() => handleSetfilter('all')}>All</div>
-          <div className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${filter.includes('round_number_prize')? 'bg-red-600 text-white ':''}`} onClick={() => handleSetfilter('round_number_prize')}>Round Number Prize</div>
-          <div className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${filter.includes('last_prize')? 'bg-red-600 text-white ':''}`} onClick={() => handleSetfilter('last_prize')}>Last One Prize</div>
+          <div
+            className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${
+              filter.includes("all") ? "bg-red-600 text-white " : ""
+            }`}
+            onClick={() => handleSetfilter("all")}
+          >
+            All
+          </div>
+          <div
+            className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${
+              filter.includes("round_number_prize")
+                ? "bg-red-600 text-white "
+                : ""
+            }`}
+            onClick={() => handleSetfilter("round_number_prize")}
+          >
+            Round Number Prize
+          </div>
+          <div
+            className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${
+              filter.includes("last_prize") ? "bg-red-600 text-white " : ""
+            }`}
+            onClick={() => handleSetfilter("last_prize")}
+          >
+            Last One Prize
+          </div>
         </div>
         <hr className="w-full text-theme_text_color my-2 text-3xl"></hr>
 
@@ -161,64 +209,63 @@ const Index = () => {
         <div className="w-full flex flex-wrap justify-between">
           {filteredGacha != null
             ? filteredGacha.map((data, i) => (
-                  <div className="w-full xxsm:w-1/2 mb-2 ">
-                    <div className="flex flex-col justify-center p-2 mr-2 border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
-                      <div className="relative">
-                        <img
-                          src={
-                            process.env.REACT_APP_SERVER_ADDRESS +
-                            data.gacha_thumnail_url
-                          }
-                          className="w-full m-auto border-b-2 border-white cursor-pointer"
-                          onClick={() =>
-                            navigate("/user/gacha-detail", {
-                              state: { gachaId: data._id },
-                            })
-                          }
-                        ></img>
-                        {/* prize remain display progressbar */}
-                        <div className="w-full bg-gray-300">
-                          <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
-                            <GachaPriceLabel price={data.price} />
-                            <Progressbar
-                              progress={
-                                (data.remain_prizes.length /
-                                  data.total_number) *
-                                100
-                              }
-                              label={
-                                data.remain_prizes.length +
-                                " / " +
-                                data.total_number
-                              }
-                              height={20}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="w-full flex justify-center">
-                        <div
-                          className="bg-theme_color hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
-                          onClick={() => {
-                            openModal();
-                            setSelGacha([i, 1]);
-                          }}
-                        >
-                          1 {t("draw")}
-                        </div>
-                        <div
-                          className="bg-theme_color hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
-                          onClick={() => {
-                            openModal();
-                            setSelGacha([i, 10]);
-                          }}
-                        >
-                          10 {t("draws")}
+                <div className="w-full xxsm:w-1/2 mb-2 ">
+                  <div className="flex flex-col justify-center p-2 mr-2 border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
+                    <div className="relative">
+                      <img
+                        src={
+                          process.env.REACT_APP_SERVER_ADDRESS +
+                          data.gacha_thumnail_url
+                        }
+                        className="w-full m-auto border-b-2 border-white cursor-pointer"
+                        onClick={() =>
+                          navigate("/user/gacha-detail", {
+                            state: { gachaId: data._id },
+                          })
+                        }
+                      ></img>
+                      {/* prize remain display progressbar */}
+                      <div className="w-full bg-gray-300">
+                        <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
+                          <GachaPriceLabel price={data.price} />
+                          <Progressbar
+                            progress={
+                              (data.remain_prizes.length / data.total_number) *
+                              100
+                            }
+                            label={
+                              data.remain_prizes.length +
+                              " / " +
+                              data.total_number
+                            }
+                            height={20}
+                          />
                         </div>
                       </div>
                     </div>
+                    <div className="w-full flex justify-center">
+                      <div
+                        className="bg-theme_color hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
+                        onClick={() => {
+                          openModal();
+                          setSelGacha([i, 1]);
+                        }}
+                      >
+                        1 {t("draw")}
+                      </div>
+                      <div
+                        className="bg-theme_color hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
+                        onClick={() => {
+                          openModal();
+                          setSelGacha([i, 10]);
+                        }}
+                      >
+                        10 {t("draws")}
+                      </div>
+                    </div>
                   </div>
-                ))
+                </div>
+              ))
             : ""}
         </div>
 

@@ -28,7 +28,7 @@ function Users() {
       .delete(`/user/del_user/${id}`)
       .then((res) => {
         // console.log(res.data.status);
-        if (res.data.status == 1) {
+        if (res.data.status === 1) {
           showToast("Admin deleted successfully.");
           getUserList();
         } else {

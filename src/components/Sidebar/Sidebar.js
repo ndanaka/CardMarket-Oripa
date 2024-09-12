@@ -8,7 +8,7 @@ import { NavbarBrand, Nav } from "reactstrap";
 const Sidebar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const {user} = GetUser();
+  const { user } = GetUser();
   const currentPath = location.pathname;
   const { t, i18n } = useTranslation();
   console.log("sideuser", user);
@@ -20,7 +20,7 @@ const Sidebar = (props) => {
           <div
             key={key}
             className={`group py-2 px-4 flex justify-between hover:bg-[#1e3a6b] dark:text-gray-300 text-gray-200 hover:text-white cursor-pointer select-none border-b-[1px] border-gray-300 ${
-              currentPath == prop.layout + prop.path
+              currentPath === prop.layout + prop.path
                 ? "bg-[#1e3a6b] text-white"
                 : ""
             }`}

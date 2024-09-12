@@ -45,7 +45,7 @@ const Admin = (props) => {
     console.log("scrolling");
   }, []);
   React.useEffect(() => {
-    if (user.role != "admin") navigate("/user/index");
+    if (user.role !== "admin") navigate("/user/index");
     if (isLoggedOut) navigate("/auth/login");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -90,7 +90,7 @@ const Admin = (props) => {
             {getRoutes(routes)}
             <Route path="*" element={<Navigate to="/admin/index" replace />} />
           </Routes>
-          <ScrollToTop/>
+          <ScrollToTop />
         </div>
       </div>
     </div>

@@ -19,10 +19,10 @@ function Point() {
   const [points, setPoints] = useState([]);
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const [delPointId, setDelPointId] = useState()
+  const [delPointId, setDelPointId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {user} = GetUser();
-  const {t} = useTranslation();
+  const { user } = GetUser();
+  const { t } = useTranslation();
   console.log("points", points);
   useEffect(() => {
     setAuthToken();
@@ -51,7 +51,7 @@ function Point() {
   };
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
-    if (file != undefined) {
+    if (file !== undefined) {
       setFormData({ ...formData, file: file });
       const reader = new FileReader();
 
@@ -66,8 +66,8 @@ function Point() {
   /* add and update prize with image file uploading
   if there is a property 'id' vin formData, this perform update of prize */
   const upload = () => {
-    if(user.authority.point != 2 && user.authority.point != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.point !== 2 && user.authority.point !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     setMultipart();
@@ -101,8 +101,8 @@ function Point() {
 
   //handle point update
   const updatePoint = () => {
-    if(user.authority.point != 2 && user.authority.point != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.point !== 2 && user.authority.point !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     setCuFlag(1);
@@ -110,8 +110,8 @@ function Point() {
   };
   //handle point delete
   const pointDel = () => {
-    if(user.authority.point != 3 && user.authority.point != 4) {
-      showToast("You have no permission for this action", 'error');
+    if (user.authority.point !== 3 && user.authority.point !== 4) {
+      showToast("You have no permission for this action", "error");
       return;
     }
     api.delete(`/admin/del_point/${delPointId}`).then((res) => {
@@ -125,19 +125,21 @@ function Point() {
   const handleDelete = () => {
     setIsModalOpen(false);
     pointDel();
-  }
+  };
   return (
     <div className="p-3">
       <div className="w-full md:w-[70%] mx-auto">
-        <PageHeader text={t('point')} />
+        <PageHeader text={t("point")} />
       </div>
       <div className="flex flex-col items-center w-full md:w-[70%] m-auto border-2">
         <div className="py-2 w-full bg-admin_theme_color text-gray-200 text-center">
-          {t('point') +" "+ t('add')}
+          {t("point") + " " + t("add")}
         </div>
         <div className="flex flex-col items-center w-full md:w-[70%]">
           <div className="flex flex-wrap justify-between items-center my-1 mt-4 w-[70%]">
-            <label className="text-gray-700 px-2">{t('point') +" "+ t('amount')}: </label>
+            <label className="text-gray-700 px-2">
+              {t("point") + " " + t("amount")}:{" "}
+            </label>
             <input
               name="pointNum"
               className="p-1 w-full form-control"
@@ -146,7 +148,7 @@ function Point() {
             ></input>
           </div>
           <div className="flex flex-wrap justify-between my-1 w-[70%]">
-            <label className="text-gray-700 px-2">{t('price')}: </label>
+            <label className="text-gray-700 px-2">{t("price")}: </label>
             <input
               name="price"
               className="p-1 w-full form-control"
@@ -155,7 +157,9 @@ function Point() {
             ></input>
           </div>
           <div className="flex flex-wrap justify-between my-1 items-center w-[70%]">
-            <label className="text-gray-700 px-2">{t('point') +" "+ t('image')}: </label>
+            <label className="text-gray-700 px-2">
+              {t("point") + " " + t("image")}:{" "}
+            </label>
             <input
               name="file"
               type="file"
@@ -177,7 +181,7 @@ function Point() {
           {cuflag ? (
             <AgreeButton name={t("add")} addclass="" onClick={upload} />
           ) : (
-            <AgreeButton name={("update")} addclass="" onClick={updatePoint} />
+            <AgreeButton name={"update"} addclass="" onClick={updatePoint} />
           )}
         </div>
       </div>
@@ -185,11 +189,11 @@ function Point() {
         <table className="border-2 w-full  m-auto">
           <thead>
             <tr className="bg-admin_theme_color font-bold text-gray-200">
-              <th>{t('no')}</th>
-              <th>{t('point') +" "+ t('amount')}</th>
-              <th>{t('price')}</th>
-              <th>{t('point') +" "+ t('image')}</th>
-              <th>{t('action')}</th>
+              <th>{t("no")}</th>
+              <th>{t("point") + " " + t("amount")}</th>
+              <th>{t("price")}</th>
+              <th>{t("point") + " " + t("image")}</th>
+              <th>{t("action")}</th>
             </tr>
           </thead>
           <tbody>
