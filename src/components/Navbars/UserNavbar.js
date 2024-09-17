@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Cookies from "universal-cookie";
 import { useAtom } from "jotai";
+
 import { UserAtom } from "../../store/user";
+
+import LoginImg from "../../assets/img/icons/login.png"
 import "../../assets/css/index.css";
-import LoginImg from "../../assets/img/icons/login.png";
-import { useTranslation } from "react-i18next";
-// reactstrap components
+
 import {
   DropdownMenu,
   DropdownItem,
@@ -33,7 +35,7 @@ const UserNavbar = () => {
   };
 
   return (
-    <div className="w-full bg-theme_color py-2 px-4 fixed z-10">
+    <div className="w-full bg-theme_color py-3 px-4 fixed z-10">
       <div className="w-full navbar-dark">
         <div className="w-full flex justify-between items-center content-end md:content-between">
           <div>
@@ -67,7 +69,7 @@ const UserNavbar = () => {
                       onClick={() => navigate("/user/pur-point")}
                       className="-translate-x-[50%]"
                     ></img>
-                    {/* <i className="fa-solid fa-plus font-extrabold text-base text-white -translate-x-[170%]"></i> */}
+                    <i className="fa-solid fa-plus font-extrabold text-base text-white -translate-x-[170%]"></i>
                   </div>
                 )}
 
@@ -164,16 +166,17 @@ const UserNavbar = () => {
                 </UncontrolledDropdown>
               </div>
             ) : (
+              // <button
+              //   className="nav-link-inner--text text-white px-3 py-1 outline outline-2 outline-offset-2 rounded-sm"
+              //   onClick={nav_login}
+              // >
+              //   {t("Register / Login")}
+              // </button>
               <Media>
-                <div>
-                  <img
-                    src={LoginImg}
-                    width={50}
-                    height={50}
-                    onClick={nav_login}
-                  ></img>
-                </div>
-              </Media>
+              <div> 
+              <img src={LoginImg} width={50} height={50} onClick={nav_login}></img>
+             </div>
+            </Media>
             )}
           </Nav>
         </div>

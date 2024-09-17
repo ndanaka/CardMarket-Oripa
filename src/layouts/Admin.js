@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useAtom } from "jotai";
+
 import {
   useLocation,
   Route,
@@ -6,15 +8,15 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-// core components
+
 import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
-// import Scrollspy from "react-scrollspy";
+import ScrollToTop from "../components/Others/ScrollTop.js";
+
 import routes from "../routes.js";
 import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
-import { useAtom } from "jotai";
+
 import { UserAtom } from "../store/user";
-import ScrollToTop from "../components/Others/ScrollTop.js";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -34,16 +36,17 @@ const Admin = (props) => {
       flagShow = newFlagShow;
     }
   };
+
   const scrollTop = () => {
-    console.log("scrolltop");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
   };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    console.log("scrolling");
   }, []);
+
   React.useEffect(() => {
     if (user.role !== "admin") navigate("/user/index");
     if (isLoggedOut) navigate("/auth/login");
@@ -65,7 +68,7 @@ const Admin = (props) => {
   };
 
   return (
-    <div className="relative w-full h-full flex">
+    <div className="relative min-w-full min-h-full flex">
       <div className="bg-alert_success hover:bg-alert_error hidden"></div>
       <div className="bg-alert_error hidden"></div>
       <div>

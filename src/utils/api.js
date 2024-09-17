@@ -20,9 +20,7 @@ const api = axios.create({
 //     // alert("interceptors");
 //     alert(err.response.data.msg);
 //     // alert(err.response.status);
-//     // console.log("auth error", err.response);
 //     if (err.response.status === 401) {
-//       console.log("auth error", err.response);
 //       Logout();
 //       // store.dispatch({ type: LOGOUT });
 //     }

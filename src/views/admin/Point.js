@@ -23,7 +23,7 @@ function Point() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = GetUser();
   const { t } = useTranslation();
-  console.log("points", points);
+  
   useEffect(() => {
     setAuthToken();
     getPoint();
@@ -36,8 +36,6 @@ function Point() {
       [e.target.name]: e.target.value,
     });
   };
-  console.log("formdata---->", formData);
-
   //get registered point
   const getPoint = () => {
     setAuthToken();
@@ -57,7 +55,6 @@ function Point() {
 
       reader.onload = (e) => {
         setImgUrl(e.target.result);
-        console.log(imgUrl);
       };
       reader.readAsDataURL(file);
     }
@@ -72,7 +69,6 @@ function Point() {
     }
     setMultipart();
     setAuthToken();
-    console.log("point upload");
     api.post("/admin/point_upload", formData).then((res) => {
       if (res.data.status === 1) {
         showToast("Point Added Successfully.");
@@ -82,8 +78,6 @@ function Point() {
         setCuFlag(1); //set create/update flag as creating
       } else {
         showToast("Point Add/Update Failed", "error");
-        console.log(res.data.status);
-        console.log(res.data.err);
       }
       getPoint();
     });

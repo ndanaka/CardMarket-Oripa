@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Papa from "papaparse";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
-import { useLocation, useNavigate } from "react-router-dom";
-import PrizeList from "../../components/Tables/PrizeList";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
-import PrizeCard from "../../components/Others/PrizeCard";
 import GetUser from "../../utils/getUserAtom";
-import { useTranslation } from "react-i18next";
+
+import PrizeList from "../../components/Tables/PrizeList";
+import PrizeCard from "../../components/Others/PrizeCard";
+
 const GachaEdit = () => {
   const [gacha, setGacha] = useState(); //selected gacha
   const [prizes, setPrizes] = useState([]); //prizes from csv file
@@ -20,7 +23,7 @@ const GachaEdit = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { gachaId } = location.state || {};
-  console.log("gacha ", gacha);
+
   useEffect(() => {
     setAuthToken();
     getGacha();
@@ -37,44 +40,54 @@ const GachaEdit = () => {
         console.log(err);
       });
   };
+
   //handle loading data from csv file
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       Papa.parse(file, {
         complete: (results) => {
-          console.log("Parsed CSV Data:", results.data.pop());
+          results.data.pop();
           setPrizes(results.data); // Store the parsed data in state
         },
         header: true, // Set to true if your CSV has headers
       });
     }
   };
+
   //upload bulk prizes from csv file
   const uploadPrize = () => {
     if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
       showToast("You have no permission for this action", "error");
       return;
     }
-    setAuthToken();
-    console.log("uploadPrize");
-    api
-      .post("/admin/gacha/upload_bulk", {
-        gachaId: gachaId,
-        prizes: prizes,
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(res.data.msg);
 
-          getGacha();
-        } else {
-          showToast(res.data.msg, "error");
-          console.log(res.data.err);
-        }
-      })
-      .catch((err) => console.log(err));
+    setAuthToken();
+
+    if (gachaId.trim() === "") {
+      showToast("Not Found Gacha", "error");
+    } else if (prizes.length === 0) {
+      showToast("Must choose csv file", "error");
+    } else {
+      console.log(gachaId);
+      console.log(prizes);
+      api
+        .post("/admin/gacha/upload_bulk", {
+          gachaId: gachaId,
+          prizes: prizes,
+        })
+        .then((res) => {
+          if (res.data.status === 1) {
+            showToast(res.data.msg);
+            getGacha();
+          } else {
+            showToast(res.data.msg, "error");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   };
+
   //unset registered prizes from gacha
   const unsetPrize = (i) => {
     if (user.authority.gacha !== 3 && user.authority.gacha !== 4) {
@@ -94,7 +107,6 @@ const GachaEdit = () => {
           setTrigger(!trigger);
         } else {
           showToast(res.data.msg, "error");
-          console.log("Prize unset error---->", res.data.err);
         }
       });
   };
@@ -118,11 +130,11 @@ const GachaEdit = () => {
           getGacha();
         } else {
           showToast("setPrize failed.");
-          console.log("setPrize error", res.data.err);
         }
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="p-3 w-full h-full md:w-[70%] m-auto">
       <div className="text-xl text-center text-slate-600">
@@ -182,26 +194,28 @@ const GachaEdit = () => {
       <div>
         <div className="text-lg">{t("prize") + " " + t("list")}</div>
         <div className="flex flex-wrap justify-evenly  items-stretch">
-          {gacha?.remain_prizes?.length > 0
-            ? gacha.remain_prizes.map((prize, i) => (
-                <div className="group relative mt-2 mr-1">
-                  <PrizeCard
-                    key={i}
-                    name={prize?.name}
-                    rarity={prize?.rarity}
-                    cashback={prize?.cashback}
-                    img_url={prize?.img_url}
-                  />
-                  <div className="absolute top-0 w-full h-full bg-gray-200 opacity-0 hover:opacity-10"></div>
-                  <div className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100">
-                    <i
-                      className="fa fa-close text-gray-200 middle"
-                      onClick={() => unsetPrize(i)}
-                    ></i>
-                  </div>
+          {gacha?.remain_prizes?.length > 0 ? (
+            gacha.remain_prizes.map((prize, i) => (
+              <div className="group relative mt-2 mr-1" key={i}>
+                <PrizeCard
+                  key={i}
+                  name={prize?.name}
+                  rarity={prize?.rarity}
+                  cashback={prize?.cashback}
+                  img_url={prize?.img_url}
+                />
+                <div className="absolute top-0 w-full h-full bg-gray-200 opacity-0 hover:opacity-10"></div>
+                <div className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100">
+                  <i
+                    className="fa fa-close text-gray-200 middle"
+                    onClick={() => unsetPrize(i)}
+                  ></i>
                 </div>
-              ))
-            : null}
+              </div>
+            ))
+          ) : (
+            <div className="py-2">{t("noprize")}</div>
+          )}
         </div>
 
         {/* last prize */}
@@ -224,7 +238,9 @@ const GachaEdit = () => {
               ></i>
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div className="py-2 text-center">{t("nolastprize")}</div>
+        )}
       </div>
 
       {/* setting prize to gacha */}
@@ -236,17 +252,16 @@ const GachaEdit = () => {
         <div className="text-theme_text_color mt-4">{t("set_CSV")}</div>
         <hr className="w-full text-theme_text_color"></hr>
         <div className="flex flex-wrap justify-between items-center w-5/6 mt-2">
-          <div className="button-38 my-1">
-            <a
-              href={
-                process.env.REACT_APP_SERVER_ADDRESS + `/template/template.csv`
-              }
-              download
-            >
-              template.csv
-            </a>
-            <i className="fa fa-download"></i>
-          </div>
+          <a
+            className="button-38 my-1"
+            href={
+              process.env.REACT_APP_SERVER_ADDRESS + `/template/template.csv`
+            }
+            download
+          >
+            template.csv
+            <i className="fa fa-download ml-1"></i>
+          </a>
           <input
             type="file"
             accept=".csv"
@@ -274,7 +289,7 @@ const GachaEdit = () => {
             <tbody>
               {prizes ? (
                 prizes.map((data, i) => (
-                  <tr key={data._id} className="border-2">
+                  <tr key={data.i} className="border-2">
                     <td>{i + 1}</td>
                     <td>{data.name}</td>
                     <td>{data.rarity}</td>

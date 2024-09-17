@@ -20,7 +20,6 @@ function PurchasePoint() {
   const [selId, setSelId] = useState(0);
   const [user, setUser] = useAtom(UserAtom);
   const navigate = useNavigate();
-  console.log("user", user);
 
   useEffect(() => {
     setAuthToken();
@@ -48,7 +47,6 @@ function PurchasePoint() {
   const purchase_point = () => {
     setIsOpen(false);
     setAuthToken();
-    console.log("purchase function");
     api
       .post("/user/point/purchase", {
         user_id: user._id,

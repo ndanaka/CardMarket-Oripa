@@ -31,7 +31,6 @@ const Prize = () => {
 
       reader.onload = (e) => {
         setImgUrl(e.target.result);
-        console.log(imgUrl);
       };
       reader.readAsDataURL(file);
     }

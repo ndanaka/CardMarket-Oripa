@@ -27,13 +27,11 @@ function Users() {
     api
       .delete(`/user/del_user/${id}`)
       .then((res) => {
-        // console.log(res.data.status);
         if (res.data.status === 1) {
           showToast("Admin deleted successfully.");
           getUserList();
         } else {
           showToast("Admin delete failed.");
-          console.log(res.data.err);
         }
       })
       .catch((err) => console.log(err));

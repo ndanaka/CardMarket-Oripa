@@ -5,7 +5,6 @@ function ChangeLanguage() {
   const currentLanguage = i18n.language;  //current language
 
   const changeLanguage = (lng) => {
-    // console.log("changelanguage lng--->", lng);
     i18n.changeLanguage(lng);
   };
   return (

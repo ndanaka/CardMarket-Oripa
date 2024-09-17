@@ -1,17 +1,18 @@
 import React from "react";
-import ImailVerifyImg from "../../assets/img/icons/common/check-email.svg";
 import { useEffect } from "react";
+
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+import ImailVerifyImg from "../../assets/img/icons/common/check-email.svg";
 
-const EmailVerification = ({ email, setIsEmailVerifyPanel }) => {
+const EmailVerification = ({ email, password, setIsEmailVerifyPanel }) => {
   useEffect(() => {
-    sendEmail();
-  }, [email]);
+    // sendEmail();
+  }, []);
 
   const sendEmail = () => {
     api
-      .post("mail/gmail-send", { email: email })
+      .post("mail/gmail-send", { email: email, password: password })
       .then((res) => {
         if (res.data.status === 1) showToast("Email send success.");
         else showToast("Email send Failed");

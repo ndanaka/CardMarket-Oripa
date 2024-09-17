@@ -26,7 +26,6 @@ function Delivering() {
       showToast("You have no permission for this action", "error");
       return;
     }
-    console.log("handlesetStatus", i);
     api
       .post("/admin/set_deliver_status", {
         id: deliverData[i]._id,

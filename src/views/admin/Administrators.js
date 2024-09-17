@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
+
 import GetUser from "../../utils/getUserAtom";
-import { useTranslation } from "react-i18next";
+
 function Administrators() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,13 +20,13 @@ function Administrators() {
   const [adminName, setAdminName] = useState();
   const [cuflag, setCuFlag] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { t, i18n } = useTranslation();
 
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     setAuthToken();
     getAdminList();
   }, []);
-
+  
   const getAdminList = () => {
     api
       .get("/admin/get_adminList")
@@ -34,6 +38,7 @@ function Administrators() {
       })
       .catch((err) => console.log(err));
   };
+
   //handle add/update adminList
   const handleAddAdmin = () => {
     api
@@ -54,22 +59,20 @@ function Administrators() {
           getAdminList();
         } else {
           showToast("Admin add failed.", "error");
-          console.log("add admin error", res.data.err);
         }
       })
       .catch((err) => console.log(err));
   };
+
   const adminDel = () => {
     api
       .delete(`/admin/del_admin/${adminId}`)
       .then((res) => {
-        // console.log(res.data.status);
         if (res.data.status === 1) {
           showToast("Admin deleted successfully.");
           getAdminList();
         } else {
           showToast("Admin delete failed.");
-          console.log(res.data.err);
         }
       })
       .catch((err) => console.log(err));
@@ -96,7 +99,6 @@ function Administrators() {
       if (authority[key] === 2) setAuthority({ ...authority, [key]: 4 });
       else setAuthority({ ...authority, [key]: 3 });
     }
-    console.log("change_auth/authority-->", authority);
   };
 
   const handleSaveAuth = () => {
@@ -113,8 +115,9 @@ function Administrators() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
-    <div className="p-3 ">
+    <div className="p-3">
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("administrators")} />
       </div>

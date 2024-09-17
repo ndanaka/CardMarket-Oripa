@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
-// import img1 from "../assets/img/theme/dashboard.jpg";
-import api from "../utils/api";
-import GachaModal from "../components/Modals/GachaModal";
 import { useNavigate } from "react-router-dom";
-import { UserAtom } from "../store/user";
+import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
+
+import { UserAtom } from "../store/user";
+import api from "../utils/api";
+
 import { setAuthToken } from "../utils/setHeader";
 import { showToast } from "../utils/toastUtil";
+
+import GachaModal from "../components/Modals/GachaModal";
 import PrizeCard from "../components/Others/PrizeCard";
 import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ChangeLanguage from "../components/Others/ChangeLanguage";
-import { useTranslation } from "react-i18next";
 import ImageCarousel from "../components/Others/ImageCarousel";
 
 const Index = () => {
@@ -24,14 +26,16 @@ const Index = () => {
   const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
   const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
-
   const [user, setUser] = useAtom(UserAtom);
   const { t, i18n } = useTranslation();
+
   const navigate = useNavigate();
 
   const carouselItems = [
     { id: 1, imgUrl: "theme/carousel/rank_banner.png" },
     { id: 2, imgUrl: "theme/carousel/point.png" },
+    { id: 2, imgUrl: "theme/carousel/001.png" },
+    { id: 2, imgUrl: "theme/carousel/002.png" },
   ];
 
   useEffect(() => {
@@ -81,7 +85,7 @@ const Index = () => {
         if (res.data.status === 1) setGacha(res.data.gachaList);
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
       });
   };
 
@@ -140,10 +144,10 @@ const Index = () => {
   return (
     <>
       <div className="w-full md:w-[70%] md:mx-2 mt-16 mx-auto p-2">
-        <div className="float-right">
+        <div className="float-right mt-4">
           <ChangeLanguage />
         </div>
-        <div className="flex w-1/2 my-4">
+        <div className="mx-auto mt-20">
           <ImageCarousel items={carouselItems} />
         </div>
         {/* display categoy */}
@@ -211,18 +215,20 @@ const Index = () => {
             ? filteredGacha.map((data, i) => (
                 <div className="w-full xxsm:w-1/2 mb-2 ">
                   <div className="flex flex-col justify-center p-2 mr-2 border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
-                    <div className="relative">
+                    <button
+                      className="relative cursor-pointer"
+                      onClick={() =>
+                        navigate("/user/gacha-detail", {
+                          state: { gachaId: data._id },
+                        })
+                      }
+                    >
                       <img
                         src={
                           process.env.REACT_APP_SERVER_ADDRESS +
                           data.gacha_thumnail_url
                         }
-                        className="w-full m-auto border-b-2 border-white cursor-pointer"
-                        onClick={() =>
-                          navigate("/user/gacha-detail", {
-                            state: { gachaId: data._id },
-                          })
-                        }
+                        className="w-full m-auto border-b-2 border-white"
                       ></img>
                       {/* prize remain display progressbar */}
                       <div className="w-full bg-gray-300">
@@ -242,10 +248,10 @@ const Index = () => {
                           />
                         </div>
                       </div>
-                    </div>
+                    </button>
                     <div className="w-full flex justify-center">
                       <div
-                        className="bg-theme_color hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
+                        className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
                         onClick={() => {
                           openModal();
                           setSelGacha([i, 1]);
@@ -254,7 +260,7 @@ const Index = () => {
                         1 {t("draw")}
                       </div>
                       <div
-                        className="bg-theme_color hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
+                        className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                         onClick={() => {
                           openModal();
                           setSelGacha([i, 10]);

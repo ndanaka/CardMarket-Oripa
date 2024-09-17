@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Row, Col, Nav, NavItem } from "reactstrap";
 import { useTranslation } from "react-i18next";
+
 const Footer = () => {
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+
   return (
     <div className="w-full p-2 bg-theme_color">
       <Row className="align-items-center justify-content-xl-between">
@@ -16,7 +18,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <span className="text-gray-200">Operating Company..</span>
+              <span className="text-gray-200">Operating Company</span>
             </a>
           </div>
         </Col>
@@ -29,7 +31,7 @@ const Footer = () => {
                   className="text-white"
                   onClick={() => navigate("/auth/guide")}
                 >
-                  {t('user')+" "+t('guide')}
+                  {t("user") + " " + t("guide")}
                 </span>
               </div>
             </NavItem>
@@ -40,7 +42,7 @@ const Footer = () => {
                   className="text-white"
                   onClick={() => navigate("/auth/about-us")}
                 >
-                  {t('aboutus')}
+                  {t("aboutus")}
                 </span>
               </div>
             </NavItem>
@@ -51,7 +53,7 @@ const Footer = () => {
                   className="text-white"
                   onClick={() => navigate("/auth/blog")}
                 >
-                  {t('blog')}
+                  {t("blog")}
                 </span>
               </div>
             </NavItem>
@@ -62,7 +64,7 @@ const Footer = () => {
                   className="text-white hover:underline-offset-2"
                   onClick={() => navigate("/auth/lisence")}
                 >
-                  {t('license')}
+                  {t("license")}
                 </span>
               </div>
             </NavItem>

@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { useAtom } from "jotai";
+
 import { UserAtom } from "../../store/user";
-import "../../assets/css/index.css";
 import LoginImg from "../../assets/img/icons/login.png";
-// reactstrap components
+
+import "../../assets/css/index.css";
+
 import {
   DropdownMenu,
   DropdownItem,

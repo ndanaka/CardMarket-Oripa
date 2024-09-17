@@ -12,7 +12,6 @@ const UpdateUserData = () => {
       .then((res) => {
         if (res.data.status === 1) {
           alert(res.data.msg);
-          console.log("update userdata user-->", res.data.user);
           setUser(res.data.user);
         } else alert(res.data.msg);
       })

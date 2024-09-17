@@ -11,11 +11,11 @@ const Sidebar = (props) => {
   const { user } = GetUser();
   const currentPath = location.pathname;
   const { t, i18n } = useTranslation();
-  console.log("sideuser", user);
+
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin" && user.authority[prop.name] > 0) {
-        // console.log(" User.authority[prop.name]",  User.authority[prop.name])
+      // if (prop.layout === "/admin" && user.authority[prop.name] > 0) {
+      if (prop.layout === "/admin") {
         return (
           <div
             key={key}

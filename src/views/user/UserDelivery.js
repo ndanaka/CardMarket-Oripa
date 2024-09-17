@@ -28,7 +28,6 @@ function UserDelivery() {
   };
 
   const returnPrize = (deliver_id, id) => {
-    console.log("deliver_id", deliver_id);
     api
       .post("/user/return_prize", {
         deliver_id: deliver_id,

@@ -19,7 +19,6 @@ function Category() {
   const handleDelete = () => {
     // Logic for deleting the item
     categoryDel();
-    console.log("Item deleted");
     setIsModalOpen(false);
   };
   useEffect(() => {
@@ -106,7 +105,6 @@ function Category() {
 
   /* modal */
   const closeModal = () => {
-    console.log("close modal");
     document.getElementById("modal").style.display = "none";
     setName("");
     setDes("");

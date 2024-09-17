@@ -12,11 +12,9 @@ const useAxiosInterceptor = () => {
   const cookie = new Cookies();
   const [user, setUser] = useAtom(UserAtom);
   useEffect(() => {
-    // console.log("useAxiosInterceptor useEffect");
     const interceptor = api.interceptors.response.use(
       (response) => response,
       (error) => {
-        // console.log("useAxiosInterceptor useEffect error");
         if (error.response) {
           switch (error.response.status) {
             case 401:
