@@ -51,7 +51,7 @@ i18n.use(initReactI18next).init({
         user_information: "User Information",
         point_log: "Point Log",
         obtained_cards: "Obtained Cards",
-        
+
         //prize page
         rarity: "Rarity",
         cashback: "Cashback",
@@ -64,7 +64,7 @@ i18n.use(initReactI18next).init({
         number: "Number",
         created: "Created",
         date: "Date",
-        detail: "Detail",  
+        detail: "Detail",
         release: "Release",
         unrelease: "Unrelease",
         delete: "Delete",
@@ -106,7 +106,7 @@ i18n.use(initReactI18next).init({
         sign_up: "Sign Up",
         with: "with",
         new: "New",
-        create_account: "Create an Account",
+        create_account: "Create An Account",
         forgot: "Forgot",
         remember_me: "Remember Me",
         strength: "Strength",
@@ -246,7 +246,6 @@ i18n.use(initReactI18next).init({
         nolastprize: "最後の賞品はありません。",
         nopointlog: "ポイントログはありません。",
 
-        
         //confirm
         confirm: "本気ですか？",
         del_confirm: "一度削除すると元に戻せません。",

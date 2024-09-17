@@ -1,5 +1,5 @@
 import React from "react";
-console.log("inputgroup");
+
 function InputGroup({ label, type, name, value, placeholder, onChange }) {
   return (
     <div className="form-group my-2">

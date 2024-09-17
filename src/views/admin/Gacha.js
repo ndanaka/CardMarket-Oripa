@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AgreeButton from "../../components/Forms/AgreeButton";
+import { useTranslation } from "react-i18next";
+
+import uploadimage from "../../assets/img/icons/upload.png";
+
 import formatDate from "../../utils/formatDate";
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart } from "../../utils/setHeader";
-import uploadimage from "../../assets/img/icons/upload.png";
 import { showToast } from "../../utils/toastUtil";
+import GetUser from "../../utils/getUserAtom";
+
+import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
-import GetUser from "../../utils/getUserAtom";
-import { useTranslation } from "react-i18next";
 
 function Gacha() {
   //new Gacha data
@@ -34,6 +37,7 @@ function Gacha() {
     getCategory();
     getGacha();
   }, []);
+
   //handle image file select change
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
@@ -42,14 +46,15 @@ function Gacha() {
 
     reader.onload = (e) => {
       setImgUrl(e.target.result);
-      console.log(imgUrl);
     };
     reader.readAsDataURL(file);
   };
 
   const toGachaDetail = (gachaId) => {
+    console.log(gachaId);
     navigate("/admin/gacha-detail", { state: { gachaId: gachaId } });
   };
+
   const changeFormData = (e) => {
     setFormData({
       ...formData,
@@ -71,24 +76,50 @@ function Gacha() {
         console.error(err);
       });
   };
+
   const addGacha = () => {
     if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     setAuthToken();
     setMultipart();
-    api
-      .post("/admin/gacha/add", formData)
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(res.data.msg);
-          getGacha();
-        } else showToast(res.data.msg, "error");
-      })
-      .catch((err) => {
-        console.error("Error uploading file:", err);
-      });
+
+    if (formData.name.trim() === "") {
+      showToast("Required gacha name", "error");
+    } else if (parseFloat(formData.price) <= 0) {
+      showToast("Gacha price be greater than than 0", "error");
+    } else if (formData.category.trim() === "") {
+      showToast("Must selete the gacha category", "error");
+    } else if (parseInt(formData.totalNum) <= 0) {
+      showToast("Gacha total number be greater than than 0", "error");
+    } else if (
+      formData.file === NaN ||
+      formData.file === null ||
+      formData.file === undefined
+    ) {
+      showToast("Must selete the gacha image", "error");
+    } else {
+      api
+        .post("/admin/gacha/add", formData)
+        .then((res) => {
+          if (res.data.status === 1) {
+            showToast(res.data.msg);
+            setFormData({
+              name: "",
+              price: 0,
+              totalNum: 0,
+              category: "",
+              file: null,
+            });
+            getGacha();
+          } else showToast(res.data.msg, "error");
+        })
+        .catch((err) => {
+          console.error("Error uploading file:", err);
+        });
+    }
   };
 
   //get registered Gacha list
@@ -114,10 +145,10 @@ function Gacha() {
         getGacha();
       } else {
         showToast("Gacha Release Failed.");
-        console.log(res.data.err);
       }
     });
   };
+
   const gachaDel = () => {
     api
       .delete(`/admin/gacha/${delGachaId}`)
@@ -131,6 +162,7 @@ function Gacha() {
         console.log(err);
       });
   };
+
   const handleDelete = () => {
     if (user.authority.gacha !== 3 && user.authority.gacha !== 4) {
       showToast("You have no permission for this action", "error");
@@ -139,6 +171,7 @@ function Gacha() {
     gachaDel();
     setIsModalOpen(false);
   };
+
   return (
     <div className="relative p-3">
       <div className="w-full md:w-[70%] mx-auto">
@@ -156,6 +189,7 @@ function Gacha() {
                 name="name"
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
+                value={formData.name}
               ></input>
             </div>
             <div className="flex justify-between items-center p-2 px-3 w-full">
@@ -164,6 +198,7 @@ function Gacha() {
                 name="price"
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
+                value={formData.price}
               ></input>
             </div>
             <div className="flex justify-between p-2 px-3 items-center w-full">
@@ -172,6 +207,7 @@ function Gacha() {
                 name="category"
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
+                value={formData.category}
               >
                 <option></option>
                 {categoryList
@@ -191,6 +227,7 @@ function Gacha() {
                 name="totalNum"
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
+                value={formData.totalNum}
               ></input>
             </div>
           </div>
@@ -202,6 +239,7 @@ function Gacha() {
               id="fileInput"
               className="image p-1 w-3/5 md:w-1/2 form-control"
               onChange={handleFileInputChange}
+              value={formData.imgUrl}
             ></input>
 
             <img

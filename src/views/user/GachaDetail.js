@@ -9,14 +9,13 @@ function GachaDetail() {
   const [gacha, setGacha] = useState(null); //gacha to be display
   const navigate = useNavigate();
   const location = useLocation();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const { gachaId } = location.state || {}; //gacha id came from previous page through navigate
 
-
-  console.log("gacha",gacha)
   useEffect(() => {
     getGacha();
   }, []);
+
   //get gacha by gacha id
   const getGacha = () => {
     api
@@ -25,14 +24,14 @@ function GachaDetail() {
         if (res.data.status === 1) setGacha(res.data.gacha[0]);
         else {
           showToast("Get gacha failed.", "error");
-          console.log(res.data.err);
         }
       })
       .catch((err) => console.log(err));
   };
+
   return (
-    <div className="w-full  bg-gray-100 md:px-0 mt-16">
-      <div className="text-center text-xl py-3 mb-3 bg-white">
+    <div className="min-w-full bg-gray-100 md:px-0 mt-16">
+      <div className="text-center text-xl py-3 my-3 bg-white">
         <span className="text-indigo-600 text-xl px-2">{gacha?.category}</span>
         {gacha?.name}
       </div>
@@ -46,11 +45,11 @@ function GachaDetail() {
                 : ""
             }
             alt="gacha thumnail"
-            className="rounded-lg m-auto"
+            className="rounded-lg mx-auto"
           ></img>
         </div>
-        <div className="w-full py-3">
-          <div className="text-lg">{t('prize')}</div>
+        <div className="w-auto py-3">
+          <div className="text-lg">{t("prize")}</div>
           <hr></hr>
           <div className="flex flex-wrap justify-evenly items-stretch">
             {gacha?.remain_prizes?.length > 0 ? (
@@ -68,13 +67,13 @@ function GachaDetail() {
                 </div>
               ))
             ) : (
-              <div className="py-2">{t('noprize')}</div>
+              <div className="py-2">{t("noprize")}</div>
             )}
           </div>
           <hr></hr>
         </div>
         <div className="w-full py-2">
-          <div className="text-xl">{t('last') + " " + t('prize')}</div>
+          <div className="text-xl">{t("last") + " " + t("prize")}</div>
           <hr className="mb-2"></hr>
           {gacha?.last_prize ? (
             <PrizeCard
@@ -84,14 +83,14 @@ function GachaDetail() {
               img_url={gacha?.last_prize ? gacha.last_prize.img_url : ""}
             />
           ) : (
-            <div className="py-2">{t('nolastprize')}</div>
+            <div className="py-2 text-center">{t("nolastprize")}</div>
           )}
         </div>
         <button
           className="py-2 px-5 my-3 rounded-sm bg-theme_color text-center text-white text-xl"
           onClick={() => navigate("/user/index")}
         >
-          {t('return')}
+          {t("return")}
         </button>
       </div>
     </div>

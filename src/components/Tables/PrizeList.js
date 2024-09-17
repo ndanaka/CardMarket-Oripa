@@ -21,7 +21,6 @@ function PrizeList({
     getPrize();
   }, [trigger]);
 
-  console.log("PrizeList component");
   //get registered prize list
   const getPrize = () => {
     api
@@ -51,7 +50,6 @@ function PrizeList({
           getPrize();
         } else {
           showToast(res.data.msg, "error");
-          console.log("prize deleting error--->", res.data.err);
         }
       })
       .catch((err) => {

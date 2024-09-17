@@ -7,7 +7,6 @@ function Pointlog({ date, point_num, usage, ioFlag }) {
   }, [point_num]);
 
   const calcRemainPoint = useCallback(() => {
-    console.log("calcRemainPoint");
     if (ioFlag === 1) remain_point.current += point_num;
     else remain_point.current -= point_num;
   }, [point_num]);

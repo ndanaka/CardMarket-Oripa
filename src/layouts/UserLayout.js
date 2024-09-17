@@ -6,8 +6,7 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-// reactstrap components
-import { Container } from "reactstrap";
+
 // core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";

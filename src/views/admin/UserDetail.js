@@ -18,7 +18,6 @@ function UserDetail() {
     getUserData();
     getPointLog();
   }, []);
-  console.log("user", user);
   const getUserData = () => {
     api
       .get(`/user/get_user/${userId}`)

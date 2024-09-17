@@ -51,7 +51,6 @@ const GooglePayButton = () => {
 
             console.error('Error processing payment: ', err);
         })
-        console.log(paymentData);
         // Send paymentData to your server for processing
       })
       .catch(err => {

@@ -6,9 +6,9 @@ import "swiper/css/pagination";
 
 import React from "react";
 
-function ImageCarousel({items}) {
+function ImageCarousel({ items }) {
   return (
-    <div>
+    <div className="">
       <Swiper
         // modules={[Navigation, Autoplay, Pagination]}
         navigation={{
@@ -17,7 +17,7 @@ function ImageCarousel({items}) {
         }}
         pagination={{ clickable: true }}
         autoplay={{ delay: 2000 }}
-        className="swiper max-w-3xl mx-auto mb-5"
+        className="swiper max-w-sm mx-auto mb-5"
         id="slider2"
         key={"true"}
       >
@@ -26,11 +26,19 @@ function ImageCarousel({items}) {
             return (
               <SwiperSlide key={i}>
                 <img
-                  src={`../../assets/img/${item.imgUrl}`}
-                  className="w-full max-h-80 object-cover"
+                  src={require(`../../assets/img/${item.imgUrl}`)}
+                  className="w-full max-h-80 object-cover rounded-lg cursor-pointer bg-blend-lighten hover:opacity-50"
                   alt="itemImage"
+                  onClick={() => console.log("Carousel Clicked")}
                 />
-                <div className="absolute z-[999] text-white top-1/4 ltr:left-12 rtl:right-12">
+
+                {/* <button
+                  type="button"
+                  className="bottom-0 right-0 absolute btn btn-primary"
+                >
+                  Go To
+                </button> */}
+                {/* <div className="absolute z-[999] text-white top-1/4 ltr:left-12 rtl:right-12">
                   <div className="sm:text-3xl text-base font-bold">
                     This is blog Image
                   </div>
@@ -42,17 +50,17 @@ function ImageCarousel({items}) {
                   <button type="button" className="mt-4 btn btn-primary">
                     Learn more
                   </button>
-                </div>
+                </div> */}
               </SwiperSlide>
             );
           })}
         </div>
-        <button className="swiper-button-prev-ex2 grid place-content-center ltr:left-2 rtl:right-2 p-1 transition text-primary hover:text-white border border-primary  hover:border-primary hover:bg-primary rounded-full absolute z-[999] top-1/2 -translate-y-1/2">
+        {/* <button className="swiper-button-prev-ex2 grid place-content-center ltr:left-2 rtl:right-2 p-1 transition text-primary hover:text-white border border-primary  hover:border-primary hover:bg-primary rounded-full absolute z-[999] top-1/2 -translate-y-1/2">
           prev
         </button>
         <button className="swiper-button-next-ex2 grid place-content-center ltr:right-2 rtl:left-2 p-1 transition text-primary hover:text-white border border-primary  hover:border-primary hover:bg-primary rounded-full absolute z-[999] top-1/2 -translate-y-1/2">
           next
-        </button>
+        </button> */}
       </Swiper>
     </div>
   );

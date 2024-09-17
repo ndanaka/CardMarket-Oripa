@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
-// reactstrap components
+import { showToast } from "../../utils/toastUtil";
+
+import EmailVerification from "../../components/Others/EamilVerification";
+
 import {
   CardBody,
   FormGroup,
@@ -11,19 +17,16 @@ import {
   InputGroup,
 } from "reactstrap";
 
-import { useNavigate } from "react-router-dom";
-import { showToast } from "../../utils/toastUtil";
-import { useTranslation } from "react-i18next";
-import EmailVerification from "../../components/Others/EamilVerification";
-
 const Register = () => {
   const [formData, setFormData] = useState({});
   const [strength, setStrength] = useState(""); //password strength
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
+
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const togglePasswordVisibility = () => {
@@ -42,17 +45,16 @@ const Register = () => {
   };
 
   const handleChangeFormData = (e) => {
-    if (e.target.name === "password") checkPasswordStrength(e.target.value);
+    if (e.target.name == "password") checkPasswordStrength(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
     isFormValidate();
   };
 
   const emailVerify = () => {
     setShowErrMessage(true);
-
     if (!isFormValidate()) return;
-
-    setIsEmailVerifyPanel(true);
+    handleSubmit();
+    // setIsEmailVerifyPanel(true);
   };
 
   const handleSubmit = () => {
@@ -107,54 +109,17 @@ const Register = () => {
           setIsEmailVerifyPanel={setIsEmailVerifyPanel}
         />
       ) : (
-        <div className="w-full md:w-3/6 bg-white shadow border-0 my-5 mx-auto rounded-lg">
-          <div className="py-2 mt-2">
-            <div className="text-muted text-center pb-2">
-              <small>{t("sign_up") + " " + t("with")}</small>
+        <div className="w-full md:w-2/5 bg-white shadow border-0 my-5 mx-auto rounded-lg">
+          <CardBody className="px-lg-5 py-lg-5">
+            <div className="text-center mb-5 font-bold text-3xl">
+              {t("sign_up")}
             </div>
-            <div className="flex justify-center items-center text-center">
-              {/* <div
-              className="flex justify-center items-center rounded-md  shadow-sm bg-gray-50 hover:bg-white shadow-gray-300 btn-neutral btn-icon mr-4 p-2"
-              onClick={(e) => e.preventDefault()}
-            >
-              <span className="btn-inner--icon">
-                <img
-                  alt="..."
-                  src={
-                    require("../../assets/img/icons/common/github.svg").default
-                  }
-                />
-              </span>
-              <span className="btn-inner--text">Github</span>
-            </div> */}
-              <div
-                className="flex justify-center items-center rounded-md shadow-sm bg-gray-50 hover:bg-white shadow-gray-300 btn-neutral btn-icon mr-4 p-2"
-                color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span className="btn-inner--icon">
-                  <img
-                    alt="..."
-                    src={
-                      require("../../assets/img/icons/common/google.svg")
-                        .default
-                    }
-                  />
-                </span>
-                <span className="btn-inner--text">Google</span>
-              </div>
-            </div>
-          </div>
-          <hr className="w-full"></hr>
-          <CardBody className="px-lg-5 py-lg-3">
-            <div className="text-center text-muted mb-4">{t("sign_up")}</div>
             <Form role="form">
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-1">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                      <i className="fa-solid fa-graduation-cap"></i>
+                      <i class="fa-solid fa-graduation-cap"></i>
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
@@ -170,12 +135,12 @@ const Register = () => {
                 </InputGroup>
                 {showErrMessage && !formData.name ? (
                   <span className="flex text-sm text-red-600">
-                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
+                    <i class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i>
                     Name is Required
                   </span>
                 ) : null}
               </FormGroup>
-              <FormGroup className="mt-4">
+              <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative mb-1">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
@@ -206,7 +171,7 @@ const Register = () => {
                   </span>
                 ) : null}
               </FormGroup>
-              <FormGroup className="mt-4">
+              <FormGroup>
                 <InputGroup className="input-group-alternative mb-1">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
@@ -271,9 +236,9 @@ const Register = () => {
                   </p>
                 </div>
               </div>
-              <div className="text-center">
+              <div className="text-center mt-4">
                 <button
-                  className="button-22 mx-auto mt-2"
+                  className="button-22 mx-auto mt-2 w-full"
                   type="button"
                   onClick={emailVerify}
                 >
@@ -284,7 +249,7 @@ const Register = () => {
                   href="#pablo"
                   onClick={() => navigate("/auth/signin")}
                 >
-                  <div className="text-lg my-2 text-blue-500 hover:text-blue-700 decoration-solid decoration-slate-600 decoration-1">
+                  <div className="text-lg my-3 text-blue-500 hover:text-blue-700 outline outline-2 rounded-sm py-1">
                     {t("sign_in")}
                   </div>
                 </a>

@@ -6,6 +6,7 @@ import Cookies from "universal-cookie";
 export function setAuthToken() {
   const cookie = new Cookies();
   const token = cookie.get("TOKEN");
+
   if (token) {
     api.defaults.headers.common["Token"] = token;
     localStorage.setItem("token", token);
@@ -14,6 +15,7 @@ export function setAuthToken() {
     localStorage.removeItem("token");
   }
 }
+
 export function setMultipart() {
   // /"Content-Type": "multipart/form-data",
   api.defaults.headers["Content-Type"] = "multipart/form-data";
