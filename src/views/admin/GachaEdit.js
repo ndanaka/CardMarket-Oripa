@@ -85,7 +85,7 @@ const GachaEdit = () => {
         <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-evenly items-stretch">
           {prizes.map((prize, i) => (
-            <div className="group relative" key={i}>
+            <div className="group relative p-2" key={i}>
               <PrizeCard
                 key={i}
                 name={prize?.name}
@@ -96,7 +96,7 @@ const GachaEdit = () => {
               <div className="absolute top-0 w-full h-full bg-gray-200 opacity-0 hover:opacity-10"></div>
               <button
                 className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
-                onClick={() => unsetPrize(i)}
+                onClick={() => unsetPrize(false, grade, i)}
               >
                 <i className="fa fa-close text-gray-200 middle"></i>
               </button>
@@ -153,17 +153,40 @@ const GachaEdit = () => {
   };
 
   //unset registered prizes from gacha
-  const unsetPrize = (i) => {
+  const unsetPrize = (last, grade, index) => {
     if (user.authority.gacha !== 3 && user.authority.gacha !== 4) {
       showToast("You have no permission for this action", "error");
       return;
     }
 
+    let prizeId = "";
+    if (last) {
+      prizeId = gacha.last_prize._id;
+    } else {
+      switch (grade) {
+        case "first":
+          prizeId = firstPrizes[index]._id;
+          break;
+        case "second":
+          prizeId = secondPrizes[index]._id;
+          break;
+        case "third":
+          prizeId = thirdPrizes[index]._id;
+          break;
+        case "fourth":
+          prizeId = fourthPrizes[index]._id;
+          break;
+
+        default:
+          break;
+      }
+    }
+
     api
       .post("/admin/gacha/unset_prize/", {
         gachaId: gachaId,
-        prizeId: i === -1 ? gacha.last_prize._id : gacha.remain_prizes[i]._id,
-        flag: i, // if i is -1, handle unset last prize
+        prizeId: prizeId,
+        last: last, // if i is -1, handle unset last prize
       })
       .then((res) => {
         if (res.data.status === 1) {
@@ -292,12 +315,12 @@ const GachaEdit = () => {
                 img_url={gacha.last_prize?.img_url}
               />
               <div className="absolute top-0 w-full h-full bg-gray-100 opacity-0 hover:opacity-10"></div>
-              <div className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100">
-                <i
-                  className="fa fa-close text-gray-200 middle"
-                  onClick={() => unsetPrize(-1)}
-                ></i>
-              </div>
+              <button
+                className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
+                onClick={() => unsetPrize(true)}
+              >
+                <i className="fa fa-close text-gray-200 middle"></i>
+              </button>
             </div>
           </div>
         ) : (

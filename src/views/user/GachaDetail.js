@@ -19,7 +19,7 @@ function GachaDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const { gachaId } = location.state || {}; //gacha id came from previous page through navigate
+  const { gachaId, progress } = location.state || {}; //gacha id came from previous page through navigate
 
   useEffect(() => {
     getGacha();
@@ -79,7 +79,7 @@ function GachaDetail() {
         <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-evenly items-stretch">
           {prizes.map((prize, i) => (
-            <div className="group relative px-2 min-h-44 max-h-44" key={i}>
+            <div className="group relative p-2 min-h-44 max-h-44" key={i}>
               <PrizeCard
                 key={i}
                 name={prize?.name}
@@ -116,11 +116,12 @@ function GachaDetail() {
             <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
               <GachaPriceLabel price={gacha?.price} />
               <Progressbar
-                progress={
-                  (gacha?.remain_prizes.length / gacha?.total_number) * 100
-                }
+                progress={progress}
                 label={
-                  gacha?.remain_prizes.length + " / " + gacha?.total_number
+                  gacha?.remain_prizes.length +
+                  (gacha?.last_prize ? 1 : 0) +
+                  " / " +
+                  gacha?.total_number
                 }
                 height={20}
               />
