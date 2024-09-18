@@ -15,6 +15,10 @@ import PrizeCard from "../../components/Others/PrizeCard";
 const GachaEdit = () => {
   const [gacha, setGacha] = useState(); //selected gacha
   const [prizes, setPrizes] = useState([]); //prizes from csv file
+  const [firstPrizes, setFirstprizes] = useState([]); //prizes from csv file
+  const [secondPrizes, setSecondprizes] = useState([]); //prizes from csv file
+  const [thirdPrizes, setThirdprizes] = useState([]); //prizes from csv file
+  const [fourthPrizes, setFourthprizes] = useState([]); //prizes from csv file
   const [loadFlag, setLoadFlag] = useState(false); //flag fro loading registered prize
   const [isLastPrize, setIsLastPrize] = useState(false); //flag for setting prize as lastPrize
   const [trigger, setTrigger] = useState(false);
@@ -34,11 +38,73 @@ const GachaEdit = () => {
     api
       .get(`/admin/gacha/${gachaId}`)
       .then((res) => {
+        setGradePrizes(res.data.gacha[0].remain_prizes);
         setGacha(res.data.gacha[0]);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  // divide remain prizes by grade
+  const setGradePrizes = (remainPrizes) => {
+    let firstPrizes = [];
+    let secondPrizes = [];
+    let thirdPrizes = [];
+    let fourthPrizes = [];
+
+    remainPrizes.map((remainPrize) => {
+      switch (remainPrize.grade) {
+        case 1:
+          firstPrizes.push(remainPrize);
+          break;
+        case 2:
+          secondPrizes.push(remainPrize);
+          break;
+        case 3:
+          thirdPrizes.push(remainPrize);
+          break;
+        case 4:
+          fourthPrizes.push(remainPrize);
+          break;
+        default:
+          break;
+      }
+    });
+
+    setFirstprizes(firstPrizes);
+    setSecondprizes(secondPrizes);
+    setThirdprizes(thirdPrizes);
+    setFourthprizes(fourthPrizes);
+  };
+
+  // drawing prizes by grade
+  const drawGradePrizes = (prizes, grade) => {
+    return (
+      <div>
+        <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
+        <div className="flex flex-wrap justify-evenly items-stretch">
+          {prizes.map((prize, i) => (
+            <div className="group relative" key={i}>
+              <PrizeCard
+                key={i}
+                name={prize?.name}
+                rarity={prize?.rarity}
+                cashback={prize?.cashback}
+                img_url={prize?.img_url}
+              />
+              <div className="absolute top-0 w-full h-full bg-gray-200 opacity-0 hover:opacity-10"></div>
+              <button
+                className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
+                onClick={() => unsetPrize(i)}
+              >
+                <i className="fa fa-close text-gray-200 middle"></i>
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   };
 
   //handle loading data from csv file
@@ -69,8 +135,6 @@ const GachaEdit = () => {
     } else if (prizes.length === 0) {
       showToast("Must choose csv file", "error");
     } else {
-      console.log(gachaId);
-      console.log(prizes);
       api
         .post("/admin/gacha/upload_bulk", {
           gachaId: gachaId,
@@ -94,6 +158,7 @@ const GachaEdit = () => {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     api
       .post("/admin/gacha/unset_prize/", {
         gachaId: gachaId,
@@ -142,12 +207,14 @@ const GachaEdit = () => {
           className="fa fa-chevron-left float-left"
           onClick={() => navigate("/admin/gacha")}
         ></i>
-        <span className="text-center">{t("gacha") + " " + t("detail")}</span>
+        <span className="my-3 text-xl text-center font-bold">
+          {t("gacha") + " " + t("detail")}
+        </span>
       </div>
       <hr className="w-5/6 my-2 text-sm mx-auto"></hr>
 
       {/* Gacha display table */}
-      <div className="mx-auto mt-5 overflow-auto">
+      <div className="mx-auto mt-3 overflow-auto">
         <table className="border-[1px] m-auto">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <th>{t("no")}</th>
@@ -192,65 +259,56 @@ const GachaEdit = () => {
 
       {/* Gacha Prizes */}
       <div>
-        <div className="text-lg">{t("prize") + " " + t("list")}</div>
-        <div className="flex flex-wrap justify-evenly  items-stretch">
-          {gacha?.remain_prizes?.length > 0 ? (
-            gacha.remain_prizes.map((prize, i) => (
-              <div className="group relative mt-2 mr-1" key={i}>
-                <PrizeCard
-                  key={i}
-                  name={prize?.name}
-                  rarity={prize?.rarity}
-                  cashback={prize?.cashback}
-                  img_url={prize?.img_url}
-                />
-                <div className="absolute top-0 w-full h-full bg-gray-200 opacity-0 hover:opacity-10"></div>
-                <div className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100">
-                  <i
-                    className="fa fa-close text-gray-200 middle"
-                    onClick={() => unsetPrize(i)}
-                  ></i>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="py-2">{t("noprize")}</div>
-          )}
-        </div>
+        {gacha?.remain_prizes?.length > 0 ? (
+          <div>
+            {firstPrizes?.length > 0
+              ? drawGradePrizes(firstPrizes, "first")
+              : ""}
+            {secondPrizes?.length > 0
+              ? drawGradePrizes(secondPrizes, "second")
+              : ""}
+            {thirdPrizes?.length > 0
+              ? drawGradePrizes(thirdPrizes, "third")
+              : ""}
+            {fourthPrizes?.length > 0
+              ? drawGradePrizes(fourthPrizes, "fourth")
+              : ""}
+          </div>
+        ) : (
+          <div className="py-2">{t("noprize")}</div>
+        )}
 
         {/* last prize */}
-        <div className="my-2 text-left text-lg">
-          {t("last") + " " + t("prize")}
-        </div>
         {gacha?.last_prize ? (
-          <div className="group relative mt-2 mr-1">
-            <PrizeCard
-              name={gacha.last_prize?.name}
-              rarity={gacha.last_prize?.rarity}
-              cashback={gacha.last_prize?.cashback}
-              img_url={gacha.last_prize?.img_url}
-            />
-            <div className="absolute top-0 w-full h-full bg-gray-100 opacity-0 hover:opacity-10"></div>
-            <div className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100">
-              <i
-                className="fa fa-close text-gray-200 middle"
-                onClick={() => unsetPrize(-1)}
-              ></i>
+          <div>
+            <div className="my-2 text-lg text-center font-bold">
+              {t("last") + " " + t("prize")}
+            </div>
+            <div className="group relative mt-2 mr-1">
+              <PrizeCard
+                name={gacha.last_prize?.name}
+                rarity={gacha.last_prize?.rarity}
+                cashback={gacha.last_prize?.cashback}
+                img_url={gacha.last_prize?.img_url}
+              />
+              <div className="absolute top-0 w-full h-full bg-gray-100 opacity-0 hover:opacity-10"></div>
+              <div className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100">
+                <i
+                  className="fa fa-close text-gray-200 middle"
+                  onClick={() => unsetPrize(-1)}
+                ></i>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="py-2 text-center">{t("nolastprize")}</div>
+          ""
         )}
       </div>
 
       {/* setting prize to gacha */}
-      <div className="mx-auto w-full">
+      <div className="mx-auto w-full mt-3">
         <hr className="my-2 text-sm"></hr>
-        <div className="text-left text-lg text-slate-600">
-          {t("set") + " " + t("prize")}
-        </div>
-        <div className="text-theme_text_color mt-4">{t("set_CSV")}</div>
-        <hr className="w-full text-theme_text_color"></hr>
+        <div className="my-2 text-lg text-center font-bold">{t("set_CSV")}</div>
         <div className="flex flex-wrap justify-between items-center w-5/6 mt-2">
           <a
             className="button-38 my-1"
@@ -275,7 +333,7 @@ const GachaEdit = () => {
             {t("upload") + " " + t("all") + " " + t("prize")}
           </button>
         </div>
-        <div className="mt-3 overflow-auto">
+        <div className="overflow-auto">
           <table className="border-[1px]  mx-auto mt-2 w-full">
             <thead className="bg-admin_theme_color font-bold text-gray-200">
               <tr>
@@ -283,17 +341,34 @@ const GachaEdit = () => {
                 <th>{t("name")}</th>
                 <th>{t("rarity")}</th>
                 <th>{t("cashback") + " " + t("point")}</th>
+                <th>{t("Grade")}</th>
                 <th>{t("image")}</th>
               </tr>
             </thead>
             <tbody>
               {prizes ? (
                 prizes.map((data, i) => (
-                  <tr key={data.i} className="border-2">
+                  <tr key={i} className="border-2">
                     <td>{i + 1}</td>
                     <td>{data.name}</td>
                     <td>{data.rarity}</td>
                     <td>{data.cashback}</td>
+                    <td>
+                      {(() => {
+                        switch (parseInt(data.grade)) {
+                          case 1:
+                            return t("first");
+                          case 2:
+                            return t("second");
+                          case 3:
+                            return t("third");
+                          case 4:
+                            return t("foruth");
+                          default:
+                            break;
+                        }
+                      })()}
+                    </td>
                     <td>
                       <img
                         width="100"
@@ -316,10 +391,10 @@ const GachaEdit = () => {
           </table>
         </div>
       </div>
-      <div className="w-full mt-5 overflow-auto">
-        <div className="text-theme_text_color mx-auto">
+      <div className="w-full mt-3 overflow-auto">
+        <hr className="w-full text-theme_text_color my-1"></hr>
+        <div className="my-2 text-lg text-center font-bold">
           {t("set_registered_prize")}
-          <hr className="w-full text-theme_text_color my-1"></hr>
         </div>
         <div className="flex justify-between items-end mx-auto my-2">
           <button

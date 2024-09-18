@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
-import api from "../../utils/api";
 import { useLocation, useNavigate } from "react-router-dom";
-import { showToast } from "../../utils/toastUtil";
-import PrizeCard from "../../components/Others/PrizeCard";
 import { useTranslation } from "react-i18next";
+
+import api from "../../utils/api";
+import { showToast } from "../../utils/toastUtil";
+
+import PrizeCard from "../../components/Others/PrizeCard";
+import Progressbar from "../../components/Others/progressbar";
+import GachaPriceLabel from "../../components/Others/GachaPriceLabel";
 
 function GachaDetail() {
   const [gacha, setGacha] = useState(null); //gacha to be display
+  const [firstPrizes, setFirstprizes] = useState([]); //prizes from csv file
+  const [secondPrizes, setSecondprizes] = useState([]); //prizes from csv file
+  const [thirdPrizes, setThirdprizes] = useState([]); //prizes from csv file
+  const [fourthPrizes, setFourthprizes] = useState([]); //prizes from csv file
+
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -21,12 +30,68 @@ function GachaDetail() {
     api
       .get(`/admin/gacha/${gachaId}`)
       .then((res) => {
-        if (res.data.status === 1) setGacha(res.data.gacha[0]);
-        else {
+        if (res.data.status === 1) {
+          setGradePrizes(res.data.gacha[0].remain_prizes);
+          setGacha(res.data.gacha[0]);
+        } else {
           showToast("Get gacha failed.", "error");
         }
       })
       .catch((err) => console.log(err));
+  };
+
+  // divide remain prizes by grade
+  const setGradePrizes = (remainPrizes) => {
+    let firstPrizes = [];
+    let secondPrizes = [];
+    let thirdPrizes = [];
+    let fourthPrizes = [];
+
+    remainPrizes.map((remainPrize) => {
+      switch (remainPrize.grade) {
+        case 1:
+          firstPrizes.push(remainPrize);
+          break;
+        case 2:
+          secondPrizes.push(remainPrize);
+          break;
+        case 3:
+          thirdPrizes.push(remainPrize);
+          break;
+        case 4:
+          fourthPrizes.push(remainPrize);
+          break;
+        default:
+          break;
+      }
+    });
+
+    setFirstprizes(firstPrizes);
+    setSecondprizes(secondPrizes);
+    setThirdprizes(thirdPrizes);
+    setFourthprizes(fourthPrizes);
+  };
+
+  // drawing prizes by grade
+  const drawGradePrizes = (prizes, grade) => {
+    return (
+      <div>
+        <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
+        <div className="flex flex-wrap justify-evenly items-stretch">
+          {prizes.map((prize, i) => (
+            <div className="group relative px-2 min-h-44 max-h-44" key={i}>
+              <PrizeCard
+                key={i}
+                name={prize?.name}
+                rarity={prize?.rarity}
+                cashback={prize?.cashback}
+                img_url={prize?.img_url}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -36,7 +101,7 @@ function GachaDetail() {
         {gacha?.name}
       </div>
       <div className="flex flex-col w-full md:w-1/2 m-auto">
-        <div className="w-full px-2 rounded-lg shadow-lg shadow-gray-300 bg-white">
+        <div className="relative">
           <img
             src={
               gacha
@@ -47,43 +112,61 @@ function GachaDetail() {
             alt="gacha thumnail"
             className="rounded-lg mx-auto"
           ></img>
+          <div className="w-full bg-gray-300">
+            <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
+              <GachaPriceLabel price={gacha?.price} />
+              <Progressbar
+                progress={
+                  (gacha?.remain_prizes.length / gacha?.total_number) * 100
+                }
+                label={
+                  gacha?.remain_prizes.length + " / " + gacha?.total_number
+                }
+                height={20}
+              />
+            </div>
+          </div>
         </div>
+
         <div className="w-auto py-3">
-          <div className="text-lg">{t("prize")}</div>
-          <hr></hr>
           <div className="flex flex-wrap justify-evenly items-stretch">
             {gacha?.remain_prizes?.length > 0 ? (
-              gacha.remain_prizes.map((prize, i) => (
-                <div className=" py-2">
-                  <div className="mt-1 mr-1 bg-white rounded-lg">
-                    <PrizeCard
-                      key={i}
-                      name={prize?.name}
-                      rarity={prize?.rarity}
-                      cashback={prize?.cashback}
-                      img_url={prize?.img_url}
-                    />
-                  </div>
-                </div>
-              ))
+              <div>
+                {firstPrizes?.length > 0
+                  ? drawGradePrizes(firstPrizes, "first")
+                  : ""}
+                {secondPrizes?.length > 0
+                  ? drawGradePrizes(secondPrizes, "second")
+                  : ""}
+                {thirdPrizes?.length > 0
+                  ? drawGradePrizes(thirdPrizes, "third")
+                  : ""}
+                {fourthPrizes?.length > 0
+                  ? drawGradePrizes(fourthPrizes, "fourth")
+                  : ""}
+              </div>
             ) : (
               <div className="py-2">{t("noprize")}</div>
             )}
           </div>
-          <hr></hr>
         </div>
         <div className="w-full py-2">
-          <div className="text-xl">{t("last") + " " + t("prize")}</div>
-          <hr className="mb-2"></hr>
           {gacha?.last_prize ? (
-            <PrizeCard
-              name={gacha?.last_prize ? gacha.last_prize.name : ""}
-              rarity={gacha?.last_prize ? gacha.last_prize.rarity : ""}
-              cashback={gacha?.last_prize ? gacha.last_prize.cashback : ""}
-              img_url={gacha?.last_prize ? gacha.last_prize.img_url : ""}
-            />
+            <div>
+              <div className="my-2 text-lg text-center font-bold">
+                {t("last") + " " + t("prize")}
+              </div>
+              <div className="group relative mt-2 mr-1">
+                <PrizeCard
+                  name={gacha.last_prize?.name}
+                  rarity={gacha.last_prize?.rarity}
+                  cashback={gacha.last_prize?.cashback}
+                  img_url={gacha.last_prize?.img_url}
+                />
+              </div>
+            </div>
           ) : (
-            <div className="py-2 text-center">{t("nolastprize")}</div>
+            ""
           )}
         </div>
         <button

@@ -8,6 +8,8 @@ function PrizeCard({ name, rarity, cashback, img_url }) {
           src={process.env.REACT_APP_SERVER_ADDRESS + img_url}
           width="100px"
           height="60px"
+          max-width="100px"
+          max-height="60px"
         ></img>
         <div className="flex flex-col items-center mt-1">
           <div className="flex justify-between items-center">
