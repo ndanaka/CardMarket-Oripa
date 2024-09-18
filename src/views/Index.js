@@ -219,7 +219,14 @@ const Index = () => {
                       className="relative cursor-pointer"
                       onClick={() =>
                         navigate("/user/gacha-detail", {
-                          state: { gachaId: data._id },
+                          state: {
+                            gachaId: data._id,
+                            progress:
+                              ((data.remain_prizes.length +
+                                (data.last_prize ? 1 : 0)) /
+                                data.total_number) *
+                              100,
+                          },
                         })
                       }
                     >
@@ -236,11 +243,14 @@ const Index = () => {
                           <GachaPriceLabel price={data.price} />
                           <Progressbar
                             progress={
-                              (data.remain_prizes.length / data.total_number) *
+                              ((data.remain_prizes.length +
+                                (data.last_prize ? 1 : 0)) /
+                                data.total_number) *
                               100
                             }
                             label={
                               data.remain_prizes.length +
+                              (data.last_prize ? 1 : 0) +
                               " / " +
                               data.total_number
                             }
