@@ -38,6 +38,7 @@ function PrizeList({
       name: prizes[index].name,
       rarity: prizes[index].rarity,
       cashBack: prizes[index].cashback,
+      grade: prizes[index].grade,
     });
     setCuFlag(0); //set create/edit status editing(0)
   };
@@ -70,6 +71,7 @@ function PrizeList({
             <th>{t("rarity")}</th>
             <th>{t("cashback") + t("point")}</th>
             <th>{t("image")}</th>
+            <th>{t("Grade")}</th>
             <th>{t("status")}</th>
             <th>{t("action")}</th>
           </tr>
@@ -96,6 +98,22 @@ function PrizeList({
                       src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
                       className="m-auto"
                     ></img>
+                  </td>
+                  <td>
+                    {(() => {
+                      switch (data.grade) {
+                        case 1:
+                          return t("first");
+                        case 2:
+                          return t("second");
+                        case 3:
+                          return t("third");
+                        case 4:
+                          return t("fourth");
+                        default:
+                          break;
+                      }
+                    })()}
                   </td>
                   <td>{data.status}</td>
                   <td>

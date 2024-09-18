@@ -58,6 +58,11 @@ i18n.use(initReactI18next).init({
         image: "Image",
         status: "Status",
         set: "set",
+        Grade: "Grade",
+        first: "First Prize",
+        second: "Second Prize",
+        third: "Third Prize",
+        fourth: "Fourth Prize",
         //gacha page
         price: "price",
         total: "Total",
@@ -182,6 +187,11 @@ i18n.use(initReactI18next).init({
         image: "画像",
         status: "ステータス",
         set: "設定",
+        Grade: "グレード",
+        first: "一等賞",
+        second: "二等賞",
+        third: "三等賞",
+        fourth: "四等賞",
         // gacha page
         price: "価格",
         total: "合計",

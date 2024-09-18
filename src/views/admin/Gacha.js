@@ -51,7 +51,6 @@ function Gacha() {
   };
 
   const toGachaDetail = (gachaId) => {
-    console.log(gachaId);
     navigate("/admin/gacha-detail", { state: { gachaId: gachaId } });
   };
 
@@ -106,12 +105,14 @@ function Gacha() {
         .then((res) => {
           if (res.data.status === 1) {
             showToast(res.data.msg);
+            setImgUrl(null);
             setFormData({
+              ...formData,
+              file: null,
               name: "",
               price: 0,
               totalNum: 0,
               category: "",
-              file: null,
             });
             getGacha();
           } else showToast(res.data.msg, "error");

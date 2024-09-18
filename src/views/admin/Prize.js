@@ -16,6 +16,7 @@ const Prize = () => {
     rarity: 0,
     cashBack: 0,
     file: null,
+    grade: 1,
   });
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [trigger, setTrigger] = useState(null); //for PrizeList component refresh
@@ -51,21 +52,44 @@ const Prize = () => {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     setAuthToken();
     setMultipart();
-    api
-      .post("/admin/prize_upload", formData)
-      .then((res) => {
-        if (res.data.status === 1) {
-          setImgUrl(null);
-          setFormData({ ...formData, file: null });
-          showToast(res.data.msg);
-        } else showToast(res.data.msg, "error");
-        setTrigger(res.data);
-      })
-      .catch((err) => {
-        console.error("Error uploading file:", err);
-      });
+
+    if (formData.name.trim() === "") {
+      showToast("Required prize name", "error");
+    } else if (parseFloat(formData.rarity) <= 0) {
+      showToast("Rarity be greater than than 0", "error");
+    } else if (parseInt(formData.cashBack) <= 0) {
+      showToast("Cashback be greater than than 0", "error");
+    } else if (
+      formData.file === NaN ||
+      formData.file === null ||
+      formData.file === undefined
+    ) {
+      showToast("Prize image is not selected", "error");
+    } else {
+      api
+        .post("/admin/prize_upload", formData)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setImgUrl(null);
+            setFormData({
+              ...formData,
+              file: null,
+              name: "",
+              rarity: 0,
+              cashBack: 0,
+              grade: 1,
+            });
+            showToast(res.data.msg);
+          } else showToast(res.data.msg, "error");
+          setTrigger(res.data);
+        })
+        .catch((err) => {
+          console.error("Error uploading file:", err);
+        });
+    }
   };
 
   const updatePrize = () => {
@@ -116,6 +140,20 @@ const Prize = () => {
                 onChange={changeFormData}
                 value={formData.cashBack}
               ></input>
+            </div>
+            <div className="flex flex-wrap justify-between my-1 px-2 w-full">
+              <label className="text-gray-700 px-2">{t("Grade")}: </label>
+              <select
+                name="grade"
+                className="p-1 w-full form-control"
+                onChange={changeFormData}
+                value={formData.grade}
+              >
+                <option value="1">First</option>
+                <option value="2">Second</option>
+                <option value="3">Third</option>
+                <option value="4">Fourth</option>
+              </select>
             </div>
           </div>
           <div className="flex flex-col justify-between my-1 mt-4 items-center w-1/2">
