@@ -79,7 +79,7 @@ function GachaDetail() {
         <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-evenly items-stretch">
           {prizes.map((prize, i) => (
-            <div className="group relative p-2 min-h-44 max-h-44" key={i}>
+            <div className="group relative m-2 min-h-44 max-h-44" key={i}>
               <PrizeCard
                 key={i}
                 name={prize?.name}
