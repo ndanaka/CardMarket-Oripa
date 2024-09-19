@@ -5,13 +5,16 @@ import SubHeader from "../../components/Forms/SubHeader";
 import GetUser from "../../utils/getUserAtom";
 import { setAuthToken } from "../../utils/setHeader";
 import Pointlog from "../../components/Others/Pointlog";
+
 function PointLog() {
   const { user } = GetUser();
   const [pointLog, setPointLog] = useState();
+
   useEffect(() => {
     setAuthToken();
     getPointLog();
   }, []);
+  
   const getPointLog = () => {
     api
       .get(`/user/get_point_log/${user._id}`)
@@ -20,6 +23,7 @@ function PointLog() {
       })
       .catch((err) => console.log(err));
   };
+  
   return (
     <div className="w-full md:w-3/6 p-3 mx-auto mt-16">
       <SubHeader text="Point Log" />

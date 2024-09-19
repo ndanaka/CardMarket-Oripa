@@ -16,9 +16,10 @@ import {
   Nav,
   Media,
 } from "reactstrap";
+import usePersistedUser from "../../store/usePersistedUser";
 
 const AdminNavbar = (props) => {
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
   const cookie = new Cookies();
   const navigate = useNavigate();
 
@@ -65,7 +66,7 @@ const AdminNavbar = (props) => {
                       </span>
                     </div>
                   </DropdownToggle>
-                  <DropdownMenu className="dropdown-menu-arrow" right>
+                  <DropdownMenu className="dropdown-menu-arrow" end>
                     <DropdownItem className="noti-title" header tag="div">
                       <h6 className="text-overflow m-0">Welcome!</h6>
                     </DropdownItem>

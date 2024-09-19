@@ -6,11 +6,12 @@ import Cookies from "universal-cookie";
 import { showToast } from "../utils/toast";
 import { UserAtom } from "../store/user";
 import { useAtom } from "jotai";
+import usePersistedUser from "../store/usePersistedUser";
 const useAxiosInterceptor = () => {
   const navigate = useNavigate();
   const [isLoggedOut, setIsLoggedOut] = useState(false);
   const cookie = new Cookies();
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
   useEffect(() => {
     const interceptor = api.interceptors.response.use(
       (response) => response,
@@ -22,7 +23,8 @@ const useAxiosInterceptor = () => {
               setIsLoggedOut(true);
               showToast(error.response.data.msg, "error");
               // Clear user data from local storage or state
-              // localStorage.removeItem("token");
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
               cookie.remove("TOKEN");
               setUser({});
               // Redirect to login page
@@ -30,7 +32,10 @@ const useAxiosInterceptor = () => {
               break;
             case 403:
               // Forbidden error
-              showToast("You do not have permission to access this resource", "error")
+              showToast(
+                "You do not have permission to access this resource",
+                "error"
+              );
               break;
             // Add more cases as needed
             default:

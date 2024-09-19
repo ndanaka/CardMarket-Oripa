@@ -5,8 +5,6 @@ import Cookies from "universal-cookie";
 import { useAtom } from "jotai";
 
 import { UserAtom } from "../../store/user";
-
-import LoginImg from "../../assets/img/icons/login.png";
 import "../../assets/css/index.css";
 
 import {
@@ -17,9 +15,10 @@ import {
   Nav,
   Media,
 } from "reactstrap";
+import usePersistedUser from "../../store/usePersistedUser";
 
 const UserNavbar = () => {
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
   const cookie = new Cookies();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ const UserNavbar = () => {
   return (
     <div className="w-full bg-theme_color p-2 fixed z-10">
       <div className="w-full navbar-dark">
-        <div className="w-full flex justify-between items-center content-end md:content-between">
+        <div className="w-full flex justify-between items-center content-end md:content-between py-[7px] px-[28px]">
           <div>
             <Link
               className="h4 mb-0 text-white text-uppercase hidden xxsm:block"
@@ -169,22 +168,22 @@ const UserNavbar = () => {
                 </UncontrolledDropdown>
               </div>
             ) : (
-              // <button
-              //   className="nav-link-inner--text text-white px-3 py-1 outline outline-2 outline-offset-2 rounded-sm"
-              //   onClick={nav_login}
-              // >
-              //   {t("Register / Login")}
-              // </button>
-              <Media>
-                <div>
-                  <img
-                    src={LoginImg}
-                    width={50}
-                    height={50}
-                    onClick={nav_login}
-                  ></img>
-                </div>
-              </Media>
+              <button
+                className="nav-link-inner--text text-white px-3 py-1 outline outline-2 outline-offset-2 rounded-sm"
+                onClick={nav_login}
+              >
+                {t("Register / Login")}
+              </button>
+              // <Media>
+              //   <div>
+              //     <img
+              //       src={LoginImg}
+              //       width={50}
+              //       height={50}
+              //       onClick={nav_login}
+              //     ></img>
+              //   </div>
+              // </Media>
             )}
           </Nav>
         </div>

@@ -15,6 +15,7 @@ import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ChangeLanguage from "../components/Others/ChangeLanguage";
 import ImageCarousel from "../components/Others/ImageCarousel";
+import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
   const [category, setCategory] = useState(null); //category list
@@ -26,7 +27,7 @@ const Index = () => {
   const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
   const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
   const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();

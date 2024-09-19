@@ -9,10 +9,11 @@ import InputGroup from "../../components/Forms/InputGroup.js";
 import GroupHeader from "../../components/Forms/GroupHeader.js";
 
 import { UserAtom } from "../../store";
+import usePersistedUser from "../../store/usePersistedUser.js";
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
 
   useEffect(() => {
     setAuthToken();

@@ -10,13 +10,14 @@ import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 
 import { FormGroup, Form, Input, InputGroup } from "reactstrap";
+import usePersistedUser from "../../store/usePersistedUser";
 
 const cookies = new Cookies();
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [, setUser] = useAtom(UserAtom);
+  const [, setUser] = usePersistedUser();
   const [isVisible, setIsVisible] = useState(false);
   const { t } = useTranslation();
 
@@ -33,7 +34,6 @@ const Login = () => {
         password,
       })
       .then((res) => {
-        console.log(res);
         cookies.set("TOKEN", res.data.token, {
           path: "/",
         });
@@ -41,6 +41,8 @@ const Login = () => {
         if (res.data.status === 1) {
           showToast(res.data.msg);
           setUser(res.data.user);
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
 
           if (res.data.user.role === "admin") navigate("/admin/index");
           else navigate("/user/index");
