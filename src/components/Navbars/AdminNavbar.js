@@ -25,7 +25,10 @@ const AdminNavbar = (props) => {
 
   const logout = () => {
     cookie.remove("TOKEN", { path: "/" });
-    setUser({});
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    
     navigate("/auth/login");
   };
 
