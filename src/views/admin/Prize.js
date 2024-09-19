@@ -69,7 +69,6 @@ const Prize = () => {
     ) {
       showToast("Prize image is not selected", "error");
     } else {
-      console.log(formData);
       api
         .post("/admin/prize_upload", formData)
         .then((res) => {

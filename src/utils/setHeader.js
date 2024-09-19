@@ -1,11 +1,7 @@
 import api from "./api";
-import Cookies from "universal-cookie";
-
-// store our JWT in LS and set axios headers if we do have a token
 
 export function setAuthToken() {
-  const cookie = new Cookies();
-  const token = cookie.get("TOKEN");
+  const token = localStorage.getItem("token");
 
   if (token) {
     api.defaults.headers.common["Token"] = token;
@@ -18,6 +14,6 @@ export function setAuthToken() {
 }
 
 export function setMultipart() {
-  // /"Content-Type": "multipart/form-data",
+  // "Content-Type": "multipart/form-data",
   api.defaults.headers["Content-Type"] = "multipart/form-data";
 }

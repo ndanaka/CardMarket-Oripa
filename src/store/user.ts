@@ -4,6 +4,7 @@ import { atom } from "jotai";
 
 // Retrieve the stored user from localStorage or set to null if not found
 const getInitialUser = () => {
+  
   const savedUser = localStorage.getItem("user");
 
   return savedUser ? JSON.parse(savedUser) : null;

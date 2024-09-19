@@ -143,7 +143,7 @@ const GachaEdit = () => {
         .then((res) => {
           if (res.data.status === 1) {
             showToast(res.data.msg);
-            setprizes([]);
+            // setprizes([]);
             getGacha();
           } else {
             showToast(res.data.msg, "error");
@@ -206,6 +206,7 @@ const GachaEdit = () => {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     api
       .post("/admin/gacha/set_prize", {
         isLastPrize: isLastPrize,
@@ -214,11 +215,11 @@ const GachaEdit = () => {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("setPrize success.");
+          showToast("setPrize success.", "success");
           setTrigger(!trigger);
           getGacha();
         } else {
-          showToast("setPrize failed.");
+          showToast("setPrize failed.", "error");
         }
       })
       .catch((err) => console.log(err));

@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAtom } from "jotai";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
-import UpdateUserData from "../../utils/UpdateUserData";
 
 import ConfirmModal from "../../components/Modals/ConfirmModal";
-import GooglePayCheckModal from "../../components/Modals/GooglePayCheckModal";
 import CustomSelect from "../../components/Forms/CustomSelect";
+import { gPayConfig } from "../../payment/gPayConfig";
 
 import Gpay from "../../assets/img/icons/common/google.png";
 import ApplePay from "../../assets/img/icons/common/apple.png";
 import Univa from "../../assets/img/icons/common/univa.png";
 
-import { UserAtom } from "../../store/user";
 import usePersistedUser from "../../store/usePersistedUser";
 
 function PurchasePoint() {
@@ -24,89 +21,32 @@ function PurchasePoint() {
     { value: "applePay", label: "Apple Pay", img: ApplePay },
     { value: "univaPay", label: "Univa Pay", img: Univa },
   ];
+  const [gPayReady, setGPayReady] = useState(false);
 
   const [points, setPoints] = useState(null); //registered point list
   const [isOpen, setIsOpen] = useState(false); //modal open flag
   const [paymentMethod, setPaymentMethod] = useState(null); //
   const [selId, setSelId] = useState(0);
-  const [paymentRequest, setPaymentRequest] = useState({
-    apiVersion: 2,
-    apiVersionMinor: 0,
-    allowedPaymentMethods: [
-      {
-        type: "CARD",
-        parameters: {
-          allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-          allowedCardNetworks: ["MASTERCARD", "VISA"],
-        },
-        tokenizationSpecification: {
-          type: "PAYMENT_GATEWAY",
-          parameters: {
-            gateway: "example",
-            gatewayMerchantId: "exampleGatewayMerchantId",
-          },
-        },
-      },
-    ],
-    merchantInfo: {
-      merchantId: "12345678901234567890",
-      merchantName: "Demo Merchant",
-    },
-    transactionInfo: {
-      totalPriceStatus: "FINAL",
-      totalPriceLabel: "Total",
-      totalPrice: "100.00",
-      currencyCode: "USD",
-      countryCode: "US",
-    },
-  });
 
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
 
   useEffect(() => {
     setAuthToken();
+
     api
       .get("/admin/get_point")
       .then((res) => {
         setPoints(res.data.points);
       })
       .catch((err) => console.error(err));
+
+    // google pay settings
+    const script = document.createElement("script");
+    script.src = "https://pay.google.com/gp/p/js/pay.js";
+    script.onload = onGooglePayLoaded;
+    document.body.appendChild(script);
   }, []);
-
-  const handlePay = (amount) => {
-    if (paymentMethod === null) {
-      showToast("Select method of payment", "error");
-      return;
-    }
-
-    switch (paymentMethod.value) {
-      case "gPay":
-        const newPaymentRequest = {
-          ...paymentRequest,
-          // Update the payment request as needed
-        };
-        console.log(newPaymentRequest);
-        setPaymentRequest(newPaymentRequest);
-
-        break;
-
-      case "applePay":
-        console.log("apple pay");
-
-        break;
-
-      case "univaPay":
-        console.log("univa pay");
-
-        break;
-
-      default:
-        break;
-    }
-
-    console.log(amount);
-  };
 
   const updateUserData = () => {
     setAuthToken();
@@ -122,8 +62,7 @@ function PurchasePoint() {
       });
   };
 
-  const purchase_point = () => {
-    setIsOpen(false);
+  const purchase_point = async () => {
     setAuthToken();
 
     api
@@ -134,13 +73,85 @@ function PurchasePoint() {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast(res.data.msg);
+          showToast(res.data.msg, "success");
           updateUserData();
         } else showToast(res.data.msg, "error");
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const onGooglePayLoaded = () => {
+    if (window.google) {
+      const paymentsClient = new window.google.payments.api.PaymentsClient({
+        environment: gPayConfig.environment,
+      });
+
+      paymentsClient
+        .isReadyToPay({
+          apiVersion: 2,
+          apiVersionMinor: 0,
+          allowedPaymentMethods:
+            gPayConfig.paymentDataRequest.allowedPaymentMethods,
+        })
+        .then((response) => {
+          if (response.result) {
+            setGPayReady(true);
+          }
+        })
+        .catch((err) => {
+          console.error("Error loading Google Pay:", err);
+        });
+    }
+  };
+
+  const handlePay = async (amount) => {
+    try {
+      if (paymentMethod === null) {
+        showToast("Select method of payment", "error");
+        return;
+      }
+
+      switch (paymentMethod.value) {
+        case "gPay":
+          const paymentsClient = new window.google.payments.api.PaymentsClient({
+            environment: gPayConfig.environment,
+          });
+
+          const paymentDataRequest = {
+            ...gPayConfig.paymentDataRequest,
+            transactionInfo: {
+              ...gPayConfig.paymentDataRequest.transactionInfo,
+              totalPrice: amount.toString(),
+            },
+          };
+
+          const paymentData = await paymentsClient.loadPaymentData(
+            paymentDataRequest
+          );
+          if (paymentData) {
+            await purchase_point();
+          }
+
+          break;
+
+        case "applePay":
+          console.log("apple pay");
+
+          break;
+
+        case "univaPay":
+          console.log("univa pay");
+
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error("Payment failed:", error);
+    }
   };
 
   return (
@@ -164,10 +175,10 @@ function PurchasePoint() {
             selectedOption={paymentMethod}
             setOption={setPaymentMethod}
           />
+          <div>
+            <div className="text-lg mt-3 mb-1 font-bold">Charge amount</div>
+          </div>
           <div className="flex flex-col justify-between bg-white rounded-lg mt-2">
-            <div>
-              <div className="text-lg mt-3 mb-1 font-bold">Charge amount</div>
-            </div>
             <div className="p-1">
               {points
                 ? points.map((point, i) => (
@@ -197,7 +208,7 @@ function PurchasePoint() {
                             className="py-2 px-3 bg-indigo-600 rounded-md text-white text-lg font-bold"
                             onClick={() => {
                               // setIsOpen(true); //modal open
-                              // setSelId(i); //set selected id for api
+                              setSelId(i); //set selected id for api
                               handlePay(point.price);
                             }}
                           >
