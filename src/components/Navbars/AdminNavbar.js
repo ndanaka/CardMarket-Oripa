@@ -65,7 +65,7 @@ const AdminNavbar = (props) => {
                       </span>
                     </div>
                   </DropdownToggle>
-                  <DropdownMenu className="dropdown-menu-arrow" right>
+                  <DropdownMenu className="dropdown-menu-arrow" end>
                     <DropdownItem className="noti-title" header tag="div">
                       <h6 className="text-overflow m-0">Welcome!</h6>
                     </DropdownItem>

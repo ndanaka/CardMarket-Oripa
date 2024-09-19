@@ -33,7 +33,6 @@ const Login = () => {
         password,
       })
       .then((res) => {
-        console.log(res);
         cookies.set("TOKEN", res.data.token, {
           path: "/",
         });
@@ -41,6 +40,8 @@ const Login = () => {
         if (res.data.status === 1) {
           showToast(res.data.msg);
           setUser(res.data.user);
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", res.data.user);
 
           if (res.data.user.role === "admin") navigate("/admin/index");
           else navigate("/user/index");
