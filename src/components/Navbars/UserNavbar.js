@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 
 import { UserAtom } from "../../store/user";
 
-import LoginImg from "../../assets/img/icons/login.png"
+import LoginImg from "../../assets/img/icons/login.png";
 import "../../assets/css/index.css";
 
 import {
@@ -35,7 +35,7 @@ const UserNavbar = () => {
   };
 
   return (
-    <div className="w-full bg-theme_color py-3 px-4 fixed z-10">
+    <div className="w-full bg-theme_color p-2 fixed z-10">
       <div className="w-full navbar-dark">
         <div className="w-full flex justify-between items-center content-end md:content-between">
           <div>
@@ -58,8 +58,11 @@ const UserNavbar = () => {
             {user.name ? (
               <div className="flex items-center px-2">
                 {user.role === "admin" ? null : (
-                  <div className="flex items-center mx-4">
-                    <div className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4">
+                  <button className="flex items-center mx-4">
+                    <div
+                      className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4"
+                      onClick={() => navigate("/user/pur-point")}
+                    >
                       {user.point_remain}
                     </div>
                     <img
@@ -70,7 +73,7 @@ const UserNavbar = () => {
                       className="-translate-x-[50%]"
                     ></img>
                     <i className="fa-solid fa-plus font-extrabold text-base text-white -translate-x-[170%]"></i>
-                  </div>
+                  </button>
                 )}
 
                 <UncontrolledDropdown nav>
@@ -89,7 +92,7 @@ const UserNavbar = () => {
                       </span>
                     </div>
                   </DropdownToggle>
-                  <DropdownMenu className="dropdown-menu-arrow" right>
+                  <DropdownMenu className="dropdown-menu-arrow" end>
                     <DropdownItem className="" header tag="div">
                       <div className="text-base font-NanumGothic">
                         {t("welcome")}!
@@ -173,10 +176,15 @@ const UserNavbar = () => {
               //   {t("Register / Login")}
               // </button>
               <Media>
-              <div> 
-              <img src={LoginImg} width={50} height={50} onClick={nav_login}></img>
-             </div>
-            </Media>
+                <div>
+                  <img
+                    src={LoginImg}
+                    width={50}
+                    height={50}
+                    onClick={nav_login}
+                  ></img>
+                </div>
+              </Media>
             )}
           </Nav>
         </div>

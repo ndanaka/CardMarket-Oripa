@@ -117,11 +117,11 @@ const Register = () => {
             <Form role="form">
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-1">
-                  <InputGroupAddon addonType="prepend">
+                  {/* <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
                       <i class="fa-solid fa-graduation-cap"></i>
                     </InputGroupText>
-                  </InputGroupAddon>
+                  </InputGroupAddon> */}
                   <Input
                     placeholder={t("name")}
                     type="text"
@@ -142,11 +142,11 @@ const Register = () => {
               </FormGroup>
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative mb-1">
-                  <InputGroupAddon addonType="prepend">
+                  {/* <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
                       <i className="fa-solid fa-envelope"></i>
                     </InputGroupText>
-                  </InputGroupAddon>
+                  </InputGroupAddon> */}
                   <Input
                     placeholder={t("email")}
                     type="email"
@@ -173,11 +173,11 @@ const Register = () => {
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-1">
-                  <InputGroupAddon addonType="prepend">
+                  {/* <InputGroupAddon addonType="prepend">
                     <InputGroupText className="p-3 text-gray-500 rounded-r-none">
                       <i className="fa-solid fa-unlock-keyhole"></i>
                     </InputGroupText>
-                  </InputGroupAddon>
+                  </InputGroupAddon> */}
                   <Input
                     placeholder={t("password")}
                     type={isVisible ? "text" : "password"}

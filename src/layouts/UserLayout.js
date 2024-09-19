@@ -6,14 +6,16 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
+import Cookies from "universal-cookie";
+
+import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
+
+import routes from "../routes.js";
 
 // core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
-import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
-import routes from "../routes.js";
 
-import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const UserLayout = (props) => {
@@ -66,17 +68,19 @@ const UserLayout = (props) => {
   return (
     <>
       <div
-        className="relative flex flex-col justify-between h-full w-full main-content"
+        className="relative flex flex-col justify-between h-auto w-full min-h-full main-content bg-[#f3f4f6]"
         ref={mainContent}
       >
         <UserNavbar
           {...props}
           brandText={getBrandText(props?.location?.pathname)}
         />
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/user/index" replace />} />
-        </Routes>
+        <div className="mb-20">
+          <Routes>
+            {getRoutes(routes)}
+            <Route path="*" element={<Navigate to="/user/index" replace />} />
+          </Routes>
+        </div>
         <Footer />
       </div>
     </>

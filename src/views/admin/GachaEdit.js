@@ -143,6 +143,7 @@ const GachaEdit = () => {
         .then((res) => {
           if (res.data.status === 1) {
             showToast(res.data.msg);
+            setprizes([]);
             getGacha();
           } else {
             showToast(res.data.msg, "error");

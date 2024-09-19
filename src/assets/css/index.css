@@ -3,25 +3,27 @@
 @tailwind utilities;
 
 body {
-    width: 100vw;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 #root {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
-th, td {
-    padding: 8px !important;
-    text-align: center;
-    vertical-align: middle !important;
-    border: solid 1px rgb(218, 216, 216);
+th,
+td {
+  padding: 8px !important;
+  text-align: center;
+  vertical-align: middle !important;
+  border: solid 1px rgb(218, 216, 216);
 }
 
 #toast-container {
   position: fixed;
   bottom: 30px;
   right: 30px;
+  z-index: 1000000;
 }
 
 .padding-5 {
@@ -36,113 +38,119 @@ th, td {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #ffb1b1; 
-    border-radius: 2.5px;
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #cc0000; 
-    border-radius: 2.5px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(207, 64, 64); 
-  }
-  input[type="file"].image {
-    display:none;
-  }
-  input[type="file"].image::file-selector-button  {
-    display: none;
-  }
-  /* input[type="file"]::file-selector-button  {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ffb1b1;
+  border-radius: 2.5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cc0000;
+  border-radius: 2.5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(207, 64, 64);
+}
+input[type="file"].image {
+  display: none;
+}
+input[type="file"].image::file-selector-button {
+  display: none;
+}
+/* input[type="file"]::file-selector-button  {
     font-weight: bold;
   color: dodgerblue;
   padding: 0.5em;
   border: thin solid grey;
   border-radius: 3px;
   } */
- 
-  /* CSS */
-  .button-48 {
-    appearance: none;
-    background-color: #FFFFFF;
-    border-width: 0;
-    box-sizing: border-box;
-    color: #000000;
-    cursor: pointer;
-    display: inline-block;
-    font-family: Clarkson,Helvetica,sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0;
-    line-height: 1em;
-    margin: 0;
-    opacity: 1;
-    outline: 0;
-    padding: 1.5em 2.2em;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    text-rendering: geometricprecision;
-    text-transform: uppercase;
-    transition: opacity 300ms cubic-bezier(.694, 0, 0.335, 1),background-color 100ms cubic-bezier(.694, 0, 0.335, 1),color 100ms cubic-bezier(.694, 0, 0.335, 1);
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: baseline;
-    white-space: nowrap;
-  }
-  
-  .button-48:before {
-    animation: opacityFallbackOut .5s step-end forwards;
-    backface-visibility: hidden;
-    background-color: #EBEBEB;
-    clip-path: polygon(-1% 0, 0 0, -25% 100%, -1% 100%);
-    content: "";
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    transform: translateZ(0);
-    transition: clip-path .5s cubic-bezier(.165, 0.84, 0.44, 1), -webkit-clip-path .5s cubic-bezier(.165, 0.84, 0.44, 1);
-    width: 100%;
-  }
-  
-  .button-48:hover:before {
-    animation: opacityFallbackIn 0s step-start forwards;
-    clip-path: polygon(0 0, 101% 0, 101% 101%, 0 101%);
-  }
-  
-  .button-48:after {
-    background-color: #FFFFFF;
-  }
-  
-  .button-48 span {
-    z-index: 1;
-    position: relative;
-  }
 
-.button-38, input[type="file"]::file-selector-button  {
-  background-color: #FFFFFF;
+/* CSS */
+.button-48 {
+  appearance: none;
+  background-color: #ffffff;
+  border-width: 0;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Clarkson, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1em;
+  margin: 0;
+  opacity: 1;
+  outline: 0;
+  padding: 1.5em 2.2em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-rendering: geometricprecision;
+  text-transform: uppercase;
+  transition: opacity 300ms cubic-bezier(0.694, 0, 0.335, 1),
+    background-color 100ms cubic-bezier(0.694, 0, 0.335, 1),
+    color 100ms cubic-bezier(0.694, 0, 0.335, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.button-48:before {
+  animation: opacityFallbackOut 0.5s step-end forwards;
+  backface-visibility: hidden;
+  background-color: #ebebeb;
+  clip-path: polygon(-1% 0, 0 0, -25% 100%, -1% 100%);
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateZ(0);
+  transition: clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -webkit-clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: 100%;
+}
+
+.button-48:hover:before {
+  animation: opacityFallbackIn 0s step-start forwards;
+  clip-path: polygon(0 0, 101% 0, 101% 101%, 0 101%);
+}
+
+.button-48:after {
+  background-color: #ffffff;
+}
+
+.button-48 span {
+  z-index: 1;
+  position: relative;
+}
+
+.button-38,
+input[type="file"]::file-selector-button {
+  background-color: #ffffff;
   border: 1px solid lightgray;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   box-sizing: border-box;
   color: #111827;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  font-size: .875rem;
+  font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
-  padding: .75rem 1rem;
+  padding: 0.75rem 1rem;
   text-align: center;
-  text-decoration: none #D1D5DB solid;
+  text-decoration: none #d1d5db solid;
   text-decoration-thickness: auto;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   cursor: pointer;
@@ -151,11 +159,13 @@ th, td {
   touch-action: manipulation;
 }
 
-.button-38:hover, input[type="file"]::file-selector-button:hover {
-  background-color: rgb(249,250,251);
+.button-38:hover,
+input[type="file"]::file-selector-button:hover {
+  background-color: rgb(249, 250, 251);
 }
 
-.button-38:focus, input[type="file"]::file-selector-button:focus {
+.button-38:focus,
+input[type="file"]::file-selector-button:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
@@ -167,7 +177,7 @@ th, td {
 .button-22 {
   align-items: center;
   appearance: button;
-  background-color: #0276FF;
+  background-color: #0276ff;
   border-radius: 5px;
   border-style: none;
   box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
@@ -176,23 +186,24 @@ th, td {
   cursor: pointer;
   flex-direction: row;
   flex-shrink: 0;
-  font-family: "RM Neue",sans-serif;
+  font-family: "RM Neue", sans-serif;
   font-size: 100%;
   line-height: 1.15;
   margin: 0;
   padding: 12px 21px;
   text-align: center;
   text-transform: none;
-  transition: color .13s ease-in-out, background .13s ease-in-out,opacity .13s ease-in-out,box-shadow .13s ease-in-out;
+  transition: color 0.13s ease-in-out, background 0.13s ease-in-out,
+    opacity 0.13s ease-in-out, box-shadow 0.13s ease-in-out;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
 }
 
 .button-22:active {
-  background-color: #006AE8;
+  background-color: #006ae8;
 }
 
 .button-22:hover {
-  background-color: #1C84FF;
+  background-color: #1c84ff;
 }

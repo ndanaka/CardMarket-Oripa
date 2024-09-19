@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import api from "../../utils/api.js";
-import { UserAtom } from "../../store"
 import { useAtom } from "jotai";
-import InputGroup from "../../components/Forms/InputGroup.js";
+
+import api from "../../utils/api.js";
 import { showToast } from "../../utils/toastUtil.js";
 import { setAuthToken } from "../../utils/setHeader.js";
+
+import InputGroup from "../../components/Forms/InputGroup.js";
 import GroupHeader from "../../components/Forms/GroupHeader.js";
+
+import { UserAtom } from "../../store";
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
@@ -49,18 +52,10 @@ const Profile = () => {
   };
   return (
     <div
-      className={`relative w-full flex flex-wrap items-start  mx-auto py-3 mt-32 bg-[url('${
+      className={`relative w-full flex flex-wrap items-start mx-auto py-3 mt-16 bg-[url('${
         process.env.REACT_APP_SERVER_ADDRESS + "/uploads/users/user_bg.jpg"
       }')] bg-gradient-dark-pink`}
     >
-      <div className="absolute top-0">
-        {/* <img
-          src={
-            process.env.REACT_APP_SERVER_ADDRESS + "/uploads/users/user_bg.jpg"
-          }
-          className="absolute top-0 z-2"
-        ></img> */}
-      </div>
       <div className="w-full md:w-[60%] px-5">
         <div className="rounded-lg bg-white px-5 py-2 my-3">
           <div className="flex flex-col">
@@ -211,12 +206,12 @@ const Profile = () => {
         </div>
 
         <div className="rounded-lg bg-white px-5 py-2">
-            <div className="text-xl text-center text-theme_headertext_color py-2">
-              Credit Card Setting
-            </div>
-            <hr className="py-2"></hr>
-           
-            <button className="button-22 my-2 mx-auto">Save</button>
+          <div className="text-xl text-center text-theme_headertext_color py-2">
+            Credit Card Setting
+          </div>
+          <hr className="py-2"></hr>
+
+          <button className="button-22 my-2 mx-auto">Save</button>
         </div>
       </div>
     </div>
