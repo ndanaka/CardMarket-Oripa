@@ -1,13 +1,5 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
-import { useAtom } from "jotai";
-
-import { UserAtom } from "../../store/user";
-import LoginImg from "../../assets/img/icons/login.png";
-
-import "../../assets/css/index.css";
-
 import {
   DropdownMenu,
   DropdownItem,
@@ -16,15 +8,17 @@ import {
   Nav,
   Media,
 } from "reactstrap";
+
 import usePersistedUser from "../../store/usePersistedUser";
+
+import LoginImg from "../../assets/img/icons/login.png";
+import "../../assets/css/index.css";
 
 const AdminNavbar = (props) => {
   const [user, setUser] = usePersistedUser();
-  const cookie = new Cookies();
   const navigate = useNavigate();
 
   const logout = () => {
-    cookie.remove("TOKEN", { path: "/" });
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);

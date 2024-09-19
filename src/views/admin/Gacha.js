@@ -82,9 +82,6 @@ function Gacha() {
       return;
     }
 
-    setAuthToken();
-    setMultipart();
-
     if (formData.name.trim() === "") {
       showToast("Required gacha name", "error");
     } else if (parseFloat(formData.price) <= 0) {
@@ -114,7 +111,11 @@ function Gacha() {
               totalNum: 0,
               category: "",
             });
+
+            getCategory();
             getGacha();
+            setAuthToken();
+            setMultipart();
           } else showToast(res.data.msg, "error");
         })
         .catch((err) => {

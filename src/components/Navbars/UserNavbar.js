@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Cookies from "universal-cookie";
-import { useAtom } from "jotai";
 
-import { UserAtom } from "../../store/user";
 import "../../assets/css/index.css";
 
 import {
@@ -13,18 +10,15 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   Nav,
-  Media,
 } from "reactstrap";
 import usePersistedUser from "../../store/usePersistedUser";
 
 const UserNavbar = () => {
   const [user, setUser] = usePersistedUser();
-  const cookie = new Cookies();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const logout = () => {
-    cookie.remove("TOKEN", { path: "/" });
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
@@ -57,7 +51,7 @@ const UserNavbar = () => {
             </Link>
           </div>
           <Nav className="flex" navbar>
-            {user.name ? (
+            {user ? (
               <div className="flex items-center px-2">
                 {user.role === "admin" ? null : (
                   <button className="flex items-center mx-4">
@@ -177,16 +171,6 @@ const UserNavbar = () => {
               >
                 {t("Register / Login")}
               </button>
-              // <Media>
-              //   <div>
-              //     <img
-              //       src={LoginImg}
-              //       width={50}
-              //       height={50}
-              //       onClick={nav_login}
-              //     ></img>
-              //   </div>
-              // </Media>
             )}
           </Nav>
         </div>

@@ -6,7 +6,6 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-import Cookies from "universal-cookie";
 
 import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
@@ -15,8 +14,6 @@ import routes from "../routes.js";
 // core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
-
-const cookies = new Cookies();
 
 const UserLayout = (props) => {
   const mainContent = React.useRef(null);
@@ -34,7 +31,7 @@ const UserLayout = (props) => {
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/user") {
-        const token = cookies.get("TOKEN");
+        const token = localStorage.getItem("token");
         if (prop.path === "/user-profile" && !token)
           return (
             <Route

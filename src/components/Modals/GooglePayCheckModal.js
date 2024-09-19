@@ -1,6 +1,6 @@
 // Checkout.js
 import React from "react";
-import GooglePayButton from "../Others/GooglePayButton";
+import GooglePayButton from "../Others/PayButton";
 
 const GooglePayCheck = (props) => {
   const { isOpen, setIsOpen } = props;

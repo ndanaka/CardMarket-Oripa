@@ -1,18 +1,12 @@
 import { useState } from "react";
-import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Cookies from "universal-cookie";
-
-import { UserAtom } from "../../store/user";
+import { FormGroup, Form, Input, InputGroup } from "reactstrap";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 
-import { FormGroup, Form, Input, InputGroup } from "reactstrap";
 import usePersistedUser from "../../store/usePersistedUser";
-
-const cookies = new Cookies();
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,10 +28,6 @@ const Login = () => {
         password,
       })
       .then((res) => {
-        cookies.set("TOKEN", res.data.token, {
-          path: "/",
-        });
-
         if (res.data.status === 1) {
           showToast(res.data.msg);
           setUser(res.data.user);

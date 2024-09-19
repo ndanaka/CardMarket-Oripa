@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAtom } from "jotai";
-import { UserAtom } from "./index";
+import { UserAtom } from "./user";
 
 const usePersistedUser = () => {
   const [user, setUser] = useAtom(UserAtom);

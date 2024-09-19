@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "./api";
 import { useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
+
 import { showToast } from "../utils/toast";
-import { UserAtom } from "../store/user";
-import { useAtom } from "jotai";
 import usePersistedUser from "../store/usePersistedUser";
+
 const useAxiosInterceptor = () => {
   const navigate = useNavigate();
   const [isLoggedOut, setIsLoggedOut] = useState(false);
-  const cookie = new Cookies();
   const [user, setUser] = usePersistedUser();
+
   useEffect(() => {
     const interceptor = api.interceptors.response.use(
       (response) => response,
@@ -25,8 +24,7 @@ const useAxiosInterceptor = () => {
               // Clear user data from local storage or state
               localStorage.removeItem("token");
               localStorage.removeItem("user");
-              cookie.remove("TOKEN");
-              setUser({});
+              setUser(null);
               // Redirect to login page
               navigate("/login");
               break;

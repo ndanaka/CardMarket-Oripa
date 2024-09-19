@@ -1,9 +1,12 @@
 import { useState, useEffect, memo } from "react";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
+
 import DeleteConfirmModal from "../Modals/DeleteConfirmModal";
-import { useTranslation } from "react-i18next";
+
 function PrizeList({
   trigger,
   setFormData,
@@ -32,6 +35,7 @@ function PrizeList({
         console.log(err);
       });
   };
+
   const prizeEdit = (index) => {
     setFormData({
       id: prizes[index]._id,
@@ -42,6 +46,7 @@ function PrizeList({
     });
     setCuFlag(0); //set create/edit status editing(0)
   };
+
   const prizeDel = () => {
     api
       .delete(`/admin/del_prize/${delPrizeId}`)
@@ -57,10 +62,12 @@ function PrizeList({
         console.log(err);
       });
   };
+
   const handleDelete = () => {
     setIsModalOpen(false);
     prizeDel();
   };
+
   return (
     <>
       <table className="border-[1px] w-full  m-auto">
