@@ -59,7 +59,7 @@ const UserNavbar = () => {
                       className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4"
                       onClick={() => navigate("/user/pur-point")}
                     >
-                      {user.point_remain}
+                      {user.point_remain ? user.point_remain : 0} pt
                     </div>
                     <img
                       src={require("../../assets/img/icons/coin.png")}

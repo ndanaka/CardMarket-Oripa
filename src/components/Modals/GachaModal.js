@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+
 function GachaModal(props) {
-  const { name, price, draws, onDraw, isOpen, setIsOpen } = props;
+  const { headerText, name, price, draws, onDraw, isOpen, setIsOpen } = props;
   const { t } = useTranslation();
   const closeModal = () => {
     setIsOpen(false);
   };
+
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = function (event) {
     var modal = document.getElementById("modal");
@@ -15,6 +17,7 @@ function GachaModal(props) {
   };
 
   if (!isOpen) return null;
+  
   return (
     <div
       id="modal"
@@ -22,11 +25,8 @@ function GachaModal(props) {
     >
       <div className="bg-white rounded-xl shadow-xl shadow-gray-500  m-auto px-3 py-3 z-10 animate-[fadeIn_1s_ease-in-out]">
         <div className="flex justify-between">
-          <div className="w-full text-2xl text-theme_text_color text-left">
-            {t("gacha") + " " + t("draw")}
-          </div>
-          <div className="float-right p-2 text-gray-400 hover:text-gray-600">
-            <i className="fa fa-close" onClick={closeModal}></i>
+          <div className="w-full text-2xl text-theme_text_color text-center py-2">
+            {headerText}
           </div>
         </div>
         <hr className="w-full"></hr>
