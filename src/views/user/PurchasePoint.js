@@ -1,23 +1,65 @@
 import { useState, useEffect } from "react";
-
-import { setAuthToken } from "../../utils/setHeader";
-import api from "../../utils/api";
-import ConfirmModal from "../../components/Modals/ConfirmModal";
-import { UserAtom } from "../../store/user";
-import { useAtom } from "jotai";
-import { showToast } from "../../utils/toastUtil";
-import UpdateUserData from "../../utils/UpdateUserData";
 import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+
+import api from "../../utils/api";
+import { showToast } from "../../utils/toastUtil";
+import { setAuthToken } from "../../utils/setHeader";
+import UpdateUserData from "../../utils/UpdateUserData";
+
+import ConfirmModal from "../../components/Modals/ConfirmModal";
+import GooglePayCheckModal from "../../components/Modals/GooglePayCheckModal";
+import CustomSelect from "../../components/Forms/CustomSelect";
 
 import Gpay from "../../assets/img/icons/common/google.png";
 import ApplePay from "../../assets/img/icons/common/apple.png";
-import CustomSelect from "../../components/Forms/CustomSelect";
+import Univa from "../../assets/img/icons/common/univa.png";
+
+import { UserAtom } from "../../store/user";
 
 function PurchasePoint() {
+  const paymentOptions = [
+    { value: "gPay", label: "Google Pay", img: Gpay },
+    { value: "applePay", label: "Apple Pay", img: ApplePay },
+    { value: "univaPay", label: "Univa Pay", img: Univa },
+  ];
+
   const [points, setPoints] = useState(null); //registered point list
   const [isOpen, setIsOpen] = useState(false); //modal open flag
   const [paymentMethod, setPaymentMethod] = useState(null); //
   const [selId, setSelId] = useState(0);
+  const [paymentRequest, setPaymentRequest] = useState({
+    apiVersion: 2,
+    apiVersionMinor: 0,
+    allowedPaymentMethods: [
+      {
+        type: "CARD",
+        parameters: {
+          allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          allowedCardNetworks: ["MASTERCARD", "VISA"],
+        },
+        tokenizationSpecification: {
+          type: "PAYMENT_GATEWAY",
+          parameters: {
+            gateway: "example",
+            gatewayMerchantId: "exampleGatewayMerchantId",
+          },
+        },
+      },
+    ],
+    merchantInfo: {
+      merchantId: "12345678901234567890",
+      merchantName: "Demo Merchant",
+    },
+    transactionInfo: {
+      totalPriceStatus: "FINAL",
+      totalPriceLabel: "Total",
+      totalPrice: "100.00",
+      currencyCode: "USD",
+      countryCode: "US",
+    },
+  });
+
   const [user, setUser] = useAtom(UserAtom);
   const navigate = useNavigate();
 
@@ -30,6 +72,40 @@ function PurchasePoint() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  const handlePay = (amount) => {
+    if (paymentMethod === null) {
+      showToast("Select method of payment", "error");
+      return;
+    }
+
+    switch (paymentMethod.value) {
+      case "gPay":
+        const newPaymentRequest = {
+          ...paymentRequest,
+          // Update the payment request as needed
+        };
+        console.log(newPaymentRequest);
+        setPaymentRequest(newPaymentRequest);
+
+        break;
+
+      case "applePay":
+        console.log("apple pay");
+
+        break;
+
+      case "univaPay":
+        console.log("univa pay");
+
+        break;
+
+      default:
+        break;
+    }
+
+    console.log(amount);
+  };
 
   const updateUserData = () => {
     setAuthToken();
@@ -44,9 +120,11 @@ function PurchasePoint() {
         console.log(err);
       });
   };
+
   const purchase_point = () => {
     setIsOpen(false);
     setAuthToken();
+
     api
       .post("/user/point/purchase", {
         user_id: user._id,
@@ -63,23 +141,15 @@ function PurchasePoint() {
         console.log(err);
       });
   };
-  const paymentOptions = [
-    { value: "gPay", label: "Google Pay", img: Gpay },
-    { value: "applePay", label: "Apple Pay", img: ApplePay },
-    {
-      value: "univa",
-      label: "Univa Pay",
-      img: "https://via.placeholder.com/20?text=C",
-    },
-  ];
+
   return (
-    <div className="w-full h-full lg:w-[70%] flex flex-col p-2 mx-auto mt-16">
+    <div className="w-full h-full lg:w-[70%] flex flex-col p-2 mx-auto mt-20">
       <div className="mt-3">
         <i
-          className="fa fa-chevron-left float-left"
+          className="fa fa-chevron-left float-left mt-2.5 font-bold cursor-pointer"
           onClick={() => navigate("/user/index")}
         ></i>
-        <div className="text-center text-3xl text-theme_text_color font-Lexend">
+        <div className="text-center text-3xl text-theme_text_color font-bold">
           Purchase Point
         </div>
       </div>
@@ -87,14 +157,17 @@ function PurchasePoint() {
 
       <div className="flex flex-wrap">
         <div className="p-2 w-full">
-          <CustomSelect options={paymentOptions} selectedOption={paymentMethod} setOption={setPaymentMethod}/>
+          <div className="text-lg mt-3 mb-1 font-bold">Method of payment</div>
+          <CustomSelect
+            options={paymentOptions}
+            selectedOption={paymentMethod}
+            setOption={setPaymentMethod}
+          />
           <div className="flex flex-col justify-between bg-white rounded-lg mt-2">
             <div>
-              <div className="p-4 text-center text-lg border-b-[1px] border-b-gray-300">
-                What you want
-              </div>
+              <div className="text-lg mt-3 mb-1 font-bold">Charge amount</div>
             </div>
-            <div className="p-4">
+            <div className="p-1">
               {points
                 ? points.map((point, i) => (
                     <div key={i}>
@@ -110,23 +183,24 @@ function PurchasePoint() {
                             height="50px"
                           ></img>
                           <div className="flex flex-col px-2">
-                            <div className="text-left text-lg">
+                            <div className="text-left text-lg font-bold">
                               {point.point_num} pt
                             </div>
-                            <div className="text-xs text-center text-theme_text_color">
-                              at {point.price}
+                            <div className="text-s text-center text-theme_text_color">
+                              Purchase at ¥{point.price}
                             </div>
                           </div>
                         </div>
                         <div>
                           <button
-                            className="py-1 px-2 bg-indigo-600 rounded-md text-white"
+                            className="py-2 px-3 bg-indigo-600 rounded-md text-white text-lg font-bold"
                             onClick={() => {
-                              setIsOpen(true); //modal open
-                              setSelId(i); //set selected id for api
+                              // setIsOpen(true); //modal open
+                              // setSelId(i); //set selected id for api
+                              handlePay(point.price);
                             }}
                           >
-                            Buy now
+                            Buy Now
                           </button>
                         </div>
                       </div>
@@ -145,6 +219,7 @@ function PurchasePoint() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
+      {/* <GooglePayCheckModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </div>
   );
 }

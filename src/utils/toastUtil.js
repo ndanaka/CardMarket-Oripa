@@ -24,22 +24,8 @@ export const showToast = (
   }
 
   const toastElement = (
-    // <Toast
-    //   className={`bg-${color} text-white`}
-    //   isOpen={true}
-    //   autohide
-    //   delay={duration}
-    // >
-    //   <ToastHeader
-    //     className={`padding-5`}
-    //     toggle={() => toastRoot.render(null)}
-    //   >
-    //     {title}
-    //   </ToastHeader>
-    //   {/* <ToastBody className={`padding-3`}>{message}</ToastBody> */}
-    // </Toast>
     <div
-      className={`flex justify-between items-center animate-[displayEase_3s_linear] p-2 rounded-sm text-white text-center text-base bg-alert_${color}`}
+      className={`flex justify-between items-center animate-[displayEase_3s_linear] p-2 rounded-sm text-white text-center text-base bg-alert_${color} z-[10000]`}
     >
       <div className="px-2">{title}</div>
       <i

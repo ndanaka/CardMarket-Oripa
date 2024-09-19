@@ -82,7 +82,9 @@ const Index = () => {
     api
       .get("/admin/gacha")
       .then((res) => {
-        if (res.data.status === 1) setGacha(res.data.gachaList);
+        if (res.data.status === 1) {
+          setGacha(res.data.gachaList);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -150,8 +152,8 @@ const Index = () => {
         <div className="mx-auto mt-20">
           <ImageCarousel items={carouselItems} />
         </div>
-        {/* display categoy */}
-        <div className="w-full flex justify-start overflow-auto my-3 text-red-800 shadow-md shadow-gray-200">
+
+        <div className="w-full flex justify-between overflow-auto my-3 text-red-800 shadow-md shadow-gray-200">
           <button
             className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
               categoryFilter === "all"
@@ -209,83 +211,84 @@ const Index = () => {
         </div>
         <hr className="w-full text-theme_text_color my-2 text-3xl"></hr>
 
-        {/* display gacha  with filter */}
         <div className="w-full flex flex-wrap justify-between">
-          {filteredGacha != null
-            ? filteredGacha.map((data, i) => (
-                <div className="w-full xxsm:w-1/2 mb-2 ">
-                  <div className="flex flex-col justify-center p-2 mr-2 border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
-                    <button
-                      className="relative cursor-pointer"
-                      onClick={() =>
-                        navigate("/user/gacha-detail", {
-                          state: {
-                            gachaId: data._id,
-                            progress:
-                              ((data.remain_prizes.length +
-                                (data.last_prize ? 1 : 0)) /
-                                data.total_number) *
-                              100,
-                          },
-                        })
+          {filteredGacha === null ||
+          filteredGacha === undefined ||
+          filteredGacha.length === 0 ? (
+            <div className="text-center mx-auto text-lg">{t("nogacha")}</div>
+          ) : (
+            filteredGacha.map((data, i) => (
+              <div className="w-full xxsm:w-1/2 p-2" key={i}>
+                <div className="p-2 h-full flex flex-col justify-between border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
+                  <button
+                    className="relative cursor-pointer h-[inherit] w-full"
+                    onClick={() =>
+                      navigate("/user/gacha-detail", {
+                        state: {
+                          gachaId: data._id,
+                          progress:
+                            ((data.remain_prizes.length +
+                              (data.last_prize ? 1 : 0)) /
+                              data.total_number) *
+                            100,
+                        },
+                      })
+                    }
+                  >
+                    <img
+                      src={
+                        process.env.REACT_APP_SERVER_ADDRESS +
+                        data.gacha_thumnail_url
                       }
+                      className="border-b-2 border-white rounded h-[inherit] w-full"
+                    ></img>
+                    <div className="w-full bg-gray-300">
+                      <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
+                        <GachaPriceLabel price={data.price} />
+                        <Progressbar
+                          progress={
+                            ((data.remain_prizes.length +
+                              (data.last_prize ? 1 : 0)) /
+                              data.total_number) *
+                            100
+                          }
+                          label={
+                            data.remain_prizes.length +
+                            (data.last_prize ? 1 : 0) +
+                            " / " +
+                            data.total_number
+                          }
+                          height={20}
+                        />
+                      </div>
+                    </div>
+                  </button>
+                  <div className="w-full flex justify-center">
+                    <div
+                      className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
+                      onClick={() => {
+                        openModal();
+                        setSelGacha([i, 1]);
+                      }}
                     >
-                      <img
-                        src={
-                          process.env.REACT_APP_SERVER_ADDRESS +
-                          data.gacha_thumnail_url
-                        }
-                        className="w-full m-auto border-b-2 border-white"
-                      ></img>
-                      {/* prize remain display progressbar */}
-                      <div className="w-full bg-gray-300">
-                        <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
-                          <GachaPriceLabel price={data.price} />
-                          <Progressbar
-                            progress={
-                              ((data.remain_prizes.length +
-                                (data.last_prize ? 1 : 0)) /
-                                data.total_number) *
-                              100
-                            }
-                            label={
-                              data.remain_prizes.length +
-                              (data.last_prize ? 1 : 0) +
-                              " / " +
-                              data.total_number
-                            }
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                    </button>
-                    <div className="w-full flex justify-center">
-                      <div
-                        className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
-                        onClick={() => {
-                          openModal();
-                          setSelGacha([i, 1]);
-                        }}
-                      >
-                        1 {t("draw")}
-                      </div>
-                      <div
-                        className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
-                        onClick={() => {
-                          openModal();
-                          setSelGacha([i, 10]);
-                        }}
-                      >
-                        10 {t("draws")}
-                      </div>
+                      1 {t("draw")}
+                    </div>
+                    <div
+                      className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
+                      onClick={() => {
+                        openModal();
+                        setSelGacha([i, 10]);
+                      }}
+                    >
+                      10 {t("draws")}
                     </div>
                   </div>
                 </div>
-              ))
-            : ""}
+              </div>
+            ))
+          )}
         </div>
 
-        {/* gacha confirm modal */}
         {gacha?.length > 0 ? (
           <GachaModal
             headerText="Draw Gacha"
@@ -299,7 +302,6 @@ const Index = () => {
         ) : null}
       </div>
 
-      {/* display prize after drawing gacha */}
       <div
         className={`bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
           showCardFlag ? "" : "hidden"

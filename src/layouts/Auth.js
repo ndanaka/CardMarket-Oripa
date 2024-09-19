@@ -1,12 +1,7 @@
 import React from "react";
 import { Container, Row } from "reactstrap";
 
-import {
-  useLocation,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { useLocation, Route, Routes, Navigate } from "react-router-dom";
 
 // core components
 import AuthNavbar from "../components/Navbars/AuthNavbar.js";
@@ -43,9 +38,9 @@ const Auth = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-between bg-gray-100">
+    <div className="w-full h-full flex flex-col justify-top bg-gray-100">
       <AuthNavbar />
-      <Container className="w-full justify-center py-3">
+      <Container className="w-full justify-center py-5">
         <div className="float-right">
           <ChangeLanguage />
         </div>

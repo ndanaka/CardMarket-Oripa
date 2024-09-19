@@ -36,6 +36,7 @@ function Point() {
       [e.target.name]: e.target.value,
     });
   };
+  
   //get registered point
   const getPoint = () => {
     setAuthToken();

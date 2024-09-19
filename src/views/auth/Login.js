@@ -1,22 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
 import { useAtom } from "jotai";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Cookies from "universal-cookie";
 
 import { UserAtom } from "../../store/user";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 
-import {
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-} from "reactstrap";
+import { FormGroup, Form, Input, InputGroup } from "reactstrap";
 
 const cookies = new Cookies();
 
@@ -40,13 +33,15 @@ const Login = () => {
         password,
       })
       .then((res) => {
+        console.log(res);
         cookies.set("TOKEN", res.data.token, {
           path: "/",
         });
+
         if (res.data.status === 1) {
           showToast(res.data.msg);
-
           setUser(res.data.user);
+
           if (res.data.user.role === "admin") navigate("/admin/index");
           else navigate("/user/index");
         } else showToast(res.data.msg, "error");
@@ -59,15 +54,17 @@ const Login = () => {
   return (
     <div className="w-full md:w-2/5 mx-auto rounded-lg bg-white shadow border-0 my-5">
       <div className="px-lg-5 py-lg-5">
-        <div className="text-center mb-5 font-bold text-3xl">{t("sign_in")}</div>
+        <div className="text-center mb-5 font-bold text-3xl">
+          {t("sign_in")}
+        </div>
         <Form role="form">
           <FormGroup className="mb-3">
             <InputGroup className="input-group-alternative">
-              <InputGroupAddon addonType="prepend">
+              {/* <InputGroupAddon addonType="prepend">
                 <InputGroupText className="p-3 text-gray-500 rounded-r-none">
                   <i className="fa-solid fa-envelope"></i>
                 </InputGroupText>
-              </InputGroupAddon>
+              </InputGroupAddon> */}
               <Input
                 placeholder={t("email")}
                 type="email"
@@ -79,11 +76,11 @@ const Login = () => {
           </FormGroup>
           <FormGroup>
             <InputGroup className="input-group-alternative">
-              <InputGroupAddon addonType="prepend">
+              {/* <InputGroupAddon addonType="prepend">
                 <InputGroupText className="p-3 text-gray-500 rounded-r-none">
                   <i className="fa-solid fa-unlock-keyhole"></i>
                 </InputGroupText>
-              </InputGroupAddon>
+              </InputGroupAddon> */}
               <Input
                 placeholder={t("password")}
                 type={isVisible ? "text" : "password"}

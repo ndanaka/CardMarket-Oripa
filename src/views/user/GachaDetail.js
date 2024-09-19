@@ -100,8 +100,8 @@ function GachaDetail() {
         <span className="text-indigo-600 text-xl px-2">{gacha?.category}</span>
         {gacha?.name}
       </div>
-      <div className="flex flex-col w-full md:w-1/2 m-auto">
-        <div className="relative">
+      <div className="relative flex flex-col w-full md:w-1/2 m-auto">
+        <div className="relative rounded-lg shadow-md shadow-gray-400 border-gray-300 bg-white mx-auto p-2">
           <img
             src={
               gacha
@@ -112,8 +112,8 @@ function GachaDetail() {
             alt="gacha thumnail"
             className="rounded-lg mx-auto"
           ></img>
-          <div className="w-full bg-gray-300">
-            <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
+          {/* <div className="w-full bg-gray-300">
+            <div className="relative w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
               <GachaPriceLabel price={gacha?.price} />
               <Progressbar
                 progress={progress}
@@ -126,7 +126,7 @@ function GachaDetail() {
                 height={20}
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="w-auto py-3">
