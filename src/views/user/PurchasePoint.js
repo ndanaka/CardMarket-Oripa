@@ -231,7 +231,6 @@ function PurchasePoint() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
-      {/* <GooglePayCheckModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </div>
   );
 }

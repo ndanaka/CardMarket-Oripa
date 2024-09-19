@@ -26,8 +26,8 @@ export const gPayConfig = {
     transactionInfo: {
       totalPriceStatus: "FINAL",
       totalPrice: "500.00", // Will be dynamically updated
-      currencyCode: "USD",
-      countryCode: "US",
+      currencyCode: "JPY",
+      countryCode: "JP",
     },
   },
 };

@@ -1,11 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
-import { useAtom } from "jotai";
 
-import { UserAtom } from "../store/user";
 import api from "../utils/api";
-
 import { setAuthToken } from "../utils/setHeader";
 import { showToast } from "../utils/toastUtil";
 
@@ -15,6 +12,8 @@ import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ChangeLanguage from "../components/Others/ChangeLanguage";
 import ImageCarousel from "../components/Others/ImageCarousel";
+import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
+
 import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
@@ -23,7 +22,8 @@ const Index = () => {
   const [filteredGacha, setFilteredGacha] = useState();
   const [categoryFilter, setCategoryFilter] = useState("all"); //gacha filter
   const [filter, setFilter] = useState([]);
-  const [isOpen, setIsOpen] = useState(false); //gacha confirm modal show flag
+  const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
+  const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
   const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
   const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
@@ -107,9 +107,20 @@ const Index = () => {
   };
 
   //handle gacha draw
+  const drawGacha = (gacha, num) => {
+    const totalPoints = gacha.price * num;
+    const remainPoints = user.point_remain;
+
+    if (remainPoints === 0 || remainPoints < totalPoints) {
+      setIsOpenPointModal(true);
+    } else {
+      setIsOpenGachaModal(true);
+    }
+  };
+
   const handleDraw = () => {
     setAuthToken();
-    setIsOpen(false);
+    setIsOpenGachaModal(false);
 
     api
       .post("/admin/gacha/draw_gacha", {
@@ -131,10 +142,6 @@ const Index = () => {
 
   const showCards = () => {
     setShowCardFlag(true);
-  };
-
-  const openModal = () => {
-    setIsOpen(true);
   };
 
   const handleSetfilter = (filterItem) => {
@@ -268,8 +275,9 @@ const Index = () => {
                     <div
                       className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
                       onClick={() => {
-                        openModal();
+                        // openModal();
                         setSelGacha([i, 1]);
+                        drawGacha(data, 1);
                       }}
                     >
                       1 {t("draw")}
@@ -277,8 +285,9 @@ const Index = () => {
                     <div
                       className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                       onClick={() => {
-                        openModal();
+                        // openModal();
                         setSelGacha([i, 10]);
+                        drawGacha(data, 10);
                       }}
                     >
                       10 {t("draws")}
@@ -289,7 +298,7 @@ const Index = () => {
             ))
           )}
         </div>
-
+        
         {gacha?.length > 0 ? (
           <GachaModal
             headerText="Draw Gacha"
@@ -297,10 +306,18 @@ const Index = () => {
             price={gacha[selGacha[0]].price}
             draws={selGacha[1]}
             onDraw={handleDraw}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
+            isOpen={isOpenGachaModal}
+            setIsOpen={setIsOpenGachaModal}
           />
         ) : null}
+
+        <NotEnoughPoints
+          headerText="Not enough points"
+          bodyText="Points are required to play the gacha. Points can be recharged on the point purchase page."
+          okBtnClick={() => navigate("/user/pur-point")}
+          isOpen={isOpenPointModal}
+          setIsOpen={setIsOpenPointModal}
+        />
       </div>
 
       <div
