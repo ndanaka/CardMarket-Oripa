@@ -16,6 +16,7 @@ import ApplePay from "../../assets/img/icons/common/apple.png";
 import Univa from "../../assets/img/icons/common/univa.png";
 
 import { UserAtom } from "../../store/user";
+import usePersistedUser from "../../store/usePersistedUser";
 
 function PurchasePoint() {
   const paymentOptions = [
@@ -60,7 +61,7 @@ function PurchasePoint() {
     },
   });
 
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
 
   useEffect(() => {

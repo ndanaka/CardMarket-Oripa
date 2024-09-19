@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
 import api from "../../utils/api";
+
 import GetUser from "../../utils/getUserAtom";
 import SubHeader from "../../components/Forms/SubHeader";
 import PrizeCard from "../../components/Others/PrizeCard";
+import usePersistedUser from "../../store/usePersistedUser";
+import { setAuthToken } from "../../utils/setHeader";
+
 function UserCard() {
   const [userCards, setUserCards] = useState();
-  const { user } = GetUser();
+  const [user, setUser] = usePersistedUser();
 
   useEffect(() => {
+    setAuthToken();
     getUserCards();
   }, []);
 
@@ -19,6 +24,7 @@ function UserCard() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="w-full md:w-4/6 p-3 mx-auto mt-16">
       <SubHeader text="My Cards" />

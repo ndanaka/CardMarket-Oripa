@@ -17,11 +17,12 @@ import routes from "../routes.js";
 import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
 import { UserAtom } from "../store/user";
+import usePersistedUser from "../store/usePersistedUser.js";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-  const [user] = useAtom(UserAtom);
+  const [user] = usePersistedUser();
   const { isLoggedOut } = useAxiosInterceptor();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);

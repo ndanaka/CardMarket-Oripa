@@ -13,6 +13,7 @@ export function setAuthToken() {
   } else {
     delete api.defaults.headers.common["token"];
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   }
 }
 

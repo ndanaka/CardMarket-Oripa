@@ -5,8 +5,6 @@ import Cookies from "universal-cookie";
 import { useAtom } from "jotai";
 
 import { UserAtom } from "../../store/user";
-
-import LoginImg from "../../assets/img/icons/login.png";
 import "../../assets/css/index.css";
 
 import {
@@ -17,9 +15,10 @@ import {
   Nav,
   Media,
 } from "reactstrap";
+import usePersistedUser from "../../store/usePersistedUser";
 
 const UserNavbar = () => {
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
   const cookie = new Cookies();
   const { t } = useTranslation();
   const navigate = useNavigate();

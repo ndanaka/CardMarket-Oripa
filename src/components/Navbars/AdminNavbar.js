@@ -16,9 +16,10 @@ import {
   Nav,
   Media,
 } from "reactstrap";
+import usePersistedUser from "../../store/usePersistedUser";
 
 const AdminNavbar = (props) => {
-  const [user, setUser] = useAtom(UserAtom);
+  const [user, setUser] = usePersistedUser();
   const cookie = new Cookies();
   const navigate = useNavigate();
 

@@ -5,14 +5,19 @@ import { showToast } from "../../utils/toastUtil";
 import { useTranslation } from "react-i18next";
 import PageHeader from "../../components/Forms/PageHeader";
 import { useNavigate } from "react-router-dom";
+import { setAuthToken } from "../../utils/setHeader";
+
 function Delivering() {
   const { user } = GetUser();
   const [deliverData, setDeliverData] = useState();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
   useEffect(() => {
+    setAuthToken();
     getDeliverData();
   }, []);
+
   const getDeliverData = () => {
     api
       .get("/admin/get_deliver")
@@ -21,6 +26,7 @@ function Delivering() {
       })
       .catch((err) => console.log(err));
   };
+
   const handlesetStatus = (i) => {
     if (user.authority.delivering !== 2 && user.authority.delivering !== 4) {
       showToast("You have no permission for this action", "error");
@@ -40,6 +46,7 @@ function Delivering() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="w-full p-3">
       <div className="w-full md:w-[70%] mx-auto">
