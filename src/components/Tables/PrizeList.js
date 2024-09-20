@@ -35,7 +35,6 @@ function PrizeList({
           for (let index = 0; index < res.data.prize.length; index++) {
             const element = res.data.prize[index];
             if (element.status === "unset") {
-              console.log(element.status);
               setFlag(!flag);
               break;
             }
