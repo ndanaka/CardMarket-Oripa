@@ -82,6 +82,9 @@ function Gacha() {
       return;
     }
 
+    setAuthToken();
+    setMultipart();
+
     if (formData.name.trim() === "") {
       showToast("Required gacha name", "error");
     } else if (parseFloat(formData.price) <= 0) {
@@ -102,7 +105,7 @@ function Gacha() {
         .then((res) => {
           if (res.data.status === 1) {
             showToast(res.data.msg);
-            setImgUrl(null);
+            setImgUrl("");
             setFormData({
               ...formData,
               file: null,
@@ -114,8 +117,6 @@ function Gacha() {
 
             getCategory();
             getGacha();
-            setAuthToken();
-            setMultipart();
           } else showToast(res.data.msg, "error");
         })
         .catch((err) => {
@@ -281,7 +282,7 @@ function Gacha() {
                 return (
                   <>
                     <tr
-                      key={data._id}
+                      key={i}
                       className={`border-2 ${
                         data.isRelease ? "bg-[#f2f2f2]" : ""
                       }`}

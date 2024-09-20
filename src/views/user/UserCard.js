@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import api from "../../utils/api";
 
-import GetUser from "../../utils/getUserAtom";
+import api from "../../utils/api";
+import { setAuthToken } from "../../utils/setHeader";
+import { t } from "i18next";
+
 import SubHeader from "../../components/Forms/SubHeader";
 import PrizeCard from "../../components/Others/PrizeCard";
+
 import usePersistedUser from "../../store/usePersistedUser";
-import { setAuthToken } from "../../utils/setHeader";
 
 function UserCard() {
   const [userCards, setUserCards] = useState();
@@ -27,7 +29,7 @@ function UserCard() {
 
   return (
     <div className="w-full md:w-4/6 p-3 mx-auto mt-16">
-      <SubHeader text="My Cards" />
+      <SubHeader text={t("my") + " " + t("cards")} />
       <div className="flex flex-wrap justify-evenly items-center">
         <div className="w-full p-2">
           <div className="flex flex-wrap justify-evenly"></div>

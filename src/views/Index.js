@@ -28,7 +28,7 @@ const Index = () => {
   const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
   const [user, setUser] = usePersistedUser();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -114,6 +114,8 @@ const Index = () => {
     if (remainPoints === 0 || remainPoints < totalPoints) {
       setIsOpenPointModal(true);
     } else {
+      setSelGacha([gacha, num]);
+      console.log([gacha, num]);
       setIsOpenGachaModal(true);
     }
   };
@@ -124,12 +126,13 @@ const Index = () => {
 
     api
       .post("/admin/gacha/draw_gacha", {
-        gachaId: gacha[selGacha[0]]._id,
+        gachaId: selGacha[0]._id,
         draw: selGacha[1],
       })
       .then((res) => {
         if (res.data.status === 1) {
           showToast("Gacha Draw Success.");
+          getGacha();
           setObtains(res.data.prizes);
           showCards();
           updateUserData();
@@ -249,6 +252,7 @@ const Index = () => {
                         data.gacha_thumnail_url
                       }
                       className="border-b-2 border-white rounded h-[inherit] w-full"
+                      alt=""
                     ></img>
                     <div className="w-full bg-gray-300">
                       <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
@@ -276,7 +280,7 @@ const Index = () => {
                       className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
                       onClick={() => {
                         // openModal();
-                        setSelGacha([i, 1]);
+                        // setSelGacha([data, 1]);
                         drawGacha(data, 1);
                       }}
                     >
@@ -286,7 +290,7 @@ const Index = () => {
                       className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                       onClick={() => {
                         // openModal();
-                        setSelGacha([i, 10]);
+                        // setSelGacha([data, 10]);
                         drawGacha(data, 10);
                       }}
                     >
@@ -298,12 +302,12 @@ const Index = () => {
             ))
           )}
         </div>
-        
-        {gacha?.length > 0 ? (
+
+        {selGacha?.length > 0 ? (
           <GachaModal
             headerText="Draw Gacha"
-            name={gacha[selGacha[0]].name}
-            price={gacha[selGacha[0]].price}
+            name={selGacha[0].name}
+            price={selGacha[0].price}
             draws={selGacha[1]}
             onDraw={handleDraw}
             isOpen={isOpenGachaModal}

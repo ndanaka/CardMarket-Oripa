@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
 import { showToast } from "../../utils/toastUtil";
-import { setAuthToken } from "../../utils/setHeader";
+import { setAuthToken, setMultipart } from "../../utils/setHeader";
 import GetUser from "../../utils/getUserAtom";
 
 import PrizeList from "../../components/Tables/PrizeList";
@@ -14,6 +14,7 @@ import PrizeCard from "../../components/Others/PrizeCard";
 
 const GachaEdit = () => {
   const [gacha, setGacha] = useState(); //selected gacha
+  const [csvFile, setcsvFile] = useState(""); //prizes from csv file
   const [prizes, setPrizes] = useState([]); //prizes from csv file
   const [firstPrizes, setFirstprizes] = useState([]); //prizes from csv file
   const [secondPrizes, setSecondprizes] = useState([]); //prizes from csv file
@@ -22,13 +23,17 @@ const GachaEdit = () => {
   const [loadFlag, setLoadFlag] = useState(false); //flag fro loading registered prize
   const [isLastPrize, setIsLastPrize] = useState(false); //flag for setting prize as lastPrize
   const [trigger, setTrigger] = useState(false);
-  const { user } = GetUser();
-  const { t } = useTranslation();
+
   const location = useLocation();
-  const navigate = useNavigate();
   const { gachaId } = location.state || {};
 
+  const { user } = GetUser();
+  const { t } = useTranslation();
+
+  const navigate = useNavigate();
+
   useEffect(() => {
+    console.log(gachaId);
     setAuthToken();
     getGacha();
   }, []);
@@ -133,7 +138,7 @@ const GachaEdit = () => {
     if (gachaId.trim() === "") {
       showToast("Not Found Gacha", "error");
     } else if (prizes.length === 0) {
-      showToast("Must choose csv file", "error");
+      showToast("No prize to upload. Select csv file.", "error");
     } else {
       api
         .post("/admin/gacha/upload_bulk", {
@@ -142,9 +147,10 @@ const GachaEdit = () => {
         })
         .then((res) => {
           if (res.data.status === 1) {
-            showToast(res.data.msg);
-            // setprizes([]);
+            setPrizes([]);
+            setcsvFile("");
             getGacha();
+            showToast(res.data.msg, "success");
           } else {
             showToast(res.data.msg, "error");
           }
@@ -242,13 +248,15 @@ const GachaEdit = () => {
       <div className="mx-auto mt-3 overflow-auto">
         <table className="border-[1px] m-auto">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
-            <th>{t("no")}</th>
-            <th>{t("image")}</th>
-            <th>{t("name")}</th>
-            <th>{t("price")}</th>
-            <th>{t("total") + " " + t("number")}</th>
-            <th>{t("category")}</th>
-            <th>{t("created") + " " + t("date")}</th>
+            <tr>
+              <td>{t("no")}</td>
+              <td>{t("image")}</td>
+              <td>{t("name")}</td>
+              <td>{t("price")}</td>
+              <td>{t("total") + " " + t("number")}</td>
+              <td>{t("category")}</td>
+              <td>{t("created") + " " + t("date")}</td>
+            </tr>
           </thead>
           <tbody>
             {gacha ? (
@@ -300,7 +308,7 @@ const GachaEdit = () => {
               : ""}
           </div>
         ) : (
-          <div className="py-2">{t("noprize")}</div>
+          <div className="py-2 text-center">{t("noprize")}</div>
         )}
 
         {/* last prize */}
@@ -334,7 +342,7 @@ const GachaEdit = () => {
       <div className="mx-auto w-full mt-3">
         <hr className="my-2 text-sm"></hr>
         <div className="my-2 text-lg text-center font-bold">{t("set_CSV")}</div>
-        <div className="flex flex-wrap justify-between items-center w-5/6 mt-2">
+        <div className="flex flex-wrap justify-between items-center w-full mt-2">
           <a
             className="button-38 my-1"
             href={
@@ -349,6 +357,7 @@ const GachaEdit = () => {
             type="file"
             accept=".csv"
             className="my-1"
+            value={csvFile}
             onChange={handleFileChange}
           />
           <button
@@ -358,21 +367,22 @@ const GachaEdit = () => {
             {t("upload") + " " + t("all") + " " + t("prize")}
           </button>
         </div>
-        <div className="overflow-auto">
-          <table className="border-[1px]  mx-auto mt-2 w-full">
-            <thead className="bg-admin_theme_color font-bold text-gray-200">
-              <tr>
-                <th>{t("no")}</th>
-                <th>{t("name")}</th>
-                <th>{t("rarity")}</th>
-                <th>{t("cashback") + " " + t("point")}</th>
-                <th>{t("Grade")}</th>
-                <th>{t("image")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {prizes ? (
-                prizes.map((data, i) => (
+        {/* set prizes table */}
+        {prizes && prizes.length !== 0 ? (
+          <div className="overflow-auto">
+            <table className="border-[1px]  mx-auto mt-2 w-full">
+              <thead className="bg-admin_theme_color font-bold text-gray-200">
+                <tr>
+                  <td>{t("no")}</td>
+                  <td>{t("name")}</td>
+                  <td>{t("rarity")}</td>
+                  <td>{t("cashback") + " " + t("point")}</td>
+                  <td>{t("Grade")}</td>
+                  <td>{t("image")}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {prizes.map((data, i) => (
                   <tr key={i} className="border-2">
                     <td>{i + 1}</td>
                     <td>{data.name}</td>
@@ -388,7 +398,7 @@ const GachaEdit = () => {
                           case 3:
                             return t("third");
                           case 4:
-                            return t("foruth");
+                            return t("fourth");
                           default:
                             break;
                         }
@@ -406,16 +416,15 @@ const GachaEdit = () => {
                       ></img>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6">{t("noprize")}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
+      {/* Registered prizes */}
       <div className="w-full mt-3 overflow-auto">
         <hr className="w-full text-theme_text_color my-1"></hr>
         <div className="my-2 text-lg text-center font-bold">

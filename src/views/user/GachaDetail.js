@@ -6,8 +6,6 @@ import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 
 import PrizeCard from "../../components/Others/PrizeCard";
-import Progressbar from "../../components/Others/progressbar";
-import GachaPriceLabel from "../../components/Others/GachaPriceLabel";
 
 function GachaDetail() {
   const [gacha, setGacha] = useState(null); //gacha to be display
@@ -79,7 +77,7 @@ function GachaDetail() {
         <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-evenly items-stretch">
           {prizes.map((prize, i) => (
-            <div className="group relative m-2 min-h-44 max-h-44" key={i}>
+            <div className="group relative m-2" key={i}>
               <PrizeCard
                 key={i}
                 name={prize?.name}
@@ -112,21 +110,6 @@ function GachaDetail() {
             alt="gacha thumnail"
             className="rounded-lg mx-auto"
           ></img>
-          {/* <div className="w-full bg-gray-300">
-            <div className="relative w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
-              <GachaPriceLabel price={gacha?.price} />
-              <Progressbar
-                progress={progress}
-                label={
-                  gacha?.remain_prizes.length +
-                  (gacha?.last_prize ? 1 : 0) +
-                  " / " +
-                  gacha?.total_number
-                }
-                height={20}
-              />
-            </div>
-          </div> */}
         </div>
 
         <div className="w-auto py-3">

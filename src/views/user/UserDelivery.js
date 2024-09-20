@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import SubHeader from "../../components/Forms/SubHeader";
+
 import api from "../../utils/api";
 import GetUser from "../../utils/getUserAtom";
-import GroupHeader from "../../components/Forms/GroupHeader";
-import PrizeCard from "../../components/Others/PrizeCard";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 import formatDate from "../../utils/formatDate";
+import { t } from "i18next";
+
+import GroupHeader from "../../components/Forms/GroupHeader";
+import PrizeCard from "../../components/Others/PrizeCard";
+import SubHeader from "../../components/Forms/SubHeader";
 
 function UserDelivery() {
   const { user } = GetUser();
@@ -43,8 +46,8 @@ function UserDelivery() {
   };
 
   return (
-    <div className="w-full mt-16">
-      <SubHeader text="My Delivery" />
+    <div className="w-full md:w-3/6 p-3 mx-auto mt-16">
+      <SubHeader text={t("my") + " " + t("delievery")} />
       <div className="flex flex-wrap">
         <div className="w-full md:w-1/2 px-5">
           <GroupHeader text="Pending" />

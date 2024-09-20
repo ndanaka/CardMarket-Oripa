@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+import { googlePayConfig } from "../../payment/googlePayConfig";
+import { initiateUnivaPayTransaction } from "../../payment/univaPayRequest";
 
 import ConfirmModal from "../../components/Modals/ConfirmModal";
 import CustomSelect from "../../components/Forms/CustomSelect";
-import { gPayConfig } from "../../payment/gPayConfig";
 
 import Gpay from "../../assets/img/icons/common/google.png";
 import ApplePay from "../../assets/img/icons/common/apple.png";
@@ -21,12 +22,12 @@ function PurchasePoint() {
     { value: "applePay", label: "Apple Pay", img: ApplePay },
     { value: "univaPay", label: "Univa Pay", img: Univa },
   ];
-  const [gPayReady, setGPayReady] = useState(false);
+  const [, setGPayReady] = useState(false);
 
   const [points, setPoints] = useState(null); //registered point list
   const [isOpen, setIsOpen] = useState(false); //modal open flag
   const [paymentMethod, setPaymentMethod] = useState(null); //
-  const [selId, setSelId] = useState(0);
+  const [, setSelId] = useState(0);
 
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
@@ -62,14 +63,14 @@ function PurchasePoint() {
       });
   };
 
-  const purchase_point = async () => {
+  const purchase_point = async (amount) => {
     setAuthToken();
 
     api
       .post("/user/point/purchase", {
         user_id: user._id,
-        point_num: points[selId].point_num,
-        price: points[selId].price,
+        point_num: amount,
+        price: amount,
       })
       .then((res) => {
         if (res.data.status === 1) {
@@ -85,7 +86,7 @@ function PurchasePoint() {
   const onGooglePayLoaded = () => {
     if (window.google) {
       const paymentsClient = new window.google.payments.api.PaymentsClient({
-        environment: gPayConfig.environment,
+        environment: googlePayConfig.environment,
       });
 
       paymentsClient
@@ -93,7 +94,7 @@ function PurchasePoint() {
           apiVersion: 2,
           apiVersionMinor: 0,
           allowedPaymentMethods:
-            gPayConfig.paymentDataRequest.allowedPaymentMethods,
+            googlePayConfig.paymentDataRequest.allowedPaymentMethods,
         })
         .then((response) => {
           if (response.result) {
@@ -107,6 +108,7 @@ function PurchasePoint() {
   };
 
   const handlePay = async (amount) => {
+    console.log(amount);
     try {
       if (paymentMethod === null) {
         showToast("Select method of payment", "error");
@@ -116,13 +118,13 @@ function PurchasePoint() {
       switch (paymentMethod.value) {
         case "gPay":
           const paymentsClient = new window.google.payments.api.PaymentsClient({
-            environment: gPayConfig.environment,
+            environment: googlePayConfig.environment,
           });
 
           const paymentDataRequest = {
-            ...gPayConfig.paymentDataRequest,
+            ...googlePayConfig.paymentDataRequest,
             transactionInfo: {
-              ...gPayConfig.paymentDataRequest.transactionInfo,
+              ...googlePayConfig.paymentDataRequest.transactionInfo,
               totalPrice: amount.toString(),
             },
           };
@@ -131,7 +133,7 @@ function PurchasePoint() {
             paymentDataRequest
           );
           if (paymentData) {
-            await purchase_point();
+            await purchase_point(amount);
           }
 
           break;
@@ -142,6 +144,13 @@ function PurchasePoint() {
           break;
 
         case "univaPay":
+          try {
+            await initiateUnivaPayTransaction(amount);
+            alert("Payment initiated successfully");
+          } catch (error) {
+            console.error("Payment failed", error);
+            alert("Payment failed");
+          }
           console.log("univa pay");
 
           break;

@@ -2,14 +2,11 @@ import React from "react";
 
 function PrizeCard({ name, rarity, cashback, img_url }) {
   return (
-    <div className=" bg-gray-200 h-full rounded-md border-[1px] p-2">
-      <div className="flex flex-col h-full bg-white items-center p-2">
+    <div className=" bg-gray-200 h-[inherit] rounded-md border-[1px] p-2">
+      <div className="flex flex-col h-[inherit] bg-white items-center p-2">
         <img
           src={process.env.REACT_APP_SERVER_ADDRESS + img_url}
-          width="100px"
-          height="60px"
-          max-width="100px"
-          max-height="60px"
+          className="w-[200px] h-[120px] max-w-[200px] max-h-[120px] object-cover"
         ></img>
         <div className="flex flex-col items-center mt-1">
           <div className="flex justify-between items-center">
