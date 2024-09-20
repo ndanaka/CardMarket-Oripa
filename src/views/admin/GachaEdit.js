@@ -33,7 +33,6 @@ const GachaEdit = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(gachaId);
     setAuthToken();
     getGacha();
   }, []);
@@ -87,7 +86,7 @@ const GachaEdit = () => {
   const drawGradePrizes = (prizes, grade) => {
     return (
       <div>
-        <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
+        <div className="my-2 text-3xl text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-evenly items-stretch">
           {prizes.map((prize, i) => (
             <div className="group relative m-2" key={i}>
@@ -314,7 +313,7 @@ const GachaEdit = () => {
         {/* last prize */}
         {gacha?.last_prize ? (
           <div>
-            <div className="my-2 text-lg text-center font-bold">
+            <div className="my-2 text-3xl text-center font-bold">
               {t("last") + " " + t("prize")}
             </div>
             <div className="group relative mt-2 mr-1">
