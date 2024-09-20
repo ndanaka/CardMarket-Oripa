@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
-import AgreeButton from "../../components/Forms/AgreeButton";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
-import uploadimage from "../../assets/img/icons/upload.png";
+import GetUser from "../../utils/getUserAtom";
+
+import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
-import GetUser from "../../utils/getUserAtom";
-import { useTranslation } from "react-i18next";
+
+import uploadimage from "../../assets/img/icons/upload.png";
+
 function Point() {
   const [formData, setFormData] = useState({
     id: "",
@@ -16,6 +20,7 @@ function Point() {
     price: 0,
     file: null,
   });
+
   const [points, setPoints] = useState([]);
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
@@ -23,7 +28,7 @@ function Point() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = GetUser();
   const { t } = useTranslation();
-  
+
   useEffect(() => {
     setAuthToken();
     getPoint();
@@ -36,18 +41,20 @@ function Point() {
       [e.target.name]: e.target.value,
     });
   };
-  
+
   //get registered point
   const getPoint = () => {
     setAuthToken();
     api
       .get("/admin/get_point")
       .then((res) => {
-        if (res.data.status === 1) setPoints(res.data.points);
-        else console.log("getPoint Error---->", res.data.err);
+        if (res.data.status === 1) {
+          setPoints(res.data.points);
+        } else console.log("getPoint Error---->", res.data.err);
       })
       .catch((err) => console.error(err));
   };
+
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
     if (file !== undefined) {
@@ -68,11 +75,24 @@ function Point() {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     setMultipart();
     setAuthToken();
+    
     api.post("/admin/point_upload", formData).then((res) => {
       if (res.data.status === 1) {
+        console.log("wer");
         showToast("Point Added Successfully.");
+        setFormData({});
+        setImgUrl("");
+        setFormData({
+          ...formData,
+          id: "",
+          pointNum: 0,
+          price: 0,
+          file: null,
+        });
+        setCuFlag(1); //set create/update flag as creating
       } else if (res.data.status === 2) {
         setFormData({});
         showToast("Point Updated Successfully.");
@@ -83,6 +103,7 @@ function Point() {
       getPoint();
     });
   };
+
   //handle Edit Button click event
   const handleEdit = (i) => {
     setFormData({
@@ -103,6 +124,7 @@ function Point() {
     setCuFlag(1);
     upload();
   };
+
   //handle point delete
   const pointDel = () => {
     if (user.authority.point !== 3 && user.authority.point !== 4) {
@@ -121,6 +143,7 @@ function Point() {
     setIsModalOpen(false);
     pointDel();
   };
+
   return (
     <div className="p-3">
       <div className="w-full md:w-[70%] mx-auto">

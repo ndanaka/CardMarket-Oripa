@@ -1,4 +1,4 @@
-export const gPayConfig = {
+export const googlePayConfig = {
   environment: "TEST", // Change to 'PRODUCTION' when ready
   paymentDataRequest: {
     apiVersion: 2,

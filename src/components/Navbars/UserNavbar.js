@@ -54,7 +54,7 @@ const UserNavbar = () => {
             {user ? (
               <div className="flex items-center px-2">
                 {user.role === "admin" ? null : (
-                  <button className="flex items-center mx-4">
+                  <button className="flex items-center">
                     <div
                       className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4"
                       onClick={() => navigate("/user/pur-point")}
@@ -62,6 +62,7 @@ const UserNavbar = () => {
                       {user.point_remain ? user.point_remain : 0} pt
                     </div>
                     <img
+                      alt=""
                       src={require("../../assets/img/icons/coin.png")}
                       width="30px"
                       height="30px"

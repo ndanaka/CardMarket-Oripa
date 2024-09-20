@@ -4,11 +4,12 @@ import { useAtom } from "jotai";
 import api from "../../utils/api.js";
 import { showToast } from "../../utils/toastUtil.js";
 import { setAuthToken } from "../../utils/setHeader.js";
+import { t } from "i18next";
 
 import InputGroup from "../../components/Forms/InputGroup.js";
 import GroupHeader from "../../components/Forms/GroupHeader.js";
+import SubHeader from "../../components/Forms/SubHeader.js";
 
-import { UserAtom } from "../../store";
 import usePersistedUser from "../../store/usePersistedUser.js";
 
 const Profile = () => {
@@ -53,12 +54,11 @@ const Profile = () => {
   };
   return (
     <div
-      className={`relative w-full flex flex-wrap items-start mx-auto py-3 mt-16 bg-[url('${
-        process.env.REACT_APP_SERVER_ADDRESS + "/uploads/users/user_bg.jpg"
-      }')] bg-gradient-dark-pink`}
+      className={`relative w-full flex flex-wrap items-start mx-auto mt-16 py-3`}
     >
-      <div className="w-full md:w-[60%] px-5">
-        <div className="rounded-lg bg-white px-5 py-2 my-3">
+      <SubHeader text={t("my") + " " + t("profile")} />
+      <div className="w-full md:w-3/6 px-3 mx-auto">
+        <div className="rounded-lg bg-white px-5 my-3">
           <div className="flex flex-col">
             <div className="w-full text-2xl text-center text-theme_headertext_color py-2">
               User Profile
@@ -175,8 +175,8 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-[40%] px-5">
-        <div className="rounded-lg bg-white px-5 py-2 my-3">
+      <div className="w-full md:w-3/6 px-3 mx-auto">
+        <div className="rounded-lg bg-white px-5 my-3">
           <div className="">
             <div className="text-xl text-center text-theme_headertext_color py-2">
               Change Password

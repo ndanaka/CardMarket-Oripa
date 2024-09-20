@@ -15,6 +15,7 @@ function PrizeList({
   role = "showPrize",
 }) {
   const [prizes, setPrizes] = useState(""); //registered prizes list
+  const [flag, setFlag] = useState(false); //registered prizes list
   const [delPrizeId, setDelPrizeId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useTranslation();
@@ -29,7 +30,17 @@ function PrizeList({
     api
       .get("/admin/get_prize")
       .then((res) => {
-        if (res.data.status === 1) setPrizes(res.data.prize);
+        if (res.data.status === 1) {
+          setPrizes(res.data.prize);
+          for (let index = 0; index < res.data.prize.length; index++) {
+            const element = res.data.prize[index];
+            if (element.status === "unset") {
+              console.log(element.status);
+              setFlag(!flag);
+              break;
+            }
+          }
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -70,22 +81,22 @@ function PrizeList({
 
   return (
     <>
-      <table className="border-[1px] w-full  m-auto">
-        <thead className="bg-admin_theme_color border-[1px] text-gray-200">
-          <tr>
-            <th>{t("no")}</th>
-            <th>{t("name")}</th>
-            <th>{t("rarity")}</th>
-            <th>{t("cashback") + t("point")}</th>
-            <th>{t("image")}</th>
-            <th>{t("Grade")}</th>
-            <th>{t("status")}</th>
-            <th>{t("action")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {prizes ? (
-            prizes.map((data, i) => {
+      {prizes && prizes.length !== 0 ? (
+        <table className="border-[1px] w-full  m-auto">
+          <thead className="bg-admin_theme_color border-[1px] text-gray-200">
+            <tr>
+              <th>{t("no")}</th>
+              <th>{t("name")}</th>
+              <th>{t("rarity")}</th>
+              <th>{t("cashback") + t("point")}</th>
+              <th>{t("image")}</th>
+              <th>{t("Grade")}</th>
+              <th>{t("status")}</th>
+              <th>{t("action")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {prizes.map((data, i) => {
               if (role === "setPrize" && data.status === "set") return;
               return (
                 <tr
@@ -100,10 +111,8 @@ function PrizeList({
                   <td>{data.cashback}</td>
                   <td>
                     <img
-                      width="100"
-                      height="200"
+                      className="m-auto object-cover h-[50px] w-[100px]"
                       src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
-                      className="m-auto"
                     ></img>
                   </td>
                   <td>
@@ -150,14 +159,13 @@ function PrizeList({
                   </td>
                 </tr>
               );
-            })
-          ) : (
-            <tr>
-              <td colSpan="6">{t("noprize")}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <div className="py-2 text-center">{t("noprize")}</div>
+      )}
+
       <DeleteConfirmModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
