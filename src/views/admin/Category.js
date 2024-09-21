@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
+import GetUser from "../../utils/getUserAtom";
 import { setAuthToken } from "../../utils/setHeader";
-import AgreeButton from "../../components/Forms/AgreeButton";
+
 import { showToast } from "../../utils/toastUtil";
+import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
-import { useTranslation } from "react-i18next";
-import GetUser from "../../utils/getUserAtom";
+
 function Category() {
   const [name, setName] = useState("");
   const [description, setDes] = useState("");
@@ -16,15 +19,17 @@ function Category() {
   const [delId, setDelId] = useState(null);
   const { user } = GetUser();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setAuthToken();
+    get_category();
+  }, []);
+
   const handleDelete = () => {
     // Logic for deleting the item
     categoryDel();
     setIsModalOpen(false);
   };
-  useEffect(() => {
-    setAuthToken();
-    get_category();
-  }, []);
 
   const get_category = () => {
     api
@@ -109,9 +114,11 @@ function Category() {
     setName("");
     setDes("");
   };
+
   const openModal = () => {
     document.getElementById("modal").style.display = "block";
   };
+
   return (
     <div className="p-3 ">
       <div className="w-full md:w-[70%] mx-auto">
@@ -119,7 +126,7 @@ function Category() {
       </div>
       <div className="flex flex-wrap justify-around items-end p-2 w-full md:w-[70%] m-auto">
         <div className="my-1 w-full md:w-[35%]">
-          <label className="text-gray-700 px-2">
+          <label htmlFor="text" className="text-gray-700 px-2">
             {t("category") + " " + t("name")}:{" "}
           </label>
           <input
@@ -128,7 +135,7 @@ function Category() {
           ></input>
         </div>
         <div className="my-1 w-full md:w-[35%]">
-          <label className="text-gray-700 px-2">
+          <label htmlFor="text" className="text-gray-700 px-2">
             {t("category") + " " + t("description")}:{" "}
           </label>
           <input
@@ -200,7 +207,7 @@ function Category() {
           <div className="flex flex-col p-3 px-5 text-theme_text_color text-center">
             <div className="w-full flex flex-col justify-start">
               <div className="my-1">
-                <label className="text-gray-700 px-2 text-left">
+                <label htmlFor="text" className="text-gray-700 px-2 text-left">
                   Category Name:{" "}
                 </label>
                 <input
@@ -210,7 +217,7 @@ function Category() {
                 ></input>
               </div>
               <div className="my-1">
-                <label className="text-gray-700 px-2 text-left">
+                <label htmlFor="text" className="text-gray-700 px-2 text-left">
                   Category Description:{" "}
                 </label>
                 <input

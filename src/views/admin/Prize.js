@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import api from "../../utils/api";
+import GetUser from "../../utils/getUserAtom";
+import { showToast } from "../../utils/toastUtil";
+import { setAuthToken, setMultipart } from "../../utils/setHeader";
+
 import AgreeButton from "../../components/Forms/AgreeButton";
 import PrizeList from "../../components/Tables/PrizeList";
-import api from "../../utils/api";
-import { setAuthToken, setMultipart } from "../../utils/setHeader";
-import { showToast } from "../../utils/toastUtil";
-import uploadimage from "../../assets/img/icons/upload.png";
 import PageHeader from "../../components/Forms/PageHeader";
-import GetUser from "../../utils/getUserAtom";
-import { useTranslation } from "react-i18next";
+
+import uploadimage from "../../assets/img/icons/upload.png";
 
 const Prize = () => {
   const [formData, setFormData] = useState({
@@ -69,7 +72,6 @@ const Prize = () => {
     ) {
       showToast("Prize image is not selected", "error");
     } else {
-      console.log(formData);
       api
         .post("/admin/prize_upload", formData)
         .then((res) => {
@@ -114,7 +116,7 @@ const Prize = () => {
         <div className="flex flex-wrap justify-between items-stretch w-full m-auto px-5">
           <div className="flex flex-col justify-between items-end w-1/2">
             <div className="flex flex-wrap justify-between items-center my-1 mt-4 px-2 w-full">
-              <label className="text-gray-700 px-2">
+              <label htmlFor="text" className="text-gray-700 px-2">
                 {t("prize") + t("name")}:{" "}
               </label>
               <input
@@ -125,7 +127,9 @@ const Prize = () => {
               ></input>
             </div>
             <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label className="text-gray-700 px-2">{t("rarity")}: </label>
+              <label htmlFor="text" className="text-gray-700 px-2">
+                {t("rarity")}:{" "}
+              </label>
               <input
                 name="rarity"
                 className="p-1 w-full form-control"
@@ -134,7 +138,9 @@ const Prize = () => {
               ></input>
             </div>
             <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label className="text-gray-700 px-2">{t("cashback")}: </label>
+              <label htmlFor="text" className="text-gray-700 px-2">
+                {t("cashback")}:{" "}
+              </label>
               <input
                 name="cashBack"
                 className="p-1 w-full form-control"
@@ -143,7 +149,9 @@ const Prize = () => {
               ></input>
             </div>
             <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label className="text-gray-700 px-2">{t("Grade")}: </label>
+              <label htmlFor="text" className="text-gray-700 px-2">
+                {t("Grade")}:{" "}
+              </label>
               <select
                 name="grade"
                 className="p-1 w-full form-control"
@@ -158,7 +166,7 @@ const Prize = () => {
             </div>
           </div>
           <div className="flex flex-col justify-between my-1 mt-4 items-center w-1/2">
-            <label className="text-gray-700 px-2">
+            <label htmlFor="text" className="text-gray-700 px-2">
               {t("prize") + t("image")}:{" "}
             </label>
             <input

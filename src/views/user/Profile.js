@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAtom } from "jotai";
 
 import api from "../../utils/api.js";
 import { showToast } from "../../utils/toastUtil.js";
@@ -13,7 +12,17 @@ import SubHeader from "../../components/Forms/SubHeader.js";
 import usePersistedUser from "../../store/usePersistedUser.js";
 
 const Profile = () => {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    firstname: "",
+    lastname: "",
+    address: "",
+    city: "",
+    country: "",
+    postalCode: "",
+    description: "",
+  });
   const [user, setUser] = usePersistedUser();
 
   useEffect(() => {
@@ -152,7 +161,7 @@ const Profile = () => {
                 <div className="w-full">
                   <GroupHeader text="About me" />
                   <div className="form-group px-2">
-                    <label for="description">My Description</label>
+                    <label htmlFor="description">My Description</label>
                     <textarea
                       className="form-control w-full text-gray-700"
                       name="description"

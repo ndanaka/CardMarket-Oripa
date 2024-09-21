@@ -1,12 +1,13 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 function Label({ text, classname = "" }) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <label
+      htmlFor="name"
       className={`text-base text-gray-500 text-center font-Lexend ${classname}`}
     >
-      {t(text)+":"}
+      {t(text) + ":"}
     </label>
   );
 }

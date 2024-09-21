@@ -1,6 +1,4 @@
-import { atom } from "jotai";
-
-// export const UserAtom = atom<Object>({});
+import { atom } from "jotai/vanilla";
 
 // Retrieve the stored user from localStorage or set to null if not found
 const getInitialUser = () => {

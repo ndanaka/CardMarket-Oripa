@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import uploadimage from "../../assets/img/icons/upload.png";
-
-import formatDate from "../../utils/formatDate";
 import api from "../../utils/api";
+import GetUser from "../../utils/getUserAtom";
+import formatDate from "../../utils/formatDate";
+import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart } from "../../utils/setHeader";
-import { showToast } from "../../utils/toastUtil";
-import GetUser from "../../utils/getUserAtom";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
+
+import uploadimage from "../../assets/img/icons/upload.png";
 
 function Gacha() {
   //new Gacha data
@@ -187,7 +187,9 @@ function Gacha() {
         <div className="flex flex-wrap justify-center items-center w-full mt-3">
           <div className="flex flex-col w-full xxsm:w-1/2">
             <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label className="text-gray-700 pr-2">{t("name")}: </label>
+              <label htmlFor="text" className="text-gray-700 pr-2">
+                {t("name")}:{" "}
+              </label>
               <input
                 name="name"
                 className="p-1 w-3/5 md:w-1/2 form-control"
@@ -196,7 +198,9 @@ function Gacha() {
               ></input>
             </div>
             <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label className="text-gray-700 pr-2">{t("price")}: </label>
+              <label htmlFor="text" className="text-gray-700 pr-2">
+                {t("price")}:{" "}
+              </label>
               <input
                 name="price"
                 className="p-1 w-3/5 md:w-1/2 form-control"
@@ -205,7 +209,9 @@ function Gacha() {
               ></input>
             </div>
             <div className="flex justify-between p-2 px-3 items-center w-full">
-              <label className="text-gray-700 pr-2">{t("category")}: </label>
+              <label htmlFor="text" className="text-gray-700 pr-2">
+                {t("category")}:{" "}
+              </label>
               <select
                 name="category"
                 className="p-1 w-3/5 md:w-1/2 form-control"
@@ -223,7 +229,7 @@ function Gacha() {
               </select>
             </div>
             <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label className="text-gray-700 pr-2">
+              <label htmlFor="text" className="text-gray-700 pr-2">
                 {t("total") + t("number")}:{" "}
               </label>
               <input
@@ -235,7 +241,9 @@ function Gacha() {
             </div>
           </div>
           <div className="flex justify-between items-center p-2 px-3 w-full xxsm:w-1/2">
-            <label className="text-gray-700 pr-2">{t("image")}: </label>
+            <label htmlFor="text" className="text-gray-700 pr-2">
+              {t("image")}:{" "}
+            </label>
             <input
               name="file"
               type="file"

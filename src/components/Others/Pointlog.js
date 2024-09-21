@@ -1,7 +1,10 @@
 import { useEffect, useRef, useCallback } from "react";
+
 import formatDate from "../../utils/formatDate";
+
 function Pointlog({ date, point_num, usage, ioFlag }) {
   const remain_point = useRef(0);
+
   useEffect(() => {
     calcRemainPoint();
   }, [point_num]);
@@ -10,6 +13,7 @@ function Pointlog({ date, point_num, usage, ioFlag }) {
     if (ioFlag === 1) remain_point.current += point_num;
     else remain_point.current -= point_num;
   }, [point_num]);
+
   return (
     <div className="flex flex-col bg-white border-[1px] border-gray-200 rounded-md shadow-md shadow-gray-300 py-2 px-4">
       <small className="font-Inter">{formatDate(date)}</small>

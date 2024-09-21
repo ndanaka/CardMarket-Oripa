@@ -1,7 +1,7 @@
 import { useEffect } from "react";
+
 import api from "./api";
-import { UserAtom } from "../store/user";
-import { useAtom } from "jotai";
+
 import usePersistedUser from "../store/usePersistedUser";
 
 const UpdateUserData = () => {

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
+import { t } from "i18next";
 
 import api from "../../utils/api";
 import GetUser from "../../utils/getUserAtom";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 import formatDate from "../../utils/formatDate";
-import { t } from "i18next";
 
 import GroupHeader from "../../components/Forms/GroupHeader";
 import PrizeCard from "../../components/Others/PrizeCard";

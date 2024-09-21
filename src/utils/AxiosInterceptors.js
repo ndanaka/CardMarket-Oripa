@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import api from "./api";
 import { useNavigate } from "react-router-dom";
 
+import api from "./api";
 import { showToast } from "../utils/toast";
+
 import usePersistedUser from "../store/usePersistedUser";
 
 const useAxiosInterceptor = () => {

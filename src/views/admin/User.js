@@ -1,26 +1,33 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+
 import PageHeader from "../../components/Forms/PageHeader";
+
 function Users() {
   const [userList, setUserList] = useState();
   const [adminId, setAdminId] = useState("");
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
   useEffect(() => {
     setAuthToken();
     getUserList();
   }, []);
 
   const getUserList = () => {
-    api.get("/user/get_userList").then((res) => {
-      if (res.data.status === 1) {
-        setUserList(res.data.userList);
-      }
-    }).catch(err => console.error(err))
+    api
+      .get("/user/get_userList")
+      .then((res) => {
+        if (res.data.status === 1) {
+          setUserList(res.data.userList);
+        }
+      })
+      .catch((err) => console.error(err));
   };
 
   const userDel = (id) => {
@@ -36,21 +43,22 @@ function Users() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="p-3 ">
       <div className="w-full md:w-[70%] mx-auto">
-        <PageHeader text={t('users')} />
+        <PageHeader text={t("users")} />
       </div>
       <div className="m-auto overflow-auto w-full md:w-[70%]">
         <table className="w-full border-2 m-auto min-w-[60%]">
           <thead>
             <tr className="bg-admin_theme_color font-bold text-gray-200">
-              <th>{t('no')}</th>
-              <th>{t('name')}</th>
-              <th>{t('email')}</th>
+              <th>{t("no")}</th>
+              <th>{t("name")}</th>
+              <th>{t("email")}</th>
               <th>{t("password")}</th>
-              <th>{('point')}</th>
-              <th>{('action')}</th>
+              <th>{"point"}</th>
+              <th>{"action"}</th>
             </tr>
           </thead>
           <tbody>
