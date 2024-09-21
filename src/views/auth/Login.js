@@ -6,27 +6,50 @@ import { FormGroup, Form, Input, InputGroup } from "reactstrap";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 
+import EmailVerification from "../../components/Others/EamilVerification";
+
 import usePersistedUser from "../../store/usePersistedUser";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [, setUser] = usePersistedUser();
   const [isVisible, setIsVisible] = useState(false);
+  const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
+  const [showErrMessage, setShowErrMessage] = useState(false);
+
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
   };
 
-  const navigate = useNavigate();
+  const isFormValidate = () => {
+    if (formData.email && formData.password && emailRegex.test(formData.email))
+      return true;
+    else return false;
+  };
+
+  const handleChangeFormData = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    isFormValidate();
+  };
+
+  const emailVerify = () => {
+    setShowErrMessage(true);
+    if (!isFormValidate()) return;
+    handleSubmit();
+    // setIsEmailVerifyPanel(true);
+  };
 
   const handleSubmit = (e) => {
     api
-      .post("/user/login", {
-        email,
-        password,
-      })
+      .post("/user/login", formData)
       .then((res) => {
         if (res.data.status === 1) {
           showToast(res.data.msg, "success");
@@ -45,76 +68,113 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full md:w-2/5 mx-auto rounded-lg bg-white shadow border-0 my-5">
-      <div className="px-lg-5 py-lg-5">
-        <div className="text-center mb-5 font-bold text-3xl">
-          {t("sign_in")}
-        </div>
-        <Form role="form">
-          <FormGroup className="mb-3">
-            <InputGroup className="input-group-alternative">
-              <Input
-                placeholder={t("email")}
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </InputGroup>
-          </FormGroup>
-          <FormGroup>
-            <InputGroup className="input-group-alternative">
-              <Input
-                placeholder={t("password")}
-                type={isVisible ? "text" : "password"}
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <div
-                onClick={togglePasswordVisibility}
-                style={{ position: "absolute", right: "20px", top: "10px" }}
-              >
-                {isVisible ? (
-                  <i className="fa fa-eye text-gray-500" />
-                ) : (
-                  <i className="fa fa-eye-slash text-gray-500" />
-                )}
-              </div>
-            </InputGroup>
-          </FormGroup>
-          <div className="flex justify-between items-center my-2">
-            <a
-              className="text-gray-400"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <div className="text-base text-gray-500 underline-offset-1">
-                {t("forgot") + " " + t("password")}?
-              </div>
-            </a>
-          </div>
-          <div className="text-center mt-10">
-            <button
-              className="button-22 m-auto w-full"
-              type="button"
-              onClick={(e) => handleSubmit(e)}
-            >
+    <>
+      {isEmailVerifyPanel ? (
+        <EmailVerification
+          email={formData.email}
+          setIsEmailVerifyPanel={setIsEmailVerifyPanel}
+        />
+      ) : (
+        <div className="w-full md:w-2/5 mx-auto rounded-lg bg-white shadow border-0 my-5">
+          <div className="px-lg-4 py-lg-4">
+            <div className="text-center mb-5 mt-3 font-bold text-2xl">
               {t("sign_in")}
-            </button>
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={() => navigate("/auth/register")}
-            >
-              <div className="text-lg my-3 text-blue-500 hover:text-blue-700 outline outline-2 rounded-sm py-1">
-                {t("create_account")}
+            </div>
+            <Form role="form">
+              <FormGroup>
+                <p className="p-1 font-bold text-xs">{t("email")} *</p>
+                <InputGroup className="input-group-alternative mb-1">
+                  <Input
+                    placeholder={t("email")}
+                    type="email"
+                    name="email"
+                    className={`border-[1px] ${
+                      showErrMessage && !formData.email ? "is-invalid" : ""
+                    }`}
+                    value={formData.email}
+                    autoComplete="email"
+                    onChange={handleChangeFormData}
+                  />
+                </InputGroup>
+                {showErrMessage && !formData.email ? (
+                  <span className="flex text-sm text-red-600">
+                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
+                    "Email is Requried"
+                  </span>
+                ) : showErrMessage && !emailRegex.test(formData.email) ? (
+                  <span className="flex text-sm text-red-600">
+                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
+                    "Email is Requried"
+                  </span>
+                ) : null}
+              </FormGroup>
+              <FormGroup>
+                <p className="p-1 font-bold text-xs">{t("password")} *</p>
+                <InputGroup className="input-group-alternative mb-1">
+                  <Input
+                    placeholder={t("password")}
+                    type={isVisible ? "text" : "password"}
+                    name="password"
+                    className={`border-[1px] rounded-r-lg ${
+                      showErrMessage && !formData.password ? "is-invalid" : ""
+                    }`}
+                    value={formData.password}
+                    autoComplete="current-password"
+                    onChange={handleChangeFormData}
+                  />
+                  <div
+                    onClick={togglePasswordVisibility}
+                    style={{ position: "absolute", right: "20px", top: "10px" }}
+                  >
+                    {isVisible ? (
+                      <i className="fa fa-eye text-gray-500" />
+                    ) : (
+                      <i className="fa fa-eye-slash text-gray-500" />
+                    )}
+                  </div>
+                </InputGroup>
+                {showErrMessage && !formData.password ? (
+                  <span className="flex text-sm text-red-600">
+                    <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
+                    Password is Required
+                  </span>
+                ) : null}
+              </FormGroup>
+              <div className="text-center mt-10">
+                <button
+                  className="button-22 m-auto"
+                  type="button"
+                  onClick={emailVerify}
+                >
+                  {t("sign_in")}
+                </button>
+                <a
+                  className="text-light"
+                  href="#"
+                  onClick={() => navigate("/auth/forgotPass")}
+                >
+                  <div className="text-md my-3 text-blue-500 hover:text-blue-700 py-1">
+                    {t("forgot_pass")}
+                  </div>
+                </a>
+                <hr className="my-1"></hr>
+                <div className="mt-3">
+                  <span className="text-lg">{t("notHaveAccount")}</span>
+                  <a
+                    className="text-light cursor-pointer"
+                    onClick={() => navigate("/auth/register")}
+                  >
+                    <div className="text-lg my-3 text-blue-500 hover:text-blue-700">
+                      {t("sign_up_btn")}
+                    </div>
+                  </a>
+                </div>
               </div>
-            </a>
+            </Form>
           </div>
-        </Form>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 
