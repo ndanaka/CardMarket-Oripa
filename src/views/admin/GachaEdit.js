@@ -423,6 +423,7 @@ const GachaEdit = () => {
           ""
         )}
       </div>
+
       {/* Registered prizes */}
       <div className="w-full mt-3 overflow-auto">
         <hr className="w-full text-theme_text_color my-1"></hr>

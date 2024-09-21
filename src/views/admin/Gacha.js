@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -280,7 +280,7 @@ function Gacha() {
             {gacha != null ? (
               gacha.map((data, i) => {
                 return (
-                  <>
+                  <React.Fragment key={data._id}>
                     <tr
                       key={i}
                       className={`border-2 ${
@@ -338,7 +338,7 @@ function Gacha() {
                         </div>
                       </td>
                     </tr>
-                  </>
+                  </React.Fragment>
                 );
               })
             ) : (

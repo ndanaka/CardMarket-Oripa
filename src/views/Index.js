@@ -94,19 +94,21 @@ const Index = () => {
 
   const updateUserData = () => {
     setAuthToken();
-    api
-      .get(`/user/get_user/${user._id}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          setUser(res.data.user);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (user) {
+      api
+        .get(`/user/get_user/${user._id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setUser(res.data.user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
-  //handle gacha draw
+  // draw gacha
   const drawGacha = (gacha, num) => {
     const totalPoints = gacha.price * num;
     const remainPoints = user.point_remain;
@@ -115,12 +117,11 @@ const Index = () => {
       setIsOpenPointModal(true);
     } else {
       setSelGacha([gacha, num]);
-      console.log([gacha, num]);
       setIsOpenGachaModal(true);
     }
   };
 
-  const handleDraw = () => {
+  const submitDrawGacha = () => {
     setAuthToken();
     setIsOpenGachaModal(false);
 
@@ -309,7 +310,7 @@ const Index = () => {
             name={selGacha[0].name}
             price={selGacha[0].price}
             draws={selGacha[1]}
-            onDraw={handleDraw}
+            onDraw={submitDrawGacha}
             isOpen={isOpenGachaModal}
             setIsOpen={setIsOpenGachaModal}
           />
@@ -325,14 +326,17 @@ const Index = () => {
       </div>
 
       <div
-        className={`bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
+        className={`z-[10] bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
           showCardFlag ? "" : "hidden"
         } `}
       >
         <div className="fixed top-20 right-10 text-gray-200 text-3xl">
-          <i className="fa fa-close" onClick={() => setShowCardFlag(false)}></i>
+          <i
+            className="fa fa-close cursor-pointer"
+            onClick={() => setShowCardFlag(false)}
+          ></i>
         </div>
-        <div className="flex justify-evenly items-center mt-32">
+        <div className="flex flex-wrap justify-center items-center mt-32">
           {obtains?.length > 0 ? (
             obtains.map((prize, i) => (
               <div className="mt-5 mr-3 bg-white rounded-lg animate-[animatezoom_1s_ease-in-out]">

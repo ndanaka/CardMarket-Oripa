@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useAtom } from "jotai";
 
 import {
   useLocation,
@@ -16,7 +15,6 @@ import ScrollToTop from "../components/Others/ScrollTop.js";
 import routes from "../routes.js";
 import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
-import { UserAtom } from "../store/user";
 import usePersistedUser from "../store/usePersistedUser.js";
 
 const Admin = (props) => {

@@ -1,8 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import { Navigation, Pagination, Autoplay } from "swiper";
 
 import React from "react";
 
@@ -10,7 +10,6 @@ function ImageCarousel({ items }) {
   return (
     <div className="">
       <Swiper
-        // modules={[Navigation, Autoplay, Pagination]}
         navigation={{
           nextEl: ".swiper-button-next-ex2",
           prevEl: ".swiper-button-prev-ex2",

@@ -8,17 +8,18 @@ const UpdateUserData = () => {
   const [user, setUser] = usePersistedUser();
 
   useEffect(() => {
-    api
-      .get(`/user/get_user/${user._id}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          alert(res.data.msg);
-          setUser(res.data.user);
-        } else alert(res.data.msg);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (user) {
+      api
+        .get(`/user/get_user/${user._id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setUser(res.data.user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
 
   return { user };

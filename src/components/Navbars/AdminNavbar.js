@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,20 +10,45 @@ import {
   Media,
 } from "reactstrap";
 
+import { setAuthToken } from "../../utils/setHeader";
+import api from "../../utils/api";
+
 import usePersistedUser from "../../store/usePersistedUser";
 
 import LoginImg from "../../assets/img/icons/login.png";
 import "../../assets/css/index.css";
+import { showToast } from "../../utils/toastUtil";
 
 const AdminNavbar = (props) => {
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    updateUserData();
+  }, []);
+
+  const updateUserData = () => {
+    setAuthToken();
+    if (user) {
+      api
+        .get(`/user/get_user/${user._id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setUser(res.data.user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          showToast("Try to login again", "error");
+        });
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
-    
+
     navigate("/auth/login");
   };
 

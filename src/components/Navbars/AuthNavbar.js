@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import "../../assets/css/index.css";
+import { Navbar } from "reactstrap";
 
-import { NavbarBrand, Navbar } from "reactstrap";
+import "../../assets/css/index.css";
 
 const AuthNavbar = () => {
   const { t } = useTranslation();
