@@ -339,9 +339,12 @@ const Index = () => {
         <div className="flex flex-wrap justify-center items-center mt-32">
           {obtains?.length > 0 ? (
             obtains.map((prize, i) => (
-              <div className="mt-5 mr-3 bg-white rounded-lg animate-[animatezoom_1s_ease-in-out]">
+              <div
+                key={prize._id}
+                className="mt-5 mr-3 bg-white rounded-lg animate-[animatezoom_1s_ease-in-out]"
+              >
                 <PrizeCard
-                  key={i}
+                  key={prize._id}
                   name={prize.name}
                   rarity={prize.rarity}
                   cashback={prize.cashback}

@@ -126,21 +126,27 @@ function Category() {
       </div>
       <div className="flex flex-wrap justify-around items-end p-2 w-full md:w-[70%] m-auto">
         <div className="my-1 w-full md:w-[35%]">
-          <label htmlFor="text" className="text-gray-700 px-2">
+          <label htmlFor="catName" className="text-gray-700 px-2">
             {t("category") + " " + t("name")}:{" "}
           </label>
           <input
             className="p-1 w-full form-control"
             onChange={(e) => setName(e.target.value)}
+            id="catName"
+            name="catName"
+            autoComplete="name"
           ></input>
         </div>
         <div className="my-1 w-full md:w-[35%]">
-          <label htmlFor="text" className="text-gray-700 px-2">
+          <label htmlFor="catDesc" className="text-gray-700 px-2">
             {t("category") + " " + t("description")}:{" "}
           </label>
           <input
             className="p-1 w-full form-control"
             onChange={(e) => setDes(e.target.value)}
+            id="catDesc"
+            name="catDesc"
+            autoComplete="name"
           ></input>
         </div>
         <AgreeButton
@@ -207,23 +213,35 @@ function Category() {
           <div className="flex flex-col p-3 px-5 text-theme_text_color text-center">
             <div className="w-full flex flex-col justify-start">
               <div className="my-1">
-                <label htmlFor="text" className="text-gray-700 px-2 text-left">
+                <label
+                  htmlFor="catNam"
+                  className="text-gray-700 px-2 text-left"
+                >
                   Category Name:{" "}
                 </label>
                 <input
                   className="p-1 w-full rounded-lg border-[1px] border-red-500  focus:border-red-600 focus:outline-red-600"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
+                  id="catNam"
+                  name="catNam"
+                  autoComplete="name"
                 ></input>
               </div>
               <div className="my-1">
-                <label htmlFor="text" className="text-gray-700 px-2 text-left">
+                <label
+                  htmlFor="catDes"
+                  className="text-gray-700 px-2 text-left"
+                >
                   Category Description:{" "}
                 </label>
                 <input
                   className="p-1 w-full rounded-lg border-[1px] border-red-500  focus:border-red-600"
                   onChange={(e) => setDes(e.target.value)}
                   value={description}
+                  id="catDes"
+                  name="catDes"
+                  autoComplete="name"
                 ></input>
               </div>
             </div>

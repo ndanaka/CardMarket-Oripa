@@ -116,7 +116,7 @@ const Prize = () => {
         <div className="flex flex-wrap justify-between items-stretch w-full m-auto px-5">
           <div className="flex flex-col justify-between items-end w-1/2">
             <div className="flex flex-wrap justify-between items-center my-1 mt-4 px-2 w-full">
-              <label htmlFor="text" className="text-gray-700 px-2">
+              <label htmlFor="prizename" className="text-gray-700 px-2">
                 {t("prize") + t("name")}:{" "}
               </label>
               <input
@@ -124,10 +124,12 @@ const Prize = () => {
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.name}
+                id="prizename"
+                autoComplete="name"
               ></input>
             </div>
             <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label htmlFor="text" className="text-gray-700 px-2">
+              <label htmlFor="rarity" className="text-gray-700 px-2">
                 {t("rarity")}:{" "}
               </label>
               <input
@@ -135,10 +137,12 @@ const Prize = () => {
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.rarity}
+                id="rarity"
+                autoComplete="name"
               ></input>
             </div>
             <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label htmlFor="text" className="text-gray-700 px-2">
+              <label htmlFor="cashBack" className="text-gray-700 px-2">
                 {t("cashback")}:{" "}
               </label>
               <input
@@ -146,10 +150,12 @@ const Prize = () => {
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.cashBack}
+                id="cashBack"
+                autoComplete="name"
               ></input>
             </div>
             <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label htmlFor="text" className="text-gray-700 px-2">
+              <label htmlFor="grade" className="text-gray-700 px-2">
                 {t("Grade")}:{" "}
               </label>
               <select
@@ -157,6 +163,8 @@ const Prize = () => {
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.grade}
+                id="grade"
+                autoComplete="name"
               >
                 <option value="1">First</option>
                 <option value="2">Second</option>
@@ -166,7 +174,7 @@ const Prize = () => {
             </div>
           </div>
           <div className="flex flex-col justify-between my-1 mt-4 items-center w-1/2">
-            <label htmlFor="text" className="text-gray-700 px-2">
+            <label htmlFor="fileInput" className="text-gray-700 px-2">
               {t("prize") + t("image")}:{" "}
             </label>
             <input
@@ -175,6 +183,7 @@ const Prize = () => {
               id="fileInput"
               className="image p-1 w-full form-control"
               onChange={handleFileInputChange}
+              autoComplete="name"
             ></input>
             <img
               src={imgUrl ? imgUrl : uploadimage}

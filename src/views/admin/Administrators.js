@@ -121,36 +121,42 @@ function Administrators() {
       </div>
       <div className="flex flex-col justify-center items-center p-5 w-full md:w-[70%] m-auto">
         <div className="my-1 form-group w-full">
-          <label htmlFor="text" className="text-gray-700 px-2">
+          <label htmlFor="name" className="text-gray-700 px-2">
             {t("name")}:{" "}
           </label>
           <input
+            id="name"
             name="name"
             className="form-control w-full"
             onChange={(e) => setName(e.target.value)}
             value={name ? name : ""}
+            autoComplete="name"
           ></input>
         </div>
         <div className="my-1 form-group w-full">
-          <label htmlFor="text" className="text-gray-700 px-2">
+          <label htmlFor="email" className="text-gray-700 px-2">
             {t("email")}:{" "}
           </label>
           <input
+            id="email"
             name="email"
             className="form-control w-full"
             onChange={(e) => setEmail(e.target.value)}
             value={email ? email : ""}
+            autoComplete="name"
           ></input>
         </div>
         <div className="my-1 form-group w-full">
-          <label htmlFor="text" className="text-gray-700 px-2">
+          <label htmlFor="password" className="text-gray-700 px-2">
             {t("password")}:{" "}
           </label>
           <input
+            id="password"
             name="password"
             className="form-control w-full"
             onChange={(e) => setPass(e.target.value)}
             value={password ? password : ""}
+            autoComplete="name"
           ></input>
         </div>
         <div className="flex justify-end">

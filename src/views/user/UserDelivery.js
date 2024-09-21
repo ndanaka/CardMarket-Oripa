@@ -57,14 +57,17 @@ function UserDelivery() {
                 .filter((data) => data.status === "pending")
                 .map((data, i) => {
                   return (
-                    <div className="my-1">
+                    <div key={i} className="my-1">
                       <div>
                         {data.gacha_name} {formatDate(data.gacha_date)}
                       </div>
                       <div className="flex flex-wrap mt-2 mr-2">
                         {data.prizes?.length > 0
                           ? data.prizes.map((card) => (
-                              <div className="group relative mt-1 mr-1">
+                              <div
+                                key={card._id}
+                                className="group relative mt-1 mr-1"
+                              >
                                 <PrizeCard
                                   name={card.name}
                                   rarity={card.rarity}
@@ -114,19 +117,21 @@ function UserDelivery() {
                 .filter((data) => data.status === "delivering")
                 .map((data, i) => {
                   return (
-                    <div className="my-1">
+                    <div key={i} className="my-1">
                       <div>
                         {data.gacha_name} {data.gacha_date}
                       </div>
                       <div className="flex flex-wrap mt-2 mr-2">
                         {data.prizes?.length > 0
                           ? data.prizes.map((card) => (
-                              <PrizeCard
-                                name={card.name}
-                                rarity={card.rarity}
-                                cashback={card.cashback}
-                                img_url={card.img_url}
-                              />
+                              <div key={card._id}>
+                                <PrizeCard
+                                  name={card.name}
+                                  rarity={card.rarity}
+                                  cashback={card.cashback}
+                                  img_url={card.img_url}
+                                />
+                              </div>
                             ))
                           : null}
                       </div>
