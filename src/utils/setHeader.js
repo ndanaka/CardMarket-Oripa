@@ -14,6 +14,5 @@ export function setAuthToken() {
 }
 
 export function setMultipart() {
-  // "Content-Type": "multipart/form-data",
   api.defaults.headers["Content-Type"] = "multipart/form-data";
 }
