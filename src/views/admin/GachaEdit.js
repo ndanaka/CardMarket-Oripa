@@ -33,7 +33,6 @@ const GachaEdit = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(gachaId);
     setAuthToken();
     getGacha();
   }, []);
@@ -88,7 +87,7 @@ const GachaEdit = () => {
     return (
       <div>
         <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
-        <div className="flex flex-wrap justify-evenly items-stretch">
+        <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
             <div className="group relative m-2" key={i}>
               <PrizeCard
@@ -424,6 +423,7 @@ const GachaEdit = () => {
           ""
         )}
       </div>
+
       {/* Registered prizes */}
       <div className="w-full mt-3 overflow-auto">
         <hr className="w-full text-theme_text_color my-1"></hr>

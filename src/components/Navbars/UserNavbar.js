@@ -1,9 +1,7 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-import "../../assets/css/index.css";
-
 import {
   DropdownMenu,
   DropdownItem,
@@ -11,12 +9,38 @@ import {
   DropdownToggle,
   Nav,
 } from "reactstrap";
+
+import { setAuthToken } from "../../utils/setHeader";
+import api from "../../utils/api";
+
 import usePersistedUser from "../../store/usePersistedUser";
+
+import "../../assets/css/index.css";
 
 const UserNavbar = () => {
   const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    updateUserData();
+  }, []);
+
+  const updateUserData = () => {
+    setAuthToken();
+    if (user) {
+      api
+        .get(`/user/get_user/${user._id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setUser(res.data.user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   const logout = () => {
     localStorage.removeItem("token");

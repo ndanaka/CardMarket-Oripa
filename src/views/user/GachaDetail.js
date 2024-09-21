@@ -17,13 +17,13 @@ function GachaDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const { gachaId, progress } = location.state || {}; //gacha id came from previous page through navigate
+  const { gachaId } = location.state || {}; //gacha id came from previous page through navigate
 
   useEffect(() => {
     getGacha();
   }, []);
 
-  //get gacha by gacha id
+  // get gacha by gacha id
   const getGacha = () => {
     api
       .get(`/admin/gacha/${gachaId}`)
@@ -38,7 +38,7 @@ function GachaDetail() {
       .catch((err) => console.log(err));
   };
 
-  // divide remain prizes by grade
+  // divide remaining prizes by grade
   const setGradePrizes = (remainPrizes) => {
     let firstPrizes = [];
     let secondPrizes = [];
@@ -70,12 +70,12 @@ function GachaDetail() {
     setFourthprizes(fourthPrizes);
   };
 
-  // drawing prizes by grade
+  // append remaining prizes to dom element
   const drawGradePrizes = (prizes, grade) => {
     return (
       <div>
         <div className="my-3 text-lg text-center font-bold">{t(grade)}</div>
-        <div className="flex flex-wrap justify-evenly items-stretch">
+        <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
             <div className="group relative m-2" key={i}>
               <PrizeCard

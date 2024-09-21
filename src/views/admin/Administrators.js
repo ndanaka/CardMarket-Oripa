@@ -8,8 +8,6 @@ import { setAuthToken } from "../../utils/setHeader";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
 
-import GetUser from "../../utils/getUserAtom";
-
 function Administrators() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,12 +19,12 @@ function Administrators() {
   const [cuflag, setCuFlag] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   useEffect(() => {
     setAuthToken();
     getAdminList();
   }, []);
-  
+
   const getAdminList = () => {
     api
       .get("/admin/get_adminList")
@@ -279,7 +277,7 @@ function Administrators() {
                       </td>
                     </tr>
                   ))
-                : ""}
+                : null}
             </tbody>
           </table>
           <button

@@ -51,16 +51,18 @@ function PurchasePoint() {
 
   const updateUserData = () => {
     setAuthToken();
-    api
-      .get(`/user/get_user/${user._id}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          setUser(res.data.user);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (user) {
+      api
+        .get(`/user/get_user/${user._id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setUser(res.data.user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const purchase_point = async (amount) => {

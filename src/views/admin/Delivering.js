@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
 import GetUser from "../../utils/getUserAtom";
 import { showToast } from "../../utils/toastUtil";
-import { useTranslation } from "react-i18next";
-import PageHeader from "../../components/Forms/PageHeader";
-import { useNavigate } from "react-router-dom";
 import { setAuthToken } from "../../utils/setHeader";
+
+import PageHeader from "../../components/Forms/PageHeader";
+import React from "react";
 
 function Delivering() {
   const { user } = GetUser();
   const [deliverData, setDeliverData] = useState();
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ function Delivering() {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     api
       .post("/admin/set_deliver_status", {
         id: deliverData[i]._id,
@@ -67,7 +69,7 @@ function Delivering() {
           <tbody>
             {deliverData?.length > 0 ? (
               deliverData.map((data, i) => (
-                <>
+                <React.Fragment key={data._id}>
                   <tr key={i}>
                     <td>{i++}</td>
                     <td>{data.user_name}</td>
@@ -93,8 +95,7 @@ function Delivering() {
                       </button>
                     </td>
                   </tr>
-                  {}
-                </>
+                </React.Fragment>
               ))
             ) : (
               <tr>
