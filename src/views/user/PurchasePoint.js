@@ -110,7 +110,6 @@ function PurchasePoint() {
   };
 
   const handlePay = async (amount) => {
-    console.log(amount);
     try {
       if (paymentMethod === null) {
         showToast("Select method of payment", "error");

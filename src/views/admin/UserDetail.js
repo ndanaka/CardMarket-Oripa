@@ -1,23 +1,27 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
+
 import Label from "../../components/Forms/Label";
 import PrizeCard from "../../components/Others/PrizeCard";
 import GroupHeader from "../../components/Forms/GroupHeader";
-import { useTranslation } from "react-i18next";
+
 function UserDetail() {
   const [user, setUser] = useState(null);
   const [pointLog, setPointLog] = useState();
   const navigate = useNavigate();
   const location = useLocation();
   const { userId } = location.state || {};
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
   useEffect(() => {
     getUserData();
     getPointLog();
   }, []);
+
   const getUserData = () => {
     api
       .get(`/user/get_user/${userId}`)
@@ -35,6 +39,7 @@ function UserDetail() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="w-full  md:w-[70%] m-auto  p-3">
       <div className="text-xl text-center text-slate-600">
@@ -50,25 +55,29 @@ function UserDetail() {
         <GroupHeader text="user_information" />
         <div className="flex flex-wrap">
           <div className="w-full px-2">
-            <Label text="name" classname="pr-3" /> {user?.name}
+            <Label htmlFor="text" text="name" classname="pr-3" /> {user?.name}
           </div>
           <div className="w-full md:w-1/2 px-2">
-            <Label text="email" classname="pr-3" /> {user?.email}
+            <Label htmlFor="text" text="email" classname="pr-3" /> {user?.email}
           </div>
           <div className="w-full md:w-1/2 px-2">
-            <Label text="address" classname="pr-3" /> {user?.address}
+            <Label htmlFor="text" text="address" classname="pr-3" />{" "}
+            {user?.address}
           </div>
           <div className="w-full md:w-1/2 px-2">
-            <Label text="city" classname="pr-3" /> {user?.city}
+            <Label htmlFor="text" text="city" classname="pr-3" /> {user?.city}
           </div>
           <div className="w-full md:w-1/2 px-2">
-            <Label text="country" classname="pr-3" /> {user?.country}
+            <Label htmlFor="text" text="country" classname="pr-3" />{" "}
+            {user?.country}
           </div>
           <div className="w-full md:w-1/2 px-2">
-            <Label text="postal_code" classname="pr-3" /> {user?.postalCode}
+            <Label htmlFor="text" text="postal_code" classname="pr-3" />{" "}
+            {user?.postalCode}
           </div>
           <div className="w-full md:w-1/2 px-2">
-            <Label text="description" classname="pr-3" /> {user?.description}
+            <Label htmlFor="text" text="description" classname="pr-3" />{" "}
+            {user?.description}
           </div>
         </div>
         <hr></hr>
@@ -78,10 +87,10 @@ function UserDetail() {
             <table className="w-full">
               <thead className="bg-admin_theme_color font-bold text-gray-200">
                 <tr>
-                  <th>{t('no')}</th>
-                  <th>{t('point') +" "+t('amount') }</th>
-                  <th>{t('usage')}</th>
-                <th>{t('date')}</th>
+                  <th>{t("no")}</th>
+                  <th>{t("point") + " " + t("amount")}</th>
+                  <th>{t("usage")}</th>
+                  <th>{t("date")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -96,7 +105,7 @@ function UserDetail() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4">{t('nopointlog')}</td>
+                    <td colSpan="4">{t("nopointlog")}</td>
                   </tr>
                 )}
               </tbody>
@@ -132,7 +141,7 @@ function UserDetail() {
                 })
               ) : (
                 <div className="text-lg text-gray-200 text-center">
-                  {t('nocard')}
+                  {t("nocard")}
                 </div>
               )}
             </div>

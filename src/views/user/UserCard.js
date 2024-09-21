@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { t } from "i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
-import { t } from "i18next";
 
 import SubHeader from "../../components/Forms/SubHeader";
 import PrizeCard from "../../components/Others/PrizeCard";

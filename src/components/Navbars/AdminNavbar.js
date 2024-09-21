@@ -29,6 +29,7 @@ const AdminNavbar = (props) => {
 
   const updateUserData = () => {
     setAuthToken();
+
     if (user) {
       api
         .get(`/user/get_user/${user._id}`)

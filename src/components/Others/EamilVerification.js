@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+
 import ImailVerifyImg from "../../assets/img/icons/common/check-email.svg";
 
 const EmailVerification = ({ email, password, setIsEmailVerifyPanel }) => {

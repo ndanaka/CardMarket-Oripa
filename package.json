@@ -1,5 +1,5 @@
 {
-  "name": "Oripa",
+  "name": "oripa",
   "version": "1.2.3",
   "description": "Oripa site by React",
   "main": "index.js",
@@ -13,6 +13,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.{js,jsx}",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "eslintConfig": {
@@ -41,8 +42,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "4.4.4",
     "classnames": "2.5.1",
-    "eslint": "9.10.0",
-    "jotai": "^2.9.3",
+    "jotai": "^2.10.0",
     "moment": "2.30.1",
     "nouislider": "15.8.1",
     "papaparse": "^5.4.1",
@@ -72,8 +72,10 @@
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "9.10.0",
+    "eslint": "^9.11.0",
     "eslint-config-next": "14.2.12",
+    "eslint-plugin-react": "^7.36.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-webpack-plugin": "4.2.0",
     "formik": "^2.4.6",
     "i18next": "^23.15.1",

@@ -29,8 +29,9 @@ const Login = () => {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast(res.data.msg);
+          showToast(res.data.msg, "success");
           setUser(res.data.user);
+
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("user", JSON.stringify(res.data.user));
 
@@ -52,11 +53,6 @@ const Login = () => {
         <Form role="form">
           <FormGroup className="mb-3">
             <InputGroup className="input-group-alternative">
-              {/* <InputGroupAddon addonType="prepend">
-                <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                  <i className="fa-solid fa-envelope"></i>
-                </InputGroupText>
-              </InputGroupAddon> */}
               <Input
                 placeholder={t("email")}
                 type="email"
@@ -68,11 +64,6 @@ const Login = () => {
           </FormGroup>
           <FormGroup>
             <InputGroup className="input-group-alternative">
-              {/* <InputGroupAddon addonType="prepend">
-                <InputGroupText className="p-3 text-gray-500 rounded-r-none">
-                  <i className="fa-solid fa-unlock-keyhole"></i>
-                </InputGroupText>
-              </InputGroupAddon> */}
               <Input
                 placeholder={t("password")}
                 type={isVisible ? "text" : "password"}
