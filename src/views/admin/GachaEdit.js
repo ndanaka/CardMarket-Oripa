@@ -87,7 +87,7 @@ const GachaEdit = () => {
     return (
       <div>
         <div className="my-2 text-3xl text-center font-bold">{t(grade)}</div>
-        <div className="flex flex-wrap justify-evenly items-stretch">
+        <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
             <div className="group relative m-2" key={i}>
               <PrizeCard

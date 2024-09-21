@@ -40,7 +40,7 @@ const Auth = () => {
   return (
     <div className="w-full h-full flex flex-col justify-top bg-gray-100">
       <AuthNavbar />
-      <Container className="w-full justify-center py-5">
+      <Container className="w-full h-full justify-center bg-[#f3f4f6] py-3 bg">
         <div className="float-right">
           <ChangeLanguage />
         </div>

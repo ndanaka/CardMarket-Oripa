@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+
 function ChangeLanguage() {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const currentLanguage = i18n.language; //current language
 
   const changeLanguage = (lang) => {

@@ -72,12 +72,10 @@ const UserLayout = (props) => {
           {...props}
           brandText={getBrandText(props?.location?.pathname)}
         />
-        <div className="mb-20">
-          <Routes>
-            {getRoutes(routes)}
-            <Route path="*" element={<Navigate to="/user/index" replace />} />
-          </Routes>
-        </div>
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="*" element={<Navigate to="/user/index" replace />} />
+        </Routes>
         <Footer />
       </div>
     </>

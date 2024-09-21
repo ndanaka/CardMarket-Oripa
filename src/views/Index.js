@@ -110,14 +110,18 @@ const Index = () => {
 
   // draw gacha
   const drawGacha = (gacha, num) => {
-    const totalPoints = gacha.price * num;
-    const remainPoints = user.point_remain;
-
-    if (remainPoints === 0 || remainPoints < totalPoints) {
-      setIsOpenPointModal(true);
+    if (!user) {
+      navigate("/auth/login");
     } else {
-      setSelGacha([gacha, num]);
-      setIsOpenGachaModal(true);
+      const totalPoints = gacha.price * num;
+      const remainPoints = user.point_remain;
+
+      if (remainPoints === 0 || remainPoints < totalPoints) {
+        setIsOpenPointModal(true);
+      } else {
+        setSelGacha([gacha, num]);
+        setIsOpenGachaModal(true);
+      }
     }
   };
 
@@ -158,10 +162,10 @@ const Index = () => {
   return (
     <>
       <div className="w-full md:w-[70%] md:mx-2 mt-16 mx-auto p-2">
-        <div className="float-right mt-4">
+        <div className="float-right mt-2">
           <ChangeLanguage />
         </div>
-        <div className="mx-auto mt-20">
+        <div className="mx-auto mt-16">
           <ImageCarousel items={carouselItems} />
         </div>
 
