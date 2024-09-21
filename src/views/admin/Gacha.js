@@ -187,7 +187,7 @@ function Gacha() {
         <div className="flex flex-wrap justify-center items-center w-full mt-3">
           <div className="flex flex-col w-full xxsm:w-1/2">
             <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label htmlFor="text" className="text-gray-700 pr-2">
+              <label htmlFor="name" className="text-gray-700 pr-2">
                 {t("name")}:{" "}
               </label>
               <input
@@ -195,10 +195,12 @@ function Gacha() {
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
                 value={formData.name}
+                id="name"
+                autoComplete="name"
               ></input>
             </div>
             <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label htmlFor="text" className="text-gray-700 pr-2">
+              <label htmlFor="price" className="text-gray-700 pr-2">
                 {t("price")}:{" "}
               </label>
               <input
@@ -206,10 +208,12 @@ function Gacha() {
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
                 value={formData.price}
+                id="price"
+                autoComplete="name"
               ></input>
             </div>
             <div className="flex justify-between p-2 px-3 items-center w-full">
-              <label htmlFor="text" className="text-gray-700 pr-2">
+              <label htmlFor="category" className="text-gray-700 pr-2">
                 {t("category")}:{" "}
               </label>
               <select
@@ -217,6 +221,8 @@ function Gacha() {
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
                 value={formData.category}
+                id="category"
+                autoComplete="name"
               >
                 <option></option>
                 {categoryList
@@ -229,7 +235,7 @@ function Gacha() {
               </select>
             </div>
             <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label htmlFor="text" className="text-gray-700 pr-2">
+              <label htmlFor="totalNum" className="text-gray-700 pr-2">
                 {t("total") + t("number")}:{" "}
               </label>
               <input
@@ -237,20 +243,23 @@ function Gacha() {
                 className="p-1 w-3/5 md:w-1/2 form-control"
                 onChange={changeFormData}
                 value={formData.totalNum}
+                id="totalNum"
+                autoComplete="name"
               ></input>
             </div>
           </div>
           <div className="flex justify-between items-center p-2 px-3 w-full xxsm:w-1/2">
-            <label htmlFor="text" className="text-gray-700 pr-2">
+            <label htmlFor="fileInput" className="text-gray-700 pr-2">
               {t("image")}:{" "}
             </label>
             <input
-              name="file"
+              name="fileInput"
               type="file"
               id="fileInput"
               className="image p-1 w-3/5 md:w-1/2 form-control"
               onChange={handleFileInputChange}
               value={formData.imgUrl}
+              autoComplete="name"
             ></input>
 
             <img

@@ -154,7 +154,7 @@ function Point() {
         </div>
         <div className="flex flex-col items-center w-full md:w-[70%]">
           <div className="flex flex-wrap justify-between items-center my-1 mt-4 w-[70%]">
-            <label htmlFor="text" className="text-gray-700 px-2">
+            <label htmlFor="pointNum" className="text-gray-700 px-2">
               {t("point") + " " + t("amount")}:{" "}
             </label>
             <input
@@ -162,10 +162,12 @@ function Point() {
               className="p-1 w-full form-control"
               onChange={changeFormData}
               value={formData.pointNum}
+              id="pointNum"
+              autoComplete="name"
             ></input>
           </div>
           <div className="flex flex-wrap justify-between my-1 w-[70%]">
-            <label htmlFor="text" className="text-gray-700 px-2">
+            <label htmlFor="price" className="text-gray-700 px-2">
               {t("price")}:{" "}
             </label>
             <input
@@ -173,18 +175,21 @@ function Point() {
               className="p-1 w-full form-control"
               onChange={changeFormData}
               value={formData.price}
+              id="price"
+              autoComplete="name"
             ></input>
           </div>
           <div className="flex flex-wrap justify-between my-1 items-center w-[70%]">
-            <label htmlFor="text" className="text-gray-700 px-2">
+            <label htmlFor="fileInput" className="text-gray-700 px-2">
               {t("point") + " " + t("image")}:{" "}
             </label>
             <input
-              name="file"
+              name="fileInput"
               type="file"
               id="fileInput"
               className="image p-1 w-full form-control"
               onChange={handleFileInputChange}
+              autoComplete="name"
             ></input>
             <img
               src={imgUrl ? imgUrl : uploadimage}
