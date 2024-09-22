@@ -10,17 +10,17 @@ function PrizeCard({ name, rarity, cashback, img_url }) {
         ></img>
         <div className="flex flex-col items-center mt-1">
           <div className="flex justify-between items-center">
-            <span>name : </span>
+            <span>Name : </span>
             <span>{name}</span>
           </div>
           <hr className="w-full"></hr>
           <div className="flex justify-between">
-            <div>rarity : </div>
+            <div>Rarity : </div>
             <div>{rarity}</div>
           </div>
           <hr className="w-full"></hr>
           <div className="flex justify-between">
-            <span>cashback : </span>
+            <span>Cashback : </span>
             <span>{cashback}</span>
           </div>
           <hr className="w-full"></hr>

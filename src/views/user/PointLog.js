@@ -31,13 +31,15 @@ function PointLog() {
       <SubHeader text={t("point_log")} />
       <div className="flex flex-col">
         {pointLog?.length > 0
-          ? pointLog.map((data) => (
-              <Pointlog
-                date={data.date}
-                point_num={data.point_num}
-                usage={data.usage}
-                ioFlag={data.ioFlag}
-              />
+          ? pointLog.map((data, i) => (
+              <div key={i}>
+                <Pointlog
+                  date={data.date}
+                  point_num={data.point_num}
+                  usage={data.usage}
+                  ioFlag={data.ioFlag}
+                />
+              </div>
             ))
           : null}
       </div>

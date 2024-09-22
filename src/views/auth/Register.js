@@ -203,7 +203,7 @@ const Register = () => {
                       Password is Required
                     </span>
                   ) : null}
-                  <div className="flex items-center text-muted font-italic">
+                  <div className="flex items-center text-muted font-italic justify-end">
                     <p
                       className={`font-bold ${
                         strength === "weak"

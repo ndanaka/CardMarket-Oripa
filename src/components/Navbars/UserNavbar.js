@@ -155,6 +155,16 @@ const UserNavbar = () => {
                           </span>
                         </DropdownItem>
                         <DropdownItem
+                          to="/user/delivery"
+                          tag={Link}
+                          className="flex justify-between items-center"
+                        >
+                          <i className="fa-solid fa-truck"></i>
+                          <span className="w-4/6 text-left font-Lexend font-bold">
+                            {t("delivery")}
+                          </span>
+                        </DropdownItem>
+                        <DropdownItem
                           to="/user/Card"
                           tag={Link}
                           className="flex justify-between items-center"
@@ -162,16 +172,6 @@ const UserNavbar = () => {
                           <i className="fa-solid fa-award"></i>
                           <span className="w-4/6 text-left font-Lexend font-bold">
                             {t("my") + " " + t("cards")}
-                          </span>
-                        </DropdownItem>
-                        <DropdownItem
-                          to="/user/delivery"
-                          tag={Link}
-                          className="flex justify-between items-center"
-                        >
-                          <i className="fa-solid fa-truck"></i>
-                          <span className="w-4/6 text-left font-Lexend font-bold">
-                            {t("my") + " " + t("delivery")}
                           </span>
                         </DropdownItem>
                       </>

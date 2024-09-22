@@ -93,7 +93,7 @@ function GachaDetail() {
   };
 
   return (
-    <div className="min-w-full bg-gray-100 md:px-0 mt-20">
+    <div className="min-w-full bg-gray-100 md:px-0 mt-16">
       <div className="text-center text-xl py-3 mb-3 bg-white">
         <span className="text-indigo-600 font-black text-xl px-2">{gacha?.category}</span>
         {gacha?.name}
