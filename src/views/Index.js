@@ -132,11 +132,11 @@ const Index = () => {
     api
       .post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
-        draw: selGacha[1],
+        drawCounts: selGacha[1],
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("Gacha Draw Success.");
+          showToast(res.data.msg, "success");
           getGacha();
           setObtains(res.data.prizes);
           showCards();

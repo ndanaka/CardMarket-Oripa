@@ -34,19 +34,23 @@ function Delivering() {
       return;
     }
 
-    api
-      .post("/admin/set_deliver_status", {
-        id: deliverData[i]._id,
-        user_id: deliverData[i].user_id,
-        status: deliverData[i].status,
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast("Set Status Success.");
-          getDeliverData();
-        } else showToast("Set Status Failed.");
-      })
-      .catch((err) => console.log(err));
+    if (deliverData[i].status === "Delivered") {
+      showToast("This gachas has already Delivered", "error");
+    } else {
+      api
+        .post("/admin/set_deliver_status", {
+          id: deliverData[i]._id,
+          user_id: deliverData[i].user_id,
+          status: deliverData[i].status,
+        })
+        .then((res) => {
+          if (res.data.status === 1) {
+            showToast("Set Status Success.", "success");
+            getDeliverData();
+          } else showToast("Set Status Failed.", "error");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -71,7 +75,7 @@ function Delivering() {
               deliverData.map((data, i) => (
                 <React.Fragment key={data._id}>
                   <tr key={i}>
-                    <td>{i++}</td>
+                    <td>{i + 1}</td>
                     <td>{data.user_name}</td>
                     <td>{data.gacha_name}</td>
                     <td>
@@ -83,13 +87,13 @@ function Delivering() {
                     <td>
                       <button
                         className={`py-1 px-2 rounded-sm text-center text-gray-200 ${
-                          data.status === "pending"
-                            ? "bg-blue-600"
-                            : data.status === "delivering"
+                          data.status === "Pending"
+                            ? "bg-yellow-600"
+                            : data.status === "Delivering"
                             ? "bg-indigo-600"
-                            : "bg-purple-600"
+                            : "bg-red-600"
                         }`}
-                        onClick={() => handlesetStatus(i - 1)}
+                        onClick={() => handlesetStatus(i)}
                       >
                         {t(data.status)}
                       </button>

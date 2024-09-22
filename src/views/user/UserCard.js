@@ -3,6 +3,7 @@ import { t } from "i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
+import formatDate from "../../utils/formatDate";
 
 import SubHeader from "../../components/Forms/SubHeader";
 import PrizeCard from "../../components/Others/PrizeCard";
@@ -30,20 +31,20 @@ function UserCard() {
   return (
     <div className="w-full md:w-4/6 p-3 mx-auto mt-16">
       <SubHeader text={t("my") + " " + t("cards")} />
-      <div className="flex flex-wrap justify-evenly items-center">
-        <div className="w-full p-2">
-          <div className="flex flex-wrap justify-evenly"></div>
+      <div className="flex flex-wrap justify-center items-stretch">
+        <div className="contents">
           {userCards ? (
             userCards.map((gacha, i) => {
               return (
-                <div className="my-1">
-                  <div>
-                    {gacha.gacha_name} {gacha.gacha_date}
+                <div className="my-1" key={i}>
+                  <div className="text-center">{gacha.gacha_name}</div>
+                  <div className="text-center">
+                    {formatDate(gacha.gacha_date)}
                   </div>
-                  <div className="flex flex-wrap ">
+                  <div className="flex flex-wrap">
                     {gacha.prizes?.length > 0
-                      ? gacha.prizes.map((card) => (
-                          <div className="mt-2 mr-2">
+                      ? gacha.prizes.map((card, i) => (
+                          <div className="mt-2 mr-2" key={i}>
                             <PrizeCard
                               name={card.name}
                               rarity={card.rarity}
