@@ -95,7 +95,7 @@ function Gacha() {
     } else if (parseInt(formData.totalNum) <= 0) {
       showToast("Gacha total number be greater than than 0", "error");
     } else if (
-      formData.file === NaN ||
+      isNaN(formData.file) ||
       formData.file === null ||
       formData.file === undefined
     ) {
@@ -265,7 +265,7 @@ function Gacha() {
 
             <img
               src={imgUrl ? imgUrl : uploadimage}
-              alt="prize image"
+              alt="prize"
               width="150px"
               height="150px"
               className="mx-auto mt-2 max-w-[200px] "

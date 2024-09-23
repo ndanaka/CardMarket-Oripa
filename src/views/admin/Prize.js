@@ -66,7 +66,7 @@ const Prize = () => {
     } else if (parseInt(formData.cashBack) <= 0) {
       showToast("Cashback be greater than than 0", "error");
     } else if (
-      formData.file === NaN ||
+      isNaN(formData.file) ||
       formData.file === null ||
       formData.file === undefined
     ) {
@@ -187,14 +187,14 @@ const Prize = () => {
             ></input>
             <img
               src={imgUrl ? imgUrl : uploadimage}
-              alt="prize image"
+              alt="prize"
               width="150"
               height="150"
               className="image mx-auto mt-2 max-w-[200px]"
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
-            ></img>
+            />
           </div>
         </div>
         <div className="flex items-center">

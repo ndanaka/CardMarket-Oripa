@@ -45,7 +45,7 @@ function GachaDetail() {
     let thirdPrizes = [];
     let fourthPrizes = [];
 
-    remainPrizes.map((remainPrize) => {
+    remainPrizes.forEach((remainPrize) => {
       switch (remainPrize.grade) {
         case 1:
           firstPrizes.push(remainPrize);
@@ -94,8 +94,10 @@ function GachaDetail() {
 
   return (
     <div className="min-w-full bg-gray-100 md:px-0 mt-16">
-      <div className="text-center text-xl py-3 mb-3 bg-white">
-        <span className="text-indigo-600 font-black text-xl px-2">{gacha?.category}</span>
+      <div className="text-center text-xl py-3 my-3 bg-white">
+        <span className="text-indigo-600 font-black text-xl px-2">
+          {gacha?.category}
+        </span>
         {gacha?.name}
       </div>
       <div className="relative flex flex-col w-full md:w-1/2 m-auto">

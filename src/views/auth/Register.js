@@ -42,7 +42,7 @@ const Register = () => {
   };
 
   const handleChangeFormData = (e) => {
-    if (e.target.name == "password") checkPasswordStrength(e.target.value);
+    if (e.target.name === "password") checkPasswordStrength(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
     isFormValidate();
   };
@@ -285,16 +285,16 @@ const Register = () => {
                     {t("create_account")}
                   </button>
                   <hr className="my-1"></hr>
-                  <div className="mt-3">
+                  <div className="flex flex-col mt-3">
                     <span className="text-lg">{t("haveAccount")}</span>
-                    <a
+                    <button
                       className="text-light cursor-pointer"
                       onClick={() => navigate("/auth/signin")}
                     >
                       <div className="text-lg my-3 text-blue-500 hover:text-blue-700 py-1">
                         {t("sign_in")}
                       </div>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </Form>

@@ -1,5 +1,3 @@
-import React from "react";
-
 function SubHeader({ text }) {
   return (
     <div className="w-full py-2">

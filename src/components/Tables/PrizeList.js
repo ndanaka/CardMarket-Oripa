@@ -97,7 +97,9 @@ function PrizeList({
           </thead>
           <tbody>
             {prizes.map((data, i) => {
-              if (role === "setPrize" && data.status === "set") return;
+              if (role === "setPrize" && data.status === "set") {
+                return null; // Return null instead of nothing
+              }
               return (
                 <tr
                   key={data._id}
@@ -113,7 +115,8 @@ function PrizeList({
                     <img
                       className="m-auto object-cover h-[50px] w-[100px]"
                       src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
-                    ></img>
+                      alt={data.name} // Add alt text for accessibility
+                    />
                   </td>
                   <td>
                     {(() => {
@@ -127,7 +130,7 @@ function PrizeList({
                         case 4:
                           return t("fourth");
                         default:
-                          break;
+                          return null; // Return null for other grades
                       }
                     })()}
                   </td>

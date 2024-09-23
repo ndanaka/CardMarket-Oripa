@@ -140,7 +140,7 @@ const Login = () => {
                   </span>
                 ) : null}
               </FormGroup>
-              <div className="text-center mt-10">
+              <div className="flex flex-col text-center mt-10">
                 <button
                   className="button-22 m-auto"
                   type="button"
@@ -148,26 +148,25 @@ const Login = () => {
                 >
                   {t("sign_in")}
                 </button>
-                <a
+                <button
                   className="text-light"
-                  href="#"
                   onClick={() => navigate("/auth/forgotPass")}
                 >
                   <div className="text-md my-3 text-blue-500 hover:text-blue-700 py-1">
                     {t("forgot_pass")}
                   </div>
-                </a>
+                </button>
                 <hr className="my-1"></hr>
-                <div className="mt-3">
+                <div className="flex flex-col mt-3">
                   <span className="text-lg">{t("notHaveAccount")}</span>
-                  <a
+                  <button
                     className="text-light cursor-pointer"
                     onClick={() => navigate("/auth/register")}
                   >
                     <div className="text-lg my-3 text-blue-500 hover:text-blue-700">
                       {t("sign_up_btn")}
                     </div>
-                  </a>
+                  </button>
                 </div>
               </div>
             </Form>

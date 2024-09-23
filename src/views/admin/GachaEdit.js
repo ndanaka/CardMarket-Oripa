@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
 import { showToast } from "../../utils/toastUtil";
-import { setAuthToken, setMultipart } from "../../utils/setHeader";
+import { setAuthToken } from "../../utils/setHeader";
 import GetUser from "../../utils/getUserAtom";
 
 import PrizeList from "../../components/Tables/PrizeList";
@@ -58,7 +58,8 @@ const GachaEdit = () => {
     let thirdPrizes = [];
     let fourthPrizes = [];
 
-    remainPrizes.map((remainPrize) => {
+    remainPrizes.forEach((remainPrize) => {
+      // Change map() to forEach()
       switch (remainPrize.grade) {
         case 1:
           firstPrizes.push(remainPrize);

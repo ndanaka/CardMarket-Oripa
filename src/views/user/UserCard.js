@@ -12,7 +12,7 @@ import usePersistedUser from "../../store/usePersistedUser";
 
 function UserCard() {
   const [userCards, setUserCards] = useState();
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
 
   useEffect(() => {
     setAuthToken();

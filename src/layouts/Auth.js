@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { Container, Row } from "reactstrap";
 
 import { useLocation, Route, Routes, Navigate } from "react-router-dom";
@@ -11,19 +11,12 @@ import ChangeLanguage from "../components/Others/ChangeLanguage.js";
 import routes from "../routes.js";
 
 const Auth = () => {
-  const location = useLocation();
-
-  React.useEffect(() => {
+  useEffect(() => {
     document.body.classList.add("bg-default");
     return () => {
       document.body.classList.remove("bg-default");
     };
   }, []);
-
-  React.useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, [location]);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {

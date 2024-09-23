@@ -1,4 +1,3 @@
-import React from "react";
 import ChangeLanguage from "../Others/ChangeLanguage";
 
 function PageHeader({ text }) {

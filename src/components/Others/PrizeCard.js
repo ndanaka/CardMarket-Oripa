@@ -1,4 +1,3 @@
-import React from "react";
 import formatPrice from "../../utils/formatPrice";
 
 function PrizeCard({ name, rarity, cashback, img_url }) {
@@ -8,7 +7,8 @@ function PrizeCard({ name, rarity, cashback, img_url }) {
         <img
           src={process.env.REACT_APP_SERVER_ADDRESS + img_url}
           className="w-[200px] h-[120px] max-w-[200px] max-h-[120px] object-cover"
-        ></img>
+          alt="img"
+        />
         <div className="flex flex-col items-center mt-1">
           <div className="flex justify-between items-center">
             <span className="mr-1">Name : </span>

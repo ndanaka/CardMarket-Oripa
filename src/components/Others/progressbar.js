@@ -1,6 +1,4 @@
-// Filename - Progress_bar.js
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Progress_bar = ({ label, progress, height }) => {
   const [bgColor, setBgColor] = useState("");
