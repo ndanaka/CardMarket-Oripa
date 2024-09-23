@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import {
   DropdownMenu,
   DropdownItem,
@@ -11,17 +13,18 @@ import {
 } from "reactstrap";
 
 import { setAuthToken } from "../../utils/setHeader";
+import { showToast } from "../../utils/toastUtil";
 import api from "../../utils/api";
 
 import usePersistedUser from "../../store/usePersistedUser";
 
 import LoginImg from "../../assets/img/icons/login.png";
 import "../../assets/css/index.css";
-import { showToast } from "../../utils/toastUtil";
 
 const AdminNavbar = (props) => {
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     updateUserData();
@@ -39,7 +42,6 @@ const AdminNavbar = (props) => {
           }
         })
         .catch((err) => {
-          console.log(err);
           showToast("Try to login again", "error");
         });
     }
@@ -66,14 +68,14 @@ const AdminNavbar = (props) => {
               className="h4 mb-0 text-[#e0e1e2] text-uppercase hidden xxsm:block"
               to="/"
             >
-              Dashboard
+              {t("dashboard")}
             </Link>
             <div className="text-white text-2xl xxsm:hidden">
               <i className="fa fa-navicon"></i>
             </div>
           </div>
           <Nav className="flex" navbar>
-            {user.name ? (
+            {user ? (
               <div className="flex items-center px-2">
                 <UncontrolledDropdown nav>
                   <DropdownToggle className="pr-0" nav>
@@ -92,17 +94,17 @@ const AdminNavbar = (props) => {
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-menu-arrow" end>
                     <DropdownItem className="noti-title" header tag="div">
-                      <h6 className="text-overflow m-0">Welcome!</h6>
+                      <h6 className="text-overflow m-0">{t("welcome")}</h6>
                     </DropdownItem>
                     <DropdownItem to="/admin/index" tag={Link}>
                       <i className="ni ni-single-02" />
-                      <span>Admin Panel</span>
+                      <span>{t("adminPanel")}</span>
                     </DropdownItem>
 
                     <DropdownItem divider />
                     <DropdownItem href="#pablo" onClick={() => logout()}>
                       <i className="ni ni-user-run" />
-                      <span>Logout</span>
+                      <span>{t("logout")}</span>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>

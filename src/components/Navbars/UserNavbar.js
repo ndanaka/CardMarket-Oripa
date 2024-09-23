@@ -16,6 +16,7 @@ import api from "../../utils/api";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import "../../assets/css/index.css";
+import formatPrice from "../../utils/formatPrice";
 
 const UserNavbar = () => {
   const [user, setUser] = usePersistedUser();
@@ -84,7 +85,7 @@ const UserNavbar = () => {
                       className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4"
                       onClick={() => navigate("/user/pur-point")}
                     >
-                      {user.point_remain ? user.point_remain : 0} pt
+                      {user.point_remain ? formatPrice(user.point_remain) : 0} pt
                     </div>
                     <img
                       alt=""

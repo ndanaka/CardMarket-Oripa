@@ -1,9 +1,16 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+
+import PageHeader from "../../components/Forms/PageHeader";
 
 function UseTerms() {
+  const { t } = useTranslation();
+  
   return (
-    <div className="p-3">
-      <div className="text-center text-xl text-slate-600">Term of User</div>
-      <hr className="w-5/6 my-2 text-sm mx-auto"></hr>
+    <div className="w-full p-3">
+      <div className="w-full md:w-[70%] mx-auto">
+        <PageHeader text={t("userterms")} />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import formatPrice from "../../utils/formatPrice";
 
 function PrizeCard({ name, rarity, cashback, img_url }) {
   return (
@@ -10,18 +11,18 @@ function PrizeCard({ name, rarity, cashback, img_url }) {
         ></img>
         <div className="flex flex-col items-center mt-1">
           <div className="flex justify-between items-center">
-            <span>Name : </span>
+            <span className="mr-1">Name : </span>
             <span>{name}</span>
           </div>
           <hr className="w-full"></hr>
           <div className="flex justify-between">
-            <div>Rarity : </div>
+            <div className="mr-1">Rarity : </div>
             <div>{rarity}</div>
           </div>
           <hr className="w-full"></hr>
           <div className="flex justify-between">
-            <span>Cashback : </span>
-            <span>{cashback}</span>
+            <span className="mr-1">Cashback : </span>
+            <span>{formatPrice(cashback)} pt</span>
           </div>
           <hr className="w-full"></hr>
         </div>

@@ -12,6 +12,7 @@ import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
 
 import uploadimage from "../../assets/img/icons/upload.png";
+import formatPrice from "../../utils/formatPrice";
 
 function Point() {
   const [formData, setFormData] = useState({
@@ -225,8 +226,8 @@ function Point() {
               points.map((data, i) => (
                 <tr key={data._id} className="border-2">
                   <td>{i + 1}</td>
-                  <td>{data.point_num}</td>
-                  <td>{data.price}</td>
+                  <td>{formatPrice(data.point_num)} pt</td>
+                  <td>¥ {formatPrice(data.price)}</td>
                   <td>
                     <img
                       className="m-auto"

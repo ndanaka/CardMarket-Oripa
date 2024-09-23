@@ -10,7 +10,7 @@ i18n.use(initReactI18next).init({
         welcome: "Welcome to our application",
         dashboard: "Dashboard",
         administrators: "Administrators",
-        admin: "admin",
+        admin: "Admin",
         users: "Users",
         category: "Category",
         prize: "Prize",
@@ -28,10 +28,11 @@ i18n.use(initReactI18next).init({
         action: "Action",
         description: "Description",
         logout: "Log Out",
+        statistics: "Statistics",
 
         //navbar
         welcome: "Welcome",
-        admin: "Admin",
+        adminPanel: "Admin Panel",
         my: "My",
         profile: "Profile",
         delivery: "Delivery",
@@ -90,8 +91,8 @@ i18n.use(initReactI18next).init({
         //delivery
         username: "UserName",
         status: "Status",
-        delivering: "Delivering",
-        pending: "Pending",
+        Delivering: "Delivering",
+        Pending: "Pending",
         //user panel
         all: "All",
         draw: "Draw",
@@ -142,6 +143,21 @@ i18n.use(initReactI18next).init({
         //others
         cancel: "Cancel",
         // Add more translations here
+        Delivered: "Delivered",
+        income: "Income",
+        days: "days",
+        round_number_prize: "Round Number Prize",
+        last_one_prize: "Last One Prize",
+        extra_prize: "Extra Prize",
+        appraised_item: "Appraised Item",
+        once_per_day: "Once Per Day",
+        lillie: "Lillie",
+        acerola: "Acerola",
+        pikachu: "Pikachu",
+        newest: "Newest",
+        popularity: "Popularity",
+        highToLowPrice: "Price (Hight to Low)",
+        lowToHighPrice: "Price (Low to High)",
       },
     },
     jp: {
@@ -151,6 +167,7 @@ i18n.use(initReactI18next).init({
         dashboard: "ダッシュボード",
         administrators: "管理者",
         admin: "管理者",
+        adminPanel: "管理パネル",
         users: "ユーザー",
         category: "カテゴリー",
         prize: "賞品",
@@ -167,9 +184,10 @@ i18n.use(initReactI18next).init({
         update: "アップデート",
         action: "アクション",
         description: "説明",
+        statistics: "統計",
+
         //navbar
         welcome: "いらっしゃいませ",
-        admin: "管理パネル",
         my: "私の",
         profile: "プロフィール",
         delivery: "配達",
@@ -227,10 +245,10 @@ i18n.use(initReactI18next).init({
         // delivery
         username: "ユーザー名",
         status: "ステータス",
-        delivering: "配送中",
-        pending: "保留中",
+        Delivering: "配送中",
+        Pending: "保留中",
         // user panel
-        All: "すべて",
+        all: "すべて",
         draw: "抽選",
         draws: "抽選",
         user: "ユーザー",
@@ -280,6 +298,21 @@ i18n.use(initReactI18next).init({
         //others
         cancel: "キャンセル",
         // Add more translations here
+        Delivered: "渡された",
+        income: "収入",
+        days: "日",
+        round_number_prize: "キリ番賞付き",
+        last_one_prize: "ラストワン賞付き",
+        extra_prize: "エクストラ賞付き",
+        appraised_item: "鑑定品",
+        once_per_day: "1日1回限定",
+        lillie: "リーリエ",
+        acerola: "アセロラ",
+        pikachu: "ピカチュウ",
+        newest: "新着順",
+        popularity: "人気順",
+        highToLowPrice: "高い順",
+        lowToHighPrice: "安い順",
       },
     },
     // Add more languages here

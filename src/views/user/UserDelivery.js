@@ -174,7 +174,7 @@ function UserDelivery() {
                         ))
                       : null}
                   </div>
-                  <hr className="w-full my-2 pb-3"></hr>
+                  <hr className="w-full my-2"></hr>
                 </div>
               );
             })

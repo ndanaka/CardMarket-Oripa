@@ -14,6 +14,7 @@ import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
 
 import uploadimage from "../../assets/img/icons/upload.png";
+import formatPrice from "../../utils/formatPrice";
 
 function Gacha() {
   //new Gacha data
@@ -317,7 +318,7 @@ function Gacha() {
                         ></img>
                       </td>
                       <td>{data.name}</td>
-                      <td>{data.price}</td>
+                      <td>{formatPrice(data.price)} pt</td>
                       <td>{data.total_number}</td>
                       <td>{data.category}</td>
                       <td>{formatDate(data.create_date)}</td>

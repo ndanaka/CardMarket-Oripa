@@ -21,7 +21,8 @@ const Index = () => {
   const [gacha, setGacha] = useState(null); //gacah list
   const [filteredGacha, setFilteredGacha] = useState();
   const [categoryFilter, setCategoryFilter] = useState("all"); //gacha filter
-  const [filter, setFilter] = useState([]);
+  const [filter, setFilter] = useState(["all"]);
+  const [order, setOrder] = useState("newest");
   const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
   const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
@@ -45,26 +46,32 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredGacha(
-      gacha?.filter(
-        (gacha) =>
-          gacha.isRelease === true &&
-          (categoryFilter === "all" ? true : gacha.category === categoryFilter)
-      )
+    // Filter by category
+    let filteredGacha = gacha?.filter(
+      (gacha) =>
+        gacha.isRelease === true &&
+        (categoryFilter === "all" ? true : gacha.category === categoryFilter)
     );
 
-    if (filter?.length > 0) {
-      if (filter.includes("all")) return;
-      if (filter.includes("last_prize")) {
-        setFilteredGacha(
-          gacha?.filter(
-            (gacha) =>
-              gacha.last_prize !== undefined && gacha.last_prize !== null
-          )
-        );
-      }
+    setFilteredGacha(filteredGacha);
+
+    // Filter by sub-category
+    if (filter.includes("last_prize")) {
+      setFilteredGacha(
+        gacha?.filter(
+          (gacha) => gacha.last_prize !== undefined && gacha.last_prize !== null
+        )
+      );
     }
-  }, [gacha, categoryFilter, filter]);
+
+    // if (!filter.includes("all")) {
+    //   filter.map((key) => {
+    //     filteredGacha?.filter(
+    //       (gacha) => gacha.last_prize !== undefined && gacha.last_prize !== null
+    //     );
+    //   });
+    // }
+  }, [gacha, categoryFilter, filter, order]);
 
   const getCategory = () => {
     api
@@ -153,15 +160,29 @@ const Index = () => {
   };
 
   const handleSetfilter = (filterItem) => {
-    if (filter.includes(filterItem)) {
-      const newFilter = filter.filter((item) => item !== filterItem);
-      setFilter(newFilter);
-    } else setFilter([...filter, filterItem]);
+    if (filterItem === "all") {
+      setFilter(["all"]);
+    } else {
+      if (filter.includes(filterItem)) {
+        let newFilter = filter.filter(
+          (item) => item !== filterItem || item === "all"
+        );
+        if (newFilter.length === 0) newFilter = ["all"];
+        setFilter(newFilter);
+      } else {
+        const newFilter = filter.filter((item) => item !== "all");
+        setFilter([...newFilter, filterItem]);
+      }
+    }
+  };
+
+  const changeOrder = (e) => {
+    setOrder(e.currentTarget.value);
   };
 
   return (
     <>
-      <div className="w-full md:w-[70%] md:mx-2 mt-16 mx-auto p-2">
+      <div className="w-full md:w-[90%] lg:w-[80%] xl:w-[70%] md:mx-2 mt-16 mx-auto p-2">
         <div className="float-right mt-2">
           <ChangeLanguage />
         </div>
@@ -169,16 +190,16 @@ const Index = () => {
           <ImageCarousel items={carouselItems} />
         </div>
 
-        <div className="w-full flex justify-between overflow-auto my-3 text-red-800 shadow-md shadow-gray-200">
+        <div className="w-full flex justify-between overflow-auto mb-1 px-3 text-red-800 shadow-md shadow-gray-200">
           <button
             className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
               categoryFilter === "all"
-                ? "bg-gray-100 text-red-900 border-b-4"
+                ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
                 : ""
             } `}
             onClick={() => setCategoryFilter("all")}
           >
-            {t("All")}
+            {t("all")}
           </button>
           {category != null
             ? category.map((data, i) => (
@@ -187,7 +208,7 @@ const Index = () => {
                   id={data.id}
                   className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
                     categoryFilter === data.name
-                      ? "bg-gray-100 text-red-900 border-b-4"
+                      ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
                       : ""
                   } `}
                   onClick={() => setCategoryFilter(data.name)}
@@ -197,32 +218,106 @@ const Index = () => {
               ))
             : null}{" "}
         </div>
-        <div className="w-full flex justify-start items-center overflow-auto my-1">
-          <div
-            className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${
-              filter.includes("all") ? "bg-red-600 text-white " : ""
-            }`}
-            onClick={() => handleSetfilter("all")}
-          >
-            All
+        <div className="flex flex-wrap justify-between">
+          <div className="w-[calc(99%-200px)] flex justify-start items-center overflow-auto p-2">
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("all") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("all")}
+            >
+              {t("all")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("round_number_prize")
+                  ? "bg-red-600 text-white"
+                  : ""
+              }`}
+              onClick={() => handleSetfilter("round_number_prize")}
+            >
+              {t("round_number_prize")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("last_prize") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("last_prize")}
+            >
+              {t("last_one_prize")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("extra_prize") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("extra_prize")}
+            >
+              {t("extra_prize")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("appraised_item") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("appraised_item")}
+            >
+              {t("appraised_item")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("once_per_day") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("once_per_day")}
+            >
+              {t("once_per_day")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("lillie") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("lillie")}
+            >
+              {t("lillie")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("acerola") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("acerola")}
+            >
+              {t("acerola")}
+            </div>
+            <div
+              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("pikachu") ? "bg-red-600 text-white" : ""
+              }`}
+              onClick={() => handleSetfilter("pikachu")}
+            >
+              {t("pikachu")}
+            </div>
           </div>
-          <div
-            className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${
-              filter.includes("round_number_prize")
-                ? "bg-red-600 text-white "
-                : ""
-            }`}
-            onClick={() => handleSetfilter("round_number_prize")}
-          >
-            Round Number Prize
-          </div>
-          <div
-            className={`p-2 px-4 rounded-full bg-gray-200 hover:bg-red-600 text-gray-700 hover:text-white mr-1 cursor-pointer ${
-              filter.includes("last_prize") ? "bg-red-600 text-white " : ""
-            }`}
-            onClick={() => handleSetfilter("last_prize")}
-          >
-            Last One Prize
+          <div className="w-[200px] flex justify-between items-center p-1 border-l-2 border-gray-[#e5e7eb]">
+            <select
+              className="font-bold w-auto border-transparent bg-transparent form-control form-control-md cursor-pointer"
+              name="changeOrder"
+              id="changeOrder"
+              autoComplete="changeOrder"
+              onChange={(e) => changeOrder(e)}
+              value={order}
+            >
+              <option value="newest" className="p-2">
+                {t("newest")}
+              </option>
+              <option value="popularity" className="p-2">
+                {t("popularity")}
+              </option>
+              <option value="highToLowPrice" className="p-2">
+                {t("highToLowPrice")}
+              </option>
+              <option value="lowToHighPrice" className="p-2">
+                {t("lowToHighPrice")}
+              </option>
+            </select>
+            <i className="fa fa-arrows-v" />
           </div>
         </div>
         <hr className="w-full text-theme_text_color my-2 text-3xl"></hr>

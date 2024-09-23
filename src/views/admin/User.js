@@ -10,7 +10,6 @@ import PageHeader from "../../components/Forms/PageHeader";
 
 function Users() {
   const [userList, setUserList] = useState();
-  const [adminId, setAdminId] = useState("");
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -57,8 +56,8 @@ function Users() {
               <th>{t("name")}</th>
               <th>{t("email")}</th>
               <th>{t("password")}</th>
-              <th>{"point"}</th>
-              <th>{"action"}</th>
+              <th>{t("point")}</th>
+              <th>{t("action")}</th>
             </tr>
           </thead>
           <tbody>

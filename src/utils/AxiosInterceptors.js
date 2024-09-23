@@ -27,7 +27,7 @@ const useAxiosInterceptor = () => {
               localStorage.removeItem("user");
               setUser(null);
               // Redirect to login page
-              navigate("/login");
+              navigate("/auth/login");
               break;
             case 403:
               // Forbidden error

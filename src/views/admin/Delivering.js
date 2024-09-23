@@ -6,6 +6,7 @@ import api from "../../utils/api";
 import GetUser from "../../utils/getUserAtom";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+import formatDate from "../../utils/formatDate";
 
 import PageHeader from "../../components/Forms/PageHeader";
 
@@ -56,7 +57,7 @@ function Delivering() {
   return (
     <div className="w-full p-3">
       <div className="w-full md:w-[70%] mx-auto">
-        <PageHeader text={t("delivering")} />
+        <PageHeader text={t("Delivering")} />
       </div>
       <div className="w-full mt-3 mx-auto overflow-auto">
         <table className="w-full">
@@ -83,7 +84,7 @@ function Delivering() {
                         ? data.prizes.length + " prizes"
                         : data.prizes[0].name}
                     </td>
-                    <td>{data.gacha_date}</td>
+                    <td>{formatDate(data.gacha_date)}</td>
                     <td>
                       <button
                         className={`py-1 px-2 rounded-sm text-center text-gray-200 ${

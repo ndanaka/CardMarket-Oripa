@@ -11,6 +11,7 @@ import GetUser from "../../utils/getUserAtom";
 
 import PrizeList from "../../components/Tables/PrizeList";
 import PrizeCard from "../../components/Others/PrizeCard";
+import formatPrice from "../../utils/formatPrice";
 
 const GachaEdit = () => {
   const [gacha, setGacha] = useState(); //selected gacha
@@ -274,7 +275,7 @@ const GachaEdit = () => {
                   ></img>
                 </td>
                 <td>{gacha?.name}</td>
-                <td>{gacha?.price}</td>
+                <td>{formatPrice(gacha?.price)} pt</td>
                 <td>{gacha?.total_number}</td>
                 <td>{gacha?.category}</td>
                 <td>{formatDate(gacha?.create_date)}</td>
@@ -386,7 +387,7 @@ const GachaEdit = () => {
                     <td>{i + 1}</td>
                     <td>{data.name}</td>
                     <td>{data.rarity}</td>
-                    <td>{data.cashback}</td>
+                    <td>{formatPrice(data.cashback)} pt</td>
                     <td>
                       {(() => {
                         switch (parseInt(data.grade)) {

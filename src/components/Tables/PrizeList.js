@@ -6,6 +6,7 @@ import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 
 import DeleteConfirmModal from "../Modals/DeleteConfirmModal";
+import formatPrice from "../../utils/formatPrice";
 
 function PrizeList({
   trigger,
@@ -107,7 +108,7 @@ function PrizeList({
                   <td>{i + 1}</td>
                   <td>{data.name}</td>
                   <td>{data.rarity}</td>
-                  <td>{data.cashback}</td>
+                  <td>{formatPrice(data.cashback)} pt</td>
                   <td>
                     <img
                       className="m-auto object-cover h-[50px] w-[100px]"

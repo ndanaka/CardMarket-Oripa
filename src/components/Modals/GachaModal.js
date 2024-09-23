@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import formatPrice from "../../utils/formatPrice";
 
 function GachaModal(props) {
   const { headerText, name, price, draws, onDraw, isOpen, setIsOpen } = props;
@@ -17,7 +18,7 @@ function GachaModal(props) {
   };
 
   if (!isOpen) return null;
-  
+
   return (
     <div
       id="modal"
@@ -53,7 +54,7 @@ function GachaModal(props) {
                 {t("consume") + " " + t("point")}:
               </div>
               <div className="text-gray-500 font-NanumGothic text-xl">
-                {price * draws} pt
+                {formatPrice(price * draws)} pt
               </div>
             </div>
           </div>
