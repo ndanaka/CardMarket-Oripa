@@ -26,7 +26,7 @@ function ChangeLanguage() {
             English
           </option>
           <option value="jp" className="p-2">
-            Japanese
+            日本語
           </option>
         </select>
       </div>

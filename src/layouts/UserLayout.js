@@ -32,7 +32,7 @@ const UserLayout = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/user") {
         const token = localStorage.getItem("token");
-        if (!token)
+        if (prop.path === "/user-profile" && !token)
           return (
             <Route
               path={prop.path}

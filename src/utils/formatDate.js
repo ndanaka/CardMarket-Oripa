@@ -1,4 +1,4 @@
-function formatDate(time) {
+const formatDate = (time) => {
   const date = new Date(time);
 
   const formattedDate = date
@@ -14,6 +14,6 @@ function formatDate(time) {
     .replace(",", "");
 
   return formattedDate;
-}
+};
 
 export default formatDate;

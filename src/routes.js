@@ -3,6 +3,7 @@ import Index from "./views/Index.js";
 import MitLiscence from "./views/auth/MitLiscence.js";
 import Category from "./views/admin/Category.js";
 import Prize from "./views/admin/Prize.js";
+import Statistics from "./views/admin/Statistics.js";
 import User from "./views/admin/User.js";
 import Gacha from "./views/admin/Gacha.js";
 import Point from "./views/admin/Point.js";
@@ -73,12 +74,18 @@ var routes = [
   },
   {
     path: "/index",
+    name: "statistics",
+    icon: "fa fa-bar-chart",
+    component: <Statistics />,
+    layout: "/admin",
+  },
+  {
+    path: "/administrator",
     name: "administrators",
     icon: "fa-solid fa-user-secret",
     component: <Administrators />,
     layout: "/admin",
   },
-
   {
     path: "/user",
     name: "users",
@@ -131,7 +138,7 @@ var routes = [
   },
   {
     path: "/delivering",
-    name: "delivering",
+    name: "Delivering",
     icon: "fa fa-truck",
     component: <Delivering />,
     layout: "/admin",

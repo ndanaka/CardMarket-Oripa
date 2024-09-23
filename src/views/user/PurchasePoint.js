@@ -15,6 +15,7 @@ import ApplePay from "../../assets/img/icons/common/apple.png";
 import Univa from "../../assets/img/icons/common/univa.png";
 
 import usePersistedUser from "../../store/usePersistedUser";
+import formatPrice from "../../utils/formatPrice";
 
 function PurchasePoint() {
   const paymentOptions = [
@@ -206,10 +207,10 @@ function PurchasePoint() {
                           ></img>
                           <div className="flex flex-col px-2">
                             <div className="text-left text-lg font-bold">
-                              {point.point_num} pt
+                              {formatPrice(point.point_num)} pt
                             </div>
                             <div className="text-s text-center text-theme_text_color">
-                              Purchase at ¥{point.price}
+                              Purchase at ¥ {formatPrice(point.price)}
                             </div>
                           </div>
                         </div>
