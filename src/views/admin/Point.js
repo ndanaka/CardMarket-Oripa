@@ -194,14 +194,14 @@ function Point() {
             ></input>
             <img
               src={imgUrl ? imgUrl : uploadimage}
-              alt="prize image"
+              alt="prize" // More concise and descriptive
               width="150px"
               height="150px"
               className="image mx-auto mt-2 max-w-[200px]"
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
-            ></img>
+            />
           </div>
           {cuflag ? (
             <AgreeButton name={t("add")} addclass="" onClick={upload} />
@@ -234,7 +234,8 @@ function Point() {
                       src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
                       width="50px"
                       height="50px"
-                    ></img>
+                      alt={`${data.point_num} points`} // Meaningful alt text
+                    />
                   </td>
                   <td>
                     <span

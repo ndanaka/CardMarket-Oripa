@@ -7,7 +7,6 @@ i18n.use(initReactI18next).init({
     en: {
       translation: {
         //admin panel
-        welcome: "Welcome to our application",
         dashboard: "Dashboard",
         administrators: "Administrators",
         admin: "Admin",
@@ -35,7 +34,6 @@ i18n.use(initReactI18next).init({
         adminPanel: "Admin Panel",
         my: "My",
         profile: "Profile",
-        delivery: "Delivery",
         cards: "Cards",
         //administrator page
         items: "Items",
@@ -65,7 +63,7 @@ i18n.use(initReactI18next).init({
         third: "Third Prize",
         fourth: "Fourth Prize",
         //gacha page
-        price: "price",
+        price: "Price",
         total: "Total",
         number: "Number",
         created: "Created",
@@ -75,10 +73,8 @@ i18n.use(initReactI18next).init({
         unrelease: "Unrelease",
         delete: "Delete",
         //gacha detail page
-        detail: "Detail",
         list: "List",
         last: "Last",
-        set: "Set",
         set_CSV: "Set Prizes from CSV file",
         upload: "Upload",
         set_registered_prize: "Set Prizes from registered Prizes",
@@ -87,10 +83,8 @@ i18n.use(initReactI18next).init({
 
         //point page
         amount: "Amount",
-        price: "Price",
         //delivery
         username: "UserName",
-        status: "Status",
         Delivering: "Delivering",
         Pending: "Pending",
         //user panel
@@ -162,7 +156,6 @@ i18n.use(initReactI18next).init({
     },
     jp: {
       translation: {
-        welcome: "私たちのアプリケーションへようこそ",
         //sidebar
         dashboard: "ダッシュボード",
         administrators: "管理者",
@@ -190,7 +183,6 @@ i18n.use(initReactI18next).init({
         welcome: "いらっしゃいませ",
         my: "私の",
         profile: "プロフィール",
-        delivery: "配達",
         logout: "ログアウト",
         cards: "カード",
         //administrator page
@@ -212,7 +204,6 @@ i18n.use(initReactI18next).init({
         rarity: "レアリティ",
         cashback: "キャッシュバック",
         image: "画像",
-        status: "ステータス",
         set: "設定",
         Grade: "グレード",
         first: "一等賞",
@@ -230,10 +221,8 @@ i18n.use(initReactI18next).init({
         unrelease: "リリース中止",
         delete: "削除",
         //gacha detail page
-        detail: "詳細",
         list: "リスト",
         last: "最後",
-        set: "セット",
         set_CSV: "CSVファイルから賞品を設定",
         upload: "アップロード",
         set_registered_prize: "登録した賞品から賞品を設定します。",
@@ -241,7 +230,6 @@ i18n.use(initReactI18next).init({
         set_as_lastPrize: "最後の賞品として設定",
         // point page
         amount: "数量",
-        price: "価格",
         // delivery
         username: "ユーザー名",
         status: "ステータス",

@@ -1,6 +1,4 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import { Toast, ToastBody, ToastHeader } from "reactstrap";
 
 let toastRoot = null;
 

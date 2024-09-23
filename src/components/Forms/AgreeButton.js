@@ -1,5 +1,3 @@
-import React from "react";
-
 function AgreeButton({ name, addclass, onClick }) {
   return (
     <button

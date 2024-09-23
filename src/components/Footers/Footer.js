@@ -12,14 +12,13 @@ const Footer = () => {
         <Col xl="6">
           <div className="copyright text-center text-xl-left text-white float-left">
             © {new Date().getFullYear()}{" "}
-            <a
+            <button
               className="font-weight-bold ml-1 text-red-900"
-              href="#"
               rel="noopener noreferrer"
               target="_blank"
             >
               <span className="text-gray-200">Operating Company</span>
-            </a>
+            </button>
           </div>
         </Col>
 

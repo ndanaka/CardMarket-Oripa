@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-// Modal Component
+
 const DeleteConfirmModal = ({ isOpen, onClose, onConfirm }) => {
   const { t } = useTranslation();
   if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-5 rounded shadow-lg">
@@ -12,9 +12,10 @@ const DeleteConfirmModal = ({ isOpen, onClose, onConfirm }) => {
             src={require("../../assets/img/icons/alert/alert.png")}
             width="60"
             height="60"
+            alt="img"
             className="mx-auto mb-3"
           ></img>
-          <h4 className="text-lg mb-3">{t('confirm')}</h4>
+          <h4 className="text-lg mb-3">{t("confirm")}</h4>
         </div>
         <h2 className="mb-5">{t("del_confirm")}</h2>
         <div className="flex justify-center">

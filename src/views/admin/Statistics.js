@@ -27,7 +27,7 @@ const Statistics = () => {
     getStatusIncome("Pending", selPendingPeriod);
     getStatusIncome("Delivering", selDeliveringPeriod);
     getStatusIncome("Delivered", selDeliveredPeriod);
-  }, []);
+  }, [selPendingPeriod, selDeliveringPeriod, selDeliveredPeriod]);
 
   const getTotalData = async () => {
     try {

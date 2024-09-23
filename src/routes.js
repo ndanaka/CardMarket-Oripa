@@ -1,4 +1,3 @@
-import React from "react";
 import Index from "./views/Index.js";
 import MitLiscence from "./views/auth/MitLiscence.js";
 import Category from "./views/admin/Category.js";

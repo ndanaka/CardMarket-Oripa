@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import {
   useLocation,
@@ -18,14 +18,28 @@ import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 import usePersistedUser from "../store/usePersistedUser.js";
 
 const Admin = (props) => {
-  const mainContent = React.useRef(null);
+  const mainContent = useRef(null);
+  const [, setShow] = useState(false);
+
+  const { isLoggedOut } = useAxiosInterceptor();
   const location = useLocation();
   const [user] = usePersistedUser();
-  const { isLoggedOut } = useAxiosInterceptor();
-  const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-  let flagShow = false;
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (user.role !== "admin") navigate("/user/index");
+    if (isLoggedOut) navigate("/auth/login");
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    mainContent.current.scrollTop = 0;
+  }, [location]);
+
+  let flagShow = false;
   const handleScroll = () => {
     const doc = document.documentElement;
     const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
@@ -35,24 +49,6 @@ const Admin = (props) => {
       flagShow = newFlagShow;
     }
   };
-
-  const scrollTop = () => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    mainContent.current.scrollTop = 0;
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-  }, []);
-
-  React.useEffect(() => {
-    if (user.role !== "admin") navigate("/user/index");
-    if (isLoggedOut) navigate("/auth/login");
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    mainContent.current.scrollTop = 0;
-  }, [location]);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -83,7 +79,7 @@ const Admin = (props) => {
       </div>
 
       <div
-        className=" h-full w-full flex flex-col items-center  main-content"
+        className=" h-full w-full flex flex-col items-center main-content"
         ref={mainContent}
       >
         <AdminNavbar {...props} />

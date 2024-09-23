@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const CustomSelect = ({ options, selectedOption, setOption }) => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   useLocation,
   Route,
@@ -14,19 +14,37 @@ import routes from "../routes.js";
 // core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
+import ScrollToTop from "../components/Others/ScrollTop.js";
 
 const UserLayout = (props) => {
-  const mainContent = React.useRef(null);
+  const mainContent = useRef(null);
+  const [, setShow] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const { isLoggedOut } = useAxiosInterceptor();
 
-  React.useEffect(() => {
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
     if (isLoggedOut) navigate("/auth/login");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
   }, [location]);
+
+  let flagShow = false;
+  const handleScroll = () => {
+    const doc = document.documentElement;
+    const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    const newFlagShow = scroll > 500;
+    if (flagShow !== newFlagShow) {
+      setShow(newFlagShow);
+      flagShow = newFlagShow;
+    }
+  };
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -63,22 +81,23 @@ const UserLayout = (props) => {
   };
 
   return (
-    <>
-      <div
-        className="relative flex flex-col justify-between h-auto w-full min-h-full main-content bg-[#f3f4f6]"
-        ref={mainContent}
-      >
-        <UserNavbar
-          {...props}
-          brandText={getBrandText(props?.location?.pathname)}
-        />
+    <div
+      className="relative flex flex-col justify-between h-auto w-full min-h-full main-content bg-[#f3f4f6]"
+      ref={mainContent}
+    >
+      <UserNavbar
+        {...props}
+        brandText={getBrandText(props?.location?.pathname)}
+      />
+      <div className="w-full h-full">
         <Routes>
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/user/index" replace />} />
         </Routes>
-        <Footer />
+        <ScrollToTop />
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 

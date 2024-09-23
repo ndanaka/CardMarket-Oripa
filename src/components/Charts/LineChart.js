@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Line } from "react-chartjs-2";
 import {

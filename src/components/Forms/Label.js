@@ -1,7 +1,8 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
+
 function Label({ text, classname = "" }) {
   const { t } = useTranslation();
+
   return (
     <label
       htmlFor="name"

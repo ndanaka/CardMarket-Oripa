@@ -1,6 +1,4 @@
-import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import GetUser from "../../utils/getUserAtom";
 import { useTranslation } from "react-i18next";
 // reactstrap components
 import { NavbarBrand, Nav } from "reactstrap";
@@ -8,9 +6,8 @@ import { NavbarBrand, Nav } from "reactstrap";
 const Sidebar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = GetUser();
   const currentPath = location.pathname;
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
@@ -38,7 +35,7 @@ const Sidebar = (props) => {
     });
   };
 
-  const { bgColor, routes, logo } = props;
+  const { routes, logo } = props;
   let navbarBrandProps;
   if (logo && logo.innerLink) {
     navbarBrandProps = {

@@ -111,7 +111,7 @@ const AdminNavbar = (props) => {
               </div>
             ) : (
               <Media>
-                <img src={LoginImg} onClick={nav_login}></img>
+                <img src={LoginImg} alt="img" onClick={nav_login}></img>
               </Media>
             )}
           </Nav>

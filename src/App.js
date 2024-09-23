@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { jsx as _jsx } from "react/jsx-runtime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 

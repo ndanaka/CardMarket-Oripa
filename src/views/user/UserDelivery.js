@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { t } from "i18next";
 
 import api from "../../utils/api";
-import usePersistedUser from "../../store/usePersistedUser";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 import formatDate from "../../utils/formatDate";
 
-import GroupHeader from "../../components/Forms/GroupHeader";
 import PrizeCard from "../../components/Others/PrizeCard";
 import SubHeader from "../../components/Forms/SubHeader";
+
+import usePersistedUser from "../../store/usePersistedUser";
 
 function UserDelivery() {
   const [user, setUser] = usePersistedUser();
@@ -46,7 +46,7 @@ function UserDelivery() {
         let pendings = [];
         let deliverings = [];
 
-        res.data.deliver.map((deliver) => {
+        res.data.deliver.forEach((deliver) => {
           if (deliver.status === "Pending") {
             pendings.push(deliver);
           } else {

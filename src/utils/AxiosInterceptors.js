@@ -10,7 +10,7 @@ import usePersistedUser from "../store/usePersistedUser";
 const useAxiosInterceptor = () => {
   const navigate = useNavigate();
   const [isLoggedOut, setIsLoggedOut] = useState(false);
-  const [user, setUser] = usePersistedUser();
+  const [, setUser] = usePersistedUser();
 
   useEffect(() => {
     const interceptor = api.interceptors.response.use(
