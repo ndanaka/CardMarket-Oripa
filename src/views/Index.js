@@ -17,7 +17,15 @@ import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
 import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
+  const defaultCategory = [
+    "round_number_prize",
+    "last_prize",
+    "extra_prize",
+    "appraised_item",
+    "once_per_day",
+  ];
   const [category, setCategory] = useState(null); //category list
+  const [subCategory, setSubCategory] = useState(defaultCategory);
   const [gacha, setGacha] = useState(null); //gacah list
   const [filteredGacha, setFilteredGacha] = useState();
   const [categoryFilter, setCategoryFilter] = useState("all"); //gacha filter
@@ -30,7 +38,6 @@ const Index = () => {
   const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
   const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
-
   const navigate = useNavigate();
 
   const carouselItems = [
@@ -46,31 +53,79 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Filter by category
-    let filteredGacha = gacha?.filter(
+    // Filter by main-category
+    let filteredGachas = gacha?.filter(
       (gacha) =>
         gacha.isRelease === true &&
         (categoryFilter === "all" ? true : gacha.category === categoryFilter)
     );
 
-    setFilteredGacha(filteredGacha);
-
     // Filter by sub-category
-    if (filter.includes("last_prize")) {
-      setFilteredGacha(
-        gacha?.filter(
+    // Check if 'all' filter is selected or further filtering is needed
+    if (!filter.includes("all")) {
+      // Apply sub-category filter based on 'last_prize'
+      if (filter.includes("last_prize")) {
+        filteredGachas = filteredGachas?.filter(
           (gacha) => gacha.last_prize !== undefined && gacha.last_prize !== null
-        )
-      );
+        );
+      }
+
+      if (filter.includes("round_number_prize")) {
+        filteredGachas = filteredGachas?.filter(
+          (gacha) =>
+            gacha.rounded_number_prize !== undefined &&
+            gacha.rounded_number_prize !== null
+        );
+      }
+
+      if (filter.includes("extra_prize")) {
+        filteredGachas = filteredGachas?.filter(
+          (gacha) =>
+            gacha.extra_prize !== undefined && gacha.extra_prize !== null
+        );
+      }
+
+      if (filter.includes("appraised_item")) {
+        filteredGachas = filteredGachas?.filter(
+          (gacha) =>
+            gacha.appraised_item !== undefined && gacha.appraised_item !== null
+        );
+      }
+
+      if (filter.includes("once_per_day")) {
+        filteredGachas = filteredGachas?.filter(
+          (gacha) =>
+            gacha.once_per_day !== undefined && gacha.once_per_day !== null
+        );
+      }
     }
 
-    // if (!filter.includes("all")) {
-    //   filter.map((key) => {
-    //     filteredGacha?.filter(
-    //       (gacha) => gacha.last_prize !== undefined && gacha.last_prize !== null
-    //     );
-    //   });
-    // }
+    // Sort the filtered gachas by created_date in descending order
+    switch (order) {
+      case "newest":
+        filteredGachas?.sort(
+          (a, b) => new Date(b.create_date) - new Date(a.create_date)
+        );
+        break;
+      case "popularity":
+        filteredGachas?.sort(
+          (a, b) =>
+            Number(a.remain_prizes.length) - Number(b.remain_prizes.length)
+        );
+        break;
+      case "highToLowPrice":
+        filteredGachas?.sort((a, b) => Number(b.price) - Number(a.price));
+        break;
+      case "lowToHighPrice":
+        filteredGachas?.sort((a, b) => Number(a.price) - Number(b.price));
+        break;
+
+      default:
+        break;
+    }
+
+    // Set the final filtered array
+    setFilteredGacha(filteredGachas);
   }, [gacha, categoryFilter, filter, order]);
 
   const getCategory = () => {
@@ -159,21 +214,55 @@ const Index = () => {
     setShowCardFlag(true);
   };
 
-  const handleSetfilter = (filterItem) => {
-    if (filterItem === "all") {
-      setFilter(["all"]);
+  const handleSetfilter = (selectedCategory) => {
+    let selectedCatetories;
+
+    // Make selected categorie
+    if (selectedCategory === "all") {
+      // If "all" is selected, reset the filter to contain only "all"
+      selectedCatetories = ["all"];
     } else {
-      if (filter.includes(filterItem)) {
-        let newFilter = filter.filter(
-          (item) => item !== filterItem || item === "all"
+      if (filter.includes(selectedCategory)) {
+        // If the filter already includes the item, remove it
+        selectedCatetories = filter.filter(
+          (item) => item !== selectedCategory && item !== "all"
         );
-        if (newFilter.length === 0) newFilter = ["all"];
-        setFilter(newFilter);
+
+        // If the filter becomes empty, reset it to contain "all"
+        if (selectedCatetories.length === 0) {
+          selectedCatetories = ["all"];
+        }
       } else {
-        const newFilter = filter.filter((item) => item !== "all");
-        setFilter([...newFilter, filterItem]);
+        // If the filter does not include the item, add it and remove "all" if present
+        selectedCatetories = filter.filter((item) => item !== "all");
+        selectedCatetories = [...selectedCatetories, selectedCategory];
       }
     }
+
+    // Ordering selected categories by selecting
+    if (!selectedCatetories.includes("all")) {
+      if (filter.includes(selectedCategory)) {
+        const restCategories = defaultCategory.filter(
+          (item) => !selectedCatetories.includes(item)
+        );
+        // Add those values to the filter array
+        const updatedFilter = [...selectedCatetories, ...restCategories];
+        setSubCategory(updatedFilter);
+      } else {
+        // Find values from subCategory that are not in the filter array
+        const restCategories = subCategory.filter(
+          (item) => !selectedCatetories.includes(item)
+        );
+        // Add those values to the filter array
+        const updatedFilter = [...selectedCatetories, ...restCategories];
+        setSubCategory(updatedFilter);
+      }
+    } else {
+      setSubCategory(defaultCategory);
+    }
+
+    // Set the final selectedCatetories array in one go
+    setFilter(selectedCatetories);
   };
 
   const changeOrder = (e) => {
@@ -219,7 +308,7 @@ const Index = () => {
             : null}{" "}
         </div>
         <div className="flex flex-wrap justify-between">
-          <div className="w-[calc(99%-200px)] flex justify-start items-center overflow-auto p-2">
+          <div className="w-[calc(99%-170px)] flex justify-start items-center overflow-auto p-2">
             <div
               className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                 filter.includes("all") ? "bg-red-600 text-white" : ""
@@ -228,76 +317,21 @@ const Index = () => {
             >
               {t("all")}
             </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("round_number_prize")
-                  ? "bg-red-600 text-white"
-                  : ""
-              }`}
-              onClick={() => handleSetfilter("round_number_prize")}
-            >
-              {t("round_number_prize")}
-            </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("last_prize") ? "bg-red-600 text-white" : ""
-              }`}
-              onClick={() => handleSetfilter("last_prize")}
-            >
-              {t("last_one_prize")}
-            </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("extra_prize") ? "bg-red-600 text-white" : ""
-              }`}
-              onClick={() => handleSetfilter("extra_prize")}
-            >
-              {t("extra_prize")}
-            </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("appraised_item") ? "bg-red-600 text-white" : ""
-              }`}
-              onClick={() => handleSetfilter("appraised_item")}
-            >
-              {t("appraised_item")}
-            </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("once_per_day") ? "bg-red-600 text-white" : ""
-              }`}
-              onClick={() => handleSetfilter("once_per_day")}
-            >
-              {t("once_per_day")}
-            </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("lillie") ? "bg-red-600 text-white" : ""
-              }`}
-              onClick={() => handleSetfilter("lillie")}
-            >
-              {t("lillie")}
-            </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("acerola") ? "bg-red-600 text-white" : ""
-              }`}
-              onClick={() => handleSetfilter("acerola")}
-            >
-              {t("acerola")}
-            </div>
-            <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("pikachu") ? "bg-red-600 text-white" : ""
-              }`}
-              onClick={() => handleSetfilter("pikachu")}
-            >
-              {t("pikachu")}
-            </div>
+            {subCategory.map((category, i) => (
+              <div
+                key={i}
+                className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                  filter.includes(category) ? "bg-red-600 text-white" : ""
+                }`}
+                onClick={() => handleSetfilter(category)}
+              >
+                {t(category)}
+              </div>
+            ))}
           </div>
-          <div className="w-[200px] flex justify-between items-center p-1 border-l-2 border-gray-[#e5e7eb]">
+          <div className="w-[170px] flex justify-between items-center p-1 border-l-2 border-gray-[#e5e7eb]">
             <select
-              className="font-bold w-auto border-transparent bg-transparent form-control form-control-md cursor-pointer"
+              className="w-auto border-transparent bg-transparent form-control form-control-sm cursor-pointer"
               name="changeOrder"
               id="changeOrder"
               autoComplete="changeOrder"
@@ -320,7 +354,7 @@ const Index = () => {
             <i className="fa fa-arrows-v" />
           </div>
         </div>
-        <hr className="w-full text-theme_text_color my-2 text-3xl"></hr>
+        <hr className="w-full text-theme_text_color text-3xl"></hr>
 
         <div className="w-full flex flex-wrap justify-between">
           {filteredGacha === null ||
