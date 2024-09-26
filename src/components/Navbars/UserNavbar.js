@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
@@ -22,10 +22,11 @@ const UserNavbar = () => {
   const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     updateUserData();
-  }, []);
+  }, [location]);
 
   const updateUserData = () => {
     setAuthToken();
@@ -57,26 +58,36 @@ const UserNavbar = () => {
   };
 
   return (
-    <div className="w-full bg-theme_color p-2 fixed z-10">
+    <div className="w-full bg-theme_color p-2 fixed z-10 max-h-[100px] z-20">
       <div className="w-full navbar-dark">
-        <div className="w-full flex justify-between items-center content-end md:content-between py-[7px] px-[28px]">
-          <div>
-            <Link
-              className="h4 mb-0 text-white text-uppercase hidden xxsm:block"
-              to="/"
-            >
-              <div className="flex items-center">
-                <img
-                  alt="..."
-                  src={require("../../assets/img/brand/oripa-logo.png")}
-                  width="50"
-                  height="50"
-                />
-                <div className="text-lg font-NanumGothic">Oripa</div>
-              </div>
-            </Link>
-          </div>
-          <Nav className="flex" navbar>
+        <div className="w-full lg:w-3/4 mx-auto flex justify-between items-center content-end md:content-between py-[7px] px-[28px]">
+          <Link
+            className="h4 mb-0 text-white text-uppercase xxsm:block"
+            to="/"
+          >
+            <div className="flex flex-wrap justify-between items-center">
+              {location.pathname === "/user/gacha-detail" ? (
+                <button
+                  className="px-4 py-[4px] rounded-lg bg-red-500 border-[1px] border-red-700 text-center text-white text-sm"
+                  onClick={() => navigate("/user/index")}
+                >
+                  <i className="fa fa-chevron-left"></i>
+                  {" "+ t("return")}
+                </button>
+              ) : (
+                <>
+                  <img
+                    alt="..."
+                    src={require("../../assets/img/brand/oripa-logo.png")}
+                    width="50"
+                    height="50"
+                  />
+                  <div className="text-lg font-NanumGothic">Oripa</div>
+                </>
+              )}
+            </div>
+          </Link>
+          <Nav navbar>
             {user ? (
               <div className="flex items-center px-2">
                 {user.role === "admin" ? null : (
@@ -101,7 +112,7 @@ const UserNavbar = () => {
                 )}
 
                 <UncontrolledDropdown nav>
-                  <DropdownToggle className="pr-0" nav>
+                  <DropdownToggle className="pr-0 py-0" nav>
                     <div className="flex items-center">
                       <span className="avatar avatar-sm rounded-circle">
                         <img

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -6,6 +6,8 @@ import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 
 import PrizeCard from "../../components/Others/PrizeCard";
+import GachaPriceLabel from "../../components/Others/GachaPriceLabel";
+import Progressbar from "../../components/Others/progressbar";
 
 function GachaDetail() {
   const [gacha, setGacha] = useState(null); //gacha to be display
@@ -13,8 +15,9 @@ function GachaDetail() {
   const [secondPrizes, setSecondprizes] = useState([]); //prizes from csv file
   const [thirdPrizes, setThirdprizes] = useState([]); //prizes from csv file
   const [fourthPrizes, setFourthprizes] = useState([]); //prizes from csv file
-
-  const navigate = useNavigate();
+  const mainContent = useRef(null);
+  const [blur, setBlur] = useState("blur-[0px]");
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
   const { t } = useTranslation();
   const { gachaId } = location.state || {}; //gacha id came from previous page through navigate
@@ -22,6 +25,38 @@ function GachaDetail() {
   useEffect(() => {
     getGacha();
   }, []);
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    const delta = currentScrollY - lastScrollY;
+
+    // Calculate blur based on scroll direction
+    if (delta > 0) {
+      // Scrolling down
+      setBlur((prev) => {
+        const currentBlur = Math.floor(parseInt(prev.match(/\d+/)[0]));
+        return `blur-[${Math.min(currentBlur + 1, 20)}px]`; // Increase blur but cap at 20px
+      });
+    } else if (delta < 0) {
+      // Scrolling up
+      setBlur((prev) => {
+        const currentBlur = Math.floor(parseInt(prev.match(/\d+/)[0]));
+        return `blur-[${Math.max(currentBlur - 1, 0)}px]`; // Decrease blur but not below 0px
+      });
+    }
+
+    // Update last scroll position
+    setLastScrollY(currentScrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]); // Dependency array includes lastScrollY
 
   // get gacha by gacha id
   const getGacha = () => {
@@ -74,7 +109,7 @@ function GachaDetail() {
   const drawGradePrizes = (prizes, grade) => {
     return (
       <div>
-        <div className="my-2 text-3xl text-center font-bold">{t(grade)}</div>
+        <div className="py-2 text-3xl text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
             <PrizeCard
@@ -91,69 +126,106 @@ function GachaDetail() {
   };
 
   return (
-    <div className="bg-gray-100 md:px-0 mt-20">
-      <div className="text-center text-xl py-3 my-3 bg-white">
-        <span className="text-indigo-600 font-black text-xl px-2">
-          {gacha?.category}
-        </span>
-        {gacha?.name}
-      </div>
-      <div className="relative flex flex-col md:w-1/2 m-auto">
-        <div className="w-full rounded-md border-[1px] shadow-md shadow-gray-400 border-gray-300 bg-white mx-auto p-2 mb-4">
-          <img
-            src={
-              gacha
-                ? process.env.REACT_APP_SERVER_ADDRESS +
-                  gacha.gacha_thumnail_url
-                : ""
-            }
-            alt="gacha thumnail"
-            className="rounded-md mx-auto shadow-md shadow-gray-400 w-[inherit] h-[600px] object-cover"
-          ></img>
-        </div>
-
-        {gacha?.remain_prizes?.length > 0 &&
-          (firstPrizes?.length > 0
-            ? drawGradePrizes(firstPrizes, "first")
-            : "")}
-        {gacha?.remain_prizes?.length > 0 &&
-          (secondPrizes?.length > 0
-            ? drawGradePrizes(secondPrizes, "second")
-            : "")}
-        {gacha?.remain_prizes?.length > 0 &&
-          (thirdPrizes?.length > 0
-            ? drawGradePrizes(thirdPrizes, "third")
-            : "")}
-        {gacha?.remain_prizes?.length > 0 &&
-          (fourthPrizes?.length > 0
-            ? drawGradePrizes(fourthPrizes, "fourth")
-            : "")}
-        {gacha?.remain_prizes?.length === 0 && (
-          <div className="py-2">{t("noprize")}</div>
-        )}
-        {gacha?.last_prize ? (
-          <div>
-            <div className="my-2 text-3xl text-center font-bold">
-              {t("last") + " " + t("prize")}
-            </div>
-            <div className="flex flex-wrap justify-center items-stretch">
-              <PrizeCard
-                name={gacha.last_prize?.name}
-                rarity={gacha.last_prize?.rarity}
-                cashback={gacha.last_prize?.cashback}
-                img_url={gacha.last_prize?.img_url}
-              />
-            </div>
+    <div
+      className="w-full md:w-[500px] md:mx-2 mt-15 mx-auto"
+      ref={mainContent}
+    >
+      <div className="m-auto">
+        <div className="flex flex-col justify-center fixed top-0">
+          <div
+            className={`h-screen ${blur} transition-all duration-100 bg-gray-800 h-[calc(100vh-160px)] mt-[60px] w-full md:w-[500px] shadow-md shadow-gray-400 mx-auto bg-black`}
+          >
+            <img
+              src={
+                gacha
+                  ? process.env.REACT_APP_SERVER_ADDRESS +
+                    gacha.gacha_thumnail_url
+                  : ""
+              }
+              alt="gacha thumnail"
+              className="mx-auto w-full md:w-[500px] object-contain"
+            />
           </div>
-        ) : (
-          ""
-        )}
-        <button
-          className="py-2 px-5 my-3 rounded-sm bg-theme_color text-center text-white text-xl"
-          onClick={() => navigate("/user/index")}
+        </div>
+        <div
+          className="relative pb-48 mt-[calc(100vh-100px)] z-10 bg-[#f3f4f6]"
+          style={{ boxShadow: "10px 10px 100px 0px rgba(0, 0, 0, 0.6)" }}
         >
-          {t("return")}
-        </button>
+          {gacha?.remain_prizes?.length > 0 &&
+            (firstPrizes?.length > 0
+              ? drawGradePrizes(firstPrizes, "first")
+              : "")}
+          {gacha?.remain_prizes?.length > 0 &&
+            (secondPrizes?.length > 0
+              ? drawGradePrizes(secondPrizes, "second")
+              : "")}
+          {gacha?.remain_prizes?.length > 0 &&
+            (thirdPrizes?.length > 0
+              ? drawGradePrizes(thirdPrizes, "third")
+              : "")}
+          {gacha?.remain_prizes?.length > 0 &&
+            (fourthPrizes?.length > 0
+              ? drawGradePrizes(fourthPrizes, "fourth")
+              : "")}
+          {gacha?.remain_prizes?.length === 0 && (
+            <div className="py-2">{t("noprize")}</div>
+          )}
+          {gacha?.last_prize ? (
+            <div>
+              <div className="my-2 text-3xl text-center font-bold">
+                {t("last") + " " + t("prize")}
+              </div>
+              <div className="flex flex-wrap justify-center items-stretch">
+                <PrizeCard
+                  name={gacha.last_prize?.name}
+                  rarity={gacha.last_prize?.rarity}
+                  cashback={gacha.last_prize?.cashback}
+                  img_url={gacha.last_prize?.img_url}
+                />
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+        <div className="z-30 w-full md:w-[500px] fixed bottom-[65px] flex flex-col items-center text-center px-20 pb-2">
+          <GachaPriceLabel price={gacha?.price} />
+          <Progressbar
+            progress={
+              ((gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0)) /
+                gacha?.total_number) *
+              100
+            }
+            label={
+              gacha?.remain_prizes.length +
+              (gacha?.last_prize ? 1 : 0) +
+              " / " +
+              gacha?.total_number
+            }
+            height={20}
+          />
+        </div>
+        <div
+          className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]"
+          style={{ boxShadow: "0px 0px 30px 0px rgba(0, 0, 0, 0.3)" }}
+        >
+          <div
+            className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
+            onClick={() => {
+              // drawGacha(data, 1);
+            }}
+          >
+            1 {t("draw")}
+          </div>
+          <div
+            className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
+            onClick={() => {
+              // drawGacha(data, 10);
+            }}
+          >
+            10 {t("draws")}
+          </div>
+        </div>
       </div>
     </div>
   );

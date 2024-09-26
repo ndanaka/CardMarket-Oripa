@@ -10,7 +10,7 @@ const Progress_bar = ({ label, progress, height }) => {
     else setBgColor("#4CBB17");
   }, []);
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <div style={{ width: "100%", backgroundColor: "#e0e0e0" }}>
         <div
           style={{
@@ -20,7 +20,7 @@ const Progress_bar = ({ label, progress, height }) => {
           }}
         />
       </div>
-      <p className="text-white">{label}</p>
+      <p className="text-gray-500 font-bold">{label}</p>
     </div>
   );
 };

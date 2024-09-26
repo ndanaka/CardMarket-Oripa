@@ -13,13 +13,11 @@ import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ChangeLanguage from "../components/Others/ChangeLanguage";
 import ImageCarousel from "../components/Others/ImageCarousel";
 import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
-import ConfirmModal from "../components/Modals/ConfirmModal";
 
 import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
   const defaultCategory = [
-    "round_number_prize",
     "last_prize",
     "extra_prize",
     "appraised_item",
@@ -62,7 +60,6 @@ const Index = () => {
     );
 
     // Filter by sub-category
-    // Check if 'all' filter is selected or further filtering is needed
     if (!filter.includes("all")) {
       // Apply sub-category filter based on 'last_prize'
       if (filter.includes("last_prize")) {
@@ -276,17 +273,16 @@ const Index = () => {
 
   return (
     <>
-      <div className="w-full md:w-[90%] lg:w-[80%] xl:w-[70%] md:mx-2 mt-16 mx-auto p-2">
-        <div className="float-right mt-2">
+      <div className="w-full md:w-[90%] lg:w-[80%] xl:w-[70%] md:mx-2 mt-16 mx-auto xm:p-2">
+        {/* <div className="float-right mt-2">
           <ChangeLanguage />
-        </div>
-        <div className="mx-auto mt-16">
+        </div> */}
+        <div className="mx-auto p-1">
           <ImageCarousel items={carouselItems} />
         </div>
-
-        <div className="w-full flex justify-between overflow-auto mb-1 px-3 text-red-800 shadow-md shadow-gray-200">
+        <div className="w-full flex justify-between overflow-auto px-3 mt-[-40px] text-red-800 shadow-md shadow-gray-200">
           <button
-            className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
+            className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
               categoryFilter === "all"
                 ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
                 : ""
@@ -300,7 +296,7 @@ const Index = () => {
                 <button
                   key={i}
                   id={data.id}
-                  className={`p-3 text-xl break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
+                  className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
                     categoryFilter === data.name
                       ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
                       : ""
@@ -312,8 +308,8 @@ const Index = () => {
               ))
             : null}{" "}
         </div>
-        <div className="flex flex-wrap justify-between">
-          <div className="w-[calc(99%-170px)] flex justify-start items-center overflow-auto p-2">
+        <div className="flex flex-wrap justify-between px-2">
+          <div className="w-[calc(99%-170px)] flex justify-start items-center overflow-auto px-2 pt-2">
             <div
               className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                 filter.includes("all") ? "bg-red-600 text-white" : ""
@@ -359,16 +355,14 @@ const Index = () => {
             <i className="fa fa-arrows-v" />
           </div>
         </div>
-        <hr className="w-full text-theme_text_color text-3xl"></hr>
-
-        <div className="w-full flex flex-wrap justify-between">
+        <div className="w-full flex flex-wrap justify-between xm:px-3">
           {filteredGacha === null ||
           filteredGacha === undefined ||
           filteredGacha.length === 0 ? (
             <div className="text-center mx-auto text-lg">{t("nogacha")}</div>
           ) : (
             filteredGacha.map((data, i) => (
-              <div className="w-full xxsm:w-1/2 p-2" key={i}>
+              <div className="w-full xxsm:w-1/2 xm:p-2 p-1" key={i}>
                 <div className="p-2 h-full flex flex-col justify-between border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
                   <button
                     className="relative cursor-pointer h-[inherit] w-full"
@@ -418,8 +412,6 @@ const Index = () => {
                     <div
                       className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
                       onClick={() => {
-                        // openModal();
-                        // setSelGacha([data, 1]);
                         drawGacha(data, 1);
                       }}
                     >
@@ -428,8 +420,6 @@ const Index = () => {
                     <div
                       className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                       onClick={() => {
-                        // openModal();
-                        // setSelGacha([data, 10]);
                         drawGacha(data, 10);
                       }}
                     >

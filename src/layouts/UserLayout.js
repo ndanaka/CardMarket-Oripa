@@ -50,6 +50,7 @@ const UserLayout = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/user") {
         const token = localStorage.getItem("token");
+
         if (prop.path === "/user-profile" && !token)
           return (
             <Route
@@ -82,21 +83,19 @@ const UserLayout = (props) => {
 
   return (
     <div
-      className="relative flex flex-col justify-between h-auto w-full min-h-full main-content bg-[#f3f4f6]"
+      className="flex flex-col h-auto min-h-screen bg-[#f3f4f6]"
       ref={mainContent}
     >
       <UserNavbar
         {...props}
         brandText={getBrandText(props?.location?.pathname)}
       />
-      <div className="w-full h-full">
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/user/index" replace />} />
-        </Routes>
-        <ScrollToTop />
-      </div>
-      <Footer />
+      <Routes>
+        {getRoutes(routes)}
+        <Route path="*" element={<Navigate to="/user/index" replace />} />
+      </Routes>
+      <ScrollToTop />      
+      {!isLoggedOut && location.pathname !== "/user/gacha-detail" && <Footer />}
     </div>
   );
 };
