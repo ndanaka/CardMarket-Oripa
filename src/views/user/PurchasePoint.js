@@ -74,6 +74,7 @@ function PurchasePoint() {
         user_id: user._id,
         point_num: amount,
         price: amount,
+        email: user.email
       })
       .then((res) => {
         if (res.data.status === 1) {

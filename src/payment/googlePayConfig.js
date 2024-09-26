@@ -25,7 +25,7 @@ export const googlePayConfig = {
     },
     transactionInfo: {
       totalPriceStatus: "FINAL",
-      totalPrice: "500.00", // Will be dynamically updated
+      totalPrice: "0.00", // Will be dynamically updated
       currencyCode: "JPY",
       countryCode: "JP",
     },

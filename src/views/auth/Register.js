@@ -245,7 +245,7 @@ const Register = () => {
                       )}
                     </label>
                   </div>
-                  <div className="form-check form-check-inline m-1">
+                  {/* <div className="form-check form-check-inline m-1">
                     <label
                       htmlFor="checkboxPolicy"
                       className="form-check-label"
@@ -274,7 +274,7 @@ const Register = () => {
                         </>
                       )}
                     </label>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="text-center mt-4 bt">
                   <button

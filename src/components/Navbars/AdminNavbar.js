@@ -27,18 +27,19 @@ const AdminNavbar = (props) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    updateUserData();
+    updateAdminData();
   }, []);
 
-  const updateUserData = () => {
+  const updateAdminData = () => {
     setAuthToken();
-
+    
     if (user) {
       api
-        .get(`/user/get_user/${user._id}`)
+        .get(`/admin/get_admin/${user.user_id}`)
         .then((res) => {
           if (res.data.status === 1) {
-            setUser(res.data.user);
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
           }
         })
         .catch((err) => {

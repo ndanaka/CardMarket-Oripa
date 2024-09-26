@@ -9,6 +9,8 @@ import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
 
 function Administrators() {
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
@@ -19,7 +21,6 @@ function Administrators() {
   const [cuflag, setCuFlag] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { t } = useTranslation();
   useEffect(() => {
     setAuthToken();
     getAdminList();
@@ -39,24 +40,35 @@ function Administrators() {
 
   //handle add/update adminList
   const handleAddAdmin = () => {
+    if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
+      showToast("Required all fields", "error");
+      return;
+    }
+
     api
       .post("/admin/add_admin", {
         adminId: adminId,
         name: name,
         email: email,
         password: password,
+        cuflag: cuflag,
       })
       .then((res) => {
-        if (res.data.status === 1) {
-          showToast("New admin added.");
-          getAdminList();
-        } else if (res.data.status === 2) {
-          showToast("Admin Data Updated.");
+        if (res.data.status === 0) {
+          showToast(res.data.msg, "error");
+        } else {
+          if (res.data.status === 2) {
+            showToast("Admin Data Updated.");
+          } else if (res.data.status === 1) {
+            showToast("New admin added.");
+            getAdminList();
+          }
+          setName("");
+          setEmail("");
+          setPass("");
           setCuFlag(false);
           setAdminId("");
           getAdminList();
-        } else {
-          showToast("Admin add failed.", "error");
         }
       })
       .catch((err) => console.log(err));
@@ -166,6 +178,9 @@ function Administrators() {
               onClick={() => {
                 setCuFlag(false);
                 setAdminId("");
+                setName("");
+                setEmail("");
+                setPass("");
               }}
             >
               {t("cancel")}
@@ -197,7 +212,7 @@ function Administrators() {
                 ? adminList.map((data, i) => (
                     <tr
                       key={data._id}
-                      className="border-2"
+                      className="border-2 cursor-pointer"
                       onClick={() => {
                         setAuthority(adminList[i].authority);
                         setAdminId(data._id);
@@ -263,7 +278,6 @@ function Administrators() {
                       <td>{i + 1}</td>
                       <td>{key}</td>
                       <td>
-                        {/* if write/delete authority include read authority */}
                         <input
                           type="checkbox"
                           name={key}

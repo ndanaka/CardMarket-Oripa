@@ -13,6 +13,7 @@ import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ChangeLanguage from "../components/Others/ChangeLanguage";
 import ImageCarousel from "../components/Others/ImageCarousel";
 import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
+import ConfirmModal from "../components/Modals/ConfirmModal";
 
 import usePersistedUser from "../store/usePersistedUser";
 
@@ -175,10 +176,13 @@ const Index = () => {
     if (!user) {
       navigate("/auth/login");
     } else {
+      const remainPrizes = gacha.remain_prizes.length;
       const totalPoints = gacha.price * num;
       const remainPoints = user.point_remain;
 
-      if (remainPoints === 0 || remainPoints < totalPoints) {
+      if (remainPrizes < num) {
+        showToast("Not enough prizes.", "error");
+      } else if (remainPoints === 0 || remainPoints < totalPoints) {
         setIsOpenPointModal(true);
       } else {
         setSelGacha([gacha, num]);
@@ -195,6 +199,7 @@ const Index = () => {
       .post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
         drawCounts: selGacha[1],
+        email: user.email,
       })
       .then((res) => {
         if (res.data.status === 1) {
@@ -385,7 +390,7 @@ const Index = () => {
                         process.env.REACT_APP_SERVER_ADDRESS +
                         data.gacha_thumnail_url
                       }
-                      className="border-b-2 border-white rounded h-[inherit] w-full"
+                      className="border-b-2 border-white rounded h-[400px] w-full object-cover"
                       alt=""
                     ></img>
                     <div className="w-full bg-gray-300">
@@ -474,7 +479,7 @@ const Index = () => {
             obtains.map((prize, i) => (
               <div
                 key={prize._id}
-                className="mt-5 mr-3 bg-white rounded-lg animate-[animatezoom_1s_ease-in-out]"
+                className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto"
               >
                 <PrizeCard
                   key={prize._id}
@@ -486,7 +491,7 @@ const Index = () => {
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto">
+            <div className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto">
               <PrizeCard
                 name={obtains?.name}
                 rarity={obtains?.rarity}

@@ -89,13 +89,13 @@ function Gacha() {
     if (formData.name.trim() === "") {
       showToast("Required gacha name", "error");
     } else if (parseFloat(formData.price) <= 0) {
-      showToast("Gacha price be greater than than 0", "error");
+      showToast("Gacha price must be greater than than 0", "error");
     } else if (formData.category.trim() === "") {
       showToast("Must selete the gacha category", "error");
     } else if (parseInt(formData.totalNum) <= 0) {
-      showToast("Gacha total number be greater than than 0", "error");
+      showToast("Gacha total number must be greater than than 0", "error");
     } else if (
-      isNaN(formData.file) ||
+      formData.file === NaN ||
       formData.file === null ||
       formData.file === undefined
     ) {

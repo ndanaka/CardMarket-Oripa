@@ -77,15 +77,13 @@ function GachaDetail() {
         <div className="my-2 text-3xl text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
-            <div className="group relative m-2" key={i}>
-              <PrizeCard
-                key={i}
-                name={prize?.name}
-                rarity={prize?.rarity}
-                cashback={prize?.cashback}
-                img_url={prize?.img_url}
-              />
-            </div>
+            <PrizeCard
+              key={i}
+              name={prize?.name}
+              rarity={prize?.rarity}
+              cashback={prize?.cashback}
+              img_url={prize?.img_url}
+            />
           ))}
         </div>
       </div>
@@ -93,15 +91,15 @@ function GachaDetail() {
   };
 
   return (
-    <div className="min-w-full bg-gray-100 md:px-0 mt-16">
+    <div className="bg-gray-100 md:px-0 mt-20">
       <div className="text-center text-xl py-3 my-3 bg-white">
         <span className="text-indigo-600 font-black text-xl px-2">
           {gacha?.category}
         </span>
         {gacha?.name}
       </div>
-      <div className="relative flex flex-col w-full md:w-1/2 m-auto">
-        <div className="relative rounded-lg shadow-md shadow-gray-400 border-gray-300 bg-white mx-auto p-2">
+      <div className="relative flex flex-col md:w-1/2 m-auto">
+        <div className="w-full rounded-md border-[1px] shadow-md shadow-gray-400 border-gray-300 bg-white mx-auto p-2 mb-4">
           <img
             src={
               gacha
@@ -110,51 +108,46 @@ function GachaDetail() {
                 : ""
             }
             alt="gacha thumnail"
-            className="rounded-lg mx-auto"
+            className="rounded-md mx-auto shadow-md shadow-gray-400 w-[inherit] h-[600px] object-cover"
           ></img>
         </div>
 
-        <div className="w-auto py-3">
-          <div className="flex flex-wrap justify-evenly items-stretch">
-            {gacha?.remain_prizes?.length > 0 ? (
-              <div>
-                {firstPrizes?.length > 0
-                  ? drawGradePrizes(firstPrizes, "first")
-                  : ""}
-                {secondPrizes?.length > 0
-                  ? drawGradePrizes(secondPrizes, "second")
-                  : ""}
-                {thirdPrizes?.length > 0
-                  ? drawGradePrizes(thirdPrizes, "third")
-                  : ""}
-                {fourthPrizes?.length > 0
-                  ? drawGradePrizes(fourthPrizes, "fourth")
-                  : ""}
-              </div>
-            ) : (
-              <div className="py-2">{t("noprize")}</div>
-            )}
-          </div>
-        </div>
-        <div className="w-full py-2">
-          {gacha?.last_prize ? (
-            <div>
-              <div className="my-2 text-3xl text-center font-bold">
-                {t("last") + " " + t("prize")}
-              </div>
-              <div className="group relative mt-2 mr-1">
-                <PrizeCard
-                  name={gacha.last_prize?.name}
-                  rarity={gacha.last_prize?.rarity}
-                  cashback={gacha.last_prize?.cashback}
-                  img_url={gacha.last_prize?.img_url}
-                />
-              </div>
+        {gacha?.remain_prizes?.length > 0 &&
+          (firstPrizes?.length > 0
+            ? drawGradePrizes(firstPrizes, "first")
+            : "")}
+        {gacha?.remain_prizes?.length > 0 &&
+          (secondPrizes?.length > 0
+            ? drawGradePrizes(secondPrizes, "second")
+            : "")}
+        {gacha?.remain_prizes?.length > 0 &&
+          (thirdPrizes?.length > 0
+            ? drawGradePrizes(thirdPrizes, "third")
+            : "")}
+        {gacha?.remain_prizes?.length > 0 &&
+          (fourthPrizes?.length > 0
+            ? drawGradePrizes(fourthPrizes, "fourth")
+            : "")}
+        {gacha?.remain_prizes?.length === 0 && (
+          <div className="py-2">{t("noprize")}</div>
+        )}
+        {gacha?.last_prize ? (
+          <div>
+            <div className="my-2 text-3xl text-center font-bold">
+              {t("last") + " " + t("prize")}
             </div>
-          ) : (
-            ""
-          )}
-        </div>
+            <div className="flex flex-wrap justify-center items-stretch">
+              <PrizeCard
+                name={gacha.last_prize?.name}
+                rarity={gacha.last_prize?.rarity}
+                cashback={gacha.last_prize?.cashback}
+                img_url={gacha.last_prize?.img_url}
+              />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <button
           className="py-2 px-5 my-3 rounded-sm bg-theme_color text-center text-white text-xl"
           onClick={() => navigate("/user/index")}

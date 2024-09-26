@@ -8,18 +8,20 @@ import formatDate from "../../utils/formatDate";
 import Label from "../../components/Forms/Label";
 import PrizeCard from "../../components/Others/PrizeCard";
 import GroupHeader from "../../components/Forms/GroupHeader";
+import formatPrice from "../../utils/formatPrice";
 
 function UserDetail() {
-  const [user, setUser] = useState(null);
-  const [pointLog, setPointLog] = useState();
   const navigate = useNavigate();
   const location = useLocation();
-  const { userId } = location.state || {};
   const { t } = useTranslation();
 
+  const [user, setUser] = useState(null);
+  const [pointLog, setPointLog] = useState(null);
+  const { userId } = location.state || {};
+
   useEffect(() => {
-    getUserData();
     getPointLog();
+    getUserData();
   }, []);
 
   const getUserData = () => {
@@ -97,8 +99,8 @@ function UserDetail() {
                 {pointLog ? (
                   pointLog.map((log, i) => (
                     <tr key={i}>
-                      <td>{i++}</td>
-                      <td>{log.point_num}</td>
+                      <td>{i + 1}</td>
+                      <td>{formatPrice(log.point_num)} pt</td>
                       <td>{log.usage}</td>
                       <td>{formatDate(log.date)}</td>
                     </tr>

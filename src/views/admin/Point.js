@@ -71,7 +71,7 @@ function Point() {
 
   /* add and update prize with image file uploading
   if there is a property 'id' vin formData, this perform update of prize */
-  const upload = () => {
+  const AddPoint = () => {
     if (user.authority.point !== 2 && user.authority.point !== 4) {
       showToast("You have no permission for this action", "error");
       return;
@@ -80,28 +80,48 @@ function Point() {
     setMultipart();
     setAuthToken();
 
-    api.post("/admin/point_upload", formData).then((res) => {
-      if (res.data.status === 1) {
-        showToast("Point Added Successfully.");
-        setFormData({});
-        setImgUrl("");
-        setFormData({
-          ...formData,
-          id: "",
-          pointNum: 0,
-          price: 0,
-          file: null,
-        });
-        setCuFlag(1); //set create/update flag as creating
-      } else if (res.data.status === 2) {
-        setFormData({});
-        showToast("Point Updated Successfully.");
-        setCuFlag(1); //set create/update flag as creating
-      } else {
-        showToast("Point Add/Update Failed", "error");
-      }
-      getPoint();
-    });
+    if (parseFloat(formData.pointNum) <= 0) {
+      showToast("Point amount must be greater than than 0", "error");
+    } else if (parseInt(formData.price) <= 0) {
+      showToast("Point price must be greater than than 0", "error");
+    } else if (
+      cuflag === 1 &&
+      (formData.file === NaN ||
+        formData.file === null ||
+        formData.file === undefined)
+    ) {
+      showToast("Point image is not selected", "error");
+    } else {
+      api.post("/admin/point_upload", formData).then((res) => {
+        if (res.data.status === 1) {
+          showToast("Point Added Successfully.");
+          setImgUrl("");
+          setFormData({
+            ...formData,
+            id: "",
+            pointNum: 0,
+            price: 0,
+            file: null,
+          });
+          setCuFlag(1); //set create/update flag as creating
+        } else if (res.data.status === 2) {
+          showToast("Point Updated Successfully.");
+          setImgUrl("");
+          setImgUrl("");
+          setFormData({
+            ...formData,
+            id: "",
+            pointNum: 0,
+            price: 0,
+            file: null,
+          });
+          setCuFlag(1); //set create/update flag as creating
+        } else {
+          showToast("Point Add/Update Failed", "error");
+        }
+        getPoint();
+      });
+    }
   };
 
   //handle Edit Button click event
@@ -116,13 +136,15 @@ function Point() {
   };
 
   //handle point update
-  const updatePoint = () => {
+  const UpdatePoint = () => {
     if (user.authority.point !== 2 && user.authority.point !== 4) {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     setCuFlag(1);
-    upload();
+
+    AddPoint();
   };
 
   //handle point delete
@@ -204,9 +226,9 @@ function Point() {
             />
           </div>
           {cuflag ? (
-            <AgreeButton name={t("add")} addclass="" onClick={upload} />
+            <AgreeButton name={t("add")} addclass="" onClick={AddPoint} />
           ) : (
-            <AgreeButton name={"update"} addclass="" onClick={updatePoint} />
+            <AgreeButton name={t("update")} addclass="" onClick={UpdatePoint} />
           )}
         </div>
       </div>

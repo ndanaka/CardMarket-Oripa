@@ -85,7 +85,8 @@ const UserNavbar = () => {
                       className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4"
                       onClick={() => navigate("/user/pur-point")}
                     >
-                      {user.point_remain ? formatPrice(user.point_remain) : 0} pt
+                      {user.point_remain ? formatPrice(user.point_remain) : 0}{" "}
+                      pt
                     </div>
                     <img
                       alt=""
@@ -109,8 +110,7 @@ const UserNavbar = () => {
                           className="w-8 h-8 rounded-full"
                         />
                       </span>
-
-                      <span className="mb-0 text-md text-white hover:text-gray-100 font-weight-bold px-2 xs:hidden">
+                      <span className="mb-0 text-md text-white hover:text-gray-100 font-weight-bold px-2">
                         {user.name}
                       </span>
                     </div>

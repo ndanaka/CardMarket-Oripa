@@ -4,7 +4,7 @@ import { UserAtom } from "./user";
 
 const usePersistedUser = () => {
   const [user, setUser] = useAtom(UserAtom);
-
+  // console.log(user);
   useEffect(() => {
     // Save the user to localStorage whenever the user state changes
     if (user) {

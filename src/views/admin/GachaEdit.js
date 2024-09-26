@@ -91,7 +91,7 @@ const GachaEdit = () => {
         <div className="my-2 text-3xl text-center font-bold">{t(grade)}</div>
         <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
-            <div className="group relative m-2" key={i}>
+            <div className="group relative" key={i}>
               <PrizeCard
                 key={i}
                 name={prize?.name}
@@ -99,9 +99,8 @@ const GachaEdit = () => {
                 cashback={prize?.cashback}
                 img_url={prize?.img_url}
               />
-              <div className="absolute top-0 w-full h-full bg-gray-200 opacity-0 hover:opacity-10"></div>
               <button
-                className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
+                className="absolute top-1 right-1 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
                 onClick={() => unsetPrize(false, grade, i)}
               >
                 <i className="fa fa-close text-gray-200 middle"></i>
@@ -289,7 +288,7 @@ const GachaEdit = () => {
           </tbody>
         </table>
       </div>
-      <hr className="my-2"></hr>
+      <hr className="mt-2 mb-4"></hr>
 
       {/* Gacha Prizes */}
       <div>
@@ -318,20 +317,22 @@ const GachaEdit = () => {
             <div className="my-2 text-3xl text-center font-bold">
               {t("last") + " " + t("prize")}
             </div>
-            <div className="group relative mt-2 mr-1">
-              <PrizeCard
-                name={gacha.last_prize?.name}
-                rarity={gacha.last_prize?.rarity}
-                cashback={gacha.last_prize?.cashback}
-                img_url={gacha.last_prize?.img_url}
-              />
-              <div className="absolute top-0 w-full h-full bg-gray-100 opacity-0 hover:opacity-10"></div>
-              <button
-                className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
-                onClick={() => unsetPrize(true)}
-              >
-                <i className="fa fa-close text-gray-200 middle"></i>
-              </button>
+            <div className="flex flex-wrap justify-center items-stretch">
+              <div className="group relative mt-2 mr-1">
+                <PrizeCard
+                  name={gacha.last_prize?.name}
+                  rarity={gacha.last_prize?.rarity}
+                  cashback={gacha.last_prize?.cashback}
+                  img_url={gacha.last_prize?.img_url}
+                />
+                <div className="absolute top-0 w-full h-full bg-gray-100 opacity-0 hover:opacity-10"></div>
+                <button
+                  className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
+                  onClick={() => unsetPrize(true)}
+                >
+                  <i className="fa fa-close text-gray-200 middle"></i>
+                </button>
+              </div>
             </div>
           </div>
         ) : (

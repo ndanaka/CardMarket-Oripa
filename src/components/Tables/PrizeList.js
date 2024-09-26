@@ -14,6 +14,7 @@ function PrizeList({
   setCuFlag,
   selprizes,
   role = "showPrize",
+  setImgUrl
 }) {
   const [prizes, setPrizes] = useState(""); //registered prizes list
   const [flag, setFlag] = useState(false); //registered prizes list
@@ -56,6 +57,7 @@ function PrizeList({
       grade: prizes[index].grade,
     });
     setCuFlag(0); //set create/edit status editing(0)
+    setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + prizes[index].img_url);
   };
 
   const prizeDel = () => {

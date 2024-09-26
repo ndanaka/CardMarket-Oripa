@@ -50,7 +50,7 @@ const Prize = () => {
 
   /* Add/Update prize with image file uploading
   If formData.id has value, this function perform as update one */
-  const uploadPrize = async () => {
+  const addPrize = async () => {
     if (user.authority.prize !== 2 && user.authority.prize !== 4) {
       showToast("You have no permission for this action", "error");
       return;
@@ -62,13 +62,14 @@ const Prize = () => {
     if (formData.name.trim() === "") {
       showToast("Required prize name", "error");
     } else if (parseFloat(formData.rarity) <= 0) {
-      showToast("Rarity be greater than than 0", "error");
+      showToast("Rarity must be greater than than 0", "error");
     } else if (parseInt(formData.cashBack) <= 0) {
-      showToast("Cashback be greater than than 0", "error");
+      showToast("Cashback must be greater than than 0", "error");
     } else if (
-      isNaN(formData.file) ||
-      formData.file === null ||
-      formData.file === undefined
+      cuflag === 1 &&
+      (formData.file === NaN ||
+        formData.file === null ||
+        formData.file === undefined)
     ) {
       showToast("Prize image is not selected", "error");
     } else {
@@ -101,7 +102,7 @@ const Prize = () => {
       return;
     }
     setCuFlag(1);
-    uploadPrize();
+    addPrize();
   };
 
   return (
@@ -200,17 +201,25 @@ const Prize = () => {
         <div className="flex items-center">
           {!cuflag ? (
             <button
-              className="button-22 !bg-red-500 !mr-2"
+              className="p-2 px-4 my-1 button-22 text-white !bg-red-500 !mr-2"
               onClick={() => {
                 setCuFlag(true);
-                setFormData({});
+                setImgUrl(null);
+                setFormData({
+                  ...formData,
+                  file: null,
+                  name: "",
+                  rarity: 0,
+                  cashBack: 0,
+                  grade: 1,
+                });
               }}
             >
               {t("cancel")}
             </button>
           ) : null}
           {cuflag ? (
-            <AgreeButton name={t("add")} addclass="" onClick={uploadPrize} />
+            <AgreeButton name={t("add")} addclass="" onClick={addPrize} />
           ) : (
             <AgreeButton name={t("update")} addclass="" onClick={updatePrize} />
           )}
@@ -221,6 +230,7 @@ const Prize = () => {
           trigger={trigger}
           setFormData={setFormData}
           setCuFlag={setCuFlag}
+          setImgUrl={setImgUrl}
         />
       </div>
     </div>

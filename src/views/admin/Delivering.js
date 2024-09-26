@@ -81,7 +81,7 @@ function Delivering() {
                     <td>{data.gacha_name}</td>
                     <td>
                       {data.prizes.length > 1
-                        ? data.prizes.length + " prizes"
+                        ? data.prizes.length + " " + t("prize")
                         : data.prizes[0].name}
                     </td>
                     <td>{formatDate(data.gacha_date)}</td>

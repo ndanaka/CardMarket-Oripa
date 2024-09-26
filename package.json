@@ -60,8 +60,7 @@
     "sass-loader": "^16.0.1",
     "save-dev": "^0.0.1-security",
     "swiper": "^11.1.14",
-    "tailwindcss": "^3.4.12",
-    "universal-cookie": "^7.2.0"
+    "tailwindcss": "^3.4.12"
   },
   "optionalDependencies": {
     "eslint-plugin-flowtype": "8.0.3",

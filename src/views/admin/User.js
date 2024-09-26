@@ -7,11 +7,17 @@ import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 
 import PageHeader from "../../components/Forms/PageHeader";
+import formatPrice from "../../utils/formatPrice";
+import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 
 function Users() {
-  const [userList, setUserList] = useState();
-  const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
+
+  const [userList, setUserList] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     setAuthToken();
@@ -29,15 +35,20 @@ function Users() {
       .catch((err) => console.error(err));
   };
 
-  const userDel = (id) => {
+  const handleDelete = () => {
+    setIsModalOpen(false);
+    userDel();
+  };
+
+  const userDel = () => {
     api
-      .delete(`/user/del_user/${id}`)
+      .delete(`/user/del_user/${userId}`)
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("Admin deleted successfully.");
+          showToast("User deleted successfully.");
           getUserList();
         } else {
-          showToast("Admin delete failed.");
+          showToast("User delete failed.");
         }
       })
       .catch((err) => console.log(err));
@@ -55,7 +66,7 @@ function Users() {
               <th>{t("no")}</th>
               <th>{t("name")}</th>
               <th>{t("email")}</th>
-              <th>{t("password")}</th>
+              {/* <th>{t("password")}</th> */}
               <th>{t("point")}</th>
               <th>{t("action")}</th>
             </tr>
@@ -63,25 +74,52 @@ function Users() {
           <tbody>
             {userList
               ? userList.map((data, i) => (
-                  <tr
-                    key={data._id}
-                    className="border-2 cursor-pointer"
-                    onClick={() =>
-                      navigate("/admin/user-detail", {
-                        state: { userId: data._id },
-                      })
-                    }
-                  >
-                    <td>{i + 1}</td>
-                    <td>{data.name}</td>
-                    <td>{data.email}</td>
-                    <td>{data.password}</td>
-                    <td>{data.point_remain}</td>
+                  <tr key={i} className="border-2 cursor-pointer">
+                    <td
+                      onClick={() =>
+                        navigate("/admin/user-detail", {
+                          state: { userId: data._id },
+                        })
+                      }
+                    >
+                      {i + 1}
+                    </td>
+                    <td
+                      onClick={() =>
+                        navigate("/admin/user-detail", {
+                          state: { userId: data._id },
+                        })
+                      }
+                    >
+                      {data.name}
+                    </td>
+                    <td
+                      onClick={() =>
+                        navigate("/admin/user-detail", {
+                          state: { userId: data._id },
+                        })
+                      }
+                    >
+                      {data.email}
+                    </td>
+                    {/* <td>{data.password}</td> */}
+                    <td
+                      onClick={() =>
+                        navigate("/admin/user-detail", {
+                          state: { userId: data._id },
+                        })
+                      }
+                    >
+                      {formatPrice(data.point_remain)} pt
+                    </td>
                     <td>
                       <span
                         id={data._id}
                         className="fa fa-remove p-1"
-                        onClick={(e) => userDel(e.target.id)}
+                        onClick={() => {
+                          setUserId(data._id);
+                          setIsModalOpen(true);
+                        }}
                       ></span>
                     </td>
                   </tr>
@@ -90,6 +128,11 @@ function Users() {
           </tbody>
         </table>
       </div>
+      <DeleteConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

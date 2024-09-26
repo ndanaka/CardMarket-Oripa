@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
-import GetUser from "../../utils/getUserAtom";
 import { setAuthToken } from "../../utils/setHeader";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import { showToast } from "../../utils/toastUtil";
 import AgreeButton from "../../components/Forms/AgreeButton";
@@ -17,13 +17,30 @@ function Category() {
   const [editRow, setEditRow] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [delId, setDelId] = useState(null);
-  const { user } = GetUser();
+  const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
+    updateUserData();
     get_category();
   }, []);
+
+  const updateUserData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
 
   const handleDelete = () => {
     // Logic for deleting the item
@@ -49,6 +66,7 @@ function Category() {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     if (name && description) {
       api
         .post("admin/add_category", {
@@ -64,6 +82,8 @@ function Category() {
         .catch((error) => {
           error = new Error();
         });
+    } else {
+      showToast("Required all fields", "error");
     }
   };
 
@@ -72,7 +92,9 @@ function Category() {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     const id = category[editRow]._id;
+
     api
       .post("/admin/edit_category", {
         id: id,
