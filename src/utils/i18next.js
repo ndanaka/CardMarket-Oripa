@@ -120,7 +120,7 @@ i18n.use(initReactI18next).init({
         medium: "Medium",
         strong: "Strong",
         accept: "Accept",
-        terms: "the terms of use",
+        terms: "the terms of service",
         agree: "I agree to",
         privacy: "the privacy policy",
         //notification

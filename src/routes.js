@@ -1,5 +1,6 @@
 import Index from "./views/Index.js";
 import MitLiscence from "./views/auth/MitLiscence.js";
+import Terms from "./views/auth/Terms.js";
 import Category from "./views/admin/Category.js";
 import Prize from "./views/admin/Prize.js";
 import Statistics from "./views/admin/Statistics.js";
@@ -177,6 +178,13 @@ var routes = [
     name: "lisence",
     icon: "ni ni-circle-08 text-pink",
     component: <MitLiscence />,
+    layout: "/auth",
+  },
+  {
+    path: "/terms",
+    name: "terms",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Terms />,
     layout: "/auth",
   },
 ];

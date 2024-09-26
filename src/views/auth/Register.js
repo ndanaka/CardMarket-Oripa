@@ -110,8 +110,8 @@ const Register = () => {
           <div className="text-center m-3 font-bold text-2xl">
             {t("sign_up")}
           </div>
-          <div className="w-full md:w-2/5 bg-white shadow border-0 my-4 mx-auto rounded-lg">
-            <CardBody className="px-lg-4 py-lg-4">
+          <div className="w-full lg:w-2/5 bg-white shadow border-0 my-4 mx-auto rounded-lg">
+            <CardBody className="px-md-4 py-md-4 px-2 py-2">
               <div className="text-center mb-1 mt-3 font-bold text-xl">
                 {t("sign_up_desc1")}
               </div>
@@ -231,50 +231,26 @@ const Register = () => {
                       {currentLanguage === "en" ? (
                         <>
                           {t("accept")}{" "}
-                          <a href="/terms" className="text-blue-500">
+                          <button
+                            className="text-blue-500"
+                            onClick={() => navigate("/auth/terms")}
+                          >
                             {t("terms")}
-                          </a>
+                          </button>
                         </>
                       ) : (
                         <>
-                          <a href="/terms" className="text-blue-500">
+                          <button
+                            className="text-blue-500"
+                            onClick={() => navigate("/auth/terms")}
+                          >
                             {t("terms")}
-                          </a>{" "}
+                          </button>{" "}
                           {t("accept")}
                         </>
                       )}
                     </label>
                   </div>
-                  {/* <div className="form-check form-check-inline m-1">
-                    <label
-                      htmlFor="checkboxPolicy"
-                      className="form-check-label"
-                    >
-                      <input
-                        className="form-check-input text-lg"
-                        type="checkbox"
-                        name="checkboxPolicy"
-                        id="checkboxPolicy"
-                        autoComplete="name"
-                        value="checkedValue"
-                      />
-                      {currentLanguage === "en" ? (
-                        <>
-                          {t("agree")}{" "}
-                          <a href="/privacy" className="text-blue-500">
-                            {t("privacy")}
-                          </a>
-                        </>
-                      ) : (
-                        <>
-                          <a href="/privacy" className="text-blue-500">
-                            {t("privacy")}
-                          </a>{" "}
-                          {t("agree")}
-                        </>
-                      )}
-                    </label>
-                  </div> */}
                 </div>
                 <div className="text-center mt-4 bt">
                   <button

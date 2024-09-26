@@ -7,7 +7,7 @@ const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full bg-theme_color py-3 px-4 relative z-10">
+    <div className="w-full h-[80px] bg-theme_color py-3 px-4 relative bottom-0 z-10">
       <Row className="align-items-center justify-content-xl-between">
         <Col xl="6">
           <div className="copyright text-center text-xl-left text-white float-left">
