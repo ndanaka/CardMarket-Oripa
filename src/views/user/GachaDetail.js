@@ -201,166 +201,170 @@ function GachaDetail() {
   };
 
   return (
-    <div
-      className="w-full md:w-[500px] md:mx-2 mt-15 mx-auto"
-      ref={mainContent}
-    >
-      <div className="m-auto">
-        <div className="flex flex-col justify-center fixed top-0">
-          <div
-            className={`h-screen ${blur} transition-all duration-100 bg-gray-800 h-[calc(100vh-160px)] mt-[60px] w-full md:w-[500px] shadow-md shadow-gray-400 mx-auto bg-black`}
-          >
-            <img
-              src={
-                gacha
-                  ? process.env.REACT_APP_SERVER_ADDRESS +
-                    gacha.gacha_thumnail_url
-                  : ""
-              }
-              alt="gacha thumnail"
-              className="align-middle mx-auto w-full md:w-[500px] object-contain item-center"
-            />
-          </div>
-        </div>
-        <div
-          className="relative pt-10 pb-48 mt-[calc(100vh-100px)] z-10 bg-[#f3f4f6]"
-          style={{ boxShadow: "10px 10px 100px 0px rgba(0, 0, 0, 0.6)" }}
-        >
-          {gacha?.remain_prizes?.length > 0 &&
-            (firstPrizes?.length > 0
-              ? drawGradePrizes(firstPrizes, "first")
-              : "")}
-          {gacha?.remain_prizes?.length > 0 &&
-            (secondPrizes?.length > 0
-              ? drawGradePrizes(secondPrizes, "second")
-              : "")}
-          {gacha?.remain_prizes?.length > 0 &&
-            (thirdPrizes?.length > 0
-              ? drawGradePrizes(thirdPrizes, "third")
-              : "")}
-          {gacha?.remain_prizes?.length > 0 &&
-            (fourthPrizes?.length > 0
-              ? drawGradePrizes(fourthPrizes, "fourth")
-              : "")}
-          {gacha?.remain_prizes?.length === 0 && (
-            <div className="py-2 text-center text-lg font-bold">{t("noprize")}</div>
-          )}
-          {gacha?.last_prize ? (
-            <div>
-              <div className="my-2 text-3xl text-center font-bold">
-                {t("last") + " " + t("prize")}
-              </div>
-              <div className="flex flex-wrap justify-center items-stretch">
-                <PrizeCard
-                  name={gacha.last_prize?.name}
-                  rarity={gacha.last_prize?.rarity}
-                  cashback={gacha.last_prize?.cashback}
-                  img_url={gacha.last_prize?.img_url}
-                />
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
-        <div className="z-30 w-full md:w-[500px] fixed bottom-[65px] flex flex-col items-center text-center px-20 pb-2">
-          <GachaPriceLabel price={gacha?.price} />
-          <Progressbar
-            progress={
-              ((gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0)) /
-                gacha?.total_number) *
-              100
-            }
-            label={
-              gacha?.remain_prizes.length +
-              (gacha?.last_prize ? 1 : 0) +
-              " / " +
-              gacha?.total_number
-            }
-            height={20}
-          />
-        </div>
-        <div
-          className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]"
-          style={{ boxShadow: "0px 0px 30px 0px rgba(0, 0, 0, 0.3)" }}
-        >
-          <div
-            className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
-            onClick={() => {
-              drawGacha(gacha, 1);
-            }}
-          >
-            1 {t("draw")}
-          </div>
-          <div
-            className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
-            onClick={() => {
-              drawGacha(gacha, 10);
-            }}
-          >
-            10 {t("draws")}
-          </div>
-        </div>
-      </div>
-
+    <div className="flex flex-grow">
       <div
-        className={`z-[10] bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
-          showCardFlag ? "" : "hidden"
-        } `}
+        className="w-full md:w-[500px] md:mx-2 mt-15 mx-auto"
+        ref={mainContent}
       >
-        <div className="fixed top-20 right-10 text-gray-200 text-3xl">
-          <i
-            className="fa fa-close cursor-pointer"
-            onClick={() => setShowCardFlag(false)}
-          ></i>
-        </div>
-        <div className="flex flex-wrap justify-center items-center mt-32">
-          {obtains?.length > 0 ? (
-            obtains.map((prize, i) => (
-              <div
-                key={prize._id}
-                className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto"
-              >
-                <PrizeCard
-                  key={prize._id}
-                  name={prize.name}
-                  rarity={prize.rarity}
-                  cashback={prize.cashback}
-                  img_url={prize.img_url}
-                />
-              </div>
-            ))
-          ) : (
-            <div className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto">
-              <PrizeCard
-                name={obtains?.name}
-                rarity={obtains?.rarity}
-                cashback={obtains?.cashback}
-                img_url={obtains?.img_url}
+        <div className="m-auto">
+          <div className="flex flex-col justify-center fixed top-0">
+            <div
+              className={`h-screen ${blur} transition-all duration-100 bg-gray-800 h-[calc(100vh-160px)] mt-[60px] w-full md:w-[500px] shadow-md shadow-gray-400 mx-auto bg-black`}
+            >
+              <img
+                src={
+                  gacha
+                    ? process.env.REACT_APP_SERVER_ADDRESS +
+                      gacha.gacha_thumnail_url
+                    : ""
+                }
+                alt="gacha thumnail"
+                className="align-middle mx-auto w-full md:w-[500px] object-contain item-center"
               />
             </div>
-          )}
+          </div>
+          <div
+            className="relative pt-10 pb-48 mt-[calc(100vh-100px)] z-10 bg-[#f3f4f6]"
+            style={{ boxShadow: "10px 10px 100px 0px rgba(0, 0, 0, 0.6)" }}
+          >
+            {gacha?.remain_prizes?.length > 0 &&
+              (firstPrizes?.length > 0
+                ? drawGradePrizes(firstPrizes, "first")
+                : "")}
+            {gacha?.remain_prizes?.length > 0 &&
+              (secondPrizes?.length > 0
+                ? drawGradePrizes(secondPrizes, "second")
+                : "")}
+            {gacha?.remain_prizes?.length > 0 &&
+              (thirdPrizes?.length > 0
+                ? drawGradePrizes(thirdPrizes, "third")
+                : "")}
+            {gacha?.remain_prizes?.length > 0 &&
+              (fourthPrizes?.length > 0
+                ? drawGradePrizes(fourthPrizes, "fourth")
+                : "")}
+            {gacha?.remain_prizes?.length === 0 && (
+              <div className="py-2 text-center text-lg font-bold">
+                {t("noprize")}
+              </div>
+            )}
+            {gacha?.last_prize ? (
+              <div>
+                <div className="my-2 text-3xl text-center font-bold">
+                  {t("last") + " " + t("prize")}
+                </div>
+                <div className="flex flex-wrap justify-center items-stretch">
+                  <PrizeCard
+                    name={gacha.last_prize?.name}
+                    rarity={gacha.last_prize?.rarity}
+                    cashback={gacha.last_prize?.cashback}
+                    img_url={gacha.last_prize?.img_url}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="z-30 w-full md:w-[500px] fixed bottom-[65px] flex flex-col items-center text-center px-20 pb-2">
+            <GachaPriceLabel price={gacha?.price} />
+            <Progressbar
+              progress={
+                ((gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0)) /
+                  gacha?.total_number) *
+                100
+              }
+              label={
+                gacha?.remain_prizes.length +
+                (gacha?.last_prize ? 1 : 0) +
+                " / " +
+                gacha?.total_number
+              }
+              height={20}
+            />
+          </div>
+          <div
+            className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]"
+            style={{ boxShadow: "0px 0px 30px 0px rgba(0, 0, 0, 0.3)" }}
+          >
+            <div
+              className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
+              onClick={() => {
+                drawGacha(gacha, 1);
+              }}
+            >
+              1 {t("draw")}
+            </div>
+            <div
+              className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
+              onClick={() => {
+                drawGacha(gacha, 10);
+              }}
+            >
+              10 {t("draws")}
+            </div>
+          </div>
         </div>
-      </div>
-      {selGacha?.length > 0 ? (
-        <GachaModal
-          headerText="Draw Gacha"
-          name={selGacha[0].name}
-          price={selGacha[0].price}
-          draws={selGacha[1]}
-          onDraw={submitDrawGacha}
-          isOpen={isOpenGachaModal}
-          setIsOpen={setIsOpenGachaModal}
-        />
-      ) : null}
 
-      <NotEnoughPoints
-        headerText="Not enough points"
-        bodyText="Points are required to play the gacha. Points can be recharged on the point purchase page."
-        okBtnClick={() => navigate("/user/pur-point")}
-        isOpen={isOpenPointModal}
-        setIsOpen={setIsOpenPointModal}
-      />
+        <div
+          className={`z-[10] bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
+            showCardFlag ? "" : "hidden"
+          } `}
+        >
+          <div className="fixed top-20 right-10 text-gray-200 text-3xl">
+            <i
+              className="fa fa-close cursor-pointer"
+              onClick={() => setShowCardFlag(false)}
+            ></i>
+          </div>
+          <div className="flex flex-wrap justify-center items-center mt-32">
+            {obtains?.length > 0 ? (
+              obtains.map((prize, i) => (
+                <div
+                  key={prize._id}
+                  className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto"
+                >
+                  <PrizeCard
+                    key={prize._id}
+                    name={prize.name}
+                    rarity={prize.rarity}
+                    cashback={prize.cashback}
+                    img_url={prize.img_url}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto">
+                <PrizeCard
+                  name={obtains?.name}
+                  rarity={obtains?.rarity}
+                  cashback={obtains?.cashback}
+                  img_url={obtains?.img_url}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        {selGacha?.length > 0 ? (
+          <GachaModal
+            headerText="Draw Gacha"
+            name={selGacha[0].name}
+            price={selGacha[0].price}
+            draws={selGacha[1]}
+            onDraw={submitDrawGacha}
+            isOpen={isOpenGachaModal}
+            setIsOpen={setIsOpenGachaModal}
+          />
+        ) : null}
+
+        <NotEnoughPoints
+          headerText="Not enough points"
+          bodyText="Points are required to play the gacha. Points can be recharged on the point purchase page."
+          okBtnClick={() => navigate("/user/pur-point")}
+          isOpen={isOpenPointModal}
+          setIsOpen={setIsOpenPointModal}
+        />
+      </div>
     </div>
   );
 }

@@ -14,6 +14,7 @@ import { setAuthToken } from "../../utils/setHeader";
 import api from "../../utils/api";
 
 import usePersistedUser from "../../store/usePersistedUser";
+import ChangeLanguage from "../Others/ChangeLanguage";
 
 import "../../assets/css/index.css";
 import formatPrice from "../../utils/formatPrice";
@@ -60,19 +61,16 @@ const UserNavbar = () => {
   return (
     <div className="w-full bg-theme_color p-2 fixed z-10 max-h-[100px] z-20">
       <div className="w-full navbar-dark">
-        <div className="w-full lg:w-3/4 mx-auto flex justify-between items-center content-end md:content-between py-[7px] px-[28px]">
-          <Link
-            className="h4 mb-0 text-white text-uppercase xxsm:block"
-            to="/"
-          >
+        <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between  items-center content-end md:content-between py-[7px] xsm:px-[28px]">
+          <Link className="h4 mb-0 text-white text-uppercase xxsm:block" to="/">
             <div className="flex flex-wrap justify-between items-center">
               {location.pathname === "/user/gacha-detail" ? (
                 <button
-                  className="px-4 py-[4px] rounded-lg bg-red-500 border-[1px] border-red-700 text-center text-white text-sm"
+                  className="flex xsm:ruby px-2 py-[4px] rounded-lg bg-red-500 border-[1px] border-red-700 text-center text-white text-sm"
                   onClick={() => navigate("/user/index")}
                 >
                   <i className="fa fa-chevron-left"></i>
-                  {" "+ t("return")}
+                  <span className="ml-1 hidden xsm:block">{" " + t("return")}</span>
                 </button>
               ) : (
                 <>
@@ -82,135 +80,138 @@ const UserNavbar = () => {
                     width="50"
                     height="50"
                   />
-                  <div className="text-lg font-NanumGothic">Oripa</div>
+                  <div className="text-lg font-NanumGothic hidden xxsm:block">Oripa</div>
                 </>
               )}
             </div>
           </Link>
-          <Nav navbar>
-            {user ? (
-              <div className="flex items-center px-2">
-                {user.role === "admin" ? null : (
-                  <button className="flex items-center">
-                    <div
-                      className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4"
-                      onClick={() => navigate("/user/pur-point")}
-                    >
-                      {user.point_remain ? formatPrice(user.point_remain) : 0}{" "}
-                      pt
-                    </div>
-                    <img
-                      alt=""
-                      src={require("../../assets/img/icons/coin.png")}
-                      width="30px"
-                      height="30px"
-                      onClick={() => navigate("/user/pur-point")}
-                      className="-translate-x-[50%]"
-                    ></img>
-                    <i className="fa-solid fa-plus font-extrabold text-base text-white -translate-x-[170%]"></i>
-                  </button>
-                )}
-
-                <UncontrolledDropdown nav>
-                  <DropdownToggle className="pr-0 py-0" nav>
-                    <div className="flex items-center">
-                      <span className="avatar avatar-sm rounded-circle">
-                        <img
-                          alt="..."
-                          src={require("../../assets/img/theme/avatar.jpg")}
-                          className="w-8 h-8 rounded-full"
-                        />
-                      </span>
-                      <span className="mb-0 text-md text-white hover:text-gray-100 font-weight-bold px-2">
-                        {user.name}
-                      </span>
-                    </div>
-                  </DropdownToggle>
-                  <DropdownMenu className="dropdown-menu-arrow" end>
-                    <DropdownItem className="" header tag="div">
-                      <div className="text-base font-NanumGothic">
-                        {t("welcome")}!
+          <div className="flex flex-wrap justify-between">
+            <Nav navbar>
+              {user ? (
+                <div className="flex items-center px-2 mr-2">
+                  {user.role === "admin" ? null : (
+                    <button className="flex items-center">
+                      <div
+                        className="text-base text-white text-left bg-red-600 border-[1px] border-red-700 rounded-full font-extrabold px-4"
+                        onClick={() => navigate("/user/pur-point")}
+                      >
+                        {user.point_remain ? formatPrice(user.point_remain) : 0}{" "}
+                        pt
                       </div>
-                    </DropdownItem>
-                    <hr></hr>
-                    {user.role === "admin" ? (
+                      <img
+                        alt=""
+                        src={require("../../assets/img/icons/coin.png")}
+                        width="30px"
+                        height="30px"
+                        onClick={() => navigate("/user/pur-point")}
+                        className="-translate-x-[50%]"
+                      ></img>
+                      <i className="fa-solid fa-plus font-extrabold text-base text-white -translate-x-[170%]"></i>
+                    </button>
+                  )}
+
+                  <UncontrolledDropdown nav>
+                    <DropdownToggle className="pr-0 py-0" nav>
+                      <div className="flex items-center">
+                        <span className="avatar avatar-sm rounded-circle">
+                          <img
+                            alt="..."
+                            src={require("../../assets/img/theme/avatar.jpg")}
+                            className="w-8 h-8 rounded-full"
+                          />
+                        </span>
+                        <span className="mb-0 text-md text-white hover:text-gray-100 font-weight-bold px-2 hidden md:block">
+                          {user.name}
+                        </span>
+                      </div>
+                    </DropdownToggle>
+                    <DropdownMenu className="dropdown-menu-arrow" end>
+                      <DropdownItem className="" header tag="div">
+                        <div className="text-base font-NanumGothic">
+                          {t("welcome")}!
+                        </div>
+                      </DropdownItem>
+                      <hr></hr>
+                      {user.role === "admin" ? (
+                        <DropdownItem
+                          to="/admin/index"
+                          tag={Link}
+                          className="flex justify-between items-center"
+                        >
+                          <i className="fa-solid fa-user-secret" />
+                          <span className="w-4/6 text-left font-Lexend font-bold">
+                            {t("admin")}
+                          </span>
+                        </DropdownItem>
+                      ) : (
+                        <>
+                          <DropdownItem
+                            to="/user/user-profile"
+                            tag={Link}
+                            className="flex justify-between items-center"
+                          >
+                            <i className="fa fa-user-edit" />
+                            <span className="w-4/6 text-left font-Lexend font-bold">
+                              {t("profile")}
+                            </span>
+                          </DropdownItem>
+                          <DropdownItem
+                            to="/user/point-log "
+                            tag={Link}
+                            className="flex justify-between items-center"
+                          >
+                            <i className="fa-solid fa-magnifying-glass-dollar"></i>
+                            <span className="w-4/6 text-left font-Lexend font-bold">
+                              {t("point_log")}
+                            </span>
+                          </DropdownItem>
+                          <DropdownItem
+                            to="/user/delivery"
+                            tag={Link}
+                            className="flex justify-between items-center"
+                          >
+                            <i className="fa-solid fa-truck"></i>
+                            <span className="w-4/6 text-left font-Lexend font-bold">
+                              {t("delivery")}
+                            </span>
+                          </DropdownItem>
+                          <DropdownItem
+                            to="/user/Card"
+                            tag={Link}
+                            className="flex justify-between items-center"
+                          >
+                            <i className="fa-solid fa-award"></i>
+                            <span className="w-4/6 text-left font-Lexend font-bold">
+                              {t("my") + " " + t("cards")}
+                            </span>
+                          </DropdownItem>
+                        </>
+                      )}
+                      <DropdownItem divider />
                       <DropdownItem
-                        to="/admin/index"
-                        tag={Link}
+                        href="#pablo"
+                        onClick={() => logout()}
                         className="flex justify-between items-center"
                       >
-                        <i className="fa-solid fa-user-secret" />
-                        <span className="w-4/6 text-left font-Lexend font-bold">
-                          {t("admin")}
+                        <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span className="w-4/6 text-left font-bold font-NanumGothic">
+                          {t("logout")}
                         </span>
                       </DropdownItem>
-                    ) : (
-                      <>
-                        <DropdownItem
-                          to="/user/user-profile"
-                          tag={Link}
-                          className="flex justify-between items-center"
-                        >
-                          <i className="fa fa-user-edit" />
-                          <span className="w-4/6 text-left font-Lexend font-bold">
-                            {t("profile")}
-                          </span>
-                        </DropdownItem>
-                        <DropdownItem
-                          to="/user/point-log "
-                          tag={Link}
-                          className="flex justify-between items-center"
-                        >
-                          <i className="fa-solid fa-magnifying-glass-dollar"></i>
-                          <span className="w-4/6 text-left font-Lexend font-bold">
-                            {t("point_log")}
-                          </span>
-                        </DropdownItem>
-                        <DropdownItem
-                          to="/user/delivery"
-                          tag={Link}
-                          className="flex justify-between items-center"
-                        >
-                          <i className="fa-solid fa-truck"></i>
-                          <span className="w-4/6 text-left font-Lexend font-bold">
-                            {t("delivery")}
-                          </span>
-                        </DropdownItem>
-                        <DropdownItem
-                          to="/user/Card"
-                          tag={Link}
-                          className="flex justify-between items-center"
-                        >
-                          <i className="fa-solid fa-award"></i>
-                          <span className="w-4/6 text-left font-Lexend font-bold">
-                            {t("my") + " " + t("cards")}
-                          </span>
-                        </DropdownItem>
-                      </>
-                    )}
-                    <DropdownItem divider />
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={() => logout()}
-                      className="flex justify-between items-center"
-                    >
-                      <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                      <span className="w-4/6 text-left font-bold font-NanumGothic">
-                        {t("logout")}
-                      </span>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </div>
-            ) : (
-              <button
-                className="nav-link-inner--text text-white px-3 py-1 outline outline-2 outline-offset-2 rounded-sm"
-                onClick={nav_login}
-              >
-                {t("Register / Login")}
-              </button>
-            )}
-          </Nav>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              ) : (
+                <button
+                  className="nav-link-inner--text text-white mr-4 px-3 py-1 outline outline-2 outline-offset-2 rounded-sm"
+                  onClick={nav_login}
+                >
+                  {t("Register / Login")}
+                </button>
+              )}
+            </Nav>
+            <ChangeLanguage />
+          </div>
         </div>
       </div>
     </div>

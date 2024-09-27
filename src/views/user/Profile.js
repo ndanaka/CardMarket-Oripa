@@ -62,166 +62,168 @@ const Profile = () => {
     });
   };
   return (
-    <div
-      className={`relative w-full flex flex-wrap items-start mx-auto mt-16 py-3`}
-    >
-      <SubHeader text={t("my") + " " + t("profile")} />
-      <div className="w-full md:w-3/6 px-3 mx-auto">
-        <div className="rounded-lg bg-white px-5 my-3">
-          <div className="flex flex-col">
-            <div className="w-full text-2xl text-center text-theme_headertext_color py-2">
-              User Profile
-            </div>
-            <hr className="py-2"></hr>
-            <div className="flex flex-wrap">
-              <GroupHeader text="User information" />
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label="Name"
-                  type="text"
-                  name="name"
-                  value={userData.name || ""}
-                  placeholder="Oliver Leo"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label="User Email"
-                  type="email"
-                  name="email"
-                  value={userData.email || ""}
-                  placeholder="OliverLeo118@email.com"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label="First Name"
-                  type="text"
-                  name="firstname"
-                  value={userData.firstname || ""}
-                  placeholder="Oliver"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label="Last Name"
-                  type="text"
-                  name="lastname"
-                  value={userData.lastname || ""}
-                  placeholder="Leo"
-                  onChange={handleSetUserData}
-                />
+    <div className="flex flex-grow">
+      <div
+        className={`relative w-full flex flex-wrap items-start mx-auto mt-16 py-3`}
+      >
+        <SubHeader text={t("my") + " " + t("profile")} />
+        <div className="w-full md:w-3/6 px-3 mx-auto">
+          <div className="rounded-lg bg-white px-5 my-3">
+            <div className="flex flex-col">
+              <div className="w-full text-2xl text-center text-theme_headertext_color py-2">
+                User Profile
               </div>
               <hr className="py-2"></hr>
               <div className="flex flex-wrap">
-                <GroupHeader text="Contact information" />
-                <div className="w-full px-2">
+                <GroupHeader text="User information" />
+                <div className="w-full md:w-1/2 px-2">
                   <InputGroup
-                    label="Address"
+                    label="Name"
                     type="text"
-                    name="address"
-                    value={userData.address || ""}
-                    placeholder="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                    name="name"
+                    value={userData.name || ""}
+                    placeholder="Oliver Leo"
                     onChange={handleSetUserData}
                   />
                 </div>
-                <div className="w-full md:w-1/3 px-2">
+                <div className="w-full md:w-1/2 px-2">
                   <InputGroup
-                    label="City"
-                    type="text"
-                    name="city"
-                    value={userData.city || ""}
-                    placeholder="New York"
+                    label="User Email"
+                    type="email"
+                    name="email"
+                    value={userData.email || ""}
+                    placeholder="OliverLeo118@email.com"
                     onChange={handleSetUserData}
                   />
                 </div>
-                <div className="w-full md:w-1/3 px-2">
+                <div className="w-full md:w-1/2 px-2">
                   <InputGroup
-                    label="Country"
+                    label="First Name"
                     type="text"
-                    name="country"
-                    value={userData.country || ""}
-                    placeholder="United States"
+                    name="firstname"
+                    value={userData.firstname || ""}
+                    placeholder="Oliver"
                     onChange={handleSetUserData}
                   />
                 </div>
-                <div className="w-full md:w-1/3 px-2">
+                <div className="w-full md:w-1/2 px-2">
                   <InputGroup
-                    label="Postal Code"
+                    label="Last Name"
                     type="text"
-                    name="postalCode"
-                    value={userData.postalCode || ""}
-                    placeholder="Postal Code"
+                    name="lastname"
+                    value={userData.lastname || ""}
+                    placeholder="Leo"
                     onChange={handleSetUserData}
                   />
                 </div>
-                <div className="w-full">
-                  <GroupHeader text="About me" />
-                  <div className="form-group px-2">
-                    <label htmlFor="description">My Description</label>
-                    <textarea
-                      className="form-control w-full text-gray-700"
-                      name="description"
-                      id="description"
-                      value={userData.description}
-                      rows="4"
-                      cols="50"
+                <hr className="py-2"></hr>
+                <div className="flex flex-wrap">
+                  <GroupHeader text="Contact information" />
+                  <div className="w-full px-2">
+                    <InputGroup
+                      label="Address"
+                      type="text"
+                      name="address"
+                      value={userData.address || ""}
+                      placeholder="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                       onChange={handleSetUserData}
-                    ></textarea>
+                    />
                   </div>
+                  <div className="w-full md:w-1/3 px-2">
+                    <InputGroup
+                      label="City"
+                      type="text"
+                      name="city"
+                      value={userData.city || ""}
+                      placeholder="New York"
+                      onChange={handleSetUserData}
+                    />
+                  </div>
+                  <div className="w-full md:w-1/3 px-2">
+                    <InputGroup
+                      label="Country"
+                      type="text"
+                      name="country"
+                      value={userData.country || ""}
+                      placeholder="United States"
+                      onChange={handleSetUserData}
+                    />
+                  </div>
+                  <div className="w-full md:w-1/3 px-2">
+                    <InputGroup
+                      label="Postal Code"
+                      type="text"
+                      name="postalCode"
+                      value={userData.postalCode || ""}
+                      placeholder="Postal Code"
+                      onChange={handleSetUserData}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <GroupHeader text="About me" />
+                    <div className="form-group px-2">
+                      <label htmlFor="description">My Description</label>
+                      <textarea
+                        className="form-control w-full text-gray-700"
+                        name="description"
+                        id="description"
+                        value={userData.description}
+                        rows="4"
+                        cols="50"
+                        onChange={handleSetUserData}
+                      ></textarea>
+                    </div>
+                  </div>
+                  <button
+                    className="button-22 px-5 py-2 m-auto my-3"
+                    onClick={handleSaveUserData}
+                  >
+                    Save
+                  </button>
                 </div>
-                <button
-                  className="button-22 px-5 py-2 m-auto my-3"
-                  onClick={handleSaveUserData}
-                >
-                  Save
-                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="w-full md:w-3/6 px-3 mx-auto">
-        <div className="rounded-lg bg-white px-5 my-3">
-          <div className="">
+        <div className="w-full md:w-3/6 px-3 mx-auto">
+          <div className="rounded-lg bg-white px-5 my-3">
+            <div className="">
+              <div className="text-xl text-center text-theme_headertext_color py-2">
+                Change Password
+              </div>
+              <hr className="py-2"></hr>
+
+              <InputGroup
+                label="Current Password"
+                type="password"
+                name="newPass"
+                placeholder="*******"
+                onChange={handleSetUserData}
+              />
+              <InputGroup
+                label="New Password"
+                type="password"
+                name="curPass"
+                placeholder="*******"
+                onChange={handleSetUserData}
+              />
+              <button
+                className="button-22 my-2 mx-auto"
+                onClick={handleChangePass}
+              >
+                Change
+              </button>
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-white px-5 py-2">
             <div className="text-xl text-center text-theme_headertext_color py-2">
-              Change Password
+              Credit Card Setting
             </div>
             <hr className="py-2"></hr>
 
-            <InputGroup
-              label="Current Password"
-              type="password"
-              name="newPass"
-              placeholder="*******"
-              onChange={handleSetUserData}
-            />
-            <InputGroup
-              label="New Password"
-              type="password"
-              name="curPass"
-              placeholder="*******"
-              onChange={handleSetUserData}
-            />
-            <button
-              className="button-22 my-2 mx-auto"
-              onClick={handleChangePass}
-            >
-              Change
-            </button>
+            <button className="button-22 my-2 mx-auto">Save</button>
           </div>
-        </div>
-
-        <div className="rounded-lg bg-white px-5 py-2">
-          <div className="text-xl text-center text-theme_headertext_color py-2">
-            Credit Card Setting
-          </div>
-          <hr className="py-2"></hr>
-
-          <button className="button-22 my-2 mx-auto">Save</button>
         </div>
       </div>
     </div>

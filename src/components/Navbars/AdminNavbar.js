@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+import ChangeLanguage from "../Others/ChangeLanguage";
+
 import {
   DropdownMenu,
   DropdownItem,
@@ -32,7 +34,7 @@ const AdminNavbar = (props) => {
 
   const updateAdminData = () => {
     setAuthToken();
-    
+
     if (user) {
       api
         .get(`/admin/get_admin/${user.user_id}`)
@@ -64,58 +66,61 @@ const AdminNavbar = (props) => {
     <div className="w-full bg-admin_theme_color py-2 px-4">
       <div className="w-full navbar-dark">
         <div className="w-full flex justify-between items-center content-end md:content-between">
-          <div>
-            <Link
-              className="h4 mb-0 text-[#e0e1e2] text-uppercase hidden xxsm:block"
-              to="/"
-            >
-              {t("dashboard")}
-            </Link>
-            <div className="text-white text-2xl xxsm:hidden">
-              <i className="fa fa-navicon"></i>
+          <Link
+            className="h4 mb-0 text-[#e0e1e2] text-uppercase hidden xxsm:block"
+            to="/"
+          >
+            {t("dashboard")}
+          </Link>
+          <div className="text-white text-2xl xxsm:hidden">
+            <i className="fa fa-navicon"></i>
+          </div>
+          <div className="flex justify-between">
+            <Nav navbar>
+              {user ? (
+                <div className="flex items-center px-2">
+                  <UncontrolledDropdown nav>
+                    <DropdownToggle className="pr-0" nav>
+                      <div className="flex items-center text-[#121c2c]">
+                        <span className="w-10 h-10 rounded-full">
+                          <img
+                            alt="..."
+                            src={LoginImg}
+                            className="w-10 h-10 rounded-full"
+                          />
+                        </span>
+                        <span className="mb-0 text-sm font-weight-bold px-2">
+                          {user.name}
+                        </span>
+                      </div>
+                    </DropdownToggle>
+                    <DropdownMenu className="dropdown-menu-arrow" end>
+                      <DropdownItem className="noti-title" header tag="div">
+                        <h6 className="text-overflow m-0">{t("welcome")}</h6>
+                      </DropdownItem>
+                      <DropdownItem to="/admin/index" tag={Link}>
+                        <i className="ni ni-single-02" />
+                        <span>{t("adminPanel")}</span>
+                      </DropdownItem>
+
+                      <DropdownItem divider />
+                      <DropdownItem href="#pablo" onClick={() => logout()}>
+                        <i className="ni ni-user-run" />
+                        <span>{t("logout")}</span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              ) : (
+                <Media>
+                  <img src={LoginImg} alt="img" onClick={nav_login}></img>
+                </Media>
+              )}
+            </Nav>
+            <div className="flex items-center">
+              <ChangeLanguage />
             </div>
           </div>
-          <Nav className="flex" navbar>
-            {user ? (
-              <div className="flex items-center px-2">
-                <UncontrolledDropdown nav>
-                  <DropdownToggle className="pr-0" nav>
-                    <div className="flex items-center text-[#121c2c]">
-                      <span className="w-10 h-10 rounded-full">
-                        <img
-                          alt="..."
-                          src={LoginImg}
-                          className="w-10 h-10 rounded-full"
-                        />
-                      </span>
-                      <span className="mb-0 text-sm font-weight-bold px-2">
-                        {user.name}
-                      </span>
-                    </div>
-                  </DropdownToggle>
-                  <DropdownMenu className="dropdown-menu-arrow" end>
-                    <DropdownItem className="noti-title" header tag="div">
-                      <h6 className="text-overflow m-0">{t("welcome")}</h6>
-                    </DropdownItem>
-                    <DropdownItem to="/admin/index" tag={Link}>
-                      <i className="ni ni-single-02" />
-                      <span>{t("adminPanel")}</span>
-                    </DropdownItem>
-
-                    <DropdownItem divider />
-                    <DropdownItem href="#pablo" onClick={() => logout()}>
-                      <i className="ni ni-user-run" />
-                      <span>{t("logout")}</span>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </div>
-            ) : (
-              <Media>
-                <img src={LoginImg} alt="img" onClick={nav_login}></img>
-              </Media>
-            )}
-          </Nav>
         </div>
       </div>
     </div>

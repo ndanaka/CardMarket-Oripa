@@ -79,6 +79,7 @@ function UserDelivery() {
   };
 
   return (
+    <div className="flex flex-grow">
     <div className="w-full md:w-4/6 p-3 mx-auto mt-16">
       <SubHeader text={t("my") + " " + t("delievery")} />
       <div className="w-full w-full">
@@ -177,7 +178,7 @@ function UserDelivery() {
           </div>
         )}
       </div>
-    </div>
+    </div></div>
   );
 }
 

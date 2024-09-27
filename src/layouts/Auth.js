@@ -34,9 +34,6 @@ const Auth = () => {
     <div className="w-full min-h-screen flex flex-col justify-top bg-gray-100">
       <AuthNavbar />
       <Container className="flex-grow bg-[#f3f4f6] py-3 mx-auto w-4/5">
-        <div className="float-right">
-          <ChangeLanguage />
-        </div>
         <Row className="mx-auto w-full">
           <Routes>
             {getRoutes(routes)}

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
 import { Navbar } from "reactstrap";
+
+import ChangeLanguage from "../Others/ChangeLanguage";
 
 import "../../assets/css/index.css";
 
@@ -13,10 +14,7 @@ const AuthNavbar = () => {
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
         <div className="w-full flex justify-between items-center">
           <div>
-            <Link
-              className="h4 mb-0 text-white text-uppercase hidden xxsm:block"
-              to="/"
-            >
+            <Link className="h4 mb-0 text-white text-uppercase" to="/">
               <div className="flex items-center">
                 <img
                   alt="..."
@@ -24,15 +22,17 @@ const AuthNavbar = () => {
                   width="50"
                   height="50"
                 />
-                <div className="text-lg font-NanumGothic">Oripa</div>
+                <div className="text-lg font-NanumGothic hidden xxsm:block">
+                  Oripa
+                </div>
               </div>
             </Link>
           </div>
           <div toggler="#navbar-collapse-main">
-            <div className="flex">
+            <div className="flex items-center">
               <Link className="text-white nav-link-icon px-2" to="/" tag={Link}>
                 <i className="fa-solid fa-globe"></i>
-                <span className="text-sm text-white px-2">
+                <span className="text-sm text-white px-2 hidden xsm:block">
                   {t("dashboard")}
                 </span>
               </Link>
@@ -42,7 +42,7 @@ const AuthNavbar = () => {
                 tag={Link}
               >
                 <i className="fa-solid fa-user-plus"></i>
-                <span className="nav-link-inner--text text-white px-2">
+                <span className="nav-link-inner--text text-white px-2 hidden xsm:block">
                   {t("register")}
                 </span>
               </Link>
@@ -52,10 +52,11 @@ const AuthNavbar = () => {
                 tag={Link}
               >
                 <i className="fa-solid fa-key"></i>
-                <span className="nav-link-inner--text text-white px-2">
+                <span className="nav-link-inner--text text-white px-2 hidden xsm:block">
                   {t("login")}
                 </span>
               </Link>
+              <ChangeLanguage />
             </div>
           </div>
         </div>

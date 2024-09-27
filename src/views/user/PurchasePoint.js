@@ -74,7 +74,7 @@ function PurchasePoint() {
         user_id: user._id,
         point_num: amount,
         price: amount,
-        email: user.email
+        email: user.email,
       })
       .then((res) => {
         if (res.data.status === 1) {
@@ -167,82 +167,84 @@ function PurchasePoint() {
   };
 
   return (
-    <div className="w-full h-full lg:w-[70%] flex flex-col p-2 mx-auto mt-20">
-      <div className="mt-3">
-        <i
-          className="fa fa-chevron-left float-left mt-2.5 font-bold cursor-pointer"
-          onClick={() => navigate(-1)}
-        ></i>
-        <div className="text-center text-3xl text-theme_text_color font-bold">
-          Purchase Point
-        </div>
-      </div>
-      <hr className="w-full"></hr>
-
-      <div className="flex flex-wrap">
-        <div className="p-2 w-full">
-          <div className="text-lg mt-3 mb-1 font-bold">Method of payment</div>
-          <CustomSelect
-            options={paymentOptions}
-            selectedOption={paymentMethod}
-            setOption={setPaymentMethod}
-          />
-          <div>
-            <div className="text-lg mt-3 mb-1 font-bold">Charge amount</div>
+    <div className="flex flex-grow">
+      <div className="w-full h-full lg:w-[70%] flex flex-col p-2 mx-auto mt-20">
+        <div className="mt-3">
+          <i
+            className="fa fa-chevron-left float-left mt-2.5 font-bold cursor-pointer"
+            onClick={() => navigate(-1)}
+          ></i>
+          <div className="text-center text-3xl text-theme_text_color font-bold">
+            Purchase Point
           </div>
-          <div className="flex flex-col justify-between bg-white rounded-lg mt-2">
-            <div className="p-1">
-              {points
-                ? points.map((point, i) => (
-                    <div key={i}>
-                      <div className="p-2 flex justify-between items-center">
-                        <div className="flex">
-                          <img
-                            src={
-                              process.env.REACT_APP_SERVER_ADDRESS +
-                              point.img_url
-                            }
-                            alt="point"
-                            width="50px"
-                            height="50px"
-                          ></img>
-                          <div className="flex flex-col px-2">
-                            <div className="text-left text-lg font-bold">
-                              {formatPrice(point.point_num)} pt
-                            </div>
-                            <div className="text-s text-center text-theme_text_color">
-                              Purchase at ¥ {formatPrice(point.price)}
+        </div>
+        <hr className="w-full"></hr>
+
+        <div className="flex flex-wrap">
+          <div className="p-2 w-full">
+            <div className="text-lg mt-3 mb-1 font-bold">Method of payment</div>
+            <CustomSelect
+              options={paymentOptions}
+              selectedOption={paymentMethod}
+              setOption={setPaymentMethod}
+            />
+            <div>
+              <div className="text-lg mt-3 mb-1 font-bold">Charge amount</div>
+            </div>
+            <div className="flex flex-col justify-between bg-white rounded-lg mt-2">
+              <div className="p-1">
+                {points
+                  ? points.map((point, i) => (
+                      <div key={i}>
+                        <div className="p-2 flex justify-between items-center">
+                          <div className="flex">
+                            <img
+                              src={
+                                process.env.REACT_APP_SERVER_ADDRESS +
+                                point.img_url
+                              }
+                              alt="point"
+                              width="50px"
+                              height="50px"
+                            ></img>
+                            <div className="flex flex-col px-2">
+                              <div className="text-left text-lg font-bold">
+                                {formatPrice(point.point_num)} pt
+                              </div>
+                              <div className="text-s text-center text-theme_text_color">
+                                Purchase at ¥ {formatPrice(point.price)}
+                              </div>
                             </div>
                           </div>
+                          <div>
+                            <button
+                              className="py-2 px-3 bg-indigo-600 rounded-md text-white text-lg font-bold"
+                              onClick={() => {
+                                // setIsOpen(true); //modal open
+                                setSelId(i); //set selected id for api
+                                handlePay(point.price);
+                              }}
+                            >
+                              Buy Now
+                            </button>
+                          </div>
                         </div>
-                        <div>
-                          <button
-                            className="py-2 px-3 bg-indigo-600 rounded-md text-white text-lg font-bold"
-                            onClick={() => {
-                              // setIsOpen(true); //modal open
-                              setSelId(i); //set selected id for api
-                              handlePay(point.price);
-                            }}
-                          >
-                            Buy Now
-                          </button>
-                        </div>
+                        <hr className="py-1"></hr>
                       </div>
-                      <hr className="py-1"></hr>
-                    </div>
-                  ))
-                : ""}
+                    ))
+                  : ""}
+              </div>
             </div>
           </div>
         </div>
+        <ConfirmModal
+          headerText="Purchase Point"
+          bodyText="Are you sure?"
+          okBtnClick={purchase_point}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       </div>
-      <ConfirmModal
-        headerText="Purchase Point"
-        bodyText="Are you sure?"
-        okBtnClick={purchase_point}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
     </div>
   );
 }

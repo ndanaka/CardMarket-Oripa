@@ -27,21 +27,23 @@ function PointLog() {
   };
 
   return (
-    <div className="w-full md:w-3/6 p-3 mx-auto mt-16">
-      <SubHeader text={t("point_log")} />
-      <div className="flex flex-col">
-        {pointLog?.length > 0
-          ? pointLog.map((data, i) => (
-              <div key={i}>
-                <Pointlog
-                  date={data.date}
-                  point_num={data.point_num}
-                  usage={data.usage}
-                  ioFlag={data.ioFlag}
-                />
-              </div>
-            ))
-          : null}
+    <div className="flex flex-grow">
+      <div className="w-full md:w-3/6 p-3 mx-auto mt-16">
+        <SubHeader text={t("point_log")} />
+        <div className="flex flex-col">
+          {pointLog?.length > 0
+            ? pointLog.map((data, i) => (
+                <div key={i}>
+                  <Pointlog
+                    date={data.date}
+                    point_num={data.point_num}
+                    usage={data.usage}
+                    ioFlag={data.ioFlag}
+                  />
+                </div>
+              ))
+            : null}
+        </div>
       </div>
     </div>
   );

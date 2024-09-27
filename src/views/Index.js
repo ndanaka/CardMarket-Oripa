@@ -10,7 +10,6 @@ import GachaModal from "../components/Modals/GachaModal";
 import PrizeCard from "../components/Others/PrizeCard";
 import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
-import ChangeLanguage from "../components/Others/ChangeLanguage";
 import ImageCarousel from "../components/Others/ImageCarousel";
 import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
 
@@ -452,7 +451,6 @@ const Index = () => {
           setIsOpen={setIsOpenPointModal}
         />
       </div>
-
       <div
         className={`z-[10] bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
           showCardFlag ? "" : "hidden"

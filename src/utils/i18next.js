@@ -305,8 +305,8 @@ i18n.use(initReactI18next).init({
     },
     // Add more languages here
   },
-  lng: "en", // default language
-  fallbackLng: "en",
+  lng: "jp", // default language
+  fallbackLng: "jp",
   interpolation: {
     escapeValue: false, // React already does escaping
   },
