@@ -80,7 +80,7 @@ const Profile = () => {
                   label="Name"
                   type="text"
                   name="name"
-                  value={userData.name}
+                  value={userData.name || ""}
                   placeholder="Oliver Leo"
                   onChange={handleSetUserData}
                 />
@@ -90,7 +90,7 @@ const Profile = () => {
                   label="User Email"
                   type="email"
                   name="email"
-                  value={userData.email}
+                  value={userData.email || ""}
                   placeholder="OliverLeo118@email.com"
                   onChange={handleSetUserData}
                 />
@@ -100,7 +100,7 @@ const Profile = () => {
                   label="First Name"
                   type="text"
                   name="firstname"
-                  value={userData.firstname}
+                  value={userData.firstname || ""}
                   placeholder="Oliver"
                   onChange={handleSetUserData}
                 />
@@ -110,7 +110,7 @@ const Profile = () => {
                   label="Last Name"
                   type="text"
                   name="lastname"
-                  value={userData.lastname}
+                  value={userData.lastname || ""}
                   placeholder="Leo"
                   onChange={handleSetUserData}
                 />
@@ -123,7 +123,7 @@ const Profile = () => {
                     label="Address"
                     type="text"
                     name="address"
-                    value={userData.address}
+                    value={userData.address || ""}
                     placeholder="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                     onChange={handleSetUserData}
                   />
@@ -133,7 +133,7 @@ const Profile = () => {
                     label="City"
                     type="text"
                     name="city"
-                    value={userData.city}
+                    value={userData.city || ""}
                     placeholder="New York"
                     onChange={handleSetUserData}
                   />
@@ -143,7 +143,7 @@ const Profile = () => {
                     label="Country"
                     type="text"
                     name="country"
-                    value={userData.country}
+                    value={userData.country || ""}
                     placeholder="United States"
                     onChange={handleSetUserData}
                   />
@@ -153,7 +153,7 @@ const Profile = () => {
                     label="Postal Code"
                     type="text"
                     name="postalCode"
-                    value={userData.postalCode}
+                    value={userData.postalCode || ""}
                     placeholder="Postal Code"
                     onChange={handleSetUserData}
                   />

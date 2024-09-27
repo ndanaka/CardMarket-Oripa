@@ -15,6 +15,7 @@ const UseTerms = () => {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
   const [user, setUser] = useState();
+  const quillRef = useRef(null);  // Add a ref for the ReactQuill component
 
   useEffect(() => {
     updateUserData();
@@ -63,18 +64,18 @@ const UseTerms = () => {
       <div className="w-full mx-auto">
         <PageHeader text={t("userterms")} />
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center mt-8">
         <ReactQuill
+          ref={quillRef}  // Attach the ref here
           value={content}
           onChange={handleContentChange}
-          theme="snow" // Basic Quill theme
+          theme="snow"  // Basic Quill theme
           className="w-full h-96 border border-gray-300 rounded-lg shadow-md"
           placeholder="Start typing..."
           modules={{
             toolbar: [
               [{ header: [6, 5, 4, 3, 2, 1] }],
               [{ size: ["small", false, "large", "huge"] }],
-              // [{ font: fonts.map((font) => font.value) }],
               ["bold", "italic", "underline", "strike"],
               [{ list: "ordered" }, { list: "bullet" }],
             ],

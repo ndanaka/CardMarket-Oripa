@@ -272,7 +272,7 @@ const Index = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-grow">
       <div className="w-full md:w-[90%] lg:w-[80%] xl:w-[70%] md:mx-2 mt-16 mx-auto xm:p-2">
         {/* <div className="float-right mt-2">
           <ChangeLanguage />
@@ -492,7 +492,7 @@ const Index = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

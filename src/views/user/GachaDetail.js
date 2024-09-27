@@ -243,7 +243,7 @@ function GachaDetail() {
               ? drawGradePrizes(fourthPrizes, "fourth")
               : "")}
           {gacha?.remain_prizes?.length === 0 && (
-            <div className="py-2">{t("noprize")}</div>
+            <div className="py-2 text-center text-lg font-bold">{t("noprize")}</div>
           )}
           {gacha?.last_prize ? (
             <div>
