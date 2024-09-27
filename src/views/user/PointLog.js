@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import api from "../../utils/api";
-import GetUser from "../../utils/getUserAtom";
+import usePersistedUser from "../../store/usePersistedUser";
 import { setAuthToken } from "../../utils/setHeader";
 import { t } from "i18next";
 
@@ -9,7 +9,7 @@ import SubHeader from "../../components/Forms/SubHeader";
 import Pointlog from "../../components/Others/Pointlog";
 
 function PointLog() {
-  const { user } = GetUser();
+  const [user, setUser] = usePersistedUser();
   const [pointLog, setPointLog] = useState();
 
   useEffect(() => {

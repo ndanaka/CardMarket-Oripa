@@ -52,14 +52,14 @@ const Login = () => {
       .post("/user/login", formData)
       .then((res) => {
         if (res.data.status === 1) {
-          showToast(res.data.msg, "success");
-          setUser(res.data.user);
-
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("user", JSON.stringify(res.data.user));
+          setUser(res.data.user);
 
           if (res.data.user.role === "admin") navigate("/admin/index");
           else navigate("/user/index");
+
+          showToast(res.data.msg, "success");
         } else showToast(res.data.msg, "error");
       })
       .catch((error) => {

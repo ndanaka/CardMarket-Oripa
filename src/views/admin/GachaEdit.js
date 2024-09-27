@@ -7,7 +7,7 @@ import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
-import GetUser from "../../utils/getUserAtom";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import PrizeList from "../../components/Tables/PrizeList";
 import PrizeCard from "../../components/Others/PrizeCard";
@@ -26,12 +26,11 @@ const GachaEdit = () => {
   const [trigger, setTrigger] = useState(false);
 
   const location = useLocation();
-  const { gachaId } = location.state || {};
-
-  const { user } = GetUser();
   const { t } = useTranslation();
-
   const navigate = useNavigate();
+
+  const [user, setUser] = usePersistedUser();
+  const { gachaId } = location.state || {};
 
   useEffect(() => {
     setAuthToken();

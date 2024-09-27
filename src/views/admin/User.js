@@ -72,6 +72,7 @@ function Users() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="p-3 ">
       <div className="w-full md:w-[70%] mx-auto">

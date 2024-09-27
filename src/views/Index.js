@@ -46,6 +46,7 @@ const Index = () => {
   ];
 
   useEffect(() => {
+    updateUserData();
     getCategory();
     getGacha();
   }, []);
@@ -153,6 +154,7 @@ const Index = () => {
 
   const updateUserData = () => {
     setAuthToken();
+    
     if (user) {
       api
         .get(`/user/get_user/${user._id}`)
@@ -203,7 +205,6 @@ const Index = () => {
           getGacha();
           setObtains(res.data.prizes);
           showCards();
-          updateUserData();
         } else {
           showToast(res.data.msg, "error");
         }
