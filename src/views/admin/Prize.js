@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
-import GetUser from "../../utils/getUserAtom";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken, setMultipart } from "../../utils/setHeader";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
 import PrizeList from "../../components/Tables/PrizeList";
 import PageHeader from "../../components/Forms/PageHeader";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import uploadimage from "../../assets/img/icons/upload.png";
 
@@ -24,9 +24,29 @@ const Prize = () => {
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [trigger, setTrigger] = useState(null); //for PrizeList component refresh
   const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const { user } = GetUser();
+  const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
 
+  useEffect(() => {
+    updateUserData();
+  }, []);
+
+  const updateUserData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
+  
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
     if (file !== undefined) {

@@ -3,7 +3,7 @@ function PrizeCard({ name, rarity, cashback, img_url }) {
     <div className="flex flex-col rounded-md border-[1px] shadow-md shadow-gray-400 bg-gray-200 items-center p-2 m-1">
       <img
         src={process.env.REACT_APP_SERVER_ADDRESS + img_url}
-        className="w-[100px] h-[150px] shadow-md shadow-gray-400 object-cover rounded-md border-[1px]"
+        className="w-[100px] h-[150px] object-cover rounded-md"
         alt="img"
       />
       {/* <div className="flex flex-col items-center mt-1">

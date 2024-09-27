@@ -171,7 +171,7 @@ function PurchasePoint() {
       <div className="mt-3">
         <i
           className="fa fa-chevron-left float-left mt-2.5 font-bold cursor-pointer"
-          onClick={() => navigate("/user/index")}
+          onClick={() => navigate(-1)}
         ></i>
         <div className="text-center text-3xl text-theme_text_color font-bold">
           Purchase Point

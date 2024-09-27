@@ -5,7 +5,7 @@ import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
-import GetUser from "../../utils/getUserAtom";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
@@ -27,14 +27,31 @@ function Point() {
   const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
   const [delPointId, setDelPointId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user } = GetUser();
+  const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
+    updateUserData();
     getPoint();
   }, []);
 
+  const updateUserData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
+  
   //handle form change, formData input
   const changeFormData = (e) => {
     setFormData({

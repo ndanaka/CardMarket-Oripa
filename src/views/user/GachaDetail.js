@@ -4,10 +4,14 @@ import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+import usePersistedUser from "../../store/usePersistedUser";
+import { setAuthToken } from "../../utils/setHeader";
 
 import PrizeCard from "../../components/Others/PrizeCard";
 import GachaPriceLabel from "../../components/Others/GachaPriceLabel";
 import Progressbar from "../../components/Others/progressbar";
+import GachaModal from "../../components/Modals/GachaModal";
+import NotEnoughPoints from "../../components/Modals/NotEnoughPoints";
 
 function GachaDetail() {
   const [gacha, setGacha] = useState(null); //gacha to be display
@@ -19,8 +23,15 @@ function GachaDetail() {
   const [blur, setBlur] = useState("blur-[0px]");
   const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const [user, setUser] = usePersistedUser();
+  const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
+  const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
+  const [selGacha, setSelGacha] = useState([0, 0]);
   const { gachaId } = location.state || {}; //gacha id came from previous page through navigate
+  const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
+  const [showCardFlag, setShowCardFlag] = useState();
 
   useEffect(() => {
     getGacha();
@@ -58,6 +69,26 @@ function GachaDetail() {
     };
   }, [lastScrollY]); // Dependency array includes lastScrollY
 
+  const updateUserData = () => {
+    setAuthToken();
+    if (user) {
+      api
+        .get(`/user/get_user/${user._id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setUser(res.data.user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const showCards = () => {
+    setShowCardFlag(true);
+  };
+
   // get gacha by gacha id
   const getGacha = () => {
     api
@@ -68,6 +99,50 @@ function GachaDetail() {
           setGacha(res.data.gacha[0]);
         } else {
           showToast("Get gacha failed.", "error");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // draw gacha
+  const drawGacha = (gacha, num) => {
+    if (!user) {
+      navigate("/auth/login");
+    } else {
+      const remainPrizes = gacha.remain_prizes.length;
+      const totalPoints = gacha.price * num;
+      const remainPoints = user.point_remain;
+
+      if (remainPrizes < num) {
+        showToast("Not enough prizes.", "error");
+      } else if (remainPoints === 0 || remainPoints < totalPoints) {
+        setIsOpenPointModal(true);
+      } else {
+        setSelGacha([gacha, num]);
+        setIsOpenGachaModal(true);
+      }
+    }
+  };
+
+  const submitDrawGacha = () => {
+    setAuthToken();
+    setIsOpenGachaModal(false);
+
+    api
+      .post("/admin/gacha/draw_gacha", {
+        gachaId: selGacha[0]._id,
+        drawCounts: selGacha[1],
+        email: user.email,
+      })
+      .then((res) => {
+        if (res.data.status === 1) {
+          showToast(res.data.msg, "success");
+          getGacha();
+          setObtains(res.data.prizes);
+          showCards();
+          updateUserData();
+        } else {
+          showToast(res.data.msg, "error");
         }
       })
       .catch((err) => console.log(err));
@@ -143,12 +218,12 @@ function GachaDetail() {
                   : ""
               }
               alt="gacha thumnail"
-              className="mx-auto w-full md:w-[500px] object-contain"
+              className="align-middle mx-auto w-full md:w-[500px] object-contain item-center"
             />
           </div>
         </div>
         <div
-          className="relative pb-48 mt-[calc(100vh-100px)] z-10 bg-[#f3f4f6]"
+          className="relative pt-10 pb-48 mt-[calc(100vh-100px)] z-10 bg-[#f3f4f6]"
           style={{ boxShadow: "10px 10px 100px 0px rgba(0, 0, 0, 0.6)" }}
         >
           {gacha?.remain_prizes?.length > 0 &&
@@ -212,7 +287,7 @@ function GachaDetail() {
           <div
             className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
             onClick={() => {
-              // drawGacha(data, 1);
+              drawGacha(gacha, 1);
             }}
           >
             1 {t("draw")}
@@ -220,13 +295,72 @@ function GachaDetail() {
           <div
             className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
             onClick={() => {
-              // drawGacha(data, 10);
+              drawGacha(gacha, 10);
             }}
           >
             10 {t("draws")}
           </div>
         </div>
       </div>
+
+      <div
+        className={`z-[10] bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
+          showCardFlag ? "" : "hidden"
+        } `}
+      >
+        <div className="fixed top-20 right-10 text-gray-200 text-3xl">
+          <i
+            className="fa fa-close cursor-pointer"
+            onClick={() => setShowCardFlag(false)}
+          ></i>
+        </div>
+        <div className="flex flex-wrap justify-center items-center mt-32">
+          {obtains?.length > 0 ? (
+            obtains.map((prize, i) => (
+              <div
+                key={prize._id}
+                className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto"
+              >
+                <PrizeCard
+                  key={prize._id}
+                  name={prize.name}
+                  rarity={prize.rarity}
+                  cashback={prize.cashback}
+                  img_url={prize.img_url}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto">
+              <PrizeCard
+                name={obtains?.name}
+                rarity={obtains?.rarity}
+                cashback={obtains?.cashback}
+                img_url={obtains?.img_url}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      {selGacha?.length > 0 ? (
+        <GachaModal
+          headerText="Draw Gacha"
+          name={selGacha[0].name}
+          price={selGacha[0].price}
+          draws={selGacha[1]}
+          onDraw={submitDrawGacha}
+          isOpen={isOpenGachaModal}
+          setIsOpen={setIsOpenGachaModal}
+        />
+      ) : null}
+
+      <NotEnoughPoints
+        headerText="Not enough points"
+        bodyText="Points are required to play the gacha. Points can be recharged on the point purchase page."
+        okBtnClick={() => navigate("/user/pur-point")}
+        isOpen={isOpenPointModal}
+        setIsOpen={setIsOpenPointModal}
+      />
     </div>
   );
 }

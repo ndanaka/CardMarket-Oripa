@@ -7,18 +7,36 @@ import GetUser from "../../utils/getUserAtom";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import formatDate from "../../utils/formatDate";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import PageHeader from "../../components/Forms/PageHeader";
 
 function Delivering() {
-  const { user } = GetUser();
+  const [user, setUser] = usePersistedUser();
   const [deliverData, setDeliverData] = useState();
   const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
+    updateUserData();
     getDeliverData();
   }, []);
+
+  const updateUserData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
 
   const getDeliverData = () => {
     api

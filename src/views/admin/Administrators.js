@@ -7,6 +7,7 @@ import { setAuthToken } from "../../utils/setHeader";
 
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
+import usePersistedUser from "../../store/usePersistedUser";
 
 function Administrators() {
   const { t } = useTranslation();
@@ -20,11 +21,29 @@ function Administrators() {
   const [adminName, setAdminName] = useState();
   const [cuflag, setCuFlag] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = usePersistedUser();
 
   useEffect(() => {
     setAuthToken();
+    updateUserData();
     getAdminList();
   }, []);
+
+  const updateUserData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
 
   const getAdminList = () => {
     api

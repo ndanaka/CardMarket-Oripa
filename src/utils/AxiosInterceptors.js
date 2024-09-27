@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import api from "./api";
-import { showToast } from "../utils/toast";
+import { showToast } from "./toastUtil";
 
 import usePersistedUser from "../store/usePersistedUser";
 

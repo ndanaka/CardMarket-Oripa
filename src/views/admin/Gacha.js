@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
-import GetUser from "../../utils/getUserAtom";
 import formatDate from "../../utils/formatDate";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart } from "../../utils/setHeader";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
@@ -31,13 +31,30 @@ function Gacha() {
   const [gacha, setGacha] = useState(null); //registered Gacha list
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [delGachaId, setDelGachaId] = useState(null);
-  const { user } = GetUser();
+  const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
 
   useEffect(() => {
     getCategory();
+    userUpdateData();
     getGacha();
   }, []);
+
+  const userUpdateData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
 
   //handle image file select change
   const handleFileInputChange = (event) => {

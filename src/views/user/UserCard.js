@@ -29,41 +29,43 @@ function UserCard() {
   };
 
   return (
-    <div className="w-full md:w-4/6 p-3 mx-auto mt-16">
-      <SubHeader text={t("my") + " " + t("cards")} />
-      <div className="flex flex-wrap justify-center items-stretch">
-        <div className="contents">
-          {userCards ? (
-            userCards.map((gacha, i) => {
-              return (
-                <div className="my-1" key={i}>
-                  <div className="text-center">{gacha.gacha_name}</div>
-                  <div className="text-center">
-                    {formatDate(gacha.gacha_date)}
+    <div className="w-full flex flex-grow md:w-4/6 p-3 mx-auto mt-16">
+      <div className="flex flex-col mx-auto">
+        <SubHeader text={t("my") + " " + t("cards")} />
+        <div className="fitems-stretch">
+          <div className="contents">
+            {userCards ? (
+              userCards.map((gacha, i) => {
+                return (
+                  <div className="my-1" key={i}>
+                    <div className="text-center">{gacha.gacha_name}</div>
+                    <div className="text-center">
+                      {formatDate(gacha.gacha_date)}
+                    </div>
+                    <div className="flex flex-wrap justify-center">
+                      {gacha.prizes?.length > 0
+                        ? gacha.prizes.map((card, i) => (
+                            <div className="mt-2 mr-2" key={i}>
+                              <PrizeCard
+                                name={card.name}
+                                rarity={card.rarity}
+                                cashback={card.cashback}
+                                img_url={card.img_url}
+                              />
+                            </div>
+                          ))
+                        : null}
+                    </div>
+                    <hr className="w-full my-2"></hr>
                   </div>
-                  <div className="flex flex-wrap">
-                    {gacha.prizes?.length > 0
-                      ? gacha.prizes.map((card, i) => (
-                          <div className="mt-2 mr-2" key={i}>
-                            <PrizeCard
-                              name={card.name}
-                              rarity={card.rarity}
-                              cashback={card.cashback}
-                              img_url={card.img_url}
-                            />
-                          </div>
-                        ))
-                      : null}
-                  </div>
-                  <hr className="w-full my-2"></hr>
-                </div>
-              );
-            })
-          ) : (
-            <div className="text-lg text-gray-600 text-center">
-              There is no card.
-            </div>
-          )}
+                );
+              })
+            ) : (
+              <div className="text-lg text-gray-600 text-center">
+                There is no card.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

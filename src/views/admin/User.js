@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import PageHeader from "../../components/Forms/PageHeader";
 import formatPrice from "../../utils/formatPrice";
@@ -18,11 +19,29 @@ function Users() {
   const [userList, setUserList] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState("");
+  const [user, setUser] = usePersistedUser("");
 
   useEffect(() => {
     setAuthToken();
+    updateUserData();
     getUserList();
   }, []);
+
+  const updateUserData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
 
   const getUserList = () => {
     api
@@ -53,7 +72,6 @@ function Users() {
       })
       .catch((err) => console.log(err));
   };
-
   return (
     <div className="p-3 ">
       <div className="w-full md:w-[70%] mx-auto">

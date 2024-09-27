@@ -7,29 +7,17 @@ import { useTranslation } from "react-i18next";
 import { setAuthToken } from "../../utils/setHeader";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import PageHeader from "../../components/Forms/PageHeader";
-
-// Define custom font options
-// const fonts = [
-//   { value: "arial", label: "Arial" },
-//   { value: "courier", label: "Courier" },
-//   { value: "georgia", label: "Georgia" },
-//   { value: "times-new-roman", label: "Times New Roman" },
-//   { value: "tahoma", label: "Tahoma" },
-//   { value: "verdana", label: "Verdana" },
-// ];
-
-// // Register font family format
-// const Font = Quill.import("formats/font");
-// Font.whitelist = fonts.map((font) => font.value);
-// Quill.register(Font, true);
 
 const UseTerms = () => {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
+  const [user, setUser] = useState();
 
   useEffect(() => {
+    updateUserData();
     api.get("/admin/get_terms").then((res) => {
       if (res.data.status === 1) {
         setContent(res.data.terms.content);
@@ -38,6 +26,22 @@ const UseTerms = () => {
       }
     });
   }, []);
+
+  const updateUserData = () => {
+    if (user) {
+      api
+        .get(`/admin/get_admin/${user.user_id}`)
+        .then((res) => {
+          if (res.data.status === 1) {
+            res.data.admin.role = "admin";
+            setUser(res.data.admin);
+          }
+        })
+        .catch((err) => {
+          showToast("Try to login again", "error");
+        });
+    }
+  };
 
   const handleContentChange = (value) => {
     setContent(value);
