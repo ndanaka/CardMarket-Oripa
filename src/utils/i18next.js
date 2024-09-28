@@ -17,7 +17,7 @@ i18n.use(initReactI18next).init({
         point: "Point",
         delivery: "Delivery",
         notion: "Notion",
-        userterms: "Userterms",
+        userterms: "User Terms",
         no: "No",
         name: "Name",
         email: "Email address",

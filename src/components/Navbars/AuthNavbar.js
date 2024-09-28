@@ -10,9 +10,9 @@ const AuthNavbar = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full bg-theme_color px-4 py-2">
-      <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
-        <div className="w-full flex justify-between items-center">
+    <div className="w-full bg-theme_color p-2 fixed z-10 max-h-[100px] z-20">
+      <Navbar className="w-full navbar-dark">
+        <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between xsm:px-[28px]">
           <div>
             <Link className="h4 mb-0 text-white text-uppercase" to="/">
               <div className="flex items-center">
@@ -30,16 +30,6 @@ const AuthNavbar = () => {
           </div>
           <div toggler="#navbar-collapse-main">
             <div className="flex items-center">
-              {/* <Link
-                className="flex xsm:ruby text-white nav-link-icon px-2  items-center"
-                to="/"
-                tag={Link}
-              >
-                <i className="fa-solid fa-globe"></i>
-                <span className="text-sm text-white px-2 hidden xsm:block">
-                  {t("dashboard")}
-                </span>
-              </Link> */}
               <Link
                 className="flex xsm:ruby text-white nav-link-icon px-2 items-center"
                 to="/auth/register"

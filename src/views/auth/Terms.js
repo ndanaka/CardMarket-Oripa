@@ -28,11 +28,11 @@ const Terms = () => {
   }, []);
   
   return (
-    <div className="lg:w-2/3 mx-auto">
+    <div className="w-full mx-auto mt-2">
       <div className="flex flex-wrap mb-4">
         <div className=" border-l-[6px] border-blue-500"></div>
         <p className="text-3xl text-center text-gray-700 font-Lexend font-extrabold pl-4">
-          {t("terms")}
+          {t("userterms")}
         </p>
       </div>
       <div

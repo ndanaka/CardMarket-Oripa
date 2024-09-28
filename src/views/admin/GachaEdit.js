@@ -317,7 +317,7 @@ const GachaEdit = () => {
               {t("last") + " " + t("prize")}
             </div>
             <div className="flex flex-wrap justify-center items-stretch">
-              <div className="group relative mt-2 mr-1">
+              <div className="group relative">
                 <PrizeCard
                   name={gacha.last_prize?.name}
                   rarity={gacha.last_prize?.rarity}
@@ -326,7 +326,7 @@ const GachaEdit = () => {
                 />
                 <div className="absolute top-0 w-full h-full bg-gray-100 opacity-0 hover:opacity-10"></div>
                 <button
-                  className="absolute top-0 right-0 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
+                  className="absolute top-1 right-1 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
                   onClick={() => unsetPrize(true)}
                 >
                   <i className="fa fa-close text-gray-200 middle"></i>
