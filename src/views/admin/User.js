@@ -70,6 +70,7 @@ function Users() {
               <th>{t("email")}</th>
               {/* <th>{t("password")}</th> */}
               <th>{t("point")}</th>
+              <th>{t("status")}</th>
               <th>{t("action")}</th>
             </tr>
           </thead>
@@ -113,6 +114,21 @@ function Users() {
                       }
                     >
                       {formatPrice(data.point_remain)} pt
+                    </td>
+                    <td
+                      onClick={() =>
+                        navigate("/admin/user-detail", {
+                          state: { userId: data._id },
+                        })
+                      }
+                    >
+                      <button
+                        className={`py-1 px-2 rounded-sm text-center text-gray-200 ${
+                          data.active ? "bg-indigo-600" : "bg-red-600"
+                        }`}
+                      >
+                        {data.active ? t("active") : t("withdrawn")}
+                      </button>
                     </td>
                     <td>
                       <span

@@ -152,6 +152,8 @@ i18n.use(initReactI18next).init({
         popularity: "Popularity",
         highToLowPrice: "Price (Hight to Low)",
         lowToHighPrice: "Price (Low to High)",
+        active: "Active",
+        withdrawn: "Withdrawn"
       },
     },
     jp: {
@@ -301,6 +303,8 @@ i18n.use(initReactI18next).init({
         popularity: "人気順",
         highToLowPrice: "高い順",
         lowToHighPrice: "安い順",
+        active: "アクティブ",
+        withdrawn: "退会済み"
       },
     },
     // Add more languages here

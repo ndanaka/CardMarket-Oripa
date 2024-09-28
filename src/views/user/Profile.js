@@ -56,13 +56,21 @@ const Profile = () => {
 
   const handleDelete = () => {
     api
-      .post(`/user/withdraw_user/`, { user_id: user._id })
+      .post("/user/withdraw_user/", { user_id: user._id })
       .then((res) => {
         if (res.data.status === 1) {
-          navigate("/auth/login");
+          logout();
         }
       })
       .catch((err) => console.log(err));
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+
+    navigate("/auth/login");
   };
 
   return (
@@ -228,19 +236,19 @@ const Profile = () => {
           </div>
           <div className="rounded-lg bg-white px-5 py-2">
             <p className="text-xl text-center text-theme_headertext_color py-2">
-              Delete My Account
+              Withdraw Account
             </p>
             <hr></hr>
             <p className="py-4">
-              Login disabled: When you delete account, you are not be able to
-              log in again.
+              Disable Login: After withdraw your account, you will not be able
+              to log in again.
             </p>
             <div className="flex flex-wrap w-full justify-end">
               <button
                 className="button-22 my-2 px-4 py-2"
                 onClick={() => setIsModalOpen(true)}
               >
-                Delete
+                Withdrawal
               </button>
             </div>
           </div>
