@@ -313,9 +313,9 @@ const Index = () => {
         </div>
         <div className="flex flex-wrap justify-between px-2">
           <div
-            className={`w-[calc(99%-${
-              lang === "en" ? "200" : "180"
-            }px)] flex justify-start items-center overflow-auto px-2 pt-2`}
+            className={`${
+              lang === "en" ? "w-[calc(99%-186px)]" : "w-[calc(99%-126px)]"
+            } flex justify-start items-center overflow-auto px-2 pt-2`}
           >
             <div
               className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
@@ -338,9 +338,9 @@ const Index = () => {
             ))}
           </div>
           <div
-            className={`w-[${
-              lang === "en" ? "200" : "150"
-            }px] flex justify-between items-center p-1 border-l-2 border-gray-[#e5e7eb]`}
+            className={`${
+              lang === "en" ? "w-[186px]" : "w-[126px]"
+            } flex justify-end items-center p-1 border-l-2 border-gray-[#e5e7eb]`}
           >
             <select
               className="w-auto border-transparent bg-transparent form-control form-control-md cursor-pointer"
