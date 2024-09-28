@@ -16,6 +16,9 @@ import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
 import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+
   const defaultCategory = [
     "last_prize",
     "extra_prize",
@@ -28,15 +31,14 @@ const Index = () => {
   const [filteredGacha, setFilteredGacha] = useState();
   const [categoryFilter, setCategoryFilter] = useState("all"); //gacha filter
   const [filter, setFilter] = useState(["all"]);
-  const [order, setOrder] = useState("newest");
+  const [order, setOrder] = useState("recommended");
   const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
   const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
   const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
   const [user, setUser] = usePersistedUser();
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+  const lang = i18n.language;
 
   const carouselItems = [
     { id: 1, imgUrl: "theme/carousel/rank_banner.png" },
@@ -99,6 +101,9 @@ const Index = () => {
 
     // Sort the filtered gachas by created_date in descending order
     switch (order) {
+      case "recommended":
+        filteredGachas?.sort(() => Math.random() - 0.5);
+        break;
       case "newest":
         filteredGachas?.sort(
           (a, b) => new Date(b.create_date) - new Date(a.create_date)
@@ -107,7 +112,7 @@ const Index = () => {
       case "popularity":
         filteredGachas?.sort(
           (a, b) =>
-            Number(a.remain_prizes.length) - Number(b.remain_prizes.length)
+            Number(b.poped_prizes.length) - Number(a.poped_prizes.length)
         );
         break;
       case "highToLowPrice":
@@ -124,6 +129,57 @@ const Index = () => {
     // Set the final filtered array
     setFilteredGacha(filteredGachas);
   }, [gacha, categoryFilter, filter, order]);
+
+  const handleSetCategory = (selectedCategory) => {
+    let selectedCatetories;
+
+    // Make selected categorie
+    if (selectedCategory === "all") {
+      // If "all" is selected, reset the filter to contain only "all"
+      selectedCatetories = ["all"];
+    } else {
+      if (filter.includes(selectedCategory)) {
+        // If the filter already includes the item, remove it
+        selectedCatetories = filter.filter(
+          (item) => item !== selectedCategory && item !== "all"
+        );
+
+        // If the filter becomes empty, reset it to contain "all"
+        if (selectedCatetories.length === 0) {
+          selectedCatetories = ["all"];
+        }
+      } else {
+        // If the filter does not include the item, add it and remove "all" if present
+        selectedCatetories = filter.filter((item) => item !== "all");
+        selectedCatetories = [...selectedCatetories, selectedCategory];
+      }
+    }
+
+    // Ordering selected categories by selecting
+    if (!selectedCatetories.includes("all")) {
+      if (filter.includes(selectedCategory)) {
+        const restCategories = defaultCategory.filter(
+          (item) => !selectedCatetories.includes(item)
+        );
+        // Add those values to the filter array
+        const updatedFilter = [...selectedCatetories, ...restCategories];
+        setSubCategory(updatedFilter);
+      } else {
+        // Find values from subCategory that are not in the filter array
+        const restCategories = subCategory.filter(
+          (item) => !selectedCatetories.includes(item)
+        );
+        // Add those values to the filter array
+        const updatedFilter = [...selectedCatetories, ...restCategories];
+        setSubCategory(updatedFilter);
+      }
+    } else {
+      setSubCategory(defaultCategory);
+    }
+
+    // Set the final selectedCatetories array in one go
+    setFilter(selectedCatetories);
+  };
 
   const getCategory = () => {
     api
@@ -217,57 +273,6 @@ const Index = () => {
     setShowCardFlag(true);
   };
 
-  const handleSetfilter = (selectedCategory) => {
-    let selectedCatetories;
-
-    // Make selected categorie
-    if (selectedCategory === "all") {
-      // If "all" is selected, reset the filter to contain only "all"
-      selectedCatetories = ["all"];
-    } else {
-      if (filter.includes(selectedCategory)) {
-        // If the filter already includes the item, remove it
-        selectedCatetories = filter.filter(
-          (item) => item !== selectedCategory && item !== "all"
-        );
-
-        // If the filter becomes empty, reset it to contain "all"
-        if (selectedCatetories.length === 0) {
-          selectedCatetories = ["all"];
-        }
-      } else {
-        // If the filter does not include the item, add it and remove "all" if present
-        selectedCatetories = filter.filter((item) => item !== "all");
-        selectedCatetories = [...selectedCatetories, selectedCategory];
-      }
-    }
-
-    // Ordering selected categories by selecting
-    if (!selectedCatetories.includes("all")) {
-      if (filter.includes(selectedCategory)) {
-        const restCategories = defaultCategory.filter(
-          (item) => !selectedCatetories.includes(item)
-        );
-        // Add those values to the filter array
-        const updatedFilter = [...selectedCatetories, ...restCategories];
-        setSubCategory(updatedFilter);
-      } else {
-        // Find values from subCategory that are not in the filter array
-        const restCategories = subCategory.filter(
-          (item) => !selectedCatetories.includes(item)
-        );
-        // Add those values to the filter array
-        const updatedFilter = [...selectedCatetories, ...restCategories];
-        setSubCategory(updatedFilter);
-      }
-    } else {
-      setSubCategory(defaultCategory);
-    }
-
-    // Set the final selectedCatetories array in one go
-    setFilter(selectedCatetories);
-  };
-
   const changeOrder = (e) => {
     setOrder(e.currentTarget.value);
   };
@@ -307,12 +312,16 @@ const Index = () => {
             : null}{" "}
         </div>
         <div className="flex flex-wrap justify-between px-2">
-          <div className="w-[calc(99%-170px)] flex justify-start items-center overflow-auto px-2 pt-2">
+          <div
+            className={`w-[calc(99%-${
+              lang === "en" ? "200" : "180"
+            }px)] flex justify-start items-center overflow-auto px-2 pt-2`}
+          >
             <div
               className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                 filter.includes("all") ? "bg-red-600 text-white" : ""
               }`}
-              onClick={() => handleSetfilter("all")}
+              onClick={() => handleSetCategory("all")}
             >
               {t("all")}
             </div>
@@ -322,21 +331,28 @@ const Index = () => {
                 className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                   filter.includes(category) ? "bg-red-600 text-white" : ""
                 }`}
-                onClick={() => handleSetfilter(category)}
+                onClick={() => handleSetCategory(category)}
               >
                 {t(category)}
               </div>
             ))}
           </div>
-          <div className="w-[170px] flex justify-between items-center p-1 border-l-2 border-gray-[#e5e7eb]">
+          <div
+            className={`w-[${
+              lang === "en" ? "200" : "150"
+            }px] flex justify-between items-center p-1 border-l-2 border-gray-[#e5e7eb]`}
+          >
             <select
-              className="w-auto border-transparent bg-transparent form-control form-control-sm cursor-pointer"
+              className="w-auto border-transparent bg-transparent form-control form-control-md cursor-pointer"
               name="changeOrder"
               id="changeOrder"
               autoComplete="changeOrder"
               onChange={(e) => changeOrder(e)}
               value={order}
             >
+              <option value="recommended" className="p-2">
+                {t("recommended")}
+              </option>
               <option value="newest" className="p-2">
                 {t("newest")}
               </option>
@@ -357,7 +373,9 @@ const Index = () => {
           {filteredGacha === null ||
           filteredGacha === undefined ||
           filteredGacha.length === 0 ? (
-            <div className="text-center mx-auto text-lg">{t("nogacha")}</div>
+            <div className="text-center mx-auto text-lg mt-4">
+              {t("nogacha")}
+            </div>
           ) : (
             filteredGacha.map((data, i) => (
               <div className="w-full xxsm:w-1/2 xm:p-2 p-1" key={i}>
