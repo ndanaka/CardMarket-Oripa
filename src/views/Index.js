@@ -49,7 +49,7 @@ const Index = () => {
     updateUserData();
     getCategory();
     getGacha();
-  }, []);
+  }, [gacha]);
 
   useEffect(() => {
     // Filter by main-category
@@ -154,7 +154,7 @@ const Index = () => {
 
   const updateUserData = () => {
     setAuthToken();
-    
+
     if (user) {
       api
         .get(`/user/get_user/${user._id}`)

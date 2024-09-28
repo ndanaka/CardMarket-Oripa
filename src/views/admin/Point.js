@@ -32,26 +32,9 @@ function Point() {
 
   useEffect(() => {
     setAuthToken();
-    updateUserData();
     getPoint();
   }, []);
 
-  const updateUserData = () => {
-    if (user) {
-      api
-        .get(`/admin/get_admin/${user.user_id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            res.data.admin.role = "admin";
-            setUser(res.data.admin);
-          }
-        })
-        .catch((err) => {
-          showToast("Try to login again", "error");
-        });
-    }
-  };
-  
   //handle form change, formData input
   const changeFormData = (e) => {
     setFormData({

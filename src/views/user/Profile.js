@@ -31,25 +31,11 @@ const Profile = () => {
 
   useEffect(() => {
     setAuthToken();
-    updateUserData();
   }, []);
 
   //initialize userData when it changes
   const handleSetUserData = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
-
-  //get userdata by id and set UserAtom
-  const updateUserData = () => {
-    api
-      .get(`/user/get_user/${user._id}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          setUser(res.data.user);
-          setUserData(res.data.user);
-        }
-      })
-      .catch((err) => console.log(err));
   };
 
   const handleSaveUserData = () => {

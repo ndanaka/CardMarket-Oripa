@@ -35,13 +35,7 @@ function PurchasePoint() {
 
   useEffect(() => {
     setAuthToken();
-
-    api
-      .get("/admin/get_point")
-      .then((res) => {
-        setPoints(res.data.points);
-      })
-      .catch((err) => console.error(err));
+    getPoints();
 
     // google pay settings
     const script = document.createElement("script");
@@ -66,25 +60,33 @@ function PurchasePoint() {
     }
   };
 
-  const purchase_point = async (amount) => {
-    setAuthToken();
+  const getPoints = async () => {
+    try {
+      const res = await api.get("/admin/get_point");
+      setPoints(res.data.points);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    api
-      .post("/user/point/purchase", {
+  const purchase_point = async (amount) => {
+    try {
+      setAuthToken();
+
+      const res = await api.post("/user/point/purchase", {
         user_id: user._id,
         point_num: amount,
         price: amount,
         email: user.email,
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(res.data.msg, "success");
-          updateUserData();
-        } else showToast(res.data.msg, "error");
-      })
-      .catch((err) => {
-        console.log(err);
       });
+
+      if (res.data.status === 1) {
+        showToast(res.data.msg, "success");
+        updateUserData();
+      } else showToast(res.data.msg, "error");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onGooglePayLoaded = () => {

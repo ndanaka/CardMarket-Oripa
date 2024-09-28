@@ -70,7 +70,9 @@ const UserNavbar = () => {
                   onClick={() => navigate("/user/index")}
                 >
                   <i className="fa fa-chevron-left"></i>
-                  <span className="ml-1 hidden xsm:block">{" " + t("return")}</span>
+                  <span className="ml-1 hidden xsm:block">
+                    {" " + t("return")}
+                  </span>
                 </button>
               ) : (
                 <>
@@ -80,7 +82,9 @@ const UserNavbar = () => {
                     width="50"
                     height="50"
                   />
-                  <div className="text-lg font-NanumGothic hidden xxsm:block">Oripa</div>
+                  <div className="text-lg font-NanumGothic hidden xxsm:block">
+                    Oripa
+                  </div>
                 </>
               )}
             </div>

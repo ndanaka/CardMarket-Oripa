@@ -34,8 +34,9 @@ function GachaDetail() {
   const [showCardFlag, setShowCardFlag] = useState();
 
   useEffect(() => {
+    updateUserData();
     getGacha();
-  }, []);
+  }, [gacha]);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -140,7 +141,6 @@ function GachaDetail() {
           getGacha();
           setObtains(res.data.prizes);
           showCards();
-          updateUserData();
         } else {
           showToast(res.data.msg, "error");
         }

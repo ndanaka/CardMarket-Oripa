@@ -22,25 +22,8 @@ function Category() {
 
   useEffect(() => {
     setAuthToken();
-    updateUserData();
     get_category();
   }, []);
-
-  const updateUserData = () => {
-    if (user) {
-      api
-        .get(`/admin/get_admin/${user.user_id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            res.data.admin.role = "admin";
-            setUser(res.data.admin);
-          }
-        })
-        .catch((err) => {
-          showToast("Try to login again", "error");
-        });
-    }
-  };
 
   const handleDelete = () => {
     // Logic for deleting the item

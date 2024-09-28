@@ -15,10 +15,9 @@ const UseTerms = () => {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
   const [user, setUser] = useState();
-  const quillRef = useRef(null);  // Add a ref for the ReactQuill component
+  const quillRef = useRef(null); // Add a ref for the ReactQuill component
 
   useEffect(() => {
-    updateUserData();
     api.get("/admin/get_terms").then((res) => {
       if (res.data.status === 1) {
         setContent(res.data.terms.content);
@@ -27,22 +26,6 @@ const UseTerms = () => {
       }
     });
   }, []);
-
-  const updateUserData = () => {
-    if (user) {
-      api
-        .get(`/admin/get_admin/${user.user_id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            res.data.admin.role = "admin";
-            setUser(res.data.admin);
-          }
-        })
-        .catch((err) => {
-          showToast("Try to login again", "error");
-        });
-    }
-  };
 
   const handleContentChange = (value) => {
     setContent(value);
@@ -66,10 +49,10 @@ const UseTerms = () => {
       </div>
       <div className="flex flex-col items-center mt-8">
         <ReactQuill
-          ref={quillRef}  // Attach the ref here
+          ref={quillRef} // Attach the ref here
           value={content}
           onChange={handleContentChange}
-          theme="snow"  // Basic Quill theme
+          theme="snow" // Basic Quill theme
           className="w-full h-96 border border-gray-300 rounded-lg shadow-md"
           placeholder="Start typing..."
           modules={{

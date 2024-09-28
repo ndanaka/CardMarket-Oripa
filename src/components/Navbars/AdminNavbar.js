@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import ChangeLanguage from "../Others/ChangeLanguage";
@@ -26,11 +26,12 @@ import "../../assets/css/index.css";
 const AdminNavbar = (props) => {
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
   useEffect(() => {
     updateAdminData();
-  }, []);
+  }, [location]);
 
   const updateAdminData = () => {
     setAuthToken();

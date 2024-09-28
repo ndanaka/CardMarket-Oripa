@@ -27,26 +27,6 @@ const Prize = () => {
   const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    updateUserData();
-  }, []);
-
-  const updateUserData = () => {
-    if (user) {
-      api
-        .get(`/admin/get_admin/${user.user_id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            res.data.admin.role = "admin";
-            setUser(res.data.admin);
-          }
-        })
-        .catch((err) => {
-          showToast("Try to login again", "error");
-        });
-    }
-  };
-  
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
     if (file !== undefined) {

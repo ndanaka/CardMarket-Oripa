@@ -11,26 +11,6 @@ function NotionPage() {
   const { t } = useTranslation();
   const [user, setUser] = usePersistedUser();
 
-  useEffect(() => {
-    updateUserData();
-  }, []);
-
-  const updateUserData = () => {
-    if (user) {
-      api
-        .get(`/admin/get_admin/${user.user_id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            res.data.admin.role = "admin";
-            setUser(res.data.admin);
-          }
-        })
-        .catch((err) => {
-          showToast("Try to login again", "error");
-        });
-    }
-  };
-
   return (
     <div className="w-full p-3">
       <div className="w-full md:w-[70%] mx-auto">
