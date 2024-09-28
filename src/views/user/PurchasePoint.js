@@ -77,7 +77,6 @@ function PurchasePoint() {
         user_id: user._id,
         point_num: amount,
         price: amount,
-        email: user.email,
       });
 
       if (res.data.status === 1) {

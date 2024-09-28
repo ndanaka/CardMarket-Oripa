@@ -133,7 +133,6 @@ function GachaDetail() {
       .post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
         drawCounts: selGacha[1],
-        email: user.email,
       })
       .then((res) => {
         if (res.data.status === 1) {
