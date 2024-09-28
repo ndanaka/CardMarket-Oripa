@@ -29,14 +29,13 @@ function GachaDetail() {
   const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
   const [selGacha, setSelGacha] = useState([0, 0]);
-  const { gachaId } = location.state || {}; //gacha id came from previous page through navigate
+  const { gachaId, progress } = location.state || {}; //gacha id came from previous page through navigate
   const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState();
 
   useEffect(() => {
-    updateUserData();
     getGacha();
-  }, [gacha]);
+  }, []);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -114,7 +113,9 @@ function GachaDetail() {
       const totalPoints = gacha.price * num;
       const remainPoints = user.point_remain;
 
-      if (remainPrizes < num) {
+      if (user.role === "admin") {
+        showToast("Admin can't draw gacha.", "error");
+      } else if (remainPrizes < num) {
         showToast("Not enough prizes.", "error");
       } else if (remainPoints === 0 || remainPoints < totalPoints) {
         setIsOpenPointModal(true);
@@ -140,6 +141,7 @@ function GachaDetail() {
           getGacha();
           setObtains(res.data.prizes);
           showCards();
+          updateUserData();
         } else {
           showToast(res.data.msg, "error");
         }
@@ -206,9 +208,9 @@ function GachaDetail() {
         ref={mainContent}
       >
         <div className="m-auto">
-          <div className="flex flex-col justify-center fixed top-0">
+          <div className="fixed top-0">
             <div
-              className={`h-screen ${blur} transition-all duration-100 bg-gray-800 h-[calc(100vh-160px)] mt-[60px] w-full md:w-[500px] shadow-md shadow-gray-400 mx-auto bg-black`}
+              className={`h-screen ${blur} transition-all duration-100 bg-gray-800 h-[calc(100vh-160px)] mt-[62px] w-full md:w-[500px] shadow-md shadow-gray-400 mx-auto bg-black`}
             >
               <img
                 src={
@@ -218,7 +220,7 @@ function GachaDetail() {
                     : ""
                 }
                 alt="gacha thumnail"
-                className="align-middle mx-auto w-full md:w-[500px] object-contain item-center"
+                className="mx-auto w-full md:w-[500px] object-contain"
               />
             </div>
           </div>
@@ -268,18 +270,13 @@ function GachaDetail() {
           <div className="z-30 w-full md:w-[500px] fixed bottom-[65px] flex flex-col items-center text-center px-20 pb-2">
             <GachaPriceLabel price={gacha?.price} />
             <Progressbar
-              progress={
-                ((gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0)) /
-                  gacha?.total_number) *
-                100
-              }
+              progress={progress}
               label={
                 gacha?.remain_prizes.length +
                 (gacha?.last_prize ? 1 : 0) +
                 " / " +
                 gacha?.total_number
               }
-              height={20}
             />
           </div>
           <div

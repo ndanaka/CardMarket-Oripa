@@ -46,10 +46,9 @@ const Index = () => {
   ];
 
   useEffect(() => {
-    updateUserData();
     getCategory();
     getGacha();
-  }, [gacha]);
+  }, []);
 
   useEffect(() => {
     // Filter by main-category
@@ -178,7 +177,9 @@ const Index = () => {
       const totalPoints = gacha.price * num;
       const remainPoints = user.point_remain;
 
-      if (remainPrizes < num) {
+      if (user.role === "admin") {
+        showToast("Admin can't draw gacha.", "error");
+      } else if (remainPrizes < num) {
         showToast("Not enough prizes.", "error");
       } else if (remainPoints === 0 || remainPoints < totalPoints) {
         setIsOpenPointModal(true);
@@ -204,6 +205,7 @@ const Index = () => {
           getGacha();
           setObtains(res.data.prizes);
           showCards();
+          updateUserData();
         } else {
           showToast(res.data.msg, "error");
         }
@@ -273,9 +275,6 @@ const Index = () => {
   return (
     <div className="flex flex-grow">
       <div className="w-full md:w-[90%] lg:w-[80%] xl:w-[70%] md:mx-2 mt-16 mx-auto xm:p-2">
-        {/* <div className="float-right mt-2">
-          <ChangeLanguage />
-        </div> */}
         <div className="mx-auto p-1">
           <ImageCarousel items={carouselItems} />
         </div>

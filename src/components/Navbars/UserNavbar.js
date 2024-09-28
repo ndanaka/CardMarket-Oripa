@@ -61,15 +61,15 @@ const UserNavbar = () => {
   return (
     <div className="w-full bg-theme_color p-2 fixed z-10 max-h-[100px] z-20">
       <div className="w-full navbar-dark">
-        <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between  items-center content-end md:content-between py-[7px] xsm:px-[28px]">
+        <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between py-[7px] xsm:px-[28px]">
           <Link className="h4 mb-0 text-white text-uppercase xxsm:block" to="/">
-            <div className="flex flex-wrap justify-between items-center">
+            <div className="flex flex-wrap justify-between">
               {location.pathname === "/user/gacha-detail" ? (
                 <button
                   className="flex xsm:ruby px-2 py-[4px] rounded-lg bg-red-500 border-[1px] border-red-700 text-center text-white text-sm"
                   onClick={() => navigate("/user/index")}
                 >
-                  <i className="fa fa-chevron-left"></i>
+                  <i className="fa fa-chevron-left mt-1"></i>
                   <span className="ml-1 hidden xsm:block">
                     {" " + t("return")}
                   </span>
@@ -210,7 +210,7 @@ const UserNavbar = () => {
                   className="nav-link-inner--text text-white mr-4 px-3 py-1 outline outline-2 outline-offset-2 rounded-sm"
                   onClick={nav_login}
                 >
-                  {t("Register / Login")}
+                  {t("register")} / {t("login")}
                 </button>
               )}
             </Nav>

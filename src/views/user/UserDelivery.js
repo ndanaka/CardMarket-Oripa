@@ -19,9 +19,8 @@ function UserDelivery() {
 
   useEffect(() => {
     setAuthToken();
-    updateUserData();
     getDeliver();
-  }, [pendingDelievers]);
+  }, []);
 
   const updateUserData = () => {
     setAuthToken();
@@ -57,6 +56,7 @@ function UserDelivery() {
 
         setPendingDelievers(pendings);
         setDelieveringDelievers(deliverings);
+        updateUserData();
       }
     } catch (error) {
       console.log(error);
