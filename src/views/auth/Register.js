@@ -110,7 +110,7 @@ const Register = () => {
           <div className="text-center m-3 font-bold text-2xl">
             {t("sign_up")}
           </div>
-          <div className="w-full lg:w-2/5 bg-white shadow border-0 my-4 mx-auto rounded-lg">
+          <div className="w-full bg-white shadow border-0 my-4 mx-auto rounded-lg">
             <CardBody className="px-md-4 py-md-4 px-2 py-2">
               <div className="text-center mb-1 mt-3 font-bold text-xl">
                 {t("sign_up_desc1")}

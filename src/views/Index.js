@@ -469,7 +469,7 @@ const Index = () => {
         />
       </div>
       <div
-        className={`z-[10] bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
+        className={`z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
           showCardFlag ? "" : "hidden"
         } `}
       >

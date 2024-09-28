@@ -75,7 +75,7 @@ const Login = () => {
           setIsEmailVerifyPanel={setIsEmailVerifyPanel}
         />
       ) : (
-        <div className="w-full lg:w-2/5 mx-auto rounded-lg bg-white shadow border-0 my-5">
+        <div className="w-full  mx-auto rounded-lg bg-white shadow border-0 my-5">
           <div className="p-lg-4 p-2">
             <div className="text-center mb-5 mt-3 font-bold text-2xl">
               {t("sign_in")}
