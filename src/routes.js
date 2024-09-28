@@ -143,7 +143,6 @@ var routes = [
     component: <Delivering />,
     layout: "/admin",
   },
-
   {
     path: "/notion",
     name: "notion",

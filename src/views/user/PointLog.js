@@ -19,7 +19,7 @@ function PointLog() {
 
   const getPointLog = () => {
     api
-      .get(`/user/get_point_log/${user._id}`)
+      .get(`/user/get_point_log/${user?._id}`)
       .then((res) => {
         if (res.data.status === 1) setPointLog(res.data.pointLog);
       })

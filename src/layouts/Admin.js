@@ -32,7 +32,7 @@ const Admin = (props) => {
   }, []);
 
   useEffect(() => {
-    if (user.role !== "admin") navigate("/user/index");
+    if (user?.role !== "admin") navigate("/user/index");
     if (isLoggedOut) navigate("/auth/login");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;

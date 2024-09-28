@@ -26,7 +26,7 @@ function UserDelivery() {
     setAuthToken();
     if (user) {
       api
-        .get(`/user/get_user/${user._id}`)
+        .get(`/user/get_user/${user?._id}`)
         .then((res) => {
           if (res.data.status === 1) {
             setUser(res.data.user);
@@ -40,7 +40,7 @@ function UserDelivery() {
 
   const getDeliver = async () => {
     try {
-      const res = await api.get(`/user/get_deliver/${user._id}`);
+      const res = await api.get(`/user/get_deliver/${user?._id}`);
 
       if (res.data.deliver.length > 0) {
         let pendings = [];

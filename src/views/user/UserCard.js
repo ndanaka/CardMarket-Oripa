@@ -21,7 +21,7 @@ function UserCard() {
 
   const getUserCards = () => {
     api
-      .get(`/user/get_cards/${user._id}`)
+      .get(`/user/get_cards/${user?._id}`)
       .then((res) => {
         if (res.data.status === 1) setUserCards(res.data.cards);
       })
