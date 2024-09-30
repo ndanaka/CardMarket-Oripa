@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { t } from "i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
@@ -10,12 +9,14 @@ import PrizeCard from "../../components/Others/PrizeCard";
 import SubHeader from "../../components/Forms/SubHeader";
 
 import usePersistedUser from "../../store/usePersistedUser";
+import { useTranslation } from "react-i18next";
 
 function UserDelivery() {
   const [user, setUser] = usePersistedUser();
   const [pendingDelievers, setPendingDelievers] = useState([]);
   const [delieveringDelievers, setDelieveringDelievers] = useState([]);
   const [flag, setFlag] = useState(false); //return card confirm span flag
+  const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
@@ -82,10 +83,10 @@ function UserDelivery() {
   return (
     <div className="flex flex-grow">
       <div className="w-full md:w-4/6 p-3 mx-auto mt-16">
-        <SubHeader text={t("my") + " " + t("delievery")} />
+        <SubHeader text={t("my") + " " + t("delivery")} />
         <div className="w-full w-full">
           <p className="text-center text-xl text-base font-Lexend font-bold text-gray-500">
-            Pending Cards (Returnable)
+            {t("Pending") + " " + t("cards")} ({t("returnable")})
           </p>
           {pendingDelievers?.length > 0 ? (
             pendingDelievers.map((data, i) => {
@@ -98,17 +99,14 @@ function UserDelivery() {
                   <div className="mt-2 mr-2 flex flex-wrap justify-center items-stretch">
                     {data.prizes?.length > 0
                       ? data.prizes.map((card) => (
-                          <div
-                            key={card._id}
-                            className="group relative mt-1 mr-1"
-                          >
+                          <div key={card._id} className="group relative">
                             <PrizeCard
                               name={card.name}
                               rarity={card.rarity}
                               cashback={card.cashback}
                               img_url={card.img_url}
                             />
-                            <div className="absolute bottom-0 w-full bg-red-300 hidden group-hover:block transition-all duration-300 text-base text-gray-800 text-center cursor-pointer z-3 py-2 animate-[displayEase_linear]">
+                            <div className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 bg-red-300 group-hover:block transition-all duration-300 text-base text-gray-800 text-center cursor-pointer z-3 animate-[displayEase_linear]">
                               {flag === true ? (
                                 <div className="flex justify-center">
                                   <i
@@ -123,9 +121,11 @@ function UserDelivery() {
                                   ></i>
                                 </div>
                               ) : (
-                                <span onClick={() => setFlag(true)}>
-                                  Return Card
-                                </span>
+                                <div className="py-1">
+                                  <span onClick={() => setFlag(true)}>
+                                    {t("returnCard")}
+                                  </span>
+                                </div>
                               )}
                             </div>
                           </div>
@@ -142,14 +142,14 @@ function UserDelivery() {
             })
           ) : (
             <div className="text-lg text-gray-600 text-center">
-              There is no pending card.
+              {t("noDeliveringCards")}
             </div>
           )}
         </div>
         <hr className="w-full my-2"></hr>
         <div className="w-full w-full">
           <p className="text-center text-xl text-base font-Lexend font-bold text-gray-500">
-            Delivering Cards
+            {t("Delivering") + " " + t("cards")}
           </p>
           {delieveringDelievers?.length > 0 ? (
             delieveringDelievers.map((data, i) => {
@@ -162,14 +162,13 @@ function UserDelivery() {
                   <div className="mt-2 mr-2 flex flex-wrap justify-center items-stretch">
                     {data.prizes?.length > 0
                       ? data.prizes.map((card) => (
-                          <div key={card._id}>
-                            <PrizeCard
-                              name={card.name}
-                              rarity={card.rarity}
-                              cashback={card.cashback}
-                              img_url={card.img_url}
-                            />
-                          </div>
+                          <PrizeCard
+                            key={card._id}
+                            name={card.name}
+                            rarity={card.rarity}
+                            cashback={card.cashback}
+                            img_url={card.img_url}
+                          />
                         ))
                       : null}
                   </div>
@@ -179,7 +178,7 @@ function UserDelivery() {
             })
           ) : (
             <div className="text-lg text-gray-600 text-center">
-              There is no delivering card.
+              {t("noPendingCards")}
             </div>
           )}
         </div>

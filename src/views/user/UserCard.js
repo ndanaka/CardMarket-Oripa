@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { t } from "i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
@@ -9,10 +8,12 @@ import SubHeader from "../../components/Forms/SubHeader";
 import PrizeCard from "../../components/Others/PrizeCard";
 
 import usePersistedUser from "../../store/usePersistedUser";
+import { useTranslation } from "react-i18next";
 
 function UserCard() {
   const [userCards, setUserCards] = useState();
   const [user] = usePersistedUser();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();

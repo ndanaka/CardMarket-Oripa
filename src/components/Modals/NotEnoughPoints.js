@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 function NotEnoughPoints(props) {
+  const { t } = useTranslation();
   const { headerText, bodyText, okBtnClick, isOpen, setIsOpen } = props;
 
   const closeModal = () => {
@@ -44,7 +47,7 @@ function NotEnoughPoints(props) {
               className="bg-indigo-600 rounded-md text-center mx-2 px-5 py-2 hover:bg-indigo-700 text-white outline-none"
               onClick={closeModal}
             >
-              Cancel
+              {t("cancel")}
             </button>
           </div>
         </div>

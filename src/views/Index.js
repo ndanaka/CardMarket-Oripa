@@ -1,6 +1,6 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
 
 import api from "../utils/api";
 import { setAuthToken } from "../utils/setHeader";
@@ -31,13 +31,15 @@ const Index = () => {
   const [filteredGacha, setFilteredGacha] = useState();
   const [categoryFilter, setCategoryFilter] = useState("all"); //gacha filter
   const [filter, setFilter] = useState(["all"]);
-  const [order, setOrder] = useState("recommended");
+  const [order, setOrder] = useState("newest");
   const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
   const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
-  const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
+  const [popedPrizes, setPopedPrizes] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
   const [user, setUser] = usePersistedUser();
+  const [existLastFlag, setExistLastFlag] = useState(false);
+  const [lastEffect, setLastEffect] = useState(false);
   const lang = i18n.language;
 
   const carouselItems = [
@@ -50,25 +52,26 @@ const Index = () => {
   useEffect(() => {
     getCategory();
     getGacha();
-  }, []);
+  }, [showCardFlag]);
 
   useEffect(() => {
-    // Filter by main-category
+    // Get gachas by main category
     let filteredGachas = gacha?.filter(
       (gacha) =>
         gacha.isRelease === true &&
         (categoryFilter === "all" ? true : gacha.category === categoryFilter)
     );
 
-    // Filter by sub-category
+    // Get gachas by sub category
     if (!filter.includes("all")) {
-      // Apply sub-category filter based on 'last_prize'
+      // get gachas has 'last_prize'
       if (filter.includes("last_prize")) {
         filteredGachas = filteredGachas?.filter(
           (gacha) => gacha.last_prize !== undefined && gacha.last_prize !== null
         );
       }
 
+      // get gachas has 'round_number_prize'
       if (filter.includes("round_number_prize")) {
         filteredGachas = filteredGachas?.filter(
           (gacha) =>
@@ -77,6 +80,7 @@ const Index = () => {
         );
       }
 
+      // get gachas has 'extra_prize'
       if (filter.includes("extra_prize")) {
         filteredGachas = filteredGachas?.filter(
           (gacha) =>
@@ -84,6 +88,7 @@ const Index = () => {
         );
       }
 
+      // get gachas has 'appraised_item'
       if (filter.includes("appraised_item")) {
         filteredGachas = filteredGachas?.filter(
           (gacha) =>
@@ -91,6 +96,7 @@ const Index = () => {
         );
       }
 
+      // get gachas has 'once_per_day'
       if (filter.includes("once_per_day")) {
         filteredGachas = filteredGachas?.filter(
           (gacha) =>
@@ -99,7 +105,7 @@ const Index = () => {
       }
     }
 
-    // Sort the filtered gachas by created_date in descending order
+    // Get gachas by order
     switch (order) {
       case "recommended":
         filteredGachas?.sort(() => Math.random() - 0.5);
@@ -130,57 +136,7 @@ const Index = () => {
     setFilteredGacha(filteredGachas);
   }, [gacha, categoryFilter, filter, order]);
 
-  const handleSetCategory = (selectedCategory) => {
-    let selectedCatetories;
-
-    // Make selected categorie
-    if (selectedCategory === "all") {
-      // If "all" is selected, reset the filter to contain only "all"
-      selectedCatetories = ["all"];
-    } else {
-      if (filter.includes(selectedCategory)) {
-        // If the filter already includes the item, remove it
-        selectedCatetories = filter.filter(
-          (item) => item !== selectedCategory && item !== "all"
-        );
-
-        // If the filter becomes empty, reset it to contain "all"
-        if (selectedCatetories.length === 0) {
-          selectedCatetories = ["all"];
-        }
-      } else {
-        // If the filter does not include the item, add it and remove "all" if present
-        selectedCatetories = filter.filter((item) => item !== "all");
-        selectedCatetories = [...selectedCatetories, selectedCategory];
-      }
-    }
-
-    // Ordering selected categories by selecting
-    if (!selectedCatetories.includes("all")) {
-      if (filter.includes(selectedCategory)) {
-        const restCategories = defaultCategory.filter(
-          (item) => !selectedCatetories.includes(item)
-        );
-        // Add those values to the filter array
-        const updatedFilter = [...selectedCatetories, ...restCategories];
-        setSubCategory(updatedFilter);
-      } else {
-        // Find values from subCategory that are not in the filter array
-        const restCategories = subCategory.filter(
-          (item) => !selectedCatetories.includes(item)
-        );
-        // Add those values to the filter array
-        const updatedFilter = [...selectedCatetories, ...restCategories];
-        setSubCategory(updatedFilter);
-      }
-    } else {
-      setSubCategory(defaultCategory);
-    }
-
-    // Set the final selectedCatetories array in one go
-    setFilter(selectedCatetories);
-  };
-
+  // get main categories
   const getCategory = () => {
     api
       .get("admin/get_category")
@@ -194,12 +150,14 @@ const Index = () => {
       });
   };
 
+  // get all gachas
   const getGacha = () => {
     api
       .get("/admin/gacha")
       .then((res) => {
         if (res.data.status === 1) {
           setGacha(res.data.gachaList);
+          setFilteredGacha(res.data.gachaList);
         }
       })
       .catch((err) => {
@@ -207,6 +165,7 @@ const Index = () => {
       });
   };
 
+  // update user data and update localstorage
   const updateUserData = () => {
     setAuthToken();
 
@@ -224,28 +183,106 @@ const Index = () => {
     }
   };
 
-  // draw gacha
+  // change gacha by sub order
+  const changeMainCat = (cat) => {
+    getGacha();
+    setCategoryFilter(cat);
+  };
+
+  // change gacha by sub category
+  const changeSubCat = (selSubGat) => {
+    getGacha();
+
+    // Make selected categories array
+    let selSubCats;
+    if (selSubGat === "all") {
+      // If "all" is selected, reset the filter to contain only "all"
+      selSubCats = ["all"];
+    } else {
+      if (filter.includes(selSubGat)) {
+        // If the filter already includes the item, remove it
+        selSubCats = filter.filter(
+          (item) => item !== selSubGat && item !== "all"
+        );
+
+        // If the filter becomes empty, reset it to contain "all"
+        if (selSubCats.length === 0) {
+          selSubCats = ["all"];
+        }
+      } else {
+        // If the filter does not include the item, add it and remove "all" if present
+        selSubCats = filter.filter((item) => item !== "all");
+        selSubCats = [...selSubCats, selSubGat];
+      }
+    }
+
+    // Ordering selected categories by selecting
+    if (!selSubCats.includes("all")) {
+      if (filter.includes(selSubGat)) {
+        const restCategories = defaultCategory.filter(
+          (item) => !selSubCats.includes(item)
+        );
+        // Add those values to the filter array
+        const updatedFilter = [...selSubCats, ...restCategories];
+        setSubCategory(updatedFilter);
+      } else {
+        // Find values from subCategory that are not in the filter array
+        const restCategories = subCategory.filter(
+          (item) => !selSubCats.includes(item)
+        );
+        // Add those values to the filter array
+        const updatedFilter = [...selSubCats, ...restCategories];
+        setSubCategory(updatedFilter);
+      }
+    } else {
+      setSubCategory(defaultCategory);
+    }
+
+    // Set the final selSubCats array in one go
+    setFilter(selSubCats);
+  };
+
+  // change gacha by sub order
+  const changeOrder = (e) => {
+    getGacha();
+    setOrder(e.currentTarget.value);
+  };
+
+  // check draw conditions
   const drawGacha = (gacha, num) => {
     if (!user) {
       navigate("/auth/login");
-    } else {
-      const remainPrizes = gacha.remain_prizes.length;
-      const totalPoints = gacha.price * num;
-      const remainPoints = user.point_remain;
-
-      if (user.role === "admin") {
-        showToast("Admin can't draw gacha.", "error");
-      } else if (remainPrizes < num) {
-        showToast("Not enough prizes.", "error");
-      } else if (remainPoints === 0 || remainPoints < totalPoints) {
-        setIsOpenPointModal(true);
-      } else {
-        setSelGacha([gacha, num]);
-        setIsOpenGachaModal(true);
-      }
+      return;
     }
+    const remainPrizes = gacha.last_prize
+      ? gacha.remain_prizes.length + 1
+      : gacha.remain_prizes.length;
+    const totalPoints = gacha.price * num;
+    const remainPoints = user.point_remain;
+
+    // return when user is admin
+    if (user.role === "admin") {
+      showToast(t("drawnAdmin"), "error");
+      return;
+    }
+
+    // return when remain prize is less than selected drawing counts
+    if (remainPrizes < num) {
+      showToast(t("drawnEnoughPrize"), "error");
+      return;
+    }
+
+    // remain point is less than selected drawing points
+    if (remainPoints < totalPoints) {
+      setIsOpenPointModal(true);
+      return;
+    }
+
+    setSelGacha([gacha, num]);
+    setIsOpenGachaModal(true);
   };
 
+  // draw gacha
   const submitDrawGacha = () => {
     setAuthToken();
     setIsOpenGachaModal(false);
@@ -257,24 +294,30 @@ const Index = () => {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast(res.data.msg, "success");
-          getGacha();
-          setObtains(res.data.prizes);
-          showCards();
+          showToast(t("drawnSuccess"), "success");
+          setPopedPrizes(res.data.prizes);
+          setExistLastFlag(res.data.existLastFlag);
+          setLastEffect(res.data.lastEffect);
+          setShowCardFlag(true);
           updateUserData();
         } else {
-          showToast(res.data.msg, "error");
+          switch (res.data.msg) {
+            case 0:
+              showToast(t("drawnAdmin"), "error");
+              break;
+            case 1:
+              showToast(t("noEnoughPoints"), "error");
+              break;
+            case 2:
+              showToast(t("drawnEnoughPrize"), "error");
+              break;
+
+            default:
+              break;
+          }
         }
       })
       .catch((err) => console.log(err));
-  };
-
-  const showCards = () => {
-    setShowCardFlag(true);
-  };
-
-  const changeOrder = (e) => {
-    setOrder(e.currentTarget.value);
   };
 
   return (
@@ -290,7 +333,7 @@ const Index = () => {
                 ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
                 : ""
             } `}
-            onClick={() => setCategoryFilter("all")}
+            onClick={() => changeMainCat("all")}
           >
             {t("all")}
           </button>
@@ -304,7 +347,7 @@ const Index = () => {
                       ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
                       : ""
                   } `}
-                  onClick={() => setCategoryFilter(data.name)}
+                  onClick={() => changeMainCat(data.name)}
                 >
                   {data.name}
                 </button>
@@ -314,14 +357,14 @@ const Index = () => {
         <div className="flex flex-wrap justify-between px-2">
           <div
             className={`${
-              lang === "en" ? "w-[calc(99%-186px)]" : "w-[calc(99%-126px)]"
+              lang === "en" ? "w-[calc(99%-172px)]" : "w-[calc(99%-112px)]"
             } flex justify-start items-center overflow-auto px-2 pt-2`}
           >
             <div
               className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                 filter.includes("all") ? "bg-red-600 text-white" : ""
               }`}
-              onClick={() => handleSetCategory("all")}
+              onClick={() => changeSubCat("all")}
             >
               {t("all")}
             </div>
@@ -331,7 +374,7 @@ const Index = () => {
                 className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                   filter.includes(category) ? "bg-red-600 text-white" : ""
                 }`}
-                onClick={() => handleSetCategory(category)}
+                onClick={() => changeSubCat(category)}
               >
                 {t(category)}
               </div>
@@ -339,34 +382,24 @@ const Index = () => {
           </div>
           <div
             className={`${
-              lang === "en" ? "w-[186px]" : "w-[126px]"
+              lang === "en" ? "w-[172px]" : "w-[112px]"
             } flex justify-end items-center p-1 border-l-2 border-gray-[#e5e7eb]`}
           >
             <select
-              className="w-auto border-transparent bg-transparent form-control form-control-md cursor-pointer"
+              className="w-auto border-transparent bg-transparent cursor-pointer focus:outline-none focus:border-none"
               name="changeOrder"
               id="changeOrder"
               autoComplete="changeOrder"
               onChange={(e) => changeOrder(e)}
               value={order}
             >
-              <option value="recommended" className="p-2">
-                {t("recommended")}
-              </option>
-              <option value="newest" className="p-2">
-                {t("newest")}
-              </option>
-              <option value="popularity" className="p-2">
-                {t("popularity")}
-              </option>
-              <option value="highToLowPrice" className="p-2">
-                {t("highToLowPrice")}
-              </option>
-              <option value="lowToHighPrice" className="p-2">
-                {t("lowToHighPrice")}
-              </option>
+              <option value="newest">{t("newest")}</option>
+              <option value="popularity">{t("popularity")}</option>
+              <option value="recommended">{t("recommended")}</option>
+              <option value="highToLowPrice">{t("highToLowPrice")}</option>
+              <option value="lowToHighPrice">{t("lowToHighPrice")}</option>
             </select>
-            <i className="fa fa-arrows-v" />
+            {/* <i className="fa fa-arrows-v" /> */}
           </div>
         </div>
         <div className="w-full flex flex-wrap justify-between xm:px-3">
@@ -381,7 +414,7 @@ const Index = () => {
               <div className="w-full xxsm:w-1/2 xm:p-2 p-1" key={i}>
                 <div className="p-2 h-full flex flex-col justify-between border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
                   <button
-                    className="relative cursor-pointer h-[inherit] w-full"
+                    className="relative cursor-pointer h-[354px] w-full"
                     onClick={() =>
                       navigate("/user/gacha-detail", {
                         state: {
@@ -400,11 +433,11 @@ const Index = () => {
                         process.env.REACT_APP_SERVER_ADDRESS +
                         data.gacha_thumnail_url
                       }
-                      className="border-b-2 border-white rounded h-[400px] w-full object-cover"
+                      className="rounded-t h-[310px] w-full object-cover"
                       alt=""
-                    ></img>
-                    <div className="w-full bg-gray-300">
-                      <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-3 text-center">
+                    />
+                    <div className="w-full h-[50px]">
+                      <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-0 text-center">
                         <GachaPriceLabel price={data.price} />
                         <Progressbar
                           progress={
@@ -450,7 +483,7 @@ const Index = () => {
 
         {selGacha?.length > 0 ? (
           <GachaModal
-            headerText="Draw Gacha"
+            headerText={t("drawGacha")}
             name={selGacha[0].name}
             price={selGacha[0].price}
             draws={selGacha[1]}
@@ -461,50 +494,61 @@ const Index = () => {
         ) : null}
 
         <NotEnoughPoints
-          headerText="Not enough points"
-          bodyText="Points are required to play the gacha. Points can be recharged on the point purchase page."
+          headerText={t("noEnoughPoints")}
+          bodyText={t("noEnoughPointsDesc")}
           okBtnClick={() => navigate("/user/pur-point")}
           isOpen={isOpenPointModal}
           setIsOpen={setIsOpenPointModal}
         />
       </div>
       <div
-        className={`z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
+        className={`flex flex-wrap justify-center items-center z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
           showCardFlag ? "" : "hidden"
         } `}
       >
-        <div className="fixed top-20 right-10 text-gray-200 text-3xl">
-          <i
-            className="fa fa-close cursor-pointer"
-            onClick={() => setShowCardFlag(false)}
-          ></i>
-        </div>
-        <div className="flex flex-wrap justify-center items-center mt-32">
-          {obtains?.length > 0 ? (
-            obtains.map((prize, i) => (
-              <div
-                key={prize._id}
-                className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto"
-              >
-                <PrizeCard
-                  key={prize._id}
-                  name={prize.name}
-                  rarity={prize.rarity}
-                  cashback={prize.cashback}
-                  img_url={prize.img_url}
-                />
-              </div>
-            ))
-          ) : (
-            <div className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto">
+        <div className="relative h-fit flex flex-wrap w-full md:w-4/5 lg:w-3/5 xl:w-2/5 py-10">
+          <div className="absolute top-0 right-0 text-gray-200 text-3xl">
+            <i
+              className="fa fa-close cursor-pointer"
+              onClick={() => setShowCardFlag(false)}
+            ></i>
+          </div>
+          {popedPrizes?.map((prize, i) => (
+            <div
+              key={i}
+              className="rounded-lg animate-[animatezoom_1s_ease-in-out] mx-auto"
+            >
               <PrizeCard
-                name={obtains?.name}
-                rarity={obtains?.rarity}
-                cashback={obtains?.cashback}
-                img_url={obtains?.img_url}
+                index={i}
+                prizeType={prize.type}
+                lastEffect={prize.last_effect}
+                name={prize.name}
+                rarity={prize.rarity}
+                cashback={prize.cashback}
+                img_url={prize.img_url}
               />
             </div>
-          )}
+          ))}
+          <div
+            className={`${
+              lastEffect && existLastFlag ? "" : "hidden"
+            } absolute top-[20%] w-full flex justify-center items-center`}
+          >
+            <div className="bg-white text-center rounded-lg p-4 shadow-xl animate-pulse">
+              <h2 className="text-3xl font-bold text-pink-500 ">
+                🎉 {t("wonLast")} 🎉
+              </h2>
+              <p className="text-md mt-4 text-gray-700">{t("wonDesc")}</p>
+              <div className="mt-6">
+                <button
+                  className="bg-pink-500 hover:bg-pink-600 text-white py-1 px-3 rounded-lg"
+                  onClick={() => setExistLastFlag(false)}
+                >
+                  {t("wonConfirm")}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

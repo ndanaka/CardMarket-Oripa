@@ -12,9 +12,9 @@ function PrizeList({
   trigger,
   setFormData,
   setCuFlag,
-  selprizes,
+  setprizes,
   role = "showPrize",
-  setImgUrl
+  setImgUrl,
 }) {
   const [prizes, setPrizes] = useState(""); //registered prizes list
   const [flag, setFlag] = useState(false); //registered prizes list
@@ -136,7 +136,7 @@ function PrizeList({
                       }
                     })()}
                   </td>
-                  <td>{data.status}</td>
+                  <td>{t(data.status)}</td>
                   <td>
                     {role !== "setPrize" ? (
                       <>
@@ -155,10 +155,10 @@ function PrizeList({
                       </>
                     ) : (
                       <button
-                        className="button-22"
-                        onClick={() => selprizes(data._id)}
+                        className="bg-[#0276ff] text-white text-md py-1 px-3 rounded-md"
+                        onClick={() => setprizes(data._id)}
                       >
-                        {t("set") + " " + t("prize")}
+                        {t("add")}
                       </button>
                     )}
                   </td>
