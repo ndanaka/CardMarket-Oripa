@@ -26,7 +26,6 @@ function ImageCarousel({ items }) {
                   src={require(`../../assets/img/${item.imgUrl}`)}
                   className="w-full max-h-80 object-cover rounded-lg cursor-pointer bg-blend-lighten hover:opacity-50"
                   alt="itemImage"
-                  onClick={() => console.log("Carousel Clicked")}
                 />
                 {/* <button
                   type="button"

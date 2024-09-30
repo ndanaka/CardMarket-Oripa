@@ -2,9 +2,11 @@ import { useEffect, useRef, useCallback } from "react";
 
 import formatDate from "../../utils/formatDate";
 import formatPrice from "../../utils/formatPrice";
+import { useTranslation } from "react-i18next";
 
 function Pointlog({ date, point_num, usage, ioFlag }) {
   const remain_point = useRef(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     calcRemainPoint();
@@ -20,12 +22,18 @@ function Pointlog({ date, point_num, usage, ioFlag }) {
       <small className="font-Inter">{formatDate(date)}</small>
       <div className="flex justify-between items-center">
         {ioFlag === 1 ? (
-          <div className="text-base text-blue-600"> + {formatPrice(point_num)} pt</div>
+          <div className="text-base text-blue-600">
+            {" "}
+            + {formatPrice(point_num)} pt
+          </div>
         ) : (
-          <div className="text-base text-red-600"> - {formatPrice(point_num)} pt</div>
+          <div className="text-base text-red-600">
+            {" "}
+            - {formatPrice(point_num)} pt
+          </div>
         )}
         {/* <div>{remain_point.current}</div> */}
-        <div>{usage}</div>
+        <div>{t(usage)}</div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
@@ -32,6 +33,7 @@ function PurchasePoint() {
 
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   useEffect(() => {
     setAuthToken();
@@ -115,7 +117,7 @@ function PurchasePoint() {
   const handlePay = async (amount) => {
     try {
       if (paymentMethod === null) {
-        showToast("Select method of payment", "error");
+        showToast(t("selectPayOption"), "error");
         return;
       }
 
@@ -176,21 +178,21 @@ function PurchasePoint() {
             onClick={() => navigate(-1)}
           ></i>
           <div className="text-center text-3xl text-theme_text_color font-bold">
-            Purchase Point
+            {t("purchagePoints")}
           </div>
         </div>
         <hr className="w-full"></hr>
 
         <div className="flex flex-wrap">
           <div className="p-2 w-full">
-            <div className="text-lg mt-3 mb-1 font-bold">Method of payment</div>
+            <div className="text-lg mt-3 mb-1 font-bold">{t("paymentMethod")}</div>
             <CustomSelect
               options={paymentOptions}
               selectedOption={paymentMethod}
               setOption={setPaymentMethod}
             />
             <div>
-              <div className="text-lg mt-3 mb-1 font-bold">Charge amount</div>
+              <div className="text-lg mt-3 mb-1 font-bold">{t("chargetAmount")}</div>
             </div>
             <div className="flex flex-col justify-between bg-white rounded-lg mt-2">
               <div className="p-1">
@@ -213,20 +215,20 @@ function PurchasePoint() {
                                 {formatPrice(point.point_num)} pt
                               </div>
                               <div className="text-s text-center text-theme_text_color">
-                                Purchase at ¥ {formatPrice(point.price)}
+                                {t("purchase")} ¥ {formatPrice(point.price)}
                               </div>
                             </div>
                           </div>
                           <div>
                             <button
-                              className="py-2 px-3 bg-indigo-600 rounded-md text-white text-lg font-bold"
+                              className="py-1 px-2 xsm:py-2 xsm:px-3 bg-indigo-600 rounded-md text-white text-md font-bold"
                               onClick={() => {
                                 // setIsOpen(true); //modal open
                                 setSelId(i); //set selected id for api
                                 handlePay(point.price);
                               }}
                             >
-                              Buy Now
+                              {t("buyNow")}
                             </button>
                           </div>
                         </div>

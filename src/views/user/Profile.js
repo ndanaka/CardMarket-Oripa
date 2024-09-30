@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { t } from "i18next";
 
 import api from "../../utils/api.js";
 import { showToast } from "../../utils/toastUtil.js";
@@ -12,8 +11,10 @@ import InputGroup from "../../components/Forms/InputGroup.js";
 import GroupHeader from "../../components/Forms/GroupHeader.js";
 import SubHeader from "../../components/Forms/SubHeader.js";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal.js";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+  const { t } = useTranslation();
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);

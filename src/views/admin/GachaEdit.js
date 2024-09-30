@@ -206,7 +206,7 @@ const GachaEdit = () => {
   };
 
   //set prize from registerd prizes by manualy
-  const setprizes = (id) => {
+  const setprizes = (id, lastEffect) => {
     if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
       showToast("You have no permission for this action", "error");
       return;
@@ -215,16 +215,17 @@ const GachaEdit = () => {
     api
       .post("/admin/gacha/set_prize", {
         isLastPrize: isLastPrize,
+        lastEffect: lastEffect,
         gachaId: gachaId,
         prizeId: id,
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("setPrize success.", "success");
+          showToast("Set Prize success.", "success");
           setTrigger(!trigger);
           getGacha();
         } else {
-          showToast("setPrize failed.", "error");
+          showToast("Set Prize failed.", "error");
         }
       })
       .catch((err) => console.log(err));
@@ -331,6 +332,16 @@ const GachaEdit = () => {
                 >
                   <i className="fa fa-close text-gray-200 middle"></i>
                 </button>
+
+                <div className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 bg-blue-200 group-hover:block transition-all duration-300 text-base text-gray-800 text-center cursor-pointer z-3 animate-[displayEase_linear]">
+                  <div className="py-1">
+                    <span onClick={() => setprizes(gacha.last_prize._id, 1)}>
+                      {gacha.last_prize.last_effect
+                        ? t("removeEffect")
+                        : t("addEffect")}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -351,21 +362,27 @@ const GachaEdit = () => {
             }
             download
           >
-            template.csv
-            <i className="fa fa-download ml-1"></i>
+            {t("template")}.csv
+            <i className="fa fa-download ml-2"></i>
           </a>
-          <input
-            type="file"
-            accept=".csv"
-            className="my-1"
-            value={csvFile}
-            onChange={handleFileChange}
-          />
+          <label
+            htmlFor="file-upload"
+            className="flex flex-col items-center button-22 my-1"
+          >
+            <span className="text-sm">{t("upload")} CSV</span>
+            <input
+              id="file-upload"
+              type="file"
+              accept=".csv"
+              className="hidden" // Hide the default input
+              onChange={handleFileChange}
+            />
+          </label>
           <button
             className={`button-22 my-1 ${prizes ? "" : "disable"}`}
             onClick={uploadPrize}
           >
-            {t("upload") + " " + t("all") + " " + t("prize")}
+            {t("uploadAll")}
           </button>
         </div>
         {/* set prizes table */}
@@ -454,7 +471,7 @@ const GachaEdit = () => {
           </div>
         </div>
         {loadFlag ? (
-          <PrizeList trigger={trigger} selprizes={setprizes} role="setPrize" />
+          <PrizeList trigger={trigger} setprizes={setprizes} role="setPrize" />
         ) : null}
       </div>
     </div>

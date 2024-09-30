@@ -30,12 +30,22 @@ function GachaDetail() {
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
   const [selGacha, setSelGacha] = useState([0, 0]);
   const { gachaId, progress } = location.state || {}; //gacha id came from previous page through navigate
-  const [obtains, setObtains] = useState(null); //obtained prize through gacha draw
+  const [popedPrizes, setPopedPrizes] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState();
+  const [existLastFlag, setExistLastFlag] = useState(false);
 
   useEffect(() => {
     getGacha();
-  }, []);
+  }, [showCardFlag]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]); // Dependency array includes lastScrollY
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -60,15 +70,7 @@ function GachaDetail() {
     setLastScrollY(currentScrollY);
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup listener on unmount
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollY]); // Dependency array includes lastScrollY
-
+  // update user data and update localstorage
   const updateUserData = () => {
     setAuthToken();
     if (user) {
@@ -104,28 +106,41 @@ function GachaDetail() {
       .catch((err) => console.log(err));
   };
 
-  // draw gacha
+  // check draw conditions
   const drawGacha = (gacha, num) => {
     if (!user) {
       navigate("/auth/login");
-    } else {
-      const remainPrizes = gacha.remain_prizes.length;
-      const totalPoints = gacha.price * num;
-      const remainPoints = user.point_remain;
-
-      if (user.role === "admin") {
-        showToast("Admin can't draw gacha.", "error");
-      } else if (remainPrizes < num) {
-        showToast("Not enough prizes.", "error");
-      } else if (remainPoints === 0 || remainPoints < totalPoints) {
-        setIsOpenPointModal(true);
-      } else {
-        setSelGacha([gacha, num]);
-        setIsOpenGachaModal(true);
-      }
+      return;
     }
+    const remainPrizes = gacha.last_prize
+      ? gacha.remain_prizes.length + 1
+      : gacha.remain_prizes.length;
+    const totalPoints = gacha.price * num;
+    const remainPoints = user.point_remain;
+
+    // return when user is admin
+    if (user.role === "admin") {
+      showToast(t("drawnAdmin"), "error");
+      return;
+    }
+
+    // return when remain prize is less than selected drawing counts
+    if (remainPrizes < num) {
+      showToast(t("drawnEnoughPrize"), "error");
+      return;
+    }
+
+    // remain point is less than selected drawing points
+    if (remainPoints < totalPoints) {
+      setIsOpenPointModal(true);
+      return;
+    }
+
+    setSelGacha([gacha, num]);
+    setIsOpenGachaModal(true);
   };
 
+  // draw gacha
   const submitDrawGacha = () => {
     setAuthToken();
     setIsOpenGachaModal(false);
@@ -137,13 +152,26 @@ function GachaDetail() {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast(res.data.msg, "success");
-          getGacha();
-          setObtains(res.data.prizes);
-          showCards();
+          showToast(t("drawnSuccess"), "success");
+          setPopedPrizes(res.data.prizes);
+          setExistLastFlag(res.data.existLastFlag);
+          setShowCardFlag(true);
           updateUserData();
         } else {
-          showToast(res.data.msg, "error");
+          switch (res.data.msg) {
+            case 0:
+              showToast(t("drawnAdmin"), "error");
+              break;
+            case 1:
+              showToast(t("noEnoughPoints"), "error");
+              break;
+            case 2:
+              showToast(t("drawnEnoughPrize"), "error");
+              break;
+
+            default:
+              break;
+          }
         }
       })
       .catch((err) => console.log(err));
@@ -279,10 +307,7 @@ function GachaDetail() {
               }
             />
           </div>
-          <div
-            className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]"
-            style={{ boxShadow: "0px 0px 30px 0px rgba(0, 0, 0, 0.3)" }}
-          >
+          <div className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]">
             <div
               className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
               onClick={() => {
@@ -301,49 +326,61 @@ function GachaDetail() {
             </div>
           </div>
         </div>
-
         <div
-          className={`z-[10] bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
+          className={`flex flex-wrap justify-center items-center z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
             showCardFlag ? "" : "hidden"
           } `}
         >
-          <div className="fixed top-20 right-10 text-gray-200 text-3xl">
-            <i
-              className="fa fa-close cursor-pointer"
-              onClick={() => setShowCardFlag(false)}
-            ></i>
-          </div>
-          <div className="flex flex-wrap justify-center items-center mt-32">
-            {obtains?.length > 0 ? (
-              obtains.map((prize, i) => (
-                <div
-                  key={prize._id}
-                  className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto"
-                >
-                  <PrizeCard
-                    key={prize._id}
-                    name={prize.name}
-                    rarity={prize.rarity}
-                    cashback={prize.cashback}
-                    img_url={prize.img_url}
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="rounded-lg animate-[animatezoom_1s_ease-in-out] delay-1000 m-auto">
+          <div className="relative h-fit flex flex-wrap w-full md:w-4/5 lg:w-3/5 xl:w-2/5 py-10">
+            <div className="absolute top-0 right-0 text-gray-200 text-3xl">
+              <i
+                className="fa fa-close cursor-pointer"
+                onClick={() => setShowCardFlag(false)}
+              ></i>
+            </div>
+            {popedPrizes?.map((prize, i) => (
+              <div
+                key={i}
+                className="rounded-lg animate-[animatezoom_1s_ease-in-out] mx-auto"
+              >
                 <PrizeCard
-                  name={obtains?.name}
-                  rarity={obtains?.rarity}
-                  cashback={obtains?.cashback}
-                  img_url={obtains?.img_url}
+                  index={i}
+                  prizeType={prize.type}
+                  lastEffect={prize.last_effect}
+                  name={prize.name}
+                  rarity={prize.rarity}
+                  cashback={prize.cashback}
+                  img_url={prize.img_url}
                 />
               </div>
-            )}
+            ))}
+            {console.log(existLastFlag)}
+            <div
+              className={`${
+                existLastFlag ? "" : "hidden"
+              } absolute top-[20%] w-full flex justify-center items-center`}
+            >
+              <div className="bg-white text-center rounded-lg p-4 shadow-xl animate-pulse">
+                <h2 className="text-3xl font-bold text-pink-500 ">
+                  🎉 {t("wonLast")} 🎉
+                </h2>
+                <p className="text-md mt-4 text-gray-700">{t("wonDesc")}</p>
+                <div className="mt-6">
+                  <button
+                    className="bg-pink-500 hover:bg-pink-600 text-white py-1 px-3 rounded-lg"
+                    onClick={() => setExistLastFlag(false)}
+                  >
+                    {t("wonConfirm")}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
         {selGacha?.length > 0 ? (
           <GachaModal
-            headerText="Draw Gacha"
+            headerText={t("drawGacha")}
             name={selGacha[0].name}
             price={selGacha[0].price}
             draws={selGacha[1]}
@@ -354,8 +391,8 @@ function GachaDetail() {
         ) : null}
 
         <NotEnoughPoints
-          headerText="Not enough points"
-          bodyText="Points are required to play the gacha. Points can be recharged on the point purchase page."
+          headerText={t("noEnoughPoints")}
+          bodyText={t("noEnoughPointsDesc")}
           okBtnClick={() => navigate("/user/pur-point")}
           isOpen={isOpenPointModal}
           setIsOpen={setIsOpenPointModal}

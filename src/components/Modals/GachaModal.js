@@ -23,7 +23,7 @@ function GachaModal(props) {
       id="modal"
       className={`w-full h-full flex bg-gray-600 bg-opacity-50 fixed top-0 left-0 z-50`}
     >
-      <div className="bg-white rounded-xl shadow-xl shadow-gray-500  m-auto px-3 py-3 z-10 animate-[fadeIn_1s_ease-in-out]">
+      <div className="bg-white rounded-xl shadow-xl shadow-gray-500 m-auto px-3 py-3 z-10 animate-[fadeIn_1s_ease-in-out]">
         <div className="flex justify-between">
           <div className="w-full text-2xl text-theme_text_color text-center py-2">
             {headerText}

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const CustomSelect = ({ options, selectedOption, setOption }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (option) => {
@@ -24,7 +26,7 @@ const CustomSelect = ({ options, selectedOption, setOption }) => {
             <span className="ml-3 text-xl">{selectedOption.label}</span>
           </div>
         ) : (
-          <span className="text-base text-lg">Select an option</span>
+          <span className="text-base text-lg">{t("selectOption")}</span>
         )}
       </div>
       {isOpen && (
@@ -35,7 +37,11 @@ const CustomSelect = ({ options, selectedOption, setOption }) => {
               key={option.value}
               onClick={() => handleSelect(option)}
             >
-              <img className="h-[30px] w-[30px]" src={option.img} alt={option.label} />
+              <img
+                className="h-[30px] w-[30px]"
+                src={option.img}
+                alt={option.label}
+              />
               <span className="ml-3 text-xl">{option.label}</span>
             </li>
           ))}

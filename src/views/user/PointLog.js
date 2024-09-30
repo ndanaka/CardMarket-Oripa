@@ -3,14 +3,15 @@ import { useEffect, useState } from "react";
 import api from "../../utils/api";
 import usePersistedUser from "../../store/usePersistedUser";
 import { setAuthToken } from "../../utils/setHeader";
-import { t } from "i18next";
 
 import SubHeader from "../../components/Forms/SubHeader";
 import Pointlog from "../../components/Others/Pointlog";
+import { useTranslation } from "react-i18next";
 
 function PointLog() {
   const [user, setUser] = usePersistedUser();
   const [pointLog, setPointLog] = useState();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
