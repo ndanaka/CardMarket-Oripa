@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CardBody, FormGroup, Form, Input, InputGroup } from "reactstrap";
@@ -10,13 +10,6 @@ import useAffiliateID from "../../utils/useAffiliateID";
 import EmailVerification from "../../components/Others/EamilVerification";
 
 const Register = () => {
-  // check the URL parameters on page load to see if the affiliate ID is present.
-  const handleAffiliateID = (affiliateID) => {
-    setAffId(affiliateID);
-    // Here, you can call your API or any other logic
-  };
-  useAffiliateID(handleAffiliateID);
-
   const [strength, setStrength] = useState(""); //password strength
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
@@ -34,6 +27,13 @@ const Register = () => {
   const navigate = useNavigate();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {
+    setAffId(affiliateID);
+    // Here, you can call your API or any other logic
+  };
+  useAffiliateID(handleAffiliateID);
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
