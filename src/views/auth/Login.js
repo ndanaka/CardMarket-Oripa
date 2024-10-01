@@ -11,6 +11,8 @@ import EmailVerification from "../../components/Others/EamilVerification";
 import usePersistedUser from "../../store/usePersistedUser";
 
 const Login = () => {
+  // check the URL parameters on page load to see if the affiliate ID is present.
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",

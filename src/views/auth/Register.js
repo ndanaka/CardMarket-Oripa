@@ -5,19 +5,28 @@ import { CardBody, FormGroup, Form, Input, InputGroup } from "reactstrap";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+import useAffiliateID from "../../utils/useAffiliateID";
 
 import EmailVerification from "../../components/Others/EamilVerification";
 
 const Register = () => {
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {
+    setAffId(affiliateID);
+    // Here, you can call your API or any other logic
+  };
+  useAffiliateID(handleAffiliateID);
+
+  const [strength, setStrength] = useState(""); //password strength
+  const [isVisible, setIsVisible] = useState(false);
+  const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
+  const [showErrMessage, setShowErrMessage] = useState(false);
+  const [affId, setAffId] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [strength, setStrength] = useState(""); //password strength
-  const [isVisible, setIsVisible] = useState(false);
-  const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
-  const [showErrMessage, setShowErrMessage] = useState(false);
 
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
@@ -56,6 +65,8 @@ const Register = () => {
 
   const handleSubmit = () => {
     if (!isFormValidate()) return;
+    formData.affId = affId;
+
     api
       .post("/user/register", formData)
       .then((res) => {

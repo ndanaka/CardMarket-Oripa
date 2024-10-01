@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import api from "../utils/api";
 import { setAuthToken } from "../utils/setHeader";
 import { showToast } from "../utils/toastUtil";
+import useAffiliateID from "../utils/useAffiliateID";
 
 import GachaModal from "../components/Modals/GachaModal";
 import PrizeCard from "../components/Others/PrizeCard";
@@ -16,6 +17,12 @@ import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
 import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {
+    
+  };
+  useAffiliateID(handleAffiliateID);
+
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 

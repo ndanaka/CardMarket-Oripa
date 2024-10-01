@@ -354,7 +354,6 @@ function GachaDetail() {
                 />
               </div>
             ))}
-            {console.log(existLastFlag)}
             <div
               className={`${
                 existLastFlag ? "" : "hidden"
