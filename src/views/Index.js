@@ -17,12 +17,6 @@ import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
 import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
-  // check the URL parameters on page load to see if the affiliate ID is present.
-  const handleAffiliateID = (affiliateID) => {
-    
-  };
-  useAffiliateID(handleAffiliateID);
-
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
@@ -55,6 +49,10 @@ const Index = () => {
     { id: 2, imgUrl: "theme/carousel/001.png" },
     { id: 2, imgUrl: "theme/carousel/002.png" },
   ];
+
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {};
+  useAffiliateID(handleAffiliateID);
 
   useEffect(() => {
     getCategory();

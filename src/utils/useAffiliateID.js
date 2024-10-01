@@ -11,11 +11,12 @@ const useAffiliateID = (callback) => {
     const affiliateID = params.get("aff_id");
 
     if (affiliateID) {
+      // Add click counts of affiliate
       api
-        .get("/admin/gacha")
+        .post("/api/affiliate/status/addClicks", { aff_id: affiliateID })
         .then((res) => {
           if (res.data.status === 1) {
-            console.log(res.data);
+            console.log(res);
           }
         })
         .catch((err) => {
@@ -24,7 +25,7 @@ const useAffiliateID = (callback) => {
 
       callback(affiliateID); // Call the provided callback function
     }
-  }, [location, callback]);
+  }, []);
 };
 
 export default useAffiliateID;
