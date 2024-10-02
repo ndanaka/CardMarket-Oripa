@@ -5,6 +5,7 @@ import { FormGroup, Form, Input, InputGroup } from "reactstrap";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+import useAffiliateID from "../../utils/useAffiliateID";
 
 import EmailVerification from "../../components/Others/EamilVerification";
 
@@ -21,11 +22,19 @@ const Login = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
+  const [affId, setAffId] = useState(null);
 
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {
+    setAffId(affiliateID);
+    // Here, you can call your API or any other logic
+  };
+  useAffiliateID(handleAffiliateID);
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
