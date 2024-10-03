@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { Container, Row } from "reactstrap";
 
-import { useLocation, Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 // core components
 import AuthNavbar from "../components/Navbars/AuthNavbar.js";
 import AuthFooter from "../components/Footers/Footer.js";
-import ChangeLanguage from "../components/Others/ChangeLanguage.js";
 
 import routes from "../routes.js";
 
