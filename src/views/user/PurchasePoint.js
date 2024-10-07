@@ -73,10 +73,19 @@ function PurchasePoint() {
     }
   };
 
+  const testPay = async (amount) => {
+    if (paymentMethod === null) {
+      showToast(t("selectPayOption"), "error");
+      return;
+    }
+
+    setPayPrice(amount);
+    setIsOpen(true);
+  };
+
   const purchase_point = async (amount) => {
     try {
       setAuthToken();
-      console.log(payPrice);
 
       // Test version
       setIsOpen(false);
@@ -132,54 +141,49 @@ function PurchasePoint() {
         return;
       }
 
-      // Test version
-      setPayPrice(amount);
-      setIsOpen(true);
+      switch (paymentMethod.value) {
+        case "gPay":
+          const paymentsClient = new window.google.payments.api.PaymentsClient({
+            environment: googlePayConfig.environment,
+          });
 
-      // Real version
-      // switch (paymentMethod.value) {
-      //   case "gPay":
-      //     const paymentsClient = new window.google.payments.api.PaymentsClient({
-      //       environment: googlePayConfig.environment,
-      //     });
+          const paymentDataRequest = {
+            ...googlePayConfig.paymentDataRequest,
+            transactionInfo: {
+              ...googlePayConfig.paymentDataRequest.transactionInfo,
+              totalPrice: amount.toString(),
+            },
+          };
 
-      //     const paymentDataRequest = {
-      //       ...googlePayConfig.paymentDataRequest,
-      //       transactionInfo: {
-      //         ...googlePayConfig.paymentDataRequest.transactionInfo,
-      //         totalPrice: amount.toString(),
-      //       },
-      //     };
+          const paymentData = await paymentsClient.loadPaymentData(
+            paymentDataRequest
+          );
+          if (paymentData) {
+            await purchase_point(amount);
+          }
 
-      //     const paymentData = await paymentsClient.loadPaymentData(
-      //       paymentDataRequest
-      //     );
-      //     if (paymentData) {
-      //       await purchase_point(amount);
-      //     }
+          break;
 
-      //     break;
+        case "applePay":
+          console.log("apple pay");
 
-      //   case "applePay":
-      //     console.log("apple pay");
+          break;
 
-      //     break;
+        case "univaPay":
+          try {
+            await initiateUnivaPayTransaction(amount);
+            alert("Payment initiated successfully");
+          } catch (error) {
+            console.error("Payment failed", error);
+            alert("Payment failed");
+          }
+          console.log("univa pay");
 
-      //   case "univaPay":
-      //     try {
-      //       await initiateUnivaPayTransaction(amount);
-      //       alert("Payment initiated successfully");
-      //     } catch (error) {
-      //       console.error("Payment failed", error);
-      //       alert("Payment failed");
-      //     }
-      //     console.log("univa pay");
+          break;
 
-      //     break;
-
-      //   default:
-      //     break;
-      // }
+        default:
+          break;
+      }
     } catch (error) {
       console.error("Payment failed:", error);
     }
@@ -244,7 +248,7 @@ function PurchasePoint() {
                               className="py-1 px-2 xsm:py-2 xsm:px-3 bg-indigo-600 rounded-md text-white text-md font-bold"
                               onClick={() => {
                                 setSelId(i); //set selected id for api
-                                handlePay(point.price);
+                                testPay(point.price);
                               }}
                             >
                               {t("buyNow")}
