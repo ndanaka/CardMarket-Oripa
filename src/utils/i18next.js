@@ -169,7 +169,8 @@ i18n.use(initReactI18next).init({
         drawnAdmin: "Admin can't draw gacha.",
         noEnoughPoints: "Not enough points",
         drawnEnoughPrize: "Not enough prizes.",
-        noEnoughPointsDesc: "Points are required to play the gacha. Points can be recharged on the point purchase page.",
+        noEnoughPointsDesc:
+          "Points are required to play the gacha. Points can be recharged on the point purchase page.",
         drawGacha: "Draw Gacha",
         purchase: "Purchase",
         purchagePoints: "Purchase Points",
@@ -180,6 +181,7 @@ i18n.use(initReactI18next).init({
         selectPayOption: "Select payment method.",
         addEffect: "Add Effect",
         removeEffect: "Remove Effect",
+        termsWarnning: "Please accept the terms of service",
       },
     },
     jp: {
@@ -345,7 +347,8 @@ i18n.use(initReactI18next).init({
         drawnAdmin: "管理者はガチャを引くことができません。",
         noEnoughPoints: "得点が足りない",
         drawnEnoughPrize: "賞品が足りない。",
-        noEnoughPointsDesc: "ガチャを回すにはポイントが必要です。ポイントはポイント購入ページでチャージできます。",
+        noEnoughPointsDesc:
+          "ガチャを回すにはポイントが必要です。ポイントはポイント購入ページでチャージできます。",
         purchagePoints: "ポイント購入",
         buyNow: "今すぐ購入",
         purchase: "購入",
@@ -357,6 +360,7 @@ i18n.use(initReactI18next).init({
         returnCard: "カードリターン",
         addEffect: "専用の演出 追加",
         removeEffect: "専用の演出 削除",
+        termsWarnning: "利用規約に同意してください",
       },
     },
     // Add more languages here

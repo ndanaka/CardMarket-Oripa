@@ -15,6 +15,7 @@ const Register = () => {
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [affId, setAffId] = useState(null);
+  const [checkTerms, setCheckTerms] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,6 +66,10 @@ const Register = () => {
 
   const handleSubmit = () => {
     if (!isFormValidate()) return;
+    if (!checkTerms) {
+      showToast(t("termsWarnning"), "error");
+      return;
+    }
     formData.affId = affId;
 
     api
@@ -109,6 +114,10 @@ const Register = () => {
     setStrength(strengthLevel);
   };
 
+  const changeCheckTerms = () => {
+    setCheckTerms(!checkTerms);
+  };
+
   return (
     <>
       {isEmailVerifyPanel ? (
@@ -147,7 +156,7 @@ const Register = () => {
                   </InputGroup>
                   {showErrMessage && !formData.name ? (
                     <span className="flex text-sm text-red-600">
-                      <i class="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
+                      <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
                       Name is Required
                     </span>
                   ) : null}
@@ -237,7 +246,8 @@ const Register = () => {
                         name="checkboxTerms"
                         id="checkboxTerms"
                         autoComplete="name"
-                        value="checkedValue"
+                        value={checkTerms}
+                        onChange={changeCheckTerms}
                       />
                       {currentLanguage === "en" ? (
                         <>
