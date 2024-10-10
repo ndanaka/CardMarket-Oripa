@@ -7,14 +7,12 @@ import { useTranslation } from "react-i18next";
 import { setAuthToken } from "../../utils/setHeader";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
-import usePersistedUser from "../../store/usePersistedUser";
 
 import PageHeader from "../../components/Forms/PageHeader";
 
 const UseTerms = () => {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
-  const [user, setUser] = useState();
   const quillRef = useRef(null); // Add a ref for the ReactQuill component
 
   useEffect(() => {

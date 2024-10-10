@@ -21,6 +21,8 @@ import PointLog from "./views/user/PointLog.js";
 import UserDelivery from "./views/user/UserDelivery.js";
 import UserCard from "./views/user/UserCard.js";
 import GachaDetail from "./views/user/GachaDetail.js";
+import Blog from "./views/user/Blog.js";
+import BlogDetail from "./views/user/BlogDetail.js";
 
 var routes = [
   {
@@ -28,6 +30,20 @@ var routes = [
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: <Index />,
+    layout: "/user",
+  },
+  {
+    path: "/blog",
+    name: "Blog",
+    icon: "ni ni-tv-2 text-primary",
+    component: <Blog />,
+    layout: "/user",
+  },
+  {
+    path: "/blog-detail",
+    name: "Blog Detail",
+    icon: "ni ni-tv-2 text-primary",
+    component: <BlogDetail />,
     layout: "/user",
   },
   {

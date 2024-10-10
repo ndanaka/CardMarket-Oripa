@@ -12,8 +12,6 @@ import EmailVerification from "../../components/Others/EamilVerification";
 import usePersistedUser from "../../store/usePersistedUser";
 
 const Login = () => {
-  // check the URL parameters on page load to see if the affiliate ID is present.
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -110,12 +108,12 @@ const Login = () => {
                 {showErrMessage && !formData.email ? (
                   <span className="flex text-sm text-red-600">
                     <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                    "Email is Requried"
+                    {t("requiredEmail")}
                   </span>
                 ) : showErrMessage && !emailRegex.test(formData.email) ? (
                   <span className="flex text-sm text-red-600">
                     <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                    "Email is Requried"
+                    {t("requiredEmail")}
                   </span>
                 ) : null}
               </FormGroup>
@@ -151,7 +149,7 @@ const Login = () => {
                 {showErrMessage && !formData.password ? (
                   <span className="flex text-sm text-red-600">
                     <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                    Password is Required
+                    {t("requiredPwd")}
                   </span>
                 ) : null}
               </FormGroup>

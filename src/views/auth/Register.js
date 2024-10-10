@@ -157,7 +157,7 @@ const Register = () => {
                   {showErrMessage && !formData.name ? (
                     <span className="flex text-sm text-red-600">
                       <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                      Name is Required
+                      {t("requiredName")}
                     </span>
                   ) : null}
                 </FormGroup>
@@ -179,12 +179,12 @@ const Register = () => {
                   {showErrMessage && !formData.email ? (
                     <span className="flex text-sm text-red-600">
                       <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                      "Email is Requried"
+                      {t("requiredEmail")}
                     </span>
                   ) : showErrMessage && !emailRegex.test(formData.email) ? (
                     <span className="flex text-sm text-red-600">
                       <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                      "Email is Requried"
+                      {t("requiredEmail")}
                     </span>
                   ) : null}
                 </FormGroup>
@@ -220,7 +220,7 @@ const Register = () => {
                   {showErrMessage && !formData.password ? (
                     <span className="flex text-sm text-red-600">
                       <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                      Password is Required
+                      {t("requiredPwd")}
                     </span>
                   ) : null}
                   <div className="flex items-center text-muted font-italic justify-end">
