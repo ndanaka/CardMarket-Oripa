@@ -264,8 +264,8 @@ function PurchasePoint() {
           </div>
         </div>
         <ConfirmModal
-          headerText="Purchase Point"
-          bodyText="Are you sure?"
+          headerText={t("purchagePoints")}
+          bodyText={t("confirm")}
           okBtnClick={purchase_point}
           isOpen={isOpen}
           setIsOpen={setIsOpen}

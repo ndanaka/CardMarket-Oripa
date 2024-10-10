@@ -39,7 +39,7 @@ function NotEnoughPoints(props) {
             className="bg-theme_color rounded-md mx-2 text-center px-5 py-2 my-3 hover:bg-red-700 text-white outline-none"
             onClick={okBtnClick}
           >
-            Purchase Points
+            {t("purchagePoints")}
           </button>
           <div className="mx-auto py-2">
             <button

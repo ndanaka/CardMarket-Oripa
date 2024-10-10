@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 function ConfirmModal(props) {
+  const { t } = useTranslation();
+
   const { headerText, bodyText, okBtnClick, isOpen, setIsOpen } = props;
 
   const closeModal = () => {
@@ -40,14 +44,14 @@ function ConfirmModal(props) {
               className="bg-theme_color rounded-md mx-2 text-center px-5 py-2 hover:bg-red-700 text-white outline-none"
               onClick={okBtnClick}
             >
-              OK
+              {t("ok")}
             </button>
             <button
               id="marksBtn"
               className="bg-indigo-600 rounded-md text-center mx-2 px-5 py-2 hover:bg-indigo-700 text-white outline-none"
               onClick={closeModal}
             >
-              Cancel
+              {t("cancel")}
             </button>
           </div>
         </div>
