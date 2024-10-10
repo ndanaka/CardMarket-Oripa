@@ -26,7 +26,6 @@ const Blog = () => {
       .get(`/user/blog/0`)
       .then((res) => {
         if (res.data.status === 1) {
-          console.log(res.data.blogs);
           setBlogs(res.data.blogs);
         } else {
           showToast(res.data.msg, "error");
