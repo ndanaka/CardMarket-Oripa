@@ -419,7 +419,7 @@ const Index = () => {
               <div className="w-full xxsm:w-1/2 xm:p-2 p-1" key={i}>
                 <div className="p-2 h-full flex flex-col justify-between border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
                   <button
-                    className="relative cursor-pointer h-[400px] w-full"
+                    className="relative cursor-pointer h-[450px] w-full"
                     onClick={() =>
                       navigate("/user/gacha-detail", {
                         state: {
@@ -438,7 +438,7 @@ const Index = () => {
                         process.env.REACT_APP_SERVER_ADDRESS +
                         data.gacha_thumnail_url
                       }
-                      className="rounded-t h-[360px] w-full object-cover"
+                      className="rounded-t h-[410px] w-full object-cover"
                       alt=""
                     />
                     <div className="w-full h-[50px]">
