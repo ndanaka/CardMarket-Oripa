@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
@@ -15,20 +15,22 @@ import uploadimage from "../../assets/img/icons/upload.png";
 import formatPrice from "../../utils/formatPrice";
 
 function Point() {
+  const [user, setUser] = usePersistedUser();
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     id: "",
     pointNum: 0,
     price: 0,
     file: null,
   });
-
   const [points, setPoints] = useState([]);
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
   const [delPointId, setDelPointId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [user, setUser] = usePersistedUser();
-  const { t } = useTranslation();
+
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setAuthToken();
@@ -96,6 +98,7 @@ function Point() {
         if (res.data.status === 1) {
           showToast("Point Added Successfully.");
           setImgUrl("");
+          fileInputRef.current.value = null;
           setFormData({
             ...formData,
             id: "",
@@ -210,6 +213,7 @@ function Point() {
               name="fileInput"
               type="file"
               id="fileInput"
+              ref={fileInputRef}
               className="image p-1 w-full form-control"
               onChange={handleFileInputChange}
               autoComplete="name"
