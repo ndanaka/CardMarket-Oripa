@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
@@ -13,10 +13,6 @@ import usePersistedUser from "../../store/usePersistedUser";
 import uploadimage from "../../assets/img/icons/upload.png";
 
 const Prize = () => {
-  const [user, setUser] = usePersistedUser();
-  const fileInputRef = useRef(null); // Create a ref for the file input
-  const { t } = useTranslation();
-
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -27,21 +23,20 @@ const Prize = () => {
   });
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [trigger, setTrigger] = useState(null); //for PrizeList component refresh
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(uploadimage); // Set initial default image URL
+  const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
+  const [user, setUser] = usePersistedUser();
+  const { t } = useTranslation();
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-
-    // Generate a preview URL for the selected file
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewUrl(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
+  const handleFileInputChange = (event) => {
+    const file = event.target.files[0];
+    if (file !== undefined) {
       setFormData({ ...formData, file: file });
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setImgUrl(e.target.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -64,48 +59,41 @@ const Prize = () => {
     setAuthToken();
     setMultipart();
 
-    if (!selectedFile) {
-      showToast("Prize image is not selected", "error");
-      return;
-    }
-
     if (formData.name.trim() === "") {
       showToast("Required prize name", "error");
-      return;
-    }
-
-    if (parseFloat(formData.rarity) <= 0) {
+    } else if (parseFloat(formData.rarity) <= 0) {
       showToast("Rarity must be greater than than 0", "error");
-      return;
-    }
-
-    if (parseInt(formData.cashBack) <= 0) {
+    } else if (parseInt(formData.cashBack) <= 0) {
       showToast("Cashback must be greater than than 0", "error");
-      return;
+    } else if (
+      cuflag === 1 &&
+      (formData.file === NaN ||
+        formData.file === null ||
+        formData.file === undefined)
+    ) {
+      showToast("Prize image is not selected", "error");
+    } else {
+      api
+        .post("/admin/prize_upload", formData)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setImgUrl(null);
+            setFormData({
+              ...formData,
+              file: null,
+              name: "",
+              rarity: 0,
+              cashBack: 0,
+              grade: 1,
+            });
+            showToast(res.data.msg);
+          } else showToast(res.data.msg, "error");
+          setTrigger(res.data);
+        })
+        .catch((err) => {
+          console.error("Error uploading file:", err);
+        });
     }
-
-    api
-      .post("/admin/prize_upload", formData)
-      .then((res) => {
-        if (res.data.status === 1) {
-          setFormData({
-            ...formData,
-            file: null,
-            name: "",
-            rarity: 0,
-            cashBack: 0,
-            grade: 1,
-          });
-          setSelectedFile(null);
-          setPreviewUrl(uploadimage);
-          fileInputRef.current.value = null; // Reset the input value
-          showToast(res.data.msg);
-        } else showToast(res.data.msg, "error");
-        setTrigger(res.data);
-      })
-      .catch((err) => {
-        console.error("Error uploading file:", err);
-      });
   };
 
   const updatePrize = () => {
@@ -191,25 +179,23 @@ const Prize = () => {
               {t("prize") + t("image")}:{" "}
             </label>
             <input
+              name="file"
               type="file"
-              accept="image/*"
-              style={{ display: "none" }}
               id="fileInput"
-              ref={fileInputRef} // Set the ref
-              onChange={handleFileChange}
+              className="image p-1 w-full form-control"
+              onChange={handleFileInputChange}
+              autoComplete="name"
+            ></input>
+            <img
+              src={imgUrl ? imgUrl : uploadimage}
+              alt="prize"
+              width="150"
+              height="150"
+              className="image mx-auto mt-2 max-w-[200px]"
+              onClick={() => {
+                document.getElementById("fileInput").click();
+              }}
             />
-            <label htmlFor="fileInput">
-              <img
-                src={previewUrl}
-                alt="Upload"
-                style={{
-                  cursor: "pointer",
-                  width: "200px",
-                  height: "200px",
-                  objectFit: "cover",
-                }}
-              />
-            </label>
           </div>
         </div>
         <div className="flex items-center">
@@ -218,6 +204,7 @@ const Prize = () => {
               className="p-2 px-4 my-1 button-22 text-white !bg-red-500 !mr-2"
               onClick={() => {
                 setCuFlag(true);
+                setImgUrl(null);
                 setFormData({
                   ...formData,
                   file: null,
@@ -243,6 +230,7 @@ const Prize = () => {
           trigger={trigger}
           setFormData={setFormData}
           setCuFlag={setCuFlag}
+          setImgUrl={setImgUrl}
         />
       </div>
     </div>
