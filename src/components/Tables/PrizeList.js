@@ -14,7 +14,6 @@ function PrizeList({
   setCuFlag,
   setprizes,
   role = "showPrize",
-  setImgUrl,
 }) {
   const [prizes, setPrizes] = useState(""); //registered prizes list
   const [flag, setFlag] = useState(false); //registered prizes list
@@ -57,7 +56,6 @@ function PrizeList({
       grade: prizes[index].grade,
     });
     setCuFlag(0); //set create/edit status editing(0)
-    setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + prizes[index].img_url);
   };
 
   const prizeDel = () => {
@@ -142,11 +140,11 @@ function PrizeList({
                       <>
                         <span
                           id={data._id}
-                          className="fa fa-edit p-1"
+                          className="fa fa-edit p-1 cursor-pointer"
                           onClick={(e) => prizeEdit(i)}
                         ></span>
                         <span
-                          className="fa fa-remove p-1"
+                          className="fa fa-remove p-1 cursor-pointer"
                           onClick={(e) => {
                             setDelPrizeId(data._id);
                             setIsModalOpen(true);

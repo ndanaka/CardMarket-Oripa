@@ -206,29 +206,34 @@ const GachaEdit = () => {
   };
 
   //set prize from registerd prizes by manualy
-  const setprizes = (id, lastEffect) => {
-    if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
-      showToast("You have no permission for this action", "error");
-      return;
-    }
+  const setprizes = async (id, lastEffect) => {
+    try {
+      if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
+        showToast("You have no permission for this action", "error");
+        return;
+      }
 
-    api
-      .post("/admin/gacha/set_prize", {
+      const formData = {
         isLastPrize: isLastPrize,
         lastEffect: lastEffect,
         gachaId: gachaId,
         prizeId: id,
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast("Set Prize success.", "success");
-          setTrigger(!trigger);
-          getGacha();
-        } else {
-          showToast("Set Prize failed.", "error");
-        }
-      })
-      .catch((err) => console.log(err));
+      };
+
+      console.log(formData);
+
+      const res = await api.post("/admin/gacha/set_prize", formData);
+
+      if (res.data.status === 1) {
+        showToast("Set Prize success.", "success");
+        setTrigger(!trigger);
+        getGacha();
+      } else {
+        showToast("Set Prize failed.", "error");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -17,6 +17,10 @@ import uploadimage from "../../assets/img/icons/upload.png";
 import formatPrice from "../../utils/formatPrice";
 
 function Gacha() {
+  const navigate = useNavigate();
+  const [user, setUser] = usePersistedUser();
+  const { t } = useTranslation();
+
   //new Gacha data
   const [formData, setFormData] = useState({
     name: "",
@@ -25,14 +29,13 @@ function Gacha() {
     category: "",
     file: null,
   });
-  const navigate = useNavigate();
   const [categoryList, setCategoryList] = useState(""); //registered Category list for category select
   const [imgUrl, setImgUrl] = useState(""); //local image url when image file select
   const [gacha, setGacha] = useState(null); //registered Gacha list
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [delGachaId, setDelGachaId] = useState(null);
-  const [user, setUser] = usePersistedUser();
-  const { t } = useTranslation();
+
+  const fileInputRef = useRef(null); // Create a ref for the file input
 
   useEffect(() => {
     getCategory();
@@ -124,6 +127,7 @@ function Gacha() {
           if (res.data.status === 1) {
             showToast(res.data.msg);
             setImgUrl("");
+            fileInputRef.current.value = null;
             setFormData({
               ...formData,
               file: null,
@@ -277,6 +281,7 @@ function Gacha() {
               className="image p-1 w-3/5 md:w-1/2 form-control"
               onChange={handleFileInputChange}
               value={formData.imgUrl}
+              ref={fileInputRef}
               autoComplete="name"
             ></input>
 
