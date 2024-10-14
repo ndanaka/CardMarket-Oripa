@@ -3,7 +3,11 @@ import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
-import { setAuthToken, setMultipart } from "../../utils/setHeader";
+import {
+  setAuthToken,
+  setMultipart,
+  removeMultipart,
+} from "../../utils/setHeader";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
 import PrizeList from "../../components/Tables/PrizeList";
@@ -86,6 +90,7 @@ const Prize = () => {
               cashBack: 0,
               grade: 1,
             });
+            removeMultipart();
             showToast(res.data.msg);
           } else showToast(res.data.msg, "error");
           setTrigger(res.data);

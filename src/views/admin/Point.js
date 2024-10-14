@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
-import { setMultipart } from "../../utils/setHeader";
+import { setMultipart, removeMultipart } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 import usePersistedUser from "../../store/usePersistedUser";
 
@@ -107,6 +107,7 @@ function Point() {
             file: null,
           });
           setCuFlag(1); //set create/update flag as creating
+          removeMultipart();
         } else if (res.data.status === 2) {
           showToast("Point Updated Successfully.");
           setImgUrl("");
@@ -118,6 +119,7 @@ function Point() {
             file: null,
           });
           setCuFlag(1); //set create/update flag as creating
+          removeMultipart();
         } else {
           showToast("Point Add/Update Failed", "error");
         }
