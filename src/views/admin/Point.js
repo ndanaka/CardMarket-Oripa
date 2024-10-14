@@ -110,7 +110,6 @@ function Point() {
         } else if (res.data.status === 2) {
           showToast("Point Updated Successfully.");
           setImgUrl("");
-          setImgUrl("");
           setFormData({
             ...formData,
             id: "",
@@ -136,6 +135,19 @@ function Point() {
     });
     setCuFlag(0); //set create/update flag as updating
     setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + points[i].img_url);
+  };
+
+  //handle point update
+  const CancelPoint = () => {
+    setImgUrl("");
+    setFormData({
+      ...formData,
+      id: "",
+      pointNum: 0,
+      price: 0,
+      file: null,
+    });
+    setCuFlag(1);
   };
 
   //handle point update
@@ -233,7 +245,10 @@ function Point() {
           {cuflag ? (
             <AgreeButton name={t("add")} addclass="" onClick={AddPoint} />
           ) : (
-            <AgreeButton name={t("update")} addclass="" onClick={UpdatePoint} />
+            <div className="flex flex-wrap">
+              <AgreeButton name={t("cancel")} onClick={CancelPoint} />
+              <AgreeButton name={t("update")} onClick={UpdatePoint} />
+            </div>
           )}
         </div>
       </div>
