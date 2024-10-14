@@ -15,3 +15,7 @@ export function setAuthToken() {
 export function setMultipart() {
   api.defaults.headers["Content-Type"] = "multipart/form-data";
 }
+
+export function removeMultipart() {
+  delete api.defaults.headers["Content-Type"];
+}

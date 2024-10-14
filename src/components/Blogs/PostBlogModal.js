@@ -6,7 +6,7 @@ import uploadimage from "../../assets/img/icons/upload.png";
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
-import { setMultipart } from "../../utils/setHeader";
+import { setMultipart, removeMultipart } from "../../utils/setHeader";
 import { useEffect } from "react";
 
 const PostBlogModal = (props) => {
@@ -68,8 +68,9 @@ const PostBlogModal = (props) => {
         author: userId,
         file: null,
       });
-      showToast(res.data.msg, "success");
+      removeMultipart();
       setBlogs(res.data.blogs);
+      showToast(res.data.msg, "success");
     } else {
       showToast(res.data.msg, "error");
     }

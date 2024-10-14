@@ -6,7 +6,7 @@ import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
-import { setMultipart } from "../../utils/setHeader";
+import { setMultipart, removeMultipart } from "../../utils/setHeader";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
@@ -136,7 +136,7 @@ function Gacha() {
               totalNum: 0,
               category: "",
             });
-
+            removeMultipart();
             getCategory();
             getGacha();
           } else showToast(res.data.msg, "error");
@@ -194,7 +194,7 @@ function Gacha() {
       showToast("You have no permission for this action", "error");
       return;
     }
-    
+
     gachaDel();
     setIsModalOpen(false);
   };
