@@ -30,7 +30,7 @@ function Delivering() {
   };
 
   const handlesetStatus = (i) => {
-    if (user.authority.delivering !== 2 && user.authority.delivering !== 4) {
+    if (!user.authority["delivering"]["delete"]) {
       showToast("You have no permission for this action", "error");
       return;
     }

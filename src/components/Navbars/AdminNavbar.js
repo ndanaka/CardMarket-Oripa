@@ -35,13 +35,11 @@ const AdminNavbar = (props) => {
 
   const updateAdminData = () => {
     setAuthToken();
-
     if (user) {
       api
         .get(`/admin/get_admin/${user.user_id}`)
         .then((res) => {
           if (res.data.status === 1) {
-            res.data.admin.role = "admin";
             setUser(res.data.admin);
           }
         })

@@ -74,7 +74,7 @@ function Point() {
   /* add and update prize with image file uploading
   if there is a property 'id' vin formData, this perform update of prize */
   const AddPoint = () => {
-    if (user.authority.point !== 2 && user.authority.point !== 4) {
+    if (!user.authority["point"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -140,7 +140,7 @@ function Point() {
 
   //handle point update
   const UpdatePoint = () => {
-    if (user.authority.point !== 2 && user.authority.point !== 4) {
+    if (!user.authority["point"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -152,10 +152,11 @@ function Point() {
 
   //handle point delete
   const pointDel = () => {
-    if (user.authority.point !== 3 && user.authority.point !== 4) {
+    if (!user.authority["point"]["delete"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     api.delete(`/admin/del_point/${delPointId}`).then((res) => {
       if (res.data.status === 1) {
         showToast("Successfully Deleted.");

@@ -51,7 +51,7 @@ const Prize = () => {
   /* Add/Update prize with image file uploading
   If formData.id has value, this function perform as update one */
   const addPrize = async () => {
-    if (user.authority.prize !== 2 && user.authority.prize !== 4) {
+    if (!user.authority["prize"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -97,7 +97,7 @@ const Prize = () => {
   };
 
   const updatePrize = () => {
-    if (user.authority.prize !== 2 && user.authority.prize !== 4) {
+    if (!user.authority["prize"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }

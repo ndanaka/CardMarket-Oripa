@@ -127,7 +127,7 @@ const GachaEdit = () => {
 
   //upload bulk prizes from csv file
   const uploadPrize = () => {
-    if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
+    if (!user.authority["gacha"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -160,7 +160,7 @@ const GachaEdit = () => {
 
   //unset registered prizes from gacha
   const unsetPrize = (last, grade, index) => {
-    if (user.authority.gacha !== 3 && user.authority.gacha !== 4) {
+    if (!user.authority["gacha"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -208,7 +208,7 @@ const GachaEdit = () => {
   //set prize from registerd prizes by manualy
   const setprizes = async (id, lastEffect) => {
     try {
-      if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
+      if (!user.authority["gacha"]["write"]) {
         showToast("You have no permission for this action", "error");
         return;
       }
@@ -219,8 +219,6 @@ const GachaEdit = () => {
         gachaId: gachaId,
         prizeId: id,
       };
-
-      console.log(formData);
 
       const res = await api.post("/admin/gacha/set_prize", formData);
 
