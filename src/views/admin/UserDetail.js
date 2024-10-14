@@ -56,7 +56,7 @@ function UserDetail() {
       <div className="p-2 flex flex-col w-full">
         <GroupHeader text="user_information" />
         <div className="flex flex-wrap">
-          <div className="w-full px-2">
+          <div className="w-full md:w-1/2 px-2">
             <Label htmlFor="text" text="name" classname="pr-3" />
             {user?.name}
           </div>
@@ -78,14 +78,10 @@ function UserDetail() {
           </div>
           <div className="w-full md:w-1/2 px-2">
             <Label htmlFor="text" text="postal_code" classname="pr-3" />
-            {user?.postal_code}
-          </div>
-          <div className="w-full md:w-1/2 px-2">
-            <Label htmlFor="text" text="description" classname="pr-3" />
-            {user?.description}
+            {user?.postalCode}
           </div>
         </div>
-        <hr></hr>
+        <hr className="my-2"></hr>
         <div className="flex flex-wrap justify-between">
           <div className="w-full">
             <GroupHeader text="point_log" />
