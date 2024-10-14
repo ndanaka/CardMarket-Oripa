@@ -15,8 +15,9 @@ import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const { t } = useTranslation();
-  const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
+
+  const [user, setUser] = usePersistedUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
@@ -29,43 +30,77 @@ const Profile = () => {
     postalCode: "",
     description: "",
   });
+  const [pwdData, setPwdData] = useState({
+    currentPwd: "",
+    newPwd: "",
+  });
 
   useEffect(() => {
     setAuthToken();
+    getUserData();
   }, []);
 
-  //initialize userData when it changes
+  const getUserData = async () => {
+    try {
+      const res = await api.get(`/user/get_user/${user?._id}`);
+      if (res.data.status === 1) setUserData(res.data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Update user data
   const handleSetUserData = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-
-  const handleSaveUserData = () => {
-    api
-      .post("/user/save_user", userData)
-      .then((res) => {
-        if (res.data.status === 1) showToast("Save User data success.");
-        else showToast("Save user data failed.");
-      })
-      .catch((err) => console.log(err));
+  const handleUpdateUserData = async () => {
+    try {
+      const res = await api.post("/user/update_user", userData);
+      if (res.data.status === 1)
+        showToast("Save User data success.", "success");
+      else showToast("Save user data failed.", "error");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleChangePass = () => {
-    api.post("/user/change_pass", userData).then((res) => {
-      if (res.data.status === 1) showToast("Change Password Success.");
+  // change password
+  const handleSetPwdData = (e) => {
+    setPwdData({ ...pwdData, [e.target.name]: e.target.value });
+  };
+  const handleChangePass = async () => {
+    const res = await api.post("/user/changePwd", pwdData);
+
+    switch (res.data.status) {
+      case 1:
+        showToast("Change Password Success.", "success");
+        break;
+      case 0:
+        showToast("Failed to change password", "error");
+        break;
+      case 2:
+        showToast("Current password is not correct.", "error");
+        break;
+
+      default:
+        break;
+    }
+
+    setPwdData({
+      currentPwd: "",
+      newPwd: "",
     });
   };
 
-  const handleDelete = () => {
-    api
-      .post("/user/withdraw_user/", { user_id: user._id })
-      .then((res) => {
-        if (res.data.status === 1) {
-          logout();
-        }
-      })
-      .catch((err) => console.log(err));
+  // withdrawal account
+  const handleWithdrawalAccount = async () => {
+    try {
+      const res = await api.post("/user/withdraw_user/", { user_id: user._id });
+      if (res.data.status === 1) logout();
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -83,14 +118,14 @@ const Profile = () => {
         <div className="w-full md:w-3/6 px-3 mx-auto">
           <div className="flex flex-wrap rounded-lg bg-white px-5">
             <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
-              User Profile
+              {t("profile")}
             </p>
             <hr className="py-2"></hr>
-            <div className="flex flex-wrap">
-              <GroupHeader text="User information" />
+            <div className="flex flex-wrap w-full">
+              <GroupHeader text={t("user_information")} />
               <div className="w-full md:w-1/2 px-2">
                 <InputGroup
-                  label="Name"
+                  label={t("name")}
                   type="text"
                   name="name"
                   value={userData?.name || ""}
@@ -100,7 +135,7 @@ const Profile = () => {
               </div>
               <div className="w-full md:w-1/2 px-2">
                 <InputGroup
-                  label="User Email"
+                  label={t("email")}
                   type="email"
                   name="email"
                   value={userData?.email || ""}
@@ -108,32 +143,12 @@ const Profile = () => {
                   onChange={handleSetUserData}
                 />
               </div>
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label="First Name"
-                  type="text"
-                  name="firstname"
-                  value={userData?.firstname || ""}
-                  placeholder="Oliver"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label="Last Name"
-                  type="text"
-                  name="lastname"
-                  value={userData?.lastname || ""}
-                  placeholder="Leo"
-                  onChange={handleSetUserData}
-                />
-              </div>
             </div>
             <div className="flex flex-wrap">
-              <GroupHeader text="Contact information" />
+              <GroupHeader text={t("contact_information")} />
               <div className="w-full px-2">
                 <InputGroup
-                  label="Address"
+                  label={t("address")}
                   type="text"
                   name="address"
                   value={userData?.address || ""}
@@ -143,7 +158,7 @@ const Profile = () => {
               </div>
               <div className="w-full md:w-1/3 px-2">
                 <InputGroup
-                  label="City"
+                  label={t("city")}
                   type="text"
                   name="city"
                   value={userData?.city || ""}
@@ -153,7 +168,7 @@ const Profile = () => {
               </div>
               <div className="w-full md:w-1/3 px-2">
                 <InputGroup
-                  label="Country"
+                  label={t("country")}
                   type="text"
                   name="country"
                   value={userData?.country || ""}
@@ -163,7 +178,7 @@ const Profile = () => {
               </div>
               <div className="w-full md:w-1/3 px-2">
                 <InputGroup
-                  label="Postal Code"
+                  label={t("postal_code")}
                   type="text"
                   name="postalCode"
                   value={userData?.postalCode || ""}
@@ -173,9 +188,8 @@ const Profile = () => {
               </div>
             </div>
             <div className="w-full">
-              <GroupHeader text="About me" />
+              <GroupHeader text={t("aboutMe")} />
               <div className="form-group px-2">
-                <label htmlFor="description">My Description</label>
                 <textarea
                   className="form-control w-full text-gray-700"
                   name="description"
@@ -190,9 +204,9 @@ const Profile = () => {
             <div className="w-full flex flex-wrap justify-end px-2">
               <button
                 className="button-22 px-4 py-2 my-3"
-                onClick={handleSaveUserData}
+                onClick={handleUpdateUserData}
               >
-                Update
+                {t("save")}
               </button>
             </div>
           </div>
@@ -200,33 +214,35 @@ const Profile = () => {
         <div className="w-full md:w-3/6 px-3 mx-auto">
           <div className="rounded-lg bg-white px-5">
             <p className="text-xl text-center text-theme_headertext_color py-2">
-              Change Password
+              {t("changePass")}
             </p>
             <hr className="py-2"></hr>
             <InputGroup
-              label="Current Password"
+              label={t("currentPass")}
               type="password"
-              name="newPass"
+              name="currentPwd"
               placeholder="*******"
-              onChange={handleSetUserData}
+              value={pwdData.currentPwd}
+              onChange={handleSetPwdData}
             />
             <InputGroup
-              label="New Password"
+              label={t("newPass")}
               type="password"
-              name="curPass"
+              name="newPwd"
               placeholder="*******"
-              onChange={handleSetUserData}
+              value={pwdData.newPwd}
+              onChange={handleSetPwdData}
             />
             <div className="flex flex-wrap w-full justify-end">
               <button
                 className="button-22 px-4 py-2 my-2"
                 onClick={handleChangePass}
               >
-                Change
+                {t("change")}
               </button>
             </div>
           </div>
-          <div className="rounded-lg bg-white px-5 py-2 my-3">
+          {/* <div className="rounded-lg bg-white px-5 py-2 ">
             <p className="text-xl text-center text-theme_headertext_color py-2">
               Credit Card Setting
             </p>
@@ -234,22 +250,19 @@ const Profile = () => {
             <div className="flex flex-wrap w-full justify-end">
               <button className="button-22 my-2 px-4 py-2">Save</button>
             </div>
-          </div>
-          <div className="rounded-lg bg-white px-5 py-2">
+          </div> */}
+          <div className="rounded-lg bg-white px-5 py-2 my-3">
             <p className="text-xl text-center text-theme_headertext_color py-2">
-              Withdraw Account
+              {t("account")}
             </p>
             <hr></hr>
-            <p className="py-4">
-              Disable Login: After withdraw your account, you will not be able
-              to log in again.
-            </p>
+            <p className="py-4">{t("withdrawalDes")}</p>
             <div className="flex flex-wrap w-full justify-end">
               <button
                 className="button-22 my-2 px-4 py-2"
                 onClick={() => setIsModalOpen(true)}
               >
-                Withdrawal
+                {t("withdrawal")}
               </button>
             </div>
           </div>
@@ -259,7 +272,7 @@ const Profile = () => {
       <DeleteConfirmModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={handleDelete}
+        onConfirm={handleWithdrawalAccount}
       />
     </div>
   );
