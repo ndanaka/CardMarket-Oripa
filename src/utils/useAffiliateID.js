@@ -16,7 +16,6 @@ const useAffiliateID = (callback) => {
         .post("/api/affiliate/status/addClicks", { aff_id: affiliateID })
         .then((res) => {
           if (res.data.status === 1) {
-            console.log(res);
           }
         })
         .catch((err) => {

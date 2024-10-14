@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
+import usePersistedUser from "../../store/usePersistedUser";
 
 import DeleteConfirmModal from "../Modals/DeleteConfirmModal";
 import formatPrice from "../../utils/formatPrice";
@@ -20,6 +21,7 @@ function PrizeList({
   const [flag, setFlag] = useState(false); //registered prizes list
   const [delPrizeId, setDelPrizeId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -49,6 +51,11 @@ function PrizeList({
   };
 
   const prizeEdit = (index) => {
+    if (!user.authority["prize"]["write"]) {
+      showToast("You have no permission for this action", "error");
+      return;
+    }
+
     setFormData({
       id: prizes[index]._id,
       name: prizes[index].name,
@@ -61,6 +68,11 @@ function PrizeList({
   };
 
   const prizeDel = () => {
+    if (!user.authority["prize"]["delete"]) {
+      showToast("You have no permission for this action", "error");
+      return;
+    }
+
     api
       .delete(`/admin/del_prize/${delPrizeId}`)
       .then((res) => {

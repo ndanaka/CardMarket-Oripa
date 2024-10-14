@@ -45,7 +45,7 @@ function Category() {
   };
 
   const addCategory = () => {
-    if (user.authority.category !== 2 && user.authority.category !== 4) {
+    if (!user.authority["category"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -59,6 +59,8 @@ function Category() {
         .then((res) => {
           if (res.data.status === 1) {
             get_category();
+            setName("");
+            setDes("");
             showToast(res.data.msg, "success");
           }
         })
@@ -71,7 +73,7 @@ function Category() {
   };
 
   const categoryEdit = () => {
-    if (user.authority.category !== 2 && user.authority.category !== 4) {
+    if (!user.authority["category"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -86,6 +88,7 @@ function Category() {
       })
       .then((res) => {
         if (res.data.status) {
+          showToast("Successfully edit category", "success");
           closeModal();
           get_category();
         } else console.error(res.data.err);
@@ -96,10 +99,11 @@ function Category() {
   };
 
   const categoryDel = () => {
-    if (user.authority.category !== 3 && user.authority.category !== 4) {
+    if (!user.authority["category"]["delete"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     api
       .delete(`admin/del_category/${delId}`)
       .then((res) => {
@@ -136,6 +140,7 @@ function Category() {
           </label>
           <input
             className="p-1 w-full form-control"
+            value={name}
             onChange={(e) => setName(e.target.value)}
             id="catName"
             name="catName"
@@ -148,6 +153,7 @@ function Category() {
           </label>
           <input
             className="p-1 w-full form-control"
+            value={description}
             onChange={(e) => setDes(e.target.value)}
             id="catDesc"
             name="catDesc"

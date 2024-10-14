@@ -98,7 +98,7 @@ function Gacha() {
   };
 
   const addGacha = () => {
-    if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
+    if (!user.authority["gacha"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -160,10 +160,11 @@ function Gacha() {
   };
 
   const setRelease = (id) => {
-    if (user.authority.gacha !== 2 && user.authority.gacha !== 4) {
+    if (!user.authority["gacha"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
+
     api.get(`/admin/gacha/set_release/${id}`).then((res) => {
       if (res.data.status === 1) {
         showToast("Set Gacha Release Successfully.");
@@ -189,10 +190,11 @@ function Gacha() {
   };
 
   const handleDelete = () => {
-    if (user.authority.gacha !== 3 && user.authority.gacha !== 4) {
+    if (!user.authority["gacha"]["delete"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
+    
     gachaDel();
     setIsModalOpen(false);
   };

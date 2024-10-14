@@ -74,29 +74,43 @@ function Administrators() {
       .catch((err) => console.log(err));
   };
 
-  // Delete admin
-  const handleDelete = async () => {
-    try {
-      const res = await api.delete(`/admin/del_admin/${adminId}`);
-      if (res.data.status === 1) {
-        showToast("Admin deleted successfully.");
-        setIsModalOpen(false);
-        getAdminList();
-        setAdminName("");
-        setAdminId("");
-      } else {
-        showToast("Admin delete failed.", "error");
-      }
-    } catch (error) {
-      showToast("Admin delete failed.", "error");
+  const adminDel = () => {
+    api
+      .delete(`/admin/del_admin/${adminId}`)
+      .then((res) => {
+        if (res.data.status === 1) {
+          showToast("Admin deleted successfully.");
+          getAdminList();
+        } else {
+          showToast("Admin delete failed.");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDelete = () => {
+    // Logic for deleting the item
+    adminDel();
+    setIsModalOpen(false);
+  };
+
+  const change_auth = (key, d) => {
+    //0:no authority, 1:only read, 2:write, 3:delete, 4:full control
+    //check/uncheck read authority
+    if (d === 1) {
+      if (authority[key] === 0) setAuthority({ ...authority, [key]: 1 });
+      else setAuthority({ ...authority, [key]: 0 });
+    }
+    //change write/delete authority
+    else if (d === 2) {
+      if (authority[key] === 3) setAuthority({ ...authority, [key]: 4 });
+      else setAuthority({ ...authority, [key]: 2 });
+    } else {
+      if (authority[key] === 2) setAuthority({ ...authority, [key]: 4 });
+      else setAuthority({ ...authority, [key]: 3 });
     }
   };
 
-  // Edit admin autority data
-  const change_auth = (item, type, permission) => {
-    authority[item][type] = !permission;
-    setAuthority({ ...authority, [item]: authority[item] });
-  };
   const handleSaveAuth = () => {
     api
       .post("admin/chang_auth", {
@@ -261,42 +275,33 @@ function Administrators() {
             </thead>
             <tbody>
               {authority
-                ? Object.entries(authority).map(([item, values], i) => (
-                    <tr key={item}>
+                ? Object.entries(authority).map(([key, value], i) => (
+                    <tr key={key}>
                       <td>{i + 1}</td>
-                      <td>{item}</td>
+                      <td>{key}</td>
                       <td>
                         <input
-                          className="cursor-pointer"
                           type="checkbox"
-                          name={item}
-                          checked={!!values.read}
-                          onChange={() =>
-                            change_auth(item, "read", values.read)
-                          }
-                        />
+                          name={key}
+                          checked={value && value <= 4}
+                          onChange={() => change_auth(key, 1)}
+                        ></input>
                       </td>
                       <td>
                         <input
-                          className="cursor-pointer"
                           type="checkbox"
-                          name={item}
-                          checked={!!values.write}
-                          onChange={() =>
-                            change_auth(item, "write", values.write)
-                          }
-                        />
+                          name={key}
+                          checked={value && (value === 2 || value === 4)}
+                          onChange={() => change_auth(key, 2)}
+                        ></input>
                       </td>
                       <td>
                         <input
-                          className="cursor-pointer"
                           type="checkbox"
-                          name={item}
-                          checked={!!values.delete}
-                          onChange={() =>
-                            change_auth(item, "delete", values.delete)
-                          }
-                        />
+                          name={key}
+                          checked={value && (value === 3 || value === 4)}
+                          onChange={() => change_auth(key, 3)}
+                        ></input>
                       </td>
                     </tr>
                   ))
