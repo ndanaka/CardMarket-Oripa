@@ -204,45 +204,45 @@ function Gacha() {
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("gacha")} />
       </div>
-      <div className="flex flex-col items-center w-full md:w-[70%] m-auto border-2">
-        <div className="py-2 w-full bg-admin_theme_color text-gray-200 text-center">
+      <div className="flex flex-col w-full md:w-[70%] border-2 m-auto">
+        <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
           {t("gacha") + t("add")}
         </div>
-        <div className="flex flex-wrap justify-center items-center w-full mt-3">
+        <div className="flex flex-wrap justify-center sm:px-4 pt-2 w-full">
           <div className="flex flex-col w-full xxsm:w-1/2">
-            <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label htmlFor="name" className="text-gray-700 pr-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="name" className="text-gray-700">
                 {t("name")}:{" "}
               </label>
               <input
                 name="name"
-                className="p-1 w-3/5 md:w-1/2 form-control"
+                className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.name}
                 id="name"
                 autoComplete="name"
               ></input>
             </div>
-            <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label htmlFor="price" className="text-gray-700 pr-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="price" className="text-gray-700">
                 {t("price")}:{" "}
               </label>
               <input
                 name="price"
-                className="p-1 w-3/5 md:w-1/2 form-control"
+                className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.price}
                 id="price"
                 autoComplete="name"
               ></input>
             </div>
-            <div className="flex justify-between p-2 px-3 items-center w-full">
-              <label htmlFor="category" className="text-gray-700 pr-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="category" className="text-gray-700">
                 {t("category")}:{" "}
               </label>
               <select
                 name="category"
-                className="p-1 w-3/5 md:w-1/2 form-control"
+                className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.category}
                 id="category"
@@ -258,13 +258,13 @@ function Gacha() {
                   : ""}
               </select>
             </div>
-            <div className="flex justify-between items-center p-2 px-3 w-full">
-              <label htmlFor="totalNum" className="text-gray-700 pr-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="totalNum" className="text-gray-700">
                 {t("total") + t("number")}:{" "}
               </label>
               <input
                 name="totalNum"
-                className="p-1 w-3/5 md:w-1/2 form-control"
+                className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.totalNum}
                 id="totalNum"
@@ -272,40 +272,41 @@ function Gacha() {
               ></input>
             </div>
           </div>
-          <div className="flex justify-between items-center p-2 px-3 w-full xxsm:w-1/2">
-            <label htmlFor="fileInput" className="text-gray-700 pr-2">
+          <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
+            <label htmlFor="fileInput" className="text-gray-700 p-1">
               {t("image")}:{" "}
             </label>
             <input
               name="fileInput"
               type="file"
               id="fileInput"
-              className="image p-1 w-3/5 md:w-1/2 form-control"
+              className="image p-1 w-full form-control"
               onChange={handleFileInputChange}
               value={formData.imgUrl}
               ref={fileInputRef}
               autoComplete="name"
             ></input>
-
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              width="150px"
-              height="150px"
-              className="mx-auto mt-2 max-w-[200px] "
+              className={`${
+                imgUrl ? "w-[-webkit-fill-available] h-[200px]" : ""
+              }  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
             ></img>
           </div>
         </div>
-        <AgreeButton
-          name={t("add")}
-          addclassName="inline-block float-right"
-          onClick={addGacha}
-        />
+        <div className="flex flex-wrap justify-end px-3 pb-2">
+          <AgreeButton
+            name={t("add")}
+            addclassName="inline-block float-right"
+            onClick={addGacha}
+          />
+        </div>
       </div>
-      <div className="mx-auto mt-5 overflow-auto">
+      <div className="mx-auto my-3 overflow-auto">
         <table className="border-[1px]  m-auto w-full md:w-[70%]">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <tr>

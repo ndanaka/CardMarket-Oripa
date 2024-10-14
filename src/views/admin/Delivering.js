@@ -29,8 +29,8 @@ function Delivering() {
       .catch((err) => console.log(err));
   };
 
-  const handlesetStatus = (i) => {
-    if (!user.authority["delivering"]["delete"]) {
+  const handleSetStatus = (i) => {
+    if (!user.authority["delivering"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -94,7 +94,7 @@ function Delivering() {
                             ? "bg-indigo-600"
                             : "bg-red-600"
                         }`}
-                        onClick={() => handlesetStatus(i)}
+                        onClick={() => handleSetStatus(i)}
                       >
                         {t(data.status)}
                       </button>

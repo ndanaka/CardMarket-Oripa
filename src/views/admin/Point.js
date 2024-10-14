@@ -189,39 +189,41 @@ function Point() {
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("point")} />
       </div>
-      <div className="flex flex-col items-center w-full md:w-[70%] m-auto border-2">
-        <div className="py-2 w-full bg-admin_theme_color text-gray-200 text-center">
+      <div className="flex flex-col w-full md:w-[70%] border-2 m-auto">
+        <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
           {t("point") + " " + t("add")}
         </div>
-        <div className="flex flex-col items-center w-full md:w-[70%]">
-          <div className="flex flex-wrap justify-between items-center my-1 mt-4 w-[70%]">
-            <label htmlFor="pointNum" className="text-gray-700 px-2">
-              {t("point") + " " + t("amount")}:{" "}
-            </label>
-            <input
-              name="pointNum"
-              className="p-1 w-full form-control"
-              onChange={changeFormData}
-              value={formData.pointNum}
-              id="pointNum"
-              autoComplete="name"
-            ></input>
+        <div className="flex flex-wrap justify-center sm:px-4 pt-2 w-full">
+          <div className="flex flex-col w-full xxsm:w-1/2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="pointNum" className="text-gray-700">
+                {t("point") + " " + t("amount")}:{" "}
+              </label>
+              <input
+                name="pointNum"
+                className="p-1 w-full form-control"
+                onChange={changeFormData}
+                value={formData.pointNum}
+                id="pointNum"
+                autoComplete="name"
+              ></input>
+            </div>
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="price" className="text-gray-700">
+                {t("price")}:{" "}
+              </label>
+              <input
+                name="price"
+                className="p-1 w-full form-control"
+                onChange={changeFormData}
+                value={formData.price}
+                id="price"
+                autoComplete="name"
+              ></input>
+            </div>
           </div>
-          <div className="flex flex-wrap justify-between my-1 w-[70%]">
-            <label htmlFor="price" className="text-gray-700 px-2">
-              {t("price")}:{" "}
-            </label>
-            <input
-              name="price"
-              className="p-1 w-full form-control"
-              onChange={changeFormData}
-              value={formData.price}
-              id="price"
-              autoComplete="name"
-            ></input>
-          </div>
-          <div className="flex flex-wrap justify-between my-1 items-center w-[70%]">
-            <label htmlFor="fileInput" className="text-gray-700 px-2">
+          <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
+            <label htmlFor="fileInput" className="text-gray-700 px-1">
               {t("point") + " " + t("image")}:{" "}
             </label>
             <input
@@ -235,26 +237,31 @@ function Point() {
             ></input>
             <img
               src={imgUrl ? imgUrl : uploadimage}
-              alt="prize" // More concise and descriptive
-              width="150px"
-              height="150px"
-              className="image mx-auto mt-2 max-w-[200px]"
+              alt="prize"
+              className={`${
+                imgUrl ? "w-[-webkit-fill-available]" : ""
+              }  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
             />
           </div>
-          {cuflag ? (
-            <AgreeButton name={t("add")} addclass="" onClick={AddPoint} />
-          ) : (
-            <div className="flex flex-wrap">
-              <AgreeButton name={t("cancel")} onClick={CancelPoint} />
-              <AgreeButton name={t("update")} onClick={UpdatePoint} />
-            </div>
-          )}
+        </div>
+        <div className="flex flex-wrap justify-end px-3 pb-2">
+          {!cuflag ? (
+            <button
+              className="button-22 !bg-red-500 !mr-2"
+              onClick={CancelPoint}
+            >
+              {t("cancel")}
+            </button>
+          ) : null}
+          <button className="button-22" onClick={UpdatePoint}>
+            {!cuflag ? t("update") : t("add")}
+          </button>
         </div>
       </div>
-      <div className="mx-auto mt-5 w-full md:w-[70%] overflow-auto">
+      <div className="mx-auto my-3 w-full md:w-[70%] overflow-auto">
         <table className="border-2 w-full  m-auto">
           <thead>
             <tr className="bg-admin_theme_color font-bold text-gray-200">
