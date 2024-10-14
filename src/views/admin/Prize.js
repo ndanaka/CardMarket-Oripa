@@ -115,14 +115,14 @@ const Prize = () => {
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("prize")} />
       </div>
-      <div className="flex flex-col items-center w-full md:w-[70%] m-auto border-2">
-        <div className="py-2 w-full bg-admin_theme_color text-gray-200 text-center">
+      <div className="flex flex-col w-full md:w-[70%] border-2 m-auto">
+        <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
           {t("prize") + " " + t("add")}
         </div>
-        <div className="flex flex-wrap justify-between items-stretch w-full m-auto px-5">
-          <div className="flex flex-col justify-between items-end w-1/2">
-            <div className="flex flex-wrap justify-between items-center my-1 mt-4 px-2 w-full">
-              <label htmlFor="prizename" className="text-gray-700 px-2">
+        <div className="flex flex-wrap justify-center sm:px-4 pt-2 w-full">
+          <div className="flex flex-col w-full xxsm:w-1/2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="prizename" className="text-gray-700">
                 {t("prize") + t("name")}:{" "}
               </label>
               <input
@@ -134,8 +134,8 @@ const Prize = () => {
                 autoComplete="name"
               ></input>
             </div>
-            <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label htmlFor="rarity" className="text-gray-700 px-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="rarity" className="text-gray-700">
                 {t("rarity")}:{" "}
               </label>
               <input
@@ -147,8 +147,8 @@ const Prize = () => {
                 autoComplete="name"
               ></input>
             </div>
-            <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label htmlFor="cashBack" className="text-gray-700 px-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="cashBack" className="text-gray-700">
                 {t("cashback")}:{" "}
               </label>
               <input
@@ -160,8 +160,8 @@ const Prize = () => {
                 autoComplete="name"
               ></input>
             </div>
-            <div className="flex flex-wrap justify-between my-1 px-2 w-full">
-              <label htmlFor="grade" className="text-gray-700 px-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="grade" className="text-gray-700">
                 {t("Grade")}:{" "}
               </label>
               <select
@@ -179,8 +179,8 @@ const Prize = () => {
               </select>
             </div>
           </div>
-          <div className="flex flex-col justify-between my-1 mt-4 items-center w-1/2">
-            <label htmlFor="fileInput" className="text-gray-700 px-2">
+          <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
+            <label htmlFor="fileInput" className="text-gray-700 p-1">
               {t("prize") + t("image")}:{" "}
             </label>
             <input
@@ -194,16 +194,16 @@ const Prize = () => {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              width="150"
-              height="150"
-              className="image mx-auto mt-2 max-w-[200px]"
+              className={`${
+                imgUrl ? "w-[-webkit-fill-available] h-[200px]" : ""
+              }  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
             />
           </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex flex-wrap justify-end px-3 pb-2">
           {!cuflag ? (
             <button
               className="p-2 px-4 my-1 button-22 text-white !bg-red-500 !mr-2"
@@ -230,7 +230,7 @@ const Prize = () => {
           )}
         </div>
       </div>
-      <div className="mx-auto mt-5 w-full md:w-[70%] overflow-auto">
+      <div className="mx-auto my-3 w-full md:w-[70%] overflow-auto">
         <PrizeList
           trigger={trigger}
           setFormData={setFormData}
