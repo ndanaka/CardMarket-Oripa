@@ -98,8 +98,8 @@ function UserDelivery() {
                   </div>
                   <div className="mt-2 mr-2 flex flex-wrap justify-center items-stretch">
                     {data.prizes?.length > 0
-                      ? data.prizes.map((card) => (
-                          <div key={card._id} className="group relative">
+                      ? data.prizes.map((card, i) => (
+                          <div key={i} className="group relative">
                             <PrizeCard
                               name={card.name}
                               rarity={card.rarity}

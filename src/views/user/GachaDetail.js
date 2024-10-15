@@ -33,6 +33,7 @@ function GachaDetail() {
   const [popedPrizes, setPopedPrizes] = useState(null); //obtained prize through gacha draw
   const [showCardFlag, setShowCardFlag] = useState();
   const [existLastFlag, setExistLastFlag] = useState(false);
+  const [lastEffect, setLastEffect] = useState(false);
 
   useEffect(() => {
     getGacha();
@@ -85,10 +86,6 @@ function GachaDetail() {
           console.log(err);
         });
     }
-  };
-
-  const showCards = () => {
-    setShowCardFlag(true);
   };
 
   // get gacha by gacha id
@@ -155,6 +152,7 @@ function GachaDetail() {
           showToast(t("drawnSuccess"), "success");
           setPopedPrizes(res.data.prizes);
           setExistLastFlag(res.data.existLastFlag);
+          setLastEffect(res.data.lastEffect);
           setShowCardFlag(true);
           updateUserData();
         } else {
@@ -356,10 +354,10 @@ function GachaDetail() {
             ))}
             <div
               className={`${
-                existLastFlag ? "" : "hidden"
+                lastEffect && existLastFlag ? "" : "hidden"
               } absolute top-[20%] w-full flex justify-center items-center`}
             >
-              <div className="bg-white text-center rounded-lg p-4 shadow-xl animate-pulse">
+              <div className="bg-white text-center rounded-lg p-4 shadow-xl">
                 <h2 className="text-3xl font-bold text-pink-500 ">
                   🎉 {t("wonLast")} 🎉
                 </h2>

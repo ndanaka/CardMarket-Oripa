@@ -314,13 +314,13 @@ function Gacha() {
               <th>{t("image")}</th>
               <th>{t("name")}</th>
               <th>{t("price")}</th>
-              <th>{t("total") + t("number")}</th>
+              <th>{t("total") + " " + t("number")}</th>
               <th>{t("category")}</th>
-              <th>{t("created") + t("date")}</th>
+              {/* <th>{t("created") + " " + t("date")}</th> */}
             </tr>
           </thead>
           <tbody>
-            {gacha != null ? (
+            {gacha !== null && gacha?.lenght !== 0 ? (
               gacha.map((data, i) => {
                 return (
                   <React.Fragment key={data._id}>
@@ -346,7 +346,7 @@ function Gacha() {
                       <td>{formatPrice(data.price)} pt</td>
                       <td>{data.total_number}</td>
                       <td>{data.category}</td>
-                      <td>{formatDate(data.create_date)}</td>
+                      {/* <td>{formatDate(data.create_date)}</td> */}
                     </tr>
                     <tr
                       className={`border-2 ${
@@ -386,7 +386,7 @@ function Gacha() {
               })
             ) : (
               <tr>
-                <td colSpan="6">There is no Gacha</td>
+                <td colSpan="6">{t("nogacha")}</td>
               </tr>
             )}
           </tbody>
