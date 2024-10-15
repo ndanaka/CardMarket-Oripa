@@ -6,7 +6,7 @@ import usePersistedUser from "../../store/usePersistedUser";
 import enFlag from "../../assets/img/icons/en.png";
 import jpFlag from "../../assets/img/icons/jp.png";
 
-function ChangeLanguage() {
+function ChangeLanguage({ type }) {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = usePersistedUser();
@@ -42,29 +42,47 @@ function ChangeLanguage() {
           alt="current flag"
           className="w-5 h-5 mr-2"
         />
-        <span className="text-white hidden xsm:block">
+        <span
+          className={`${
+            type === "menu" ? "text-gray" : "text-white"
+          } hidden xsm:block`}
+        >
           {currentLanguage === "en" ? "English" : "日本語"}
         </span>
         {isOpen ? (
-          <i className="fa fa-caret-up ml-2 mt-2 text-white"></i>
+          <i
+            className={`fa fa-caret-up ml-2 mt-2 ${
+              type === "menu" ? "text-gray" : "text-white"
+            }`}
+          ></i>
         ) : (
-          <i className="fa fa-caret-down ml-2 text-white"></i>
+          <i
+            className={`fa fa-caret-down ml-2 ${
+              type === "menu" ? "text-gray" : "text-white"
+            }`}
+          ></i>
         )}
       </button>
 
       {isOpen && (
         <ul
-          className={`absolute top-full right-0 mt-1 border rounded-lg ${
-            user?.role === "admin" ? "bg-[#32629e]" : "bg-[#c30000]"
+          className={`absolute top-full right-0 mt-1 border-1 border-gray-300 rounded-lg ${
+            type === "menu"
+              ? "bg-gray-200"
+              : type !== "menu" && user?.role === "admin"
+              ? "bg-[#26619c]"
+              : "bg-[#cc0000]"
           } shadow-lg z-10 w-[100px]`}
         >
           {languages.map((lang) => (
             <li
               key={lang.code}
               className={`flex items-center p-2 cursor-pointer rounded-lg ${
-                user?.role === "admin"
+                type === "menu"
+                  ? "hover:bg-gray-300"
+                  : type !== "menu" && user?.role === "admin"
                   ? "hover:bg-blue-400"
-                  : "hover:bg-red-400"
+                  : "hover:bg-red-500"
               }`}
               onClick={() => changeLanguage(lang.code)}
             >
@@ -73,7 +91,13 @@ function ChangeLanguage() {
                 alt={`${lang.name} flag`}
                 className="w-5 h-5 mr-2"
               />
-              <span className="text-white text-sm">{lang.name}</span>
+              <span
+                className={`${
+                  type === "menu" ? "text-gray" : "text-white"
+                } text-sm`}
+              >
+                {lang.name}
+              </span>
             </li>
           ))}
         </ul>

@@ -14,7 +14,7 @@ i18n.use(initReactI18next).init({
         category: "Category",
         prize: "Prize",
         gacha: "Gacha",
-        point: "Point",
+        point: "Points",
         delivery: "Delivery",
         notion: "Notion",
         userterms: "User Terms",
@@ -53,7 +53,7 @@ i18n.use(initReactI18next).init({
         usage: "Usage",
         user_information: "User Information",
         contact_information: "Contact Information",
-        point_log: "Point Log",
+        pointHistory: "Points History",
         obtained_cards: "Obtained Cards",
 
         //prize page
@@ -210,7 +210,17 @@ i18n.use(initReactI18next).init({
         requiredFile: "Image is Required",
         account: "Account",
         withdrawal: "Withdrawal",
-        withdrawalDes: "Disable Login: After withdraw your account, you will not be able to log in again."
+        withdrawalDes:
+          "Disable Login: After withdraw your account, you will not be able to log in again.",
+        page: "Page",
+        rank: "Rank",
+        normal: "Normal",
+        bronze: "Bronze",
+        silver: "Silver",
+        gold: "Gold",
+        platinum: "Platinum",
+        shipAddress: "Shipping Address",
+        deliveryHistory: "Delivery History",
       },
     },
     jp: {
@@ -259,7 +269,7 @@ i18n.use(initReactI18next).init({
         usage: "使い",
         contact_information: "連絡先",
         user_information: "ユーザー情報",
-        point_log: "ポイントログ",
+        pointHistory: "ポイント履歴",
         obtained_cards: "入手したカード",
         // prize page
         rarity: "レアリティ",
@@ -418,7 +428,17 @@ i18n.use(initReactI18next).init({
         newPass: "新しいパスワード",
         account: "アカウント",
         withdrawal: "退会",
-        withdrawalDes: "ログインを無効にする： アカウントを退会後、再度ログインすることはできません。"
+        withdrawalDes:
+          "ログインを無効にする： アカウントを退会後、再度ログインすることはできません。",
+        page: "ページ",
+        rank: "順位",
+        normal: "ノーマル",
+        bronze: "ブロンズ",
+        silver: "シルバー",
+        gold: "ゴールド",
+        platinum: "プラチナ",
+        shipAddress: "配送先住所",
+        deliveryHistory: "配送履歴",
       },
     },
     // Add more languages here

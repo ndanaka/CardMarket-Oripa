@@ -17,12 +17,15 @@ import Footer from "../components/Footers/Footer.js";
 import ScrollToTop from "../components/Others/ScrollTop.js";
 
 const UserLayout = (props) => {
-  const mainContent = useRef(null);
-  const [, setShow] = useState(false);
-
   const location = useLocation();
   const navigate = useNavigate();
+
+  const mainContent = useRef(null);
+
   const { isLoggedOut } = useAxiosInterceptor();
+
+  const [, setShow] = useState(false);
+  const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -89,12 +92,14 @@ const UserLayout = (props) => {
       <UserNavbar
         {...props}
         brandText={getBrandText(props?.location?.pathname)}
+        isOpenToggleMenu={isOpenToggleMenu}
+        setIsOpenToggleMenu={setIsOpenToggleMenu}
       />
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/user/index" replace />} />
       </Routes>
-      <ScrollToTop />      
+      <ScrollToTop />
       {!isLoggedOut && location.pathname !== "/user/gacha-detail" && <Footer />}
     </div>
   );

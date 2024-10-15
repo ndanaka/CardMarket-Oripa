@@ -30,7 +30,8 @@ const AuthNavbar = () => {
           </div>
           <div toggler="#navbar-collapse-main">
             <div className="flex items-center">
-              <Link
+              <ChangeLanguage />
+              {/* <Link
                 className="flex xsm:ruby text-white nav-link-icon px-2 items-center"
                 to="/auth/register"
                 tag={Link}
@@ -49,8 +50,7 @@ const AuthNavbar = () => {
                 <span className="nav-link-inner--text text-white px-2 hidden xsm:block">
                   {t("login")}
                 </span>
-              </Link>
-              <ChangeLanguage />
+              </Link> */}
             </div>
           </div>
         </div>

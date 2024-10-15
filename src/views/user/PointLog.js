@@ -29,8 +29,8 @@ function PointLog() {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-full md:w-3/6 p-3 mx-auto mt-16">
-        <SubHeader text={t("point_log")} />
+      <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-12">
+        <SubHeader text={t("pointHistory")} />
         <div className="flex flex-col">
           {pointLog?.length > 0
             ? pointLog.map((data, i) => (

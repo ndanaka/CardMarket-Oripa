@@ -111,147 +111,92 @@ const Profile = () => {
 
   return (
     <div className="flex flex-grow">
-      <div
-        className={`relative w-full flex flex-wrap items-start mx-auto mt-16 py-3`}
-      >
-        <SubHeader text={t("my") + " " + t("profile")} />
-        <div className="w-full md:w-3/6 px-3 mx-auto">
-          <div className="flex flex-wrap rounded-lg bg-white px-5">
-            <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
-              {t("profile")}
-            </p>
-            <hr className="py-2"></hr>
-            <div className="flex flex-wrap w-full">
-              <GroupHeader text={t("user_information")} />
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label={t("name")}
-                  type="text"
-                  name="name"
-                  value={userData?.name || ""}
-                  placeholder="Oliver Leo"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/2 px-2">
-                <InputGroup
-                  label={t("email")}
-                  type="email"
-                  name="email"
-                  value={userData?.email || ""}
-                  placeholder="OliverLeo118@email.com"
-                  onChange={handleSetUserData}
-                />
-              </div>
-            </div>
-            <div className="flex flex-wrap">
-              <GroupHeader text={t("contact_information")} />
-              <div className="w-full px-2">
-                <InputGroup
-                  label={t("address")}
-                  type="text"
-                  name="address"
-                  value={userData?.address || ""}
-                  placeholder="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/3 px-2">
-                <InputGroup
-                  label={t("city")}
-                  type="text"
-                  name="city"
-                  value={userData?.city || ""}
-                  placeholder="New York"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/3 px-2">
-                <InputGroup
-                  label={t("country")}
-                  type="text"
-                  name="country"
-                  value={userData?.country || ""}
-                  placeholder="United States"
-                  onChange={handleSetUserData}
-                />
-              </div>
-              <div className="w-full md:w-1/3 px-2">
-                <InputGroup
-                  label={t("postal_code")}
-                  type="text"
-                  name="postalCode"
-                  value={userData?.postalCode || ""}
-                  placeholder="Postal Code"
-                  onChange={handleSetUserData}
-                />
-              </div>
-            </div>
-            <div className="w-full">
-              <GroupHeader text={t("aboutMe")} />
-              <div className="form-group px-2">
-                <textarea
-                  className="form-control w-full text-gray-700"
-                  name="description"
-                  id="description"
-                  value={userData?.description}
-                  rows="4"
-                  cols="50"
-                  onChange={handleSetUserData}
-                ></textarea>
-              </div>
-            </div>
-            <div className="w-full flex flex-wrap justify-end px-2">
-              <button
-                className="button-22 px-4 py-2 my-3"
-                onClick={handleUpdateUserData}
-              >
-                {t("save")}
-              </button>
-            </div>
+      <div className={`relative w-full md:w-2/3 lg:w-1/2 mx-auto mt-12 p-3`}>
+        <div className="w-full py-2">
+          <div className="text-center text-xl text-slate-600">
+            {t("my") + " " + t("account")}
           </div>
+          <hr className="w-full my-2"></hr>
         </div>
-        <div className="w-full md:w-3/6 px-3 mx-auto">
-          <div className="rounded-lg bg-white px-5">
-            <p className="text-xl text-center text-theme_headertext_color py-2">
-              {t("changePass")}
-            </p>
-            <hr className="py-2"></hr>
-            <InputGroup
-              label={t("currentPass")}
-              type="password"
-              name="currentPwd"
-              placeholder="*******"
-              value={pwdData.currentPwd}
-              onChange={handleSetPwdData}
-            />
-            <InputGroup
-              label={t("newPass")}
-              type="password"
-              name="newPwd"
-              placeholder="*******"
-              value={pwdData.newPwd}
-              onChange={handleSetPwdData}
-            />
-            <div className="flex flex-wrap w-full justify-end">
-              <button
-                className="button-22 px-4 py-2 my-2"
-                onClick={handleChangePass}
-              >
-                {t("change")}
-              </button>
+        <div className="flex flex-wrap justify-between">
+          <div className="w-full p-2 mb-2 mx-auto rounded-lg bg-white">
+            <div className="flex flex-wrap">
+              <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
+                {t("profile")}
+              </p>
+              <hr className="py-2"></hr>
+              <div className="flex flex-wrap w-full">
+                <div className="w-full md:w-1/2 px-2">
+                  <InputGroup
+                    label={t("name")}
+                    type="text"
+                    name="name"
+                    value={userData?.name || ""}
+                    placeholder="Oliver Leo"
+                    onChange={handleSetUserData}
+                  />
+                </div>
+                <div className="w-full md:w-1/2 px-2">
+                  <InputGroup
+                    label={t("email")}
+                    type="email"
+                    name="email"
+                    value={userData?.email || ""}
+                    placeholder="OliverLeo118@email.com"
+                    onChange={handleSetUserData}
+                  />
+                </div>
+              </div>
+              <div className="w-full flex flex-wrap justify-end px-2">
+                <button
+                  className="button-22 px-4 py-2 my-3"
+                  onClick={handleUpdateUserData}
+                >
+                  {t("save")}
+                </button>
+              </div>
             </div>
           </div>
-          {/* <div className="rounded-lg bg-white px-5 py-2 ">
-            <p className="text-xl text-center text-theme_headertext_color py-2">
-              Credit Card Setting
-            </p>
-            <hr className="py-2"></hr>
-            <div className="flex flex-wrap w-full justify-end">
-              <button className="button-22 my-2 px-4 py-2">Save</button>
+          <div className="w-full p-2 m-2 mx-auto rounded-lg bg-white">
+            <div className="flex flex-wrap">
+              <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
+                {t("changePass")}
+              </p>
+              <hr className="py-2"></hr>
+              <div className="flex flex-wrap w-full">
+                <div className="w-full md:w-1/2 px-2">
+                  <InputGroup
+                    label={t("currentPass")}
+                    type="password"
+                    name="currentPwd"
+                    placeholder="*******"
+                    value={pwdData.currentPwd}
+                    onChange={handleSetPwdData}
+                  />
+                </div>
+                <div className="w-full md:w-1/2 px-2">
+                  <InputGroup
+                    label={t("newPass")}
+                    type="password"
+                    name="newPwd"
+                    placeholder="*******"
+                    value={pwdData.newPwd}
+                    onChange={handleSetPwdData}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-wrap w-full justify-end">
+                <button
+                  className="button-22 px-4 py-2 my-2"
+                  onClick={handleChangePass}
+                >
+                  {t("change")}
+                </button>
+              </div>
             </div>
-          </div> */}
-          <div className="rounded-lg bg-white px-5 py-2 my-3">
+          </div>
+          <div className="w-full p-2 mt-2 mx-auto rounded-lg bg-white">
             <p className="text-xl text-center text-theme_headertext_color py-2">
               {t("account")}
             </p>
