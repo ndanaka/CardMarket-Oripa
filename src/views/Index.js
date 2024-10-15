@@ -298,7 +298,6 @@ const Index = () => {
         drawCounts: selGacha[1],
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.status === 1) {
           showToast(t("drawnSuccess"), "success");
           setPopedPrizes(res.data.prizes);
