@@ -120,11 +120,11 @@ const UserNavbar = () => {
                         <span className="avatar avatar-sm rounded-circle">
                           <img
                             alt="..."
-                            src={require("../../assets/img/theme/avatar.jpg")}
+                            src={require("../../assets/img/icons/login.png")}
                             className="w-8 h-8 rounded-full"
                           />
                         </span>
-                        <span className="mb-0 text-md text-white hover:text-gray-100 font-weight-bold px-2 hidden md:block">
+                        <span className="mb-0 text-md text-white hover:text-gray-100 font-weight-bold hidden md:block">
                           {user.name}
                         </span>
                       </div>

@@ -298,6 +298,7 @@ const Index = () => {
         drawCounts: selGacha[1],
       })
       .then((res) => {
+        console.log(res.data);
         if (res.data.status === 1) {
           showToast(t("drawnSuccess"), "success");
           setPopedPrizes(res.data.prizes);
@@ -539,7 +540,7 @@ const Index = () => {
               lastEffect && existLastFlag ? "" : "hidden"
             } absolute top-[20%] w-full flex justify-center items-center`}
           >
-            <div className="bg-white text-center rounded-lg p-4 shadow-xl animate-pulse">
+            <div className="bg-white text-center rounded-lg p-4 shadow-xl">
               <h2 className="text-3xl font-bold text-pink-500 ">
                 🎉 {t("wonLast")} 🎉
               </h2>

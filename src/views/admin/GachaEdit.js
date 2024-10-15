@@ -111,7 +111,7 @@ const GachaEdit = () => {
     );
   };
 
-  //handle loading data from csv file
+  // handle loading data from csv file
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -125,7 +125,7 @@ const GachaEdit = () => {
     }
   };
 
-  //upload bulk prizes from csv file
+  // upload bulk prizes from csv file
   const uploadPrize = () => {
     if (!user.authority["gacha"]["write"]) {
       showToast("You have no permission for this action", "error");
@@ -158,7 +158,7 @@ const GachaEdit = () => {
     }
   };
 
-  //unset registered prizes from gacha
+  // unset registered prizes from gacha
   const unsetPrize = (last, grade, index) => {
     if (!user.authority["gacha"]["write"]) {
       showToast("You have no permission for this action", "error");
@@ -205,7 +205,7 @@ const GachaEdit = () => {
       });
   };
 
-  //set prize from registerd prizes by manualy
+  // set prize from registerd prizes by manualy
   const setprizes = async (id, lastEffect) => {
     try {
       if (!user.authority["gacha"]["write"]) {
@@ -295,7 +295,7 @@ const GachaEdit = () => {
 
       {/* Gacha Prizes */}
       <div>
-        {gacha?.remain_prizes?.length > 0 ? (
+        {gacha?.remain_prizes?.length > 0 && (
           <div>
             {firstPrizes?.length > 0
               ? drawGradePrizes(firstPrizes, "first")
@@ -310,12 +310,10 @@ const GachaEdit = () => {
               ? drawGradePrizes(fourthPrizes, "fourth")
               : ""}
           </div>
-        ) : (
-          <div className="py-2 text-center">{t("noprize")}</div>
         )}
 
         {/* last prize */}
-        {gacha?.last_prize ? (
+        {gacha?.last_prize && (
           <div>
             <div className="my-2 text-3xl text-center font-bold">
               {t("last") + " " + t("prize")}
@@ -336,7 +334,7 @@ const GachaEdit = () => {
                   <i className="fa fa-close text-gray-200 middle"></i>
                 </button>
 
-                <div className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 bg-blue-200 group-hover:block transition-all duration-300 text-base text-gray-800 text-center cursor-pointer z-3 animate-[displayEase_linear]">
+                <div className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 bg-red-500 opacity-80 hover:opacity-100 group-hover:block transition-all duration-300 text-base text-gray-200 text-center cursor-pointer z-3 animate-[displayEase_linear]">
                   <div className="py-1">
                     <span onClick={() => setprizes(gacha.last_prize._id, 1)}>
                       {gacha.last_prize.last_effect
@@ -348,8 +346,10 @@ const GachaEdit = () => {
               </div>
             </div>
           </div>
-        ) : (
-          ""
+        )}
+
+        {gacha?.remain_prizes?.length === 0 && !gacha?.last_prize && (
+          <div className="py-2 text-center">{t("noprize")}</div>
         )}
       </div>
 
