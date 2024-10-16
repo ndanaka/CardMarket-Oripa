@@ -252,6 +252,7 @@ i18n.use(initReactI18next).init({
         start_deposite: "Start Deposit",
         end_deposite: "End Deposit",
         deposite: "Deposit",
+        noShippingAddress: "There isn't any shipping address.",
       },
     },
     jp: {
@@ -501,6 +502,7 @@ i18n.use(initReactI18next).init({
         start_deposite: "入金開始",
         end_deposite: "保証金終了",
         deposite: "デポジット",
+        noShippingAddress: "発送先住所がない。",
       },
     },
     // Add more languages here
