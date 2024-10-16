@@ -264,7 +264,7 @@ function Administrators() {
                 ? Object.entries(authority).map(([item, values], i) => (
                     <tr key={item}>
                       <td>{i + 1}</td>
-                      <td>{item}</td>
+                      <td>{t(item)}</td>
                       <td>
                         <input
                           className="cursor-pointer"

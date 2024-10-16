@@ -75,7 +75,7 @@ function Shipping() {
               className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
               onClick={() => navigate(-1)}
             ></i>
-            {t("manageShippingAddress")}
+            {t("setShippingAddress")}
           </div>
           <hr className="w-full my-2"></hr>
         </div>

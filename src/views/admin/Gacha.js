@@ -290,7 +290,7 @@ function Gacha() {
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
               className={`${
-                imgUrl ? "w-[-webkit-fill-available] h-[200px]" : ""
+                imgUrl ? "w-auto h-[250px]" : ""
               }  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
