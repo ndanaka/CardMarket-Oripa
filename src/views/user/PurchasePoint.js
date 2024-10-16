@@ -191,17 +191,17 @@ function PurchasePoint() {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-full h-full lg:w-[70%] flex flex-col p-2 mx-auto mt-20">
-        <div className="mt-3">
-          <i
-            className="fa fa-chevron-left float-left mt-2.5 font-bold cursor-pointer"
-            onClick={() => navigate(-1)}
-          ></i>
-          <div className="text-center text-3xl text-theme_text_color font-bold">
+      <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-12">
+        <div className="w-full py-2">
+          <div className="text-center text-xl text-slate-600">
+            <i
+              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              onClick={() => navigate(-1)}
+            ></i>
             {t("purchagePoints")}
           </div>
+          <hr className="w-full my-2"></hr>
         </div>
-        <hr className="w-full"></hr>
 
         <div className="flex flex-wrap">
           <div className="p-2 w-full">
@@ -236,10 +236,10 @@ function PurchasePoint() {
                             ></img>
                             <div className="flex flex-col px-2">
                               <div className="text-left text-lg font-bold">
-                                {formatPrice(point.point_num)} pt
+                                {formatPrice(point.point_num)}pt
                               </div>
                               <div className="text-s text-center text-theme_text_color">
-                                {t("purchase")} ¥ {formatPrice(point.price)}
+                                {t("purchase")} ¥{formatPrice(point.price)}
                               </div>
                             </div>
                           </div>
