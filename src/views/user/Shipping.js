@@ -79,6 +79,9 @@ function Shipping() {
           </div>
           <hr className="w-full my-2"></hr>
         </div>
+        {shipAddressData?.length === 0 && (
+          <div className="text-center">{t("noShippingAddress")}</div>
+        )}
         {shipAddressData?.map((data, i) => {
           return (
             <div key={i}>
