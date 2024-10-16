@@ -60,19 +60,21 @@ function ShippingAdd() {
   };
 
   const handleCancelShipAddress = () => {
-    setShipAddress({
-      user_id: user._id,
-      country: "",
-      lastName: "",
-      firstName: "",
-      lastNameKana: "",
-      firstNameKana: "",
-      postCode: "",
-      prefecture: "",
-      address: "",
-      building: "",
-      phoneNumber: "",
-    });
+    if (initialData) setShipAddress(initialData);
+    else
+      setShipAddress({
+        user_id: user._id,
+        country: "",
+        lastName: "",
+        firstName: "",
+        lastNameKana: "",
+        firstNameKana: "",
+        postCode: "",
+        prefecture: "",
+        address: "",
+        building: "",
+        phoneNumber: "",
+      });
   };
 
   const handleSaveShipAddress = async () => {
@@ -148,7 +150,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.country ? (
                 <span className="flex text-sm text-red-600 pt-2">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("country") + t("isRequried")}
+                  {t("country") + t("isrequired")}
                 </span>
               ) : null}
             </div>
@@ -165,7 +167,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.lastName ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("lastName") + t("isRequried")}
+                  {t("lastName") + t("isrequired")}
                 </span>
               ) : null}
             </div>
@@ -180,7 +182,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.firstName ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("firstName") + t("isRequried")}
+                  {t("firstName") + t("isRequired")}
                 </span>
               ) : null}
             </div>
@@ -197,7 +199,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.lastNameKana ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("lastNameKana") + t("isRequried")}
+                  {t("lastNameKana") + t("isRequired")}
                 </span>
               ) : null}
             </div>
@@ -212,7 +214,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.firstNameKana ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("firstNameKana") + t("isRequried")}
+                  {t("firstNameKana") + t("isRequired")}
                 </span>
               ) : null}
             </div>
@@ -229,7 +231,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.postCode ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("postCode") + t("isRequried")}
+                  {t("postCode") + t("isRequired")}
                 </span>
               ) : null}
             </div>
@@ -244,7 +246,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.prefecture ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("prefecture") + t("isRequried")}
+                  {t("prefecture") + t("isRequired")}
                 </span>
               ) : null}
             </div>
@@ -261,7 +263,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.address ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("address") + t("isRequried")}
+                  {t("address") + t("isRequired")}
                 </span>
               ) : null}
             </div>
@@ -289,7 +291,7 @@ function ShippingAdd() {
               {showErrMessage && !shipAddress.phoneNumber ? (
                 <span className="flex text-sm text-red-600">
                   <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
-                  {t("phoneNumber") + t("isRequried")}
+                  {t("phoneNumber") + t("isRequired")}
                 </span>
               ) : null}
             </div>

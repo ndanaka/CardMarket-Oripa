@@ -14,28 +14,43 @@ import PageHeader from "../../components/Forms/PageHeader";
 import uploadimage from "../../assets/img/icons/upload.png";
 import formatPrice from "../../utils/formatPrice";
 
-function Point() {
+function Rank() {
   const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     id: "",
-    pointNum: 0,
-    price: 0,
+    name: "",
+    bonus: 0,
+    start_deposite: 0,
+    end_deposite: 0,
     file: null,
   });
-  const [points, setPoints] = useState([]);
+  const [ranks, setRanks] = useState([]);
   const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
   const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const [delPointId, setDelPointId] = useState();
+  const [delRankId, setDelRankId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     setAuthToken();
-    getPoint();
+    getRanks();
   }, []);
+
+  // get all ranks
+  const getRanks = async () => {
+    setAuthToken();
+    api
+      .get("/admin/get_rank")
+      .then((res) => {
+        if (res.data.status === 1) {
+          setRanks(res.data.ranks);
+        } else console.log("getRanks Error---->", res.data.err);
+      })
+      .catch((err) => console.error(err));
+  };
 
   //handle form change, formData input
   const changeFormData = (e) => {
@@ -43,19 +58,6 @@ function Point() {
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
-
-  //get registered point
-  const getPoint = () => {
-    setAuthToken();
-    api
-      .get("/admin/get_point")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setPoints(res.data.points);
-        } else console.log("getPoint Error---->", res.data.err);
-      })
-      .catch((err) => console.error(err));
   };
 
   const handleFileInputChange = (event) => {
@@ -71,10 +73,9 @@ function Point() {
     }
   };
 
-  /* add and update prize with image file uploading
-  if there is a property 'id' vin formData, this perform update of prize */
-  const AddPoint = () => {
-    if (!user.authority["point"]["write"]) {
+  // add or update rank
+  const AddRank = () => {
+    if (!user.authority["rank"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
@@ -82,48 +83,44 @@ function Point() {
     setMultipart();
     setAuthToken();
 
-    if (parseFloat(formData.pointNum) <= 0) {
-      showToast("Point amount must be greater than than 0", "error");
-    } else if (parseInt(formData.price) <= 0) {
-      showToast("Point price must be greater than than 0", "error");
+    if (formData.name.trim() === "") {
+      showToast(
+        `${t("rank") + " " + t("name") + " " + t("isRequired")}`,
+        "error"
+      );
     } else if (
       cuflag === 1 &&
       (formData.file === NaN ||
         formData.file === null ||
         formData.file === undefined)
     ) {
-      showToast("Point image is not selected", "error");
+      showToast(
+        `${t("rank") + " " + t("image") + " " + t("isRequired")}`,
+        "error"
+      );
     } else {
-      api.post("/admin/point_upload", formData).then((res) => {
+      api.post("/admin/rank_save", formData).then((res) => {
         if (res.data.status === 1) {
-          showToast("Point Added Successfully.");
-          setImgUrl("");
-          fileInputRef.current.value = null;
-          setFormData({
-            ...formData,
-            id: "",
-            pointNum: 0,
-            price: 0,
-            file: null,
-          });
-          setCuFlag(1); //set create/update flag as creating
-          removeMultipart();
+          showToast("Successfully added data.");
         } else if (res.data.status === 2) {
-          showToast("Point Updated Successfully.");
-          setImgUrl("");
-          setFormData({
-            ...formData,
-            id: "",
-            pointNum: 0,
-            price: 0,
-            file: null,
-          });
-          setCuFlag(1); //set create/update flag as creating
-          removeMultipart();
+          showToast("Successfully updated data.");
         } else {
-          showToast("Point Add/Update Failed", "error");
+          showToast("Failed to process.", "error");
         }
-        getPoint();
+        fileInputRef.current.value = null;
+        setImgUrl("");
+        setFormData({
+          ...formData,
+          id: "",
+          name: "",
+          bonus: 0,
+          start_deposite: 0,
+          end_deposite: 0,
+          file: null,
+        });
+        setCuFlag(1);
+        removeMultipart();
+        getRanks();
       });
     }
   };
@@ -131,100 +128,124 @@ function Point() {
   //handle Edit Button click event
   const handleEdit = (i) => {
     setFormData({
-      id: points[i]._id,
-      pointNum: points[i].point_num,
-      price: points[i].price,
+      id: ranks[i]._id,
+      name: ranks[i].name,
+      bonus: ranks[i].bonus,
+      start_deposite: ranks[i].start_deposite,
+      end_deposite: ranks[i].end_deposite,
     });
     setCuFlag(0); //set create/update flag as updating
-    setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + points[i].img_url);
+    setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + ranks[i].img_url);
   };
 
-  //handle point update
-  const CancelPoint = () => {
+  // handle cancel action
+  const CancelRank = () => {
     setImgUrl("");
     setFormData({
       ...formData,
       id: "",
-      pointNum: 0,
-      price: 0,
+      name: "",
+      bonus: 0,
+      start_deposite: 0,
+      end_deposite: 0,
       file: null,
     });
     setCuFlag(1);
   };
 
-  //handle point update
-  const UpdatePoint = () => {
-    if (!user.authority["point"]["write"]) {
+  // handle edit update
+  const UpdateRank = () => {
+    if (!user.authority["rank"]["write"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
 
     setCuFlag(1);
-
-    AddPoint();
+    AddRank();
   };
 
-  //handle point delete
-  const pointDel = () => {
-    if (!user.authority["point"]["delete"]) {
+  // handle rank delete
+  const handleDelete = async () => {
+    setIsModalOpen(false);
+    if (!user.authority["rank"]["delete"]) {
       showToast("You have no permission for this action", "error");
       return;
     }
 
-    api.delete(`/admin/del_point/${delPointId}`).then((res) => {
-      if (res.data.status === 1) {
-        showToast("Successfully Deleted.");
-        getPoint();
-      } else showToast("Point delete failed.");
-    });
-  };
-
-  const handleDelete = () => {
-    setIsModalOpen(false);
-    pointDel();
+    const res = await api.delete(`/admin/del_rank/${delRankId}`);
+    if (res.data.status === 1) {
+      showToast("Successfully Deleted.");
+      getRanks();
+    } else showToast("Failed to delete.");
   };
 
   return (
     <div className="p-3">
       <div className="w-full md:w-[70%] mx-auto">
-        <PageHeader text={t("point")} />
+        <PageHeader text={t("rank")} />
       </div>
       <div className="flex flex-col w-full md:w-[70%] border-2 m-auto">
         <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
-          {t("point") + " " + t("add")}
+          {t("rank") + " " + t("add")}
         </div>
         <div className="flex flex-wrap justify-center sm:px-4 pt-2 w-full">
           <div className="flex flex-col w-full xxsm:w-1/2">
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="pointNum" className="text-gray-700">
-                {t("point") + " " + t("amount")}:{" "}
+              <label htmlFor="name" className="text-gray-700">
+                {t("name")}
               </label>
               <input
-                name="pointNum"
+                name="name"
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
-                value={formData.pointNum}
-                id="pointNum"
+                value={formData.name}
+                id="name"
                 autoComplete="name"
               ></input>
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="price" className="text-gray-700">
-                {t("price")}:{" "}
+              <label htmlFor="bonus" className="text-gray-700">
+                {t("bonus")} (%)
               </label>
               <input
-                name="price"
+                name="bonus"
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
-                value={formData.price}
-                id="price"
-                autoComplete="name"
+                value={formData.bonus}
+                id="bonus"
+                autoComplete="bonus"
+              ></input>
+            </div>
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="start_deposite" className="text-gray-700">
+                {t("start_deposite")} (¥)
+              </label>
+              <input
+                name="start_deposite"
+                className="p-1 w-full form-control"
+                onChange={changeFormData}
+                value={formData.start_deposite}
+                id="start_deposite"
+                autoComplete="start_deposite"
+              ></input>
+            </div>
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="end_deposite" className="text-gray-700">
+                {t("end_deposite")} (¥)
+              </label>
+              <input
+                name="end_deposite"
+                className="p-1 w-full form-control"
+                onChange={changeFormData}
+                value={formData.end_deposite}
+                id="end_deposite"
+                autoComplete="end_deposite"
               ></input>
             </div>
           </div>
           <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
             <label htmlFor="fileInput" className="text-gray-700 px-1">
-              {t("point") + " " + t("image")}:{" "}
+              {t("rank") + " " + t("image")}:{" "}
             </label>
             <input
               name="fileInput"
@@ -238,9 +259,7 @@ function Point() {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`${
-                imgUrl ? "w-auto h-[250px]" : ""
-              }  object-cover`}
+              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
@@ -251,12 +270,12 @@ function Point() {
           {!cuflag ? (
             <button
               className="button-22 !bg-red-500 !mr-2"
-              onClick={CancelPoint}
+              onClick={CancelRank}
             >
               {t("cancel")}
             </button>
           ) : null}
-          <button className="button-22" onClick={UpdatePoint}>
+          <button className="button-22" onClick={UpdateRank}>
             {!cuflag ? t("update") : t("add")}
           </button>
         </div>
@@ -266,41 +285,46 @@ function Point() {
           <thead>
             <tr className="bg-admin_theme_color font-bold text-gray-200">
               <th>{t("no")}</th>
-              <th>{t("point") + " " + t("amount")}</th>
-              <th>{t("price")}</th>
-              <th>{t("point") + " " + t("image")}</th>
+              <th>{t("name")}</th>
+              <th>{t("bonus")}</th>
+              <th>{t("deposite") + " " + t("amount")}</th>
+              <th>{t("image")}</th>
               <th>{t("action")}</th>
             </tr>
           </thead>
           <tbody>
-            {points ? (
-              points.map((data, i) => (
+            {ranks ? (
+              ranks.map((data, i) => (
                 <tr key={data._id} className="border-2">
                   <td>{i + 1}</td>
-                  <td>{formatPrice(data.point_num)} pt</td>
-                  <td>¥ {formatPrice(data.price)}</td>
+                  <td>{data.name}</td>
+                  <td>{data.bonus}%</td>
+                  <td>
+                    {"¥ "+formatPrice(data.start_deposite)} ~{" "}
+                    {data.name === "Platinum"
+                      ? ""
+                      : "¥ "+formatPrice(data.end_deposite)}
+                  </td>
                   <td>
                     <img
-                      className="m-auto"
+                      className="m-auto w-auto h-[100px]"
                       src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
-                      width="50px"
-                      height="50px"
-                      alt={`${data.point_num} points`} // Meaningful alt text
+                      alt={`${data._id} ranks`} // Meaningful alt text
                     />
                   </td>
                   <td>
                     <span
                       id={data._id}
-                      className="fa fa-edit p-1"
+                      className="fa fa-edit p-1 cursor-pointer"
                       onClick={() => {
                         handleEdit(i);
                       }}
                     ></span>
                     <span
                       id={data._id}
-                      className="fa fa-remove p-1"
+                      className="fa fa-remove p-1 cursor-pointer"
                       onClick={() => {
-                        setDelPointId(data._id);
+                        setDelRankId(data._id);
                         setIsModalOpen(true);
                       }}
                     ></span>
@@ -324,4 +348,4 @@ function Point() {
   );
 }
 
-export default Point;
+export default Rank;

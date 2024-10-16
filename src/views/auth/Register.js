@@ -61,7 +61,6 @@ const Register = () => {
     setShowErrMessage(true);
     if (!isFormValidate()) return;
     handleSubmit();
-    // setIsEmailVerifyPanel(true);
   };
 
   const handleSubmit = () => {
@@ -238,10 +237,13 @@ const Register = () => {
                   </div>
                 </FormGroup>
                 <div className="grid">
-                  <div className="form-check form-check-inline m-1">
-                    <label htmlFor="checkboxTerms" className="form-check-label">
+                  <div className="form-check form-check-inline">
+                    <label
+                      htmlFor="checkboxTerms"
+                      className="form-check-label flex items-center space-x-2"
+                    >
                       <input
-                        className="form-check-input text-lg"
+                        className="form-check-input text-lg cursor-pointer mr-2"
                         type="checkbox"
                         name="checkboxTerms"
                         id="checkboxTerms"

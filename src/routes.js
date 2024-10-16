@@ -25,6 +25,7 @@ import Blog from "./views/user/Blog.js";
 import BlogDetail from "./views/user/BlogDetail.js";
 import Shipping from "./views/user/Shipping.js";
 import ShippingAdd from "./views/user/ShippingAdd.js";
+import Rank from "./views/admin/Rank.js";
 
 var routes = [
   {
@@ -173,6 +174,13 @@ var routes = [
     name: "Delivering",
     icon: "fa fa-truck",
     component: <Delivering />,
+    layout: "/admin",
+  },
+  {
+    path: "/rank",
+    name: "rank",
+    icon: "fa-solid fa-list",
+    component: <Rank />,
     layout: "/admin",
   },
   {

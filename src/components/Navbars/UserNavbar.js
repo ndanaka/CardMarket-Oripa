@@ -145,27 +145,30 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                       <div className="p-2">
                         <ul>
                           <li
-                            className="text-center shadow-md shadow-gray-300 cursor-pointer flex flex-col justify-center mx-2 my-2 p-3 border-solid border-4 border-gray-400 rounded-lg"
-                            style={{
-                              backgroundImage:
-                                "url('assets/img/prize/gold.png')",
-                              backgroundSize: "cover",
-                              backgroundPosition: "center",
-                            }}
+                            className="relative text-center shadow-md shadow-gray-300 cursor-pointer flex flex-col justify-center mx-2 my-2 p-3 border-solid border-4 border-gray-400 rounded-lg"
+                            onClick={() => console.log("rank")}
                           >
-                            <span className="text-gray-800 text-lg font-bold">
-                              {t("rank")}
-                            </span>
-                            <hr className="h-1 w-full my-2 border-3 border-gray-400"></hr>
-                            <span
-                              className="text-gray-800 text-5xl font-bold uppercase"
-                              style={{ fontFamily: "serif" }}
-                            >
-                              {t("silver")}
-                            </span>
-                            <span className="text-gray-800 text-lg">
-                              0 / {formatPrice("400000")}
-                            </span>
+                            <img
+                              src={require(`../../assets/img/prize/${"gold"}.png`)}
+                              alt="Background"
+                              className="absolute top-0 right-4 w-full h-full object-cover z-0 opacity-50"
+                              style={{ maxHeight: "150px", maxWidth: "130px" }}
+                            />
+                            <div className="relative z-10">
+                              <span className="text-gray-800 text-lg font-bold">
+                                {t("rank")}
+                              </span>
+                              <hr className="h-1 w-full my-2 border-3 border-gray-400"></hr>
+                              <span
+                                className="text-gray-800 text-5xl font-bold uppercase"
+                                style={{ fontFamily: "serif" }}
+                              >
+                                {t("silver")}
+                              </span>
+                              <span className="flex flex-wrap text-gray-800 text-lg justify-center">
+                                {formatPrice("0")} / {formatPrice("400000")} pt
+                              </span>
+                            </div>
                           </li>
                           <li className="mx-2 mt-4 mb-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg">
                             <span className="font-bold text-lg">
