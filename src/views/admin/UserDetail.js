@@ -49,12 +49,11 @@ function UserDetail() {
           className="fa fa-chevron-left float-left"
           onClick={() => navigate("/admin/user")}
         ></i>
-        <span className="text-xl text-center py-3">{user?.name}</span>
+        <span className="text-xl text-center py-3">{t("user") +" "+ t("detail")}</span>
       </div>
-
-      <hr></hr>
+      <hr className="my-2"></hr>
       <div className="p-2 flex flex-col w-full">
-        <GroupHeader text="user_information" />
+        <GroupHeader text="information" />
         <div className="flex flex-wrap">
           <div className="w-full md:w-1/2 px-2">
             <Label htmlFor="text" text="name" classname="pr-3" />
@@ -64,11 +63,23 @@ function UserDetail() {
             <Label htmlFor="text" text="email" classname="pr-3" />
             {user?.email}
           </div>
+          <div className="w-full px-2">
+            <Label htmlFor="text" text="address" classname="pr-3" />
+            {user?.address}
+          </div>
+          <div className="w-full md:w-1/2 px-2">
+            <Label htmlFor="text" text="city" classname="pr-3" />
+            {user?.city}
+          </div>
+          <div className="w-full md:w-1/2 px-2">
+            <Label htmlFor="text" text="country" classname="pr-3" />
+            {user?.country}
+          </div>
         </div>
         <hr className="my-2"></hr>
         <div className="flex flex-wrap justify-between">
           <div className="w-full">
-            <GroupHeader text="point_log" />
+            <GroupHeader text="pointHistory" />
             <table className="w-full">
               <thead className="bg-admin_theme_color font-bold text-gray-200">
                 <tr>
@@ -96,7 +107,7 @@ function UserDetail() {
               </tbody>
             </table>
           </div>
-          <div className="w-full">
+          {/* <div className="w-full">
             <GroupHeader text="obtained_cards" />
             <div className="flex flex-wrap justify-evenly p-2">
               {user?.obtain_cards?.length > 0 ? (
@@ -130,7 +141,7 @@ function UserDetail() {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -126,13 +126,21 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                     </button>
 
                     <div
-                      className={`py-4 overflow-y-auto h-full shadow-md shadow-gray-400 fixed top-0 right-0 h-full w-80 bg-gray-100 text-gray-800 transform transition-transform duration-300 ease-in-out ${
+                      className={`pt-4 pb-24 overflow-y-auto h-full shadow-md shadow-gray-400 fixed top-0 right-0 h-full w-80 bg-gray-100 text-gray-800 transform transition-transform duration-300 ease-in-out ${
                         isOpenToggleMenu ? "translate-x-0" : "translate-x-full"
                       }`}
                     >
-                      <h2 className="pb-2 text-xl font-bold text-center">
-                        {t("my") + " " + t("page")}
-                      </h2>
+                      <div className="top-0">
+                        <h2 className="pb-2 text-xl font-bold text-center">
+                          {t("my") + " " + t("status")}
+                        </h2>
+                        <button
+                          onClick={() => setIsOpenToggleMenu(!isOpenToggleMenu)}
+                          className="font-bold absolute top-4 right-4 text-gray-800 py-1 px-3 bg-gray-200 rounded-md"
+                        >
+                          X
+                        </button>
+                      </div>
                       <hr></hr>
                       <div className="p-2">
                         <ul>
@@ -208,7 +216,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                               navigate("/user/user-profile");
                             }}
                           >
-                            <span>{t("account")}</span>
+                            <span>{t("profile")}</span>
                             <i className="fa fa-chevron-right"></i>
                           </li>
                           <li
@@ -244,22 +252,16 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                           <li className="p-2 my-3 flex flex-wrap justify-end">
                             <ChangeLanguage type="menu" />
                           </li>
-                          <li className="px-2 flex flex-wrap justify-end items-center">
-                            <button
-                              className="underline underline-offset-4 font-bold text-lg cursor-pointer"
-                              onClick={() => logout()}
-                            >
+                          <li
+                            className="px-2 flex flex-wrap justify-end items-center"
+                            onClick={() => logout()}
+                          >
+                            <button className="underline underline-offset-4 font-bold text-lg cursor-pointer">
                               {t("logout")}
                             </button>
                           </li>
                         </ul>
                       </div>
-                      <button
-                        onClick={() => setIsOpenToggleMenu(!isOpenToggleMenu)}
-                        className="font-bold absolute top-4 right-4 text-gray-800 py-1 px-3 bg-gray-200 rounded-md"
-                      >
-                        X
-                      </button>
                     </div>
                   </div>
                 </div>

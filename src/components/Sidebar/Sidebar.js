@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-// reactstrap components
-import { NavbarBrand, Nav } from "reactstrap";
+import { Nav } from "reactstrap";
 
 const Sidebar = (props) => {
   const navigate = useNavigate();
@@ -11,7 +10,6 @@ const Sidebar = (props) => {
 
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
-      // if (prop.layout === "/admin" && user.authority[prop.name] > 0) {
       if (prop.layout === "/admin") {
         return (
           <div
@@ -51,26 +49,13 @@ const Sidebar = (props) => {
 
   return (
     <div className="absolute top-0 left-0 z-10 bg-admin_theme_color border-r-2 border-gray-300 min-h-full hidden xxsm:block xxsm:relative transition-all duration-300">
-      {logo ? (
-        <NavbarBrand className="py-3" {...navbarBrandProps}>
-          <img
-            alt={logo.imgAlt}
-            className="navbar-brand-img"
-            src={logo.imgSrc}
-          />
-        </NavbarBrand>
-      ) : null}
-      {/* <div className="flex flex-col">
-        <Row>
-          <Col className="collapse-close" xs="6">
-            <button className="navbar-toggler" type="button">
-              <span />
-              <span />
-            </button>
-          </Col>
-        </Row>
-      </div> */}
-      <Nav navbar className="mt-3">
+      <Link
+        className="text-[#e0e1e2] font-bold text-2xl text-uppercase hidden xxsm:block text-center py-[20px]"
+        to="/admin/index"
+      >
+        {t("admin")}
+      </Link>
+      <Nav navbar className="border-t-[1px] border-gray-300">
         {createLinks(routes)}
       </Nav>
     </div>
