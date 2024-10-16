@@ -1,14 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Nav,
-} from "reactstrap";
+import { Nav } from "reactstrap";
 
 import { setAuthToken } from "../../utils/setHeader";
 import api from "../../utils/api";
@@ -28,7 +22,6 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
 
   useEffect(() => {
     updateUserData();
-    console.log("SDF");
   }, [location]);
 
   const updateUserData = () => {
@@ -146,7 +139,8 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                           <li
                             className="text-center shadow-md shadow-gray-300 cursor-pointer flex flex-col justify-center mx-2 my-2 p-3 border-solid border-4 border-gray-400 rounded-lg"
                             style={{
-                              backgroundImage: "url('assets/img/prize/gold.png')",
+                              backgroundImage:
+                                "url('assets/img/prize/gold.png')",
                               backgroundSize: "cover",
                               backgroundPosition: "center",
                             }}
@@ -157,7 +151,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                             <hr className="h-1 w-full my-2 border-3 border-gray-400"></hr>
                             <span
                               className="text-gray-800 text-5xl font-bold uppercase"
-                              style={{ "font-family": "serif" }}
+                              style={{ fontFamily: "serif" }}
                             >
                               {t("silver")}
                             </span>
@@ -217,7 +211,13 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                             <span>{t("account")}</span>
                             <i className="fa fa-chevron-right"></i>
                           </li>
-                          <li className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg">
+                          <li
+                            className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
+                            onClick={() => {
+                              setIsOpenToggleMenu(!isOpenToggleMenu);
+                              navigate("/user/userShiping");
+                            }}
+                          >
                             <span>{t("shipAddress")}</span>
                             <i className="fa fa-chevron-right"></i>
                           </li>
