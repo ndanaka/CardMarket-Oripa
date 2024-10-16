@@ -22,8 +22,8 @@ function Rank() {
     id: "",
     name: "",
     bonus: 0,
-    start_deposite: 0,
-    end_deposite: 0,
+    start_amount: 0,
+    end_amount: 0,
     file: null,
   });
   const [ranks, setRanks] = useState([]);
@@ -114,8 +114,8 @@ function Rank() {
           id: "",
           name: "",
           bonus: 0,
-          start_deposite: 0,
-          end_deposite: 0,
+          start_amount: 0,
+          end_amount: 0,
           file: null,
         });
         setCuFlag(1);
@@ -131,8 +131,8 @@ function Rank() {
       id: ranks[i]._id,
       name: ranks[i].name,
       bonus: ranks[i].bonus,
-      start_deposite: ranks[i].start_deposite,
-      end_deposite: ranks[i].end_deposite,
+      start_amount: ranks[i].start_amount,
+      end_amount: ranks[i].end_amount,
     });
     setCuFlag(0); //set create/update flag as updating
     setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + ranks[i].img_url);
@@ -146,8 +146,8 @@ function Rank() {
       id: "",
       name: "",
       bonus: 0,
-      start_deposite: 0,
-      end_deposite: 0,
+      start_amount: 0,
+      end_amount: 0,
       file: null,
     });
     setCuFlag(1);
@@ -217,29 +217,29 @@ function Rank() {
               ></input>
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="start_deposite" className="text-gray-700">
-                {t("start_deposite")} (¥)
+              <label htmlFor="start_amount" className="text-gray-700">
+                {t("start_amount")} (pt)
               </label>
               <input
-                name="start_deposite"
+                name="start_amount"
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
-                value={formData.start_deposite}
-                id="start_deposite"
-                autoComplete="start_deposite"
+                value={formData.start_amount}
+                id="start_amount"
+                autoComplete="start_amount"
               ></input>
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="end_deposite" className="text-gray-700">
-                {t("end_deposite")} (¥)
+              <label htmlFor="end_amount" className="text-gray-700">
+                {t("end_amount")} (pt)
               </label>
               <input
-                name="end_deposite"
+                name="end_amount"
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
-                value={formData.end_deposite}
-                id="end_deposite"
-                autoComplete="end_deposite"
+                value={formData.end_amount}
+                id="end_amount"
+                autoComplete="end_amount"
               ></input>
             </div>
           </div>
@@ -287,7 +287,7 @@ function Rank() {
               <th>{t("no")}</th>
               <th>{t("name")}</th>
               <th>{t("bonus")}</th>
-              <th>{t("deposite") + " " + t("amount")}</th>
+              <th>{t("purchasedPointsAmount")}</th>
               <th>{t("image")}</th>
               <th>{t("action")}</th>
             </tr>
@@ -300,10 +300,10 @@ function Rank() {
                   <td>{data.name}</td>
                   <td>{data.bonus}%</td>
                   <td>
-                    {"¥ "+formatPrice(data.start_deposite)} ~{" "}
+                    {formatPrice(data.start_amount) + "pt"} ~{" "}
                     {data.name === "Platinum"
                       ? ""
-                      : "¥ "+formatPrice(data.end_deposite)}
+                      : formatPrice(data.end_amount) + "pt"}
                   </td>
                   <td>
                     <img

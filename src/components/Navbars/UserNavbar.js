@@ -126,22 +126,22 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                     </button>
 
                     <div
-                      className={`pt-4 pb-24 overflow-y-auto h-full shadow-md shadow-gray-400 fixed top-0 right-0 h-full w-80 bg-gray-100 text-gray-800 transform transition-transform duration-300 ease-in-out ${
+                      className={`pb-24 overflow-y-auto h-full shadow-md shadow-gray-400 fixed top-0 right-0 h-full w-80 bg-gray-100 text-gray-800 transform transition-transform duration-300 ease-in-out ${
                         isOpenToggleMenu ? "translate-x-0" : "translate-x-full"
                       }`}
                     >
-                      <div className="top-0">
-                        <h2 className="pb-2 text-xl font-bold text-center">
+                      <div className="my-status sticky top-0 bg-gray-100 z-20">
+                        <h2 className="py-3 text-xl font-bold text-center">
                           {t("my") + " " + t("status")}
                         </h2>
                         <button
                           onClick={() => setIsOpenToggleMenu(!isOpenToggleMenu)}
-                          className="font-bold absolute top-4 right-4 text-gray-800 py-1 px-3 bg-gray-200 rounded-md"
+                          className="font-bold absolute top-2 right-2 text-gray-800 py-1 px-3 bg-gray-200 rounded-md"
                         >
                           X
                         </button>
+                        <hr></hr>
                       </div>
-                      <hr></hr>
                       <div className="p-2">
                         <ul>
                           <li
@@ -149,7 +149,10 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                             onClick={() => console.log("rank")}
                           >
                             <img
-                              src={require(`../../assets/img/prize/${"gold"}.png`)}
+                              src={
+                                process.env.REACT_APP_SERVER_ADDRESS +
+                                "/uploads/rank/1729083258508-silver.png"
+                              }
                               alt="Background"
                               className="absolute top-0 right-4 w-full h-full object-cover z-0 opacity-50"
                               style={{ maxHeight: "150px", maxWidth: "130px" }}
@@ -166,7 +169,8 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                 {t("silver")}
                               </span>
                               <span className="flex flex-wrap text-gray-800 text-lg justify-center">
-                                {formatPrice("0")} / {formatPrice("400000")} pt
+                                {formatPrice("1268000")} /{" "}
+                                {formatPrice("1500000")} pt
                               </span>
                             </div>
                           </li>
