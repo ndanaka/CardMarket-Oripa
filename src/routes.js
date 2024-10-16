@@ -23,6 +23,8 @@ import UserCard from "./views/user/UserCard.js";
 import GachaDetail from "./views/user/GachaDetail.js";
 import Blog from "./views/user/Blog.js";
 import BlogDetail from "./views/user/BlogDetail.js";
+import Shipping from "./views/user/Shipping.js";
+import ShippingAdd from "./views/user/ShippingAdd.js";
 
 var routes = [
   {
@@ -58,6 +60,20 @@ var routes = [
     name: "Purchase Point",
     icon: "ni ni-single-02 text-yellow",
     component: <PurchasePoint />,
+    layout: "/user",
+  },
+  {
+    path: "/userShiping",
+    name: "user shiping",
+    icon: "fa fa-users",
+    component: <Shipping />,
+    layout: "/user",
+  },
+  {
+    path: "/userShipingAdd",
+    name: "user shiping",
+    icon: "fa fa-users",
+    component: <ShippingAdd />,
     layout: "/user",
   },
   {
@@ -111,7 +127,7 @@ var routes = [
   },
   {
     path: "/user-detail",
-    name: "user",
+    name: "user detail",
     icon: "fa fa-users",
     component: <UserDetail />,
     layout: "/admin/sub",

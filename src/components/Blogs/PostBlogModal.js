@@ -182,7 +182,7 @@ const PostBlogModal = (props) => {
               </FormGroup>
             </Form>
           </div>
-          <div className="flex justify-between px-4">
+          <div className="flex justify-between px-4 pb-4">
             <button
               id="closeBtn"
               className="w-1/2 bg-theme_color rounded-md mx-2 text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"

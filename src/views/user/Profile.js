@@ -8,8 +8,6 @@ import { setAuthToken } from "../../utils/setHeader.js";
 import usePersistedUser from "../../store/usePersistedUser.js";
 
 import InputGroup from "../../components/Forms/InputGroup.js";
-import GroupHeader from "../../components/Forms/GroupHeader.js";
-import SubHeader from "../../components/Forms/SubHeader.js";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal.js";
 import { useTranslation } from "react-i18next";
 
@@ -22,13 +20,9 @@ const Profile = () => {
   const [userData, setUserData] = useState({
     name: "",
     email: "",
-    firstname: "",
-    lastname: "",
     address: "",
     city: "",
     country: "",
-    postalCode: "",
-    description: "",
   });
   const [pwdData, setPwdData] = useState({
     currentPwd: "",
@@ -111,18 +105,18 @@ const Profile = () => {
 
   return (
     <div className="flex flex-grow">
-      <div className={`relative w-full md:w-2/3 lg:w-1/2 mx-auto mt-12 p-3`}>
+      <div className={`relative w-full md:w-2/3 mx-auto mt-12 p-3`}>
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
-            {t("my") + " " + t("account")}
+            {t("my") + " " + t("profile")}
           </div>
           <hr className="w-full my-2"></hr>
         </div>
         <div className="flex flex-wrap justify-between">
-          <div className="w-full p-2 mb-2 mx-auto rounded-lg bg-white">
-            <div className="flex flex-wrap">
+          <div className="w-full xxsm:w-1/2 p-2">
+            <div className="flex flex-wrap rounded-lg bg-white">
               <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
-                {t("profile")}
+                {t("information")}
               </p>
               <hr className="py-2"></hr>
               <div className="flex flex-wrap w-full">
@@ -146,6 +140,36 @@ const Profile = () => {
                     onChange={handleSetUserData}
                   />
                 </div>
+                <div className="w-full  px-2">
+                  <InputGroup
+                    label={t("address")}
+                    type="text"
+                    name="address"
+                    value={userData?.address || ""}
+                    placeholder="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                    onChange={handleSetUserData}
+                  />
+                </div>
+                <div className="w-full md:w-1/2 px-2">
+                  <InputGroup
+                    label={t("city")}
+                    type="text"
+                    name="city"
+                    value={userData?.city || ""}
+                    placeholder="New York"
+                    onChange={handleSetUserData}
+                  />
+                </div>
+                <div className="w-full md:w-1/2 px-2">
+                  <InputGroup
+                    label={t("country")}
+                    type="text"
+                    name="country"
+                    value={userData?.country || ""}
+                    placeholder="United States"
+                    onChange={handleSetUserData}
+                  />
+                </div>
               </div>
               <div className="w-full flex flex-wrap justify-end px-2">
                 <button
@@ -157,58 +181,59 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="w-full p-2 m-2 mx-auto rounded-lg bg-white">
-            <div className="flex flex-wrap">
-              <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
-                {t("changePass")}
-              </p>
-              <hr className="py-2"></hr>
-              <div className="flex flex-wrap w-full">
-                <div className="w-full md:w-1/2 px-2">
-                  <InputGroup
-                    label={t("currentPass")}
-                    type="password"
-                    name="currentPwd"
-                    placeholder="*******"
-                    value={pwdData.currentPwd}
-                    onChange={handleSetPwdData}
-                  />
+          <div className="w-full xxsm:w-1/2 p-2">
+            <div className="w-full rounded-lg bg-white p-2 mb-3">
+              <div className="flex flex-wrap">
+                <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
+                  {t("changePass")}
+                </p>
+                <hr className="py-2"></hr>
+                <div className="flex flex-wrap w-full">
+                  <div className="w-full md:w-1/2 px-2">
+                    <InputGroup
+                      label={t("currentPass")}
+                      type="password"
+                      name="currentPwd"
+                      placeholder="*******"
+                      value={pwdData.currentPwd}
+                      onChange={handleSetPwdData}
+                    />
+                  </div>
+                  <div className="w-full md:w-1/2 px-2">
+                    <InputGroup
+                      label={t("newPass")}
+                      type="password"
+                      name="newPwd"
+                      placeholder="*******"
+                      value={pwdData.newPwd}
+                      onChange={handleSetPwdData}
+                    />
+                  </div>
                 </div>
-                <div className="w-full md:w-1/2 px-2">
-                  <InputGroup
-                    label={t("newPass")}
-                    type="password"
-                    name="newPwd"
-                    placeholder="*******"
-                    value={pwdData.newPwd}
-                    onChange={handleSetPwdData}
-                  />
+                <div className="flex flex-wrap w-full justify-end px-2">
+                  <button
+                    className="button-22 px-4 py-2 my-2"
+                    onClick={handleChangePass}
+                  >
+                    {t("change")}
+                  </button>
                 </div>
-              </div>
-
-              <div className="flex flex-wrap w-full justify-end">
-                <button
-                  className="button-22 px-4 py-2 my-2"
-                  onClick={handleChangePass}
-                >
-                  {t("change")}
-                </button>
               </div>
             </div>
-          </div>
-          <div className="w-full p-2 mt-2 mx-auto rounded-lg bg-white">
-            <p className="text-xl text-center text-theme_headertext_color py-2">
-              {t("account")}
-            </p>
-            <hr></hr>
-            <p className="py-4">{t("withdrawalDes")}</p>
-            <div className="flex flex-wrap w-full justify-end">
-              <button
-                className="button-22 my-2 px-4 py-2"
-                onClick={() => setIsModalOpen(true)}
-              >
-                {t("withdrawal")}
-              </button>
+            <div className="w-full rounded-lg bg-white p-2 mt-3">
+              <p className="text-xl text-center text-theme_headertext_color py-2">
+                {t("account")}
+              </p>
+              <hr></hr>
+              <p className="py-4 px-2">{t("withdrawalDes")}</p>
+              <div className="flex flex-wrap w-full justify-end px-2">
+                <button
+                  className="button-22 my-2 px-4 py-2"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  {t("withdrawal")}
+                </button>
+              </div>
             </div>
           </div>
         </div>

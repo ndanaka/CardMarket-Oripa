@@ -1,14 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Nav,
-} from "reactstrap";
+import { Nav } from "reactstrap";
 
 import { setAuthToken } from "../../utils/setHeader";
 import api from "../../utils/api";
@@ -28,7 +22,6 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
 
   useEffect(() => {
     updateUserData();
-    console.log("SDF");
   }, [location]);
 
   const updateUserData = () => {
@@ -133,20 +126,29 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                     </button>
 
                     <div
-                      className={`py-4 overflow-y-auto h-full shadow-md shadow-gray-400 fixed top-0 right-0 h-full w-80 bg-gray-100 text-gray-800 transform transition-transform duration-300 ease-in-out ${
+                      className={`pt-4 pb-24 overflow-y-auto h-full shadow-md shadow-gray-400 fixed top-0 right-0 h-full w-80 bg-gray-100 text-gray-800 transform transition-transform duration-300 ease-in-out ${
                         isOpenToggleMenu ? "translate-x-0" : "translate-x-full"
                       }`}
                     >
-                      <h2 className="pb-2 text-xl font-bold text-center">
-                        {t("my") + " " + t("page")}
-                      </h2>
+                      <div className="top-0">
+                        <h2 className="pb-2 text-xl font-bold text-center">
+                          {t("my") + " " + t("status")}
+                        </h2>
+                        <button
+                          onClick={() => setIsOpenToggleMenu(!isOpenToggleMenu)}
+                          className="font-bold absolute top-4 right-4 text-gray-800 py-1 px-3 bg-gray-200 rounded-md"
+                        >
+                          X
+                        </button>
+                      </div>
                       <hr></hr>
                       <div className="p-2">
                         <ul>
                           <li
                             className="text-center shadow-md shadow-gray-300 cursor-pointer flex flex-col justify-center mx-2 my-2 p-3 border-solid border-4 border-gray-400 rounded-lg"
                             style={{
-                              backgroundImage: "url('assets/img/prize/gold.png')",
+                              backgroundImage:
+                                "url('assets/img/prize/gold.png')",
                               backgroundSize: "cover",
                               backgroundPosition: "center",
                             }}
@@ -157,7 +159,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                             <hr className="h-1 w-full my-2 border-3 border-gray-400"></hr>
                             <span
                               className="text-gray-800 text-5xl font-bold uppercase"
-                              style={{ "font-family": "serif" }}
+                              style={{ fontFamily: "serif" }}
                             >
                               {t("silver")}
                             </span>
@@ -214,10 +216,16 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                               navigate("/user/user-profile");
                             }}
                           >
-                            <span>{t("account")}</span>
+                            <span>{t("profile")}</span>
                             <i className="fa fa-chevron-right"></i>
                           </li>
-                          <li className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg">
+                          <li
+                            className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
+                            onClick={() => {
+                              setIsOpenToggleMenu(!isOpenToggleMenu);
+                              navigate("/user/userShiping");
+                            }}
+                          >
                             <span>{t("shipAddress")}</span>
                             <i className="fa fa-chevron-right"></i>
                           </li>
@@ -244,22 +252,16 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                           <li className="p-2 my-3 flex flex-wrap justify-end">
                             <ChangeLanguage type="menu" />
                           </li>
-                          <li className="px-2 flex flex-wrap justify-end items-center">
-                            <button
-                              className="underline underline-offset-4 font-bold text-lg cursor-pointer"
-                              onClick={() => logout()}
-                            >
+                          <li
+                            className="px-2 flex flex-wrap justify-end items-center"
+                            onClick={() => logout()}
+                          >
+                            <button className="underline underline-offset-4 font-bold text-lg cursor-pointer">
                               {t("logout")}
                             </button>
                           </li>
                         </ul>
                       </div>
-                      <button
-                        onClick={() => setIsOpenToggleMenu(!isOpenToggleMenu)}
-                        className="font-bold absolute top-4 right-4 text-gray-800 py-1 px-3 bg-gray-200 rounded-md"
-                      >
-                        X
-                      </button>
                     </div>
                   </div>
                 </div>

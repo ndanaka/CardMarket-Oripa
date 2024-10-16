@@ -67,14 +67,17 @@ const AdminNavbar = (props) => {
         <div className="w-full flex justify-between items-center content-end md:content-between">
           <Link
             className="h4 mb-0 text-[#e0e1e2] text-uppercase hidden xxsm:block"
-            to="/"
+            to="/admin/index"
           >
-            {t("dashboard")}
+            {""}
           </Link>
-          <div className="text-white text-2xl xxsm:hidden">
+          <div className="text-white text-2xl xxsm:hidden cursor-pointer">
             <i className="fa fa-navicon"></i>
           </div>
           <div className="flex justify-between">
+            <div className="flex items-center">
+              <ChangeLanguage />
+            </div>
             <Nav navbar>
               {user ? (
                 <div className="flex items-center px-2">
@@ -88,22 +91,10 @@ const AdminNavbar = (props) => {
                             className="w-10 h-10 rounded-full"
                           />
                         </span>
-                        <span className="mb-0 text-sm font-weight-bold px-2">
-                          {user.name}
-                        </span>
                       </div>
                     </DropdownToggle>
-                    <DropdownMenu className="dropdown-menu-arrow" end>
-                      <DropdownItem className="noti-title" header tag="div">
-                        <h6 className="text-overflow m-0">{t("welcome")}</h6>
-                      </DropdownItem>
-                      <DropdownItem to="/admin/index" tag={Link}>
-                        <i className="ni ni-single-02" />
-                        <span>{t("adminPanel")}</span>
-                      </DropdownItem>
-
-                      <DropdownItem divider />
-                      <DropdownItem href="#pablo" onClick={() => logout()}>
+                    <DropdownMenu className="dropdown-menu-arrow">
+                      <DropdownItem onClick={() => logout()}>
                         <i className="ni ni-user-run" />
                         <span>{t("logout")}</span>
                       </DropdownItem>
@@ -116,9 +107,6 @@ const AdminNavbar = (props) => {
                 </Media>
               )}
             </Nav>
-            <div className="flex items-center">
-              <ChangeLanguage />
-            </div>
           </div>
         </div>
       </div>
