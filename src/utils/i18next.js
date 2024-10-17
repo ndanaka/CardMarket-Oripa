@@ -180,7 +180,7 @@ i18n.use(initReactI18next).init({
           "Points are required to play the gacha. Points can be recharged on the point purchase page.",
         drawGacha: "Draw Gacha",
         purchase: "Purchase",
-        purchagePoints: "Purchase Points",
+        purchasePoints: "Purchase Points",
         chargetAmount: "Charge amount",
         paymentMethod: "Method of payment",
         selectOption: "Select an option",
@@ -451,7 +451,7 @@ i18n.use(initReactI18next).init({
         drawnEnoughPrize: "賞品が足りない。",
         noEnoughPointsDesc:
           "ガチャを回すにはポイントが必要です。ポイントはポイント購入ページでチャージできます。",
-        purchagePoints: "ポイント購入",
+        purchasePoints: "ポイント購入",
         buyNow: "今すぐ購入",
         purchase: "購入",
         drawGacha: "ガチャ抽選",
