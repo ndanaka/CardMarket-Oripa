@@ -197,7 +197,7 @@ function Point() {
           <div className="flex flex-col w-full xxsm:w-1/2">
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="pointNum" className="text-gray-700">
-                {t("point") + " " + t("amount")}:{" "}
+                {t("amount")} (pt)
               </label>
               <input
                 name="pointNum"
@@ -210,7 +210,7 @@ function Point() {
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="price" className="text-gray-700">
-                {t("price")}:{" "}
+                {t("price")} (¥)
               </label>
               <input
                 name="price"

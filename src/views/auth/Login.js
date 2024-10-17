@@ -68,8 +68,8 @@ const Login = () => {
           if (res.data.user.role === "admin") navigate("/admin/index");
           else navigate("/user/index");
 
-          showToast(res.data.msg, "success");
-        } else showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "success");
+        } else showToast(t(res.data.msg), "error");
       })
       .catch((error) => {
         error = new Error();

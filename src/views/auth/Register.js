@@ -75,9 +75,9 @@ const Register = () => {
       .post("/user/register", formData)
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("Registered successfully.");
+          showToast(t(res.data.msg, "success"));
           navigate("/auth/login");
-        } else showToast(res.data.msg, "error");
+        } else showToast(t(res.data.msg), "error");
       })
       .catch((error) => {
         error = new Error();

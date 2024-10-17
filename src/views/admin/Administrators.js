@@ -121,8 +121,8 @@ function Administrators() {
       </div>
       <div className="flex flex-col justify-center items-center p-5 w-full md:w-[70%] m-auto">
         <div className="my-1 form-group w-full">
-          <label htmlFor="name" className="text-gray-700 px-2">
-            {t("name")}:{" "}
+          <label htmlFor="name" className="text-gray-700">
+            {t("name")}
           </label>
           <input
             id="name"
@@ -134,8 +134,8 @@ function Administrators() {
           ></input>
         </div>
         <div className="my-1 form-group w-full">
-          <label htmlFor="email" className="text-gray-700 px-2">
-            {t("email")}:{" "}
+          <label htmlFor="email" className="text-gray-700">
+            {t("email")}
           </label>
           <input
             id="email"
@@ -147,8 +147,8 @@ function Administrators() {
           ></input>
         </div>
         <div className="my-1 form-group w-full">
-          <label htmlFor="password" className="text-gray-700 px-2">
-            {t("password")}:{" "}
+          <label htmlFor="password" className="text-gray-700">
+            {t("password")}
           </label>
           <input
             id="password"
