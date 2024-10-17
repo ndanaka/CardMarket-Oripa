@@ -20,7 +20,9 @@ const UseTerms = () => {
   useEffect(() => {
     api.get("/admin/get_terms").then((res) => {
       if (res.data.status === 1) {
-        setContent(res.data.terms.content);
+        console.log(res.data.terms);
+        if (res.data.terms) setContent(res.data.terms.content);
+        else setContent("");
       } else if (res.data.status === 2) {
         showToast("Failed to load content.");
       }

@@ -293,7 +293,7 @@ function Rank() {
             </tr>
           </thead>
           <tbody>
-            {ranks ? (
+            {ranks && ranks.length !==0 ? (
               ranks.map((data, i) => (
                 <tr key={data._id} className="border-2">
                   <td>{i + 1}</td>
@@ -333,7 +333,7 @@ function Rank() {
               ))
             ) : (
               <tr>
-                <td colSpan="5">There is no Point</td>
+                <td colSpan="6">{t("norank")}</td>
               </tr>
             )}
           </tbody>

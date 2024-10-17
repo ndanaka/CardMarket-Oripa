@@ -77,74 +77,78 @@ function Users() {
             </tr>
           </thead>
           <tbody>
-            {userList
-              ? userList.map((data, i) => (
-                  <tr key={i} className="border-2 cursor-pointer">
-                    <td
-                      onClick={() =>
-                        navigate("/admin/user-detail", {
-                          state: { userId: data._id },
-                        })
-                      }
+            {userList && userList.length !== 0 ? (
+              userList.map((data, i) => (
+                <tr key={i} className="border-2 cursor-pointer">
+                  <td
+                    onClick={() =>
+                      navigate("/admin/user-detail", {
+                        state: { userId: data._id },
+                      })
+                    }
+                  >
+                    {i + 1}
+                  </td>
+                  <td
+                    onClick={() =>
+                      navigate("/admin/user-detail", {
+                        state: { userId: data._id },
+                      })
+                    }
+                  >
+                    {data.name}
+                  </td>
+                  <td
+                    onClick={() =>
+                      navigate("/admin/user-detail", {
+                        state: { userId: data._id },
+                      })
+                    }
+                  >
+                    {data.email}
+                  </td>
+                  {/* <td>{data.password}</td> */}
+                  <td
+                    onClick={() =>
+                      navigate("/admin/user-detail", {
+                        state: { userId: data._id },
+                      })
+                    }
+                  >
+                    {formatPrice(data.point_remain)} pt
+                  </td>
+                  <td
+                    onClick={() =>
+                      navigate("/admin/user-detail", {
+                        state: { userId: data._id },
+                      })
+                    }
+                  >
+                    <button
+                      className={`py-1 px-2 rounded-sm text-center text-gray-200 ${
+                        data.active ? "bg-indigo-600" : "bg-red-600"
+                      }`}
                     >
-                      {i + 1}
-                    </td>
-                    <td
-                      onClick={() =>
-                        navigate("/admin/user-detail", {
-                          state: { userId: data._id },
-                        })
-                      }
-                    >
-                      {data.name}
-                    </td>
-                    <td
-                      onClick={() =>
-                        navigate("/admin/user-detail", {
-                          state: { userId: data._id },
-                        })
-                      }
-                    >
-                      {data.email}
-                    </td>
-                    {/* <td>{data.password}</td> */}
-                    <td
-                      onClick={() =>
-                        navigate("/admin/user-detail", {
-                          state: { userId: data._id },
-                        })
-                      }
-                    >
-                      {formatPrice(data.point_remain)} pt
-                    </td>
-                    <td
-                      onClick={() =>
-                        navigate("/admin/user-detail", {
-                          state: { userId: data._id },
-                        })
-                      }
-                    >
-                      <button
-                        className={`py-1 px-2 rounded-sm text-center text-gray-200 ${
-                          data.active ? "bg-indigo-600" : "bg-red-600"
-                        }`}
-                      >
-                        {data.active ? t("active") : t("withdrawn")}
-                      </button>
-                    </td>
-                    <td>
-                      <span
-                        id={data._id}
-                        className="fa fa-remove p-1"
-                        onClick={() => {
-                          setUserId(data._id);
-                          setIsModalOpen(true);
-                        }}
-                      ></span>
-                    </td>
-                  </tr>
-                ))
-              : null}
+                      {data.active ? t("active") : t("withdrawn")}
+                    </button>
+                  </td>
+                  <td>
+                    <span
+                      id={data._id}
+                      className="fa fa-remove p-1"
+                      onClick={() => {
+                        setUserId(data._id);
+                        setIsModalOpen(true);
+                      }}
+                    ></span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6">{t("nouser")}</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

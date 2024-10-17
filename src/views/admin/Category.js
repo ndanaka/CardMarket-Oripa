@@ -177,7 +177,7 @@ function Category() {
             </tr>
           </thead>
           <tbody>
-            {category ? (
+            {category && category.length !== 0 ? (
               category.map((data, i) => (
                 <tr key={data._id} className="border-2">
                   <td>{i + 1}</td>
@@ -207,7 +207,7 @@ function Category() {
               ))
             ) : (
               <tr>
-                <td colSpan="4">There is no Category</td>
+                <td colSpan="4">{t("noCategory")}</td>
               </tr>
             )}
           </tbody>

@@ -260,47 +260,49 @@ function Administrators() {
               </tr>
             </thead>
             <tbody>
-              {authority
-                ? Object.entries(authority).map(([item, values], i) => (
-                    <tr key={item}>
-                      <td>{i + 1}</td>
-                      <td>{t(item)}</td>
-                      <td>
-                        <input
-                          className="cursor-pointer"
-                          type="checkbox"
-                          name={item}
-                          checked={!!values.read}
-                          onChange={() =>
-                            change_auth(item, "read", values.read)
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="cursor-pointer"
-                          type="checkbox"
-                          name={item}
-                          checked={!!values.write}
-                          onChange={() =>
-                            change_auth(item, "write", values.write)
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="cursor-pointer"
-                          type="checkbox"
-                          name={item}
-                          checked={!!values.delete}
-                          onChange={() =>
-                            change_auth(item, "delete", values.delete)
-                          }
-                        />
-                      </td>
-                    </tr>
-                  ))
-                : null}
+              {authority && authority.length !== 0 ? (
+                Object.entries(authority).map(([item, values], i) => (
+                  <tr key={item}>
+                    <td>{i + 1}</td>
+                    <td>{t(item)}</td>
+                    <td>
+                      <input
+                        className="cursor-pointer"
+                        type="checkbox"
+                        name={item}
+                        checked={!!values.read}
+                        onChange={() => change_auth(item, "read", values.read)}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        className="cursor-pointer"
+                        type="checkbox"
+                        name={item}
+                        checked={!!values.write}
+                        onChange={() =>
+                          change_auth(item, "write", values.write)
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        className="cursor-pointer"
+                        type="checkbox"
+                        name={item}
+                        checked={!!values.delete}
+                        onChange={() =>
+                          change_auth(item, "delete", values.delete)
+                        }
+                      />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5}>{t("noadmin")}</td>
+                </tr>
+              )}
             </tbody>
           </table>
           <button

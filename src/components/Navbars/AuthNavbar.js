@@ -31,26 +31,6 @@ const AuthNavbar = () => {
           <div toggler="#navbar-collapse-main">
             <div className="flex items-center">
               <ChangeLanguage />
-              {/* <Link
-                className="flex xsm:ruby text-white nav-link-icon px-2 items-center"
-                to="/auth/register"
-                tag={Link}
-              >
-                <i className="fa-solid fa-user-plus"></i>
-                <span className="nav-link-inner--text text-white px-2 hidden xsm:block">
-                  {t("register")}
-                </span>
-              </Link>
-              <Link
-                className="flex xsm:ruby text-white nav-link-icon px-2  items-center"
-                to="/auth/login"
-                tag={Link}
-              >
-                <i className="fa-solid fa-key"></i>
-                <span className="nav-link-inner--text text-white px-2 hidden xsm:block">
-                  {t("login")}
-                </span>
-              </Link> */}
             </div>
           </div>
         </div>
