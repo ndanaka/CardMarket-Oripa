@@ -164,7 +164,9 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                 {t(user.rankData.rank.name)}
                               </span>
                               <span className="flex flex-wrap text-gray-800 text-lg justify-center">
-                                {formatPrice(t(user.rankData.previous_amount))}{" "}
+                                {formatPrice(
+                                  t(user.rankData.totalPointsAmount)
+                                )}{" "}
                                 / {formatPrice(user.rankData.rank.end_amount)}pt
                               </span>
                             </div>
@@ -198,7 +200,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                 navigate("/user/pur-point");
                               }}
                             >
-                              {t("purchagePoints")}
+                              {t("purchasePoints")}
                             </button>
                           </li>
                           <li

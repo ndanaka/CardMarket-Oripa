@@ -199,7 +199,7 @@ function PurchasePoint() {
               className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
               onClick={() => navigate(-1)}
             ></i>
-            {t("purchagePoints")}
+            {t("purchasePoints")}
           </div>
           <hr className="w-full my-2"></hr>
         </div>
@@ -267,7 +267,7 @@ function PurchasePoint() {
           </div>
         </div>
         <ConfirmModal
-          headerText={t("purchagePoints")}
+          headerText={t("purchasePoints")}
           bodyText={t("confirm")}
           okBtnClick={purchase_point}
           isOpen={isOpen}
