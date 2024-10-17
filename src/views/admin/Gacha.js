@@ -289,9 +289,7 @@ function Gacha() {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`${
-                imgUrl ? "w-auto h-[250px]" : ""
-              }  object-cover`}
+              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
@@ -316,11 +314,10 @@ function Gacha() {
               <th>{t("price")}</th>
               <th>{t("total") + " " + t("number")}</th>
               <th>{t("category")}</th>
-              {/* <th>{t("created") + " " + t("date")}</th> */}
             </tr>
           </thead>
           <tbody>
-            {gacha !== null && gacha?.lenght !== 0 ? (
+            {gacha && gacha.length !== 0 ? (
               gacha.map((data, i) => {
                 return (
                   <React.Fragment key={data._id}>
@@ -346,7 +343,6 @@ function Gacha() {
                       <td>{formatPrice(data.price)} pt</td>
                       <td>{data.total_number}</td>
                       <td>{data.category}</td>
-                      {/* <td>{formatDate(data.create_date)}</td> */}
                     </tr>
                     <tr
                       className={`border-2 ${

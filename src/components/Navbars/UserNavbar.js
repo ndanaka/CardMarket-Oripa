@@ -170,7 +170,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                               </span>
                               <span className="flex flex-wrap text-gray-800 text-lg justify-center">
                                 {formatPrice("1268000")} /{" "}
-                                {formatPrice("1500000")} pt
+                                {formatPrice("1500000")}pt
                               </span>
                             </div>
                           </li>
@@ -273,7 +273,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-wrap justify-between">
+                <div className="flex flex-wrap justify-between items-center">
                   <ChangeLanguage />
                   <button
                     className="flex items-center px-2 py-1 border rounded-lg text-white ml-2"

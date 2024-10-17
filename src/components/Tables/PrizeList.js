@@ -95,22 +95,22 @@ function PrizeList({
 
   return (
     <>
-      {prizes && prizes.length !== 0 ? (
-        <table className="border-[1px] w-full  m-auto">
-          <thead className="bg-admin_theme_color border-[1px] text-gray-200">
-            <tr>
-              <th>{t("no")}</th>
-              <th>{t("name")}</th>
-              <th>{t("rarity")}</th>
-              <th>{t("cashback") + t("point")}</th>
-              <th>{t("image")}</th>
-              <th>{t("Grade")}</th>
-              <th>{t("status")}</th>
-              <th>{t("action")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {prizes.map((data, i) => {
+      <table className="border-[1px] w-full  m-auto">
+        <thead className="bg-admin_theme_color border-[1px] text-gray-200">
+          <tr>
+            <th>{t("no")}</th>
+            <th>{t("name")}</th>
+            <th>{t("rarity")}</th>
+            <th>{t("cashback") + t("point")}</th>
+            <th>{t("image")}</th>
+            <th>{t("Grade")}</th>
+            <th>{t("status")}</th>
+            <th>{t("action")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {prizes && prizes.length !== 0 ? (
+            prizes.map((data, i) => {
               if (role === "setPrize" && data.status === "set") {
                 return null; // Return null instead of nothing
               }
@@ -176,12 +176,14 @@ function PrizeList({
                   </td>
                 </tr>
               );
-            })}
-          </tbody>
-        </table>
-      ) : (
-        <div className="py-2 text-center">{t("noprize")}</div>
-      )}
+            })
+          ) : (
+            <tr>
+              <td colSpan="8">{t("noprize")}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
 
       <DeleteConfirmModal
         isOpen={isModalOpen}

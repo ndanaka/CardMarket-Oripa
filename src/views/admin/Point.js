@@ -238,9 +238,7 @@ function Point() {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`${
-                imgUrl ? "w-auto h-[250px]" : ""
-              }  object-cover`}
+              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
@@ -273,7 +271,7 @@ function Point() {
             </tr>
           </thead>
           <tbody>
-            {points ? (
+            {points && points.length !== 0 ? (
               points.map((data, i) => (
                 <tr key={data._id} className="border-2">
                   <td>{i + 1}</td>
@@ -309,7 +307,7 @@ function Point() {
               ))
             ) : (
               <tr>
-                <td colSpan="5">There is no Point</td>
+                <td colSpan="5">{t("nopoint")}</td>
               </tr>
             )}
           </tbody>

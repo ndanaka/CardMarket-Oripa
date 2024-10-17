@@ -138,10 +138,10 @@ i18n.use(initReactI18next).init({
         //notification
 
         nocard: "There is no card.",
-        nogacha: "There is no Gacha.",
-        noprize: "There is no Prize.",
-        nolastprize: "There is no last prize.",
-        nopointlog: "There is no Point log.",
+        nogacha: "There is no gacha.",
+        noprize: "There is no prize.",
+        nolastprize: "There is no last rize.",
+        nopoint: "There is no point.",
 
         //confirm
         confirm: "Are you sure?",
@@ -254,6 +254,10 @@ i18n.use(initReactI18next).init({
         deposite: "Deposit",
         noShippingAddress: "There isn't any shipping address.",
         purchasedPointsAmount: "Purchased Points",
+        noCategory: "There is no category",
+        norank: "There is no rank",
+        nouser: "There is no user",
+        nouadmin: "There is no admin",
       },
     },
     jp: {
@@ -388,8 +392,13 @@ i18n.use(initReactI18next).init({
         nocard: "カードはありません。",
         nogacha: "ガチャはありません。",
         noprize: "賞品はありません。",
+        noCategory: "カテゴリーはありません。",
         nolastprize: "最後の賞品はありません。",
         nopointlog: "ポイントログはありません。",
+        nopoint: "意味がない。",
+        norank: "ランクはない",
+        nouser: "ユーザーはいない",
+        nouadmin: "管理者はいない。",
 
         //confirm
         confirm: "本気ですか？",
