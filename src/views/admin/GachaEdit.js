@@ -238,7 +238,7 @@ const GachaEdit = () => {
     <div className="p-3 w-full h-full md:w-[70%] m-auto">
       <div className="text-xl text-center text-slate-600">
         <i
-          className="fa fa-chevron-left float-left"
+          className="fa fa-chevron-left float-left cursor-pointer"
           onClick={() => navigate("/admin/gacha")}
         ></i>
         <span className="my-3 text-xl text-center font-bold">
@@ -248,23 +248,21 @@ const GachaEdit = () => {
       <hr className="w-5/6 my-2 text-sm mx-auto"></hr>
 
       {/* Gacha display table */}
-      <div className="mx-auto mt-3 overflow-auto">
+      <div className="mx-auto overflow-auto">
         <table className="border-[1px] m-auto">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <tr>
-              <td>{t("no")}</td>
+              <td>{t("category")}</td>
               <td>{t("image")}</td>
               <td>{t("name")}</td>
               <td>{t("price")}</td>
-              <td>{t("total") + " " + t("number")}</td>
-              <td>{t("category")}</td>
-              <td>{t("created") + " " + t("date")}</td>
+              <td>{t("number")}</td>
             </tr>
           </thead>
           <tbody>
             {gacha ? (
               <tr key={gacha._id} className="border-2">
-                <td></td>
+                <td>{gacha?.category}</td>
                 <td>
                   <img
                     src={
@@ -272,16 +270,17 @@ const GachaEdit = () => {
                       gacha.gacha_thumnail_url
                     }
                     alt="gacha thumnail"
-                    width="100px"
-                    height="100px"
-                    className="m-auto"
+                    className="m-auto w-[100px] h-auto"
                   ></img>
                 </td>
                 <td>{gacha?.name}</td>
                 <td>{formatPrice(gacha?.price)} pt</td>
-                <td>{gacha?.total_number}</td>
-                <td>{gacha?.category}</td>
-                <td>{formatDate(gacha?.create_date)}</td>
+                <td>
+                  {gacha?.last_prize
+                    ? gacha?.remain_prizes.length + 1
+                    : gacha?.remain_prizes.length}{" "}
+                  / {gacha?.total_number}
+                </td>
               </tr>
             ) : (
               <tr>

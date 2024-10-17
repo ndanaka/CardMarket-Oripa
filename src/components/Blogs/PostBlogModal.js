@@ -70,9 +70,9 @@ const PostBlogModal = (props) => {
       });
       removeMultipart();
       setBlogs(res.data.blogs);
-      showToast(res.data.msg, "success");
+      showToast(t(res.data.msg), "success");
     } else {
-      showToast(res.data.msg, "error");
+      showToast(t(res.data.msg), "error");
     }
 
     setIsOpen(false);
