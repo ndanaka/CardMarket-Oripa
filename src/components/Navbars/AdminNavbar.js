@@ -44,7 +44,7 @@ const AdminNavbar = (props) => {
           }
         })
         .catch((err) => {
-          showToast("Try to login again", "error");
+          showToast(t("tryLogin"), "error");
         });
     }
   };

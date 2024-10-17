@@ -52,7 +52,7 @@ function PrizeList({
 
   const prizeEdit = (index) => {
     if (!user.authority["prize"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -69,7 +69,7 @@ function PrizeList({
 
   const prizeDel = () => {
     if (!user.authority["prize"]["delete"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -77,10 +77,10 @@ function PrizeList({
       .delete(`/admin/del_prize/${delPrizeId}`)
       .then((res) => {
         if (res.data.status === 1) {
-          showToast(res.data.msg);
+          showToast(t(res.data.msg));
           getPrize();
         } else {
-          showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "error");
         }
       })
       .catch((err) => {
