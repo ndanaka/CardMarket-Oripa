@@ -40,21 +40,21 @@ function Users() {
   const handleDelete = async () => {
     try {
       if (!user.authority["users"]["delete"]) {
-        showToast("You have no permission for this action", "error");
+        showToast(t("noPermission"), "error");
         return;
       }
 
       const res = await api.delete(`/user/del_user/${userId}`);
 
       if (res.data.status === 1) {
-        showToast("User deleted successfully.");
+        showToast(t("successDeleted"), "success");
         setIsModalOpen(false);
         getUserList();
       } else {
-        showToast("Failed to delete user", "error");
+        showToast(t("failedDeleted"), "error");
       }
     } catch (error) {
-      showToast("Failed to delete user", "error");
+      showToast(t("faileReq"), "error");
     }
   };
 

@@ -46,7 +46,7 @@ function Category() {
 
   const addCategory = () => {
     if (!user.authority["category"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -61,20 +61,20 @@ function Category() {
             get_category();
             setName("");
             setDes("");
-            showToast(res.data.msg, "success");
+            showToast(t(res.data.msg), "success");
           }
         })
         .catch((error) => {
           error = new Error();
         });
     } else {
-      showToast("Required all fields", "error");
+      showToast(t("requiredAll"), "error");
     }
   };
 
   const categoryEdit = () => {
     if (!user.authority["category"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -88,7 +88,7 @@ function Category() {
       })
       .then((res) => {
         if (res.data.status) {
-          showToast("Successfully edit category", "success");
+          showToast(t("successEdited"), "success");
           closeModal();
           get_category();
         } else console.error(res.data.err);
@@ -100,7 +100,7 @@ function Category() {
 
   const categoryDel = () => {
     if (!user.authority["category"]["delete"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -108,9 +108,9 @@ function Category() {
       .delete(`admin/del_category/${delId}`)
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("Successfully Deleted .");
+          showToast(t("successDeleted"), "success");
           get_category();
-        } else showToast(res.data.msg, "error");
+        } else showToast(t(res.data.msg), "error");
       })
       .catch((err) => {
         console.log(err);

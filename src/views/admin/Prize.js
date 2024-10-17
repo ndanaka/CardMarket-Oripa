@@ -56,7 +56,7 @@ const Prize = () => {
   If formData.id has value, this function perform as update one */
   const addPrize = async () => {
     if (!user.authority["prize"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -64,18 +64,18 @@ const Prize = () => {
     setMultipart();
 
     if (formData.name.trim() === "") {
-      showToast("Required prize name", "error");
+      showToast(t("requiredName"), "error");
     } else if (parseFloat(formData.rarity) <= 0) {
-      showToast("Rarity must be greater than than 0", "error");
+      showToast(t("greaterThan"), "error");
     } else if (parseInt(formData.cashBack) <= 0) {
-      showToast("Cashback must be greater than than 0", "error");
+      showToast(t("greaterThan"), "error");
     } else if (
       cuflag === 1 &&
       (formData.file === NaN ||
         formData.file === null ||
         formData.file === undefined)
     ) {
-      showToast("Prize image is not selected", "error");
+      showToast(t("selectImage"), "error");
     } else {
       api
         .post("/admin/prize_upload", formData)
@@ -91,8 +91,8 @@ const Prize = () => {
               grade: 1,
             });
             removeMultipart();
-            showToast(res.data.msg);
-          } else showToast(res.data.msg, "error");
+            showToast(t(res.data.msg), "success");
+          } else showToast(t(res.data.msg), "error");
           setTrigger(res.data);
         })
         .catch((err) => {
@@ -103,7 +103,7 @@ const Prize = () => {
 
   const updatePrize = () => {
     if (!user.authority["prize"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
     setCuFlag(1);
@@ -194,9 +194,7 @@ const Prize = () => {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`${
-                imgUrl ? "w-auto h-[250px]" : ""
-              }  object-cover`}
+              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}

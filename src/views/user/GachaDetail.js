@@ -97,7 +97,7 @@ function GachaDetail() {
           setGradePrizes(res.data.gacha[0].remain_prizes);
           setGacha(res.data.gacha[0]);
         } else {
-          showToast("Get gacha failed.", "error");
+          showToast(t("faileReq"), "error");
         }
       })
       .catch((err) => console.log(err));
@@ -181,8 +181,8 @@ function GachaDetail() {
     let secondPrizes = [];
     let thirdPrizes = [];
     let fourthPrizes = [];
-
-    remainPrizes.forEach((remainPrize) => {
+    console.log(remainPrizes);
+    remainPrizes?.forEach((remainPrize) => {
       switch (remainPrize.grade) {
         case 1:
           firstPrizes.push(remainPrize);

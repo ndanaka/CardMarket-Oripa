@@ -11,10 +11,7 @@ const Card = ({ blog }) => {
       }}
     >
       <img
-        src={
-          process.env.REACT_APP_SERVER_ADDRESS +
-          "/uploads/blog/1728579746516-01_back screen.jpg"
-        }
+        src={process.env.REACT_APP_SERVER_ADDRESS + blog.img_url}
         className="hover:opacity-50 w-full max-h-[200px] min-h-[200px] object-cover bg-blend-lighten"
         alt=""
       />

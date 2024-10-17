@@ -77,7 +77,7 @@ function Rank() {
   // add or update rank
   const AddRank = () => {
     if (!user.authority["rank"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -104,11 +104,11 @@ function Rank() {
     } else {
       api.post("/admin/rank_save", formData).then((res) => {
         if (res.data.status === 1) {
-          showToast("Successfully added data.");
+          showToast(t("successAdded", "success"));
         } else if (res.data.status === 2) {
-          showToast("Successfully updated data.");
+          showToast(t("successUpdated", "success"));
         } else {
-          showToast("Failed to process.", "error");
+          showToast(t("failedReq"), "error");
         }
         fileInputRef.current.value = null;
         setImgUrl("");
@@ -161,7 +161,7 @@ function Rank() {
   // handle edit update
   const UpdateRank = () => {
     if (!user.authority["rank"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -173,15 +173,15 @@ function Rank() {
   const handleDelete = async () => {
     setIsModalOpen(false);
     if (!user.authority["rank"]["delete"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
     const res = await api.delete(`/admin/del_rank/${delRankId}`);
     if (res.data.status === 1) {
-      showToast("Successfully Deleted.");
+      showToast(t("successDeleted"), "success");
       getRanks();
-    } else showToast("Failed to delete.");
+    } else showToast(t("failedDeleted"), "error");
   };
 
   return (

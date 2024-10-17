@@ -92,17 +92,17 @@ function ShippingAdd() {
 
       if (res.data.status === 1) {
         if (res.data.update) {
-          showToast("Successfully edited data.", "success");
+          showToast(t("successEdited"), "success");
         } else {
-          showToast("Successfully saved data.", "success");
+          showToast(t("successSaved"), "success");
           handleCancelShipAddress();
         }
         setShowErrMessage(false);
       } else {
-        showToast("Failed to save data.", "error");
+        showToast(t("failedSaved"), "error");
       }
     } catch (error) {
-      showToast("Something went wrong.", "error");
+      showToast(t("faileReq"), "error");
     }
   };
 

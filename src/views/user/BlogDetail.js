@@ -37,7 +37,7 @@ const BlogDetail = () => {
         if (res.data.status === 1) {
           setComments(res.data.comments);
         } else {
-          showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "error");
         }
       })
       .catch((err) => console.log(err));
@@ -68,10 +68,10 @@ const BlogDetail = () => {
         author: user?._id,
         parent_id: blog._id,
       });
-      showToast(res.data.msg, "success");
+      showToast(t(res.data.msg), "success");
       setComments(res.data.comments);
     } else {
-      showToast(res.data.msg, "error");
+      showToast(t(res.data.msg), "error");
     }
 
     setShowErrMessage(false);

@@ -31,12 +31,12 @@ function Delivering() {
 
   const handleSetStatus = (i) => {
     if (!user.authority["delivering"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
     if (deliverData[i].status === "Delivered") {
-      showToast("This gachas has already Delivered", "error");
+      showToast(t("alrDelivered"), "error");
     } else {
       api
         .post("/admin/set_deliver_status", {
@@ -46,9 +46,9 @@ function Delivering() {
         })
         .then((res) => {
           if (res.data.status === 1) {
-            showToast("Set Status Success.", "success");
+            showToast(t("successAdd"), "success");
             getDeliverData();
-          } else showToast("Set Status Failed.", "error");
+          } else showToast(t("failedAdd"), "error");
         })
         .catch((err) => console.log(err));
     }

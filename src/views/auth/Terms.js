@@ -17,16 +17,16 @@ const Terms = () => {
         if (res.data.status === 1) {
           setTerms(res.data.terms.content);
         } else if (res.data.status === 2) {
-          showToast("Failed to load content.");
+          showToast(t("faileReq"), "error");
         }
       } catch (error) {
-        showToast("Error loading content.");
+        showToast(t("faileReq"), "error");
       }
     };
 
     fetchTerms();
   }, []);
-  
+
   return (
     <div className="w-full mx-auto mt-2">
       <div className="flex flex-wrap mb-4">

@@ -41,7 +41,7 @@ function Administrators() {
   //handle add/update adminList
   const handleAddAdmin = () => {
     if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
-      showToast("Required all fields", "error");
+      showToast(t("requiredAll"), "error");
       return;
     }
 
@@ -55,12 +55,12 @@ function Administrators() {
       })
       .then((res) => {
         if (res.data.status === 0) {
-          showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "error");
         } else {
           if (res.data.status === 2) {
-            showToast("Admin Data Updated.");
+            showToast(t("successUpdated"), "success");
           } else if (res.data.status === 1) {
-            showToast("New admin added.");
+            showToast(t("successAdded"), "success");
             getAdminList();
           }
           setName("");
@@ -79,16 +79,16 @@ function Administrators() {
     try {
       const res = await api.delete(`/admin/del_admin/${adminId}`);
       if (res.data.status === 1) {
-        showToast("Admin deleted successfully.");
+        showToast(t("successDeleted"), "success");
         setIsModalOpen(false);
         getAdminList();
         setAdminName("");
         setAdminId("");
       } else {
-        showToast("Admin delete failed.", "error");
+        showToast(t("failedDeleted"), "error");
       }
     } catch (error) {
-      showToast("Admin delete failed.", "error");
+      showToast(t("failedDeleted"), "error");
     }
   };
 
@@ -105,11 +105,11 @@ function Administrators() {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("Save Authority Successful.");
+          showToast(t("successSaved"), "success");
           getAdminList();
           setAdminName("");
           setAdminId("");
-        } else showToast("Save Authority Failed");
+        } else showToast(t("failedSaved"), "error");
       })
       .catch((err) => console.log(err));
   };

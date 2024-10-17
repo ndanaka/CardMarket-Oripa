@@ -50,9 +50,8 @@ const Profile = () => {
   const handleUpdateUserData = async () => {
     try {
       const res = await api.post("/user/update_user", userData);
-      if (res.data.status === 1)
-        showToast("Save User data success.", "success");
-      else showToast("Save user data failed.", "error");
+      if (res.data.status === 1) showToast(t("successSaved"), "success");
+      else showToast(t("failedSaved"), "error");
     } catch (error) {
       console.log(error);
     }
@@ -67,13 +66,13 @@ const Profile = () => {
 
     switch (res.data.status) {
       case 1:
-        showToast("Change Password Success.", "success");
+        showToast(t("successEdited"), "success");
         break;
       case 0:
-        showToast("Failed to change password", "error");
+        showToast(t("failedEdited"), "error");
         break;
       case 2:
-        showToast("Current password is not correct.", "error");
+        showToast(t("incorrectCurPwd"), "error");
         break;
 
       default:

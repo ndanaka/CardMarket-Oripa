@@ -75,7 +75,7 @@ function Point() {
   if there is a property 'id' vin formData, this perform update of prize */
   const AddPoint = () => {
     if (!user.authority["point"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -83,20 +83,20 @@ function Point() {
     setAuthToken();
 
     if (parseFloat(formData.pointNum) <= 0) {
-      showToast("Point amount must be greater than than 0", "error");
+      showToast(t("validPointAmount"), "error");
     } else if (parseInt(formData.price) <= 0) {
-      showToast("Point price must be greater than than 0", "error");
+      showToast(t("validPointPrice"), "error");
     } else if (
       cuflag === 1 &&
       (formData.file === NaN ||
         formData.file === null ||
         formData.file === undefined)
     ) {
-      showToast("Point image is not selected", "error");
+      showToast(t("selectImage"), "error");
     } else {
       api.post("/admin/point_upload", formData).then((res) => {
         if (res.data.status === 1) {
-          showToast("Point Added Successfully.");
+          showToast(t("successAdded"), "success");
           setImgUrl("");
           fileInputRef.current.value = null;
           setFormData({
@@ -109,7 +109,7 @@ function Point() {
           setCuFlag(1); //set create/update flag as creating
           removeMultipart();
         } else if (res.data.status === 2) {
-          showToast("Point Updated Successfully.");
+          showToast(t("successUpdated"), "success");
           setImgUrl("");
           setFormData({
             ...formData,
@@ -121,7 +121,7 @@ function Point() {
           setCuFlag(1); //set create/update flag as creating
           removeMultipart();
         } else {
-          showToast("Point Add/Update Failed", "error");
+          showToast(t("faileReq"), "error");
         }
         getPoint();
       });
@@ -155,7 +155,7 @@ function Point() {
   //handle point update
   const UpdatePoint = () => {
     if (!user.authority["point"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -167,15 +167,15 @@ function Point() {
   //handle point delete
   const pointDel = () => {
     if (!user.authority["point"]["delete"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
     api.delete(`/admin/del_point/${delPointId}`).then((res) => {
       if (res.data.status === 1) {
-        showToast("Successfully Deleted.");
+        showToast(t("successDeleted"), "success");
         getPoint();
-      } else showToast("Point delete failed.");
+      } else showToast(t("failedDeleted"), "success");
     });
   };
 

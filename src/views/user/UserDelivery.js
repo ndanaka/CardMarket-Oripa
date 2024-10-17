@@ -74,8 +74,8 @@ function UserDelivery() {
         if (res.data.status === 1) {
           getDeliver();
           setFlag(false);
-          showToast(res.data.msg, "success");
-        } else showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "success");
+        } else showToast(t(res.data.msg), "error");
       })
       .catch((err) => console.log(err));
   };

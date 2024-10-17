@@ -28,7 +28,7 @@ const Blog = () => {
         if (res.data.status === 1) {
           setBlogs(res.data.blogs);
         } else {
-          showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "error");
         }
       })
       .catch((err) => console.log(err));

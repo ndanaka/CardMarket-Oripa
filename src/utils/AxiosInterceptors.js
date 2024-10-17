@@ -31,10 +31,7 @@ const useAxiosInterceptor = () => {
               break;
             case 403:
               // Forbidden error
-              showToast(
-                "You do not have permission to access this resource",
-                "error"
-              );
+              showToast(t("noPermission"), "error");
               break;
             // Add more cases as needed
             default:

@@ -134,7 +134,7 @@ const Statistics = () => {
           </div>
           <div className="h-full flex flex-col overflow-auto w-full bg-white border-[1px] border-gray-200 rounded-md shadow-md shadow-gray-300 my-2 p-4">
             <span className="text-3xl text-slate-600">
-              {t("gacha") + " " + t("status")}
+              {t("prize") + " " + t("status")}
             </span>
             <hr className="my-2 w-full text-sm mx-auto"></hr>
             <div className="chart mt-4">

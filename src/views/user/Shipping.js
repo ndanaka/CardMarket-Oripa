@@ -30,7 +30,7 @@ function Shipping() {
         setPickedShipAddress(user?.shipAddress_id);
       }
     } catch (error) {
-      showToast("Something went wrong", "error");
+      showToast(t("failedReq"), "error");
     }
   };
 
@@ -42,12 +42,12 @@ function Shipping() {
       });
 
       if (res.data.status === 1) {
-        showToast("Successfully set shipping address.", "success");
+        showToast(t("successSet"), "success");
       } else {
-        showToast("Failed to set shipping address.", "error");
+        showToast(t("failedSet"), "error");
       }
     } catch (error) {
-      showToast("Something went wrong.", "error");
+      showToast(t("faileReq"), "error");
     }
   };
 
@@ -57,12 +57,12 @@ function Shipping() {
 
       if (res.data.status === 1) {
         getShippingAddress();
-        showToast("Successfully deleted data.", "success");
+        showToast(t("successDeleted"), "success");
       } else {
-        showToast("Failed to delete data.", "error");
+        showToast(t("failedDeleted"), "error");
       }
     } catch (error) {
-      showToast("Something went wrong.", "error");
+      showToast(t("faileReq"), "error");
     }
   };
 
