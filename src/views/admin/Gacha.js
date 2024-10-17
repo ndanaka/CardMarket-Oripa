@@ -309,11 +309,11 @@ function Gacha() {
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <tr>
               <th>{t("no")}</th>
+              <th>{t("category")}</th>
               <th>{t("image")}</th>
               <th>{t("name")}</th>
               <th>{t("price")}</th>
-              <th>{t("total") + " " + t("number")}</th>
-              <th>{t("category")}</th>
+              <th>{t("number")}</th>
             </tr>
           </thead>
           <tbody>
@@ -328,21 +328,25 @@ function Gacha() {
                       }`}
                     >
                       <td rowSpan="2">{i + 1}</td>
+                      <td>{data.category}</td>
                       <td>
                         <img
                           src={
                             process.env.REACT_APP_SERVER_ADDRESS +
                             data.gacha_thumnail_url
                           }
+                          className="w-[100px] h-auto mx-auto"
                           alt="gacha thumnail"
-                          width="100px"
-                          height="100px"
                         ></img>
                       </td>
                       <td>{data.name}</td>
                       <td>{formatPrice(data.price)} pt</td>
-                      <td>{data.total_number}</td>
-                      <td>{data.category}</td>
+                      <td>
+                        {data.last_prize
+                          ? data.remain_prizes.length + 1
+                          : data.remain_prizes.length}{" "}
+                        / {data.total_number}
+                      </td>
                     </tr>
                     <tr
                       className={`border-2 ${
