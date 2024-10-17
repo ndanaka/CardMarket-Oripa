@@ -37,7 +37,7 @@ const AdminNavbar = (props) => {
     setAuthToken();
     if (user) {
       api
-        .get(`/admin/get_admin/${user.user_id}`)
+        .get(`/admin/get_admin/${user._id}`)
         .then((res) => {
           if (res.data.status === 1) {
             setUser(res.data.admin);

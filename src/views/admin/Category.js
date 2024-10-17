@@ -135,8 +135,8 @@ function Category() {
       </div>
       <div className="flex flex-wrap justify-around items-end p-2 w-full md:w-[70%] m-auto">
         <div className="my-1 w-full md:w-[35%]">
-          <label htmlFor="catName" className="text-gray-700 px-2">
-            {t("category") + " " + t("name")}:{" "}
+          <label htmlFor="catName" className="text-gray-700">
+            {t("name")}
           </label>
           <input
             className="p-1 w-full form-control"
@@ -148,8 +148,8 @@ function Category() {
           ></input>
         </div>
         <div className="my-1 w-full md:w-[35%]">
-          <label htmlFor="catDesc" className="text-gray-700 px-2">
-            {t("category") + " " + t("description")}:{" "}
+          <label htmlFor="catDesc" className="text-gray-700">
+            {t("description")}
           </label>
           <input
             className="p-1 w-full form-control"
@@ -219,19 +219,16 @@ function Category() {
       >
         <div className="w-2/5 bg-white rounded-xl shadow-xl shadow-gray-500  m-auto p-2 z-10">
           <div className="text-3xl text-theme_text_color text-center py-1">
-            Edit Category
+            {t("edit")}
           </div>
-          <div className="flex flex-col p-3 px-5 text-theme_text_color text-center">
+          <div className="flex flex-col p-3 px-5 text-theme_text_color">
             <div className="w-full flex flex-col justify-start">
               <div className="my-1">
-                <label
-                  htmlFor="catNam"
-                  className="text-gray-700 px-2 text-left"
-                >
-                  Category Name:{" "}
+                <label htmlFor="catNam" className="text-gray-700">
+                  {t("name")}
                 </label>
                 <input
-                  className="p-1 w-full rounded-lg border-[1px] border-red-500  focus:border-red-600 focus:outline-red-600"
+                  className="p-1 w-full rounded-md border-[1px] border-gray-400 focus:border-gray-600 focus:outline-gray-600"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
                   id="catNam"
@@ -240,14 +237,11 @@ function Category() {
                 ></input>
               </div>
               <div className="my-1">
-                <label
-                  htmlFor="catDes"
-                  className="text-gray-700 px-2 text-left"
-                >
-                  Category Description:{" "}
+                <label htmlFor="catDes" className="text-gray-700">
+                  {t("description")}
                 </label>
                 <input
-                  className="p-1 w-full rounded-lg border-[1px] border-red-500  focus:border-red-600"
+                  className="p-1 w-full rounded-md border-[1px] border-gray-400 focus:border-gray-600 focus:outline-gray-600"
                   onChange={(e) => setDes(e.target.value)}
                   value={description}
                   id="catDes"
@@ -262,14 +256,14 @@ function Category() {
                 className="bg-admin_theme_color rounded-md mt-3 mr-3 text-center px-5 py-2 hover:bg-red-700 text-gray-200 outline-none"
                 onClick={categoryEdit}
               >
-                Save
+                {t("save")}
               </button>
               <button
                 id="marksBtn"
                 className="bg-indigo-600 rounded-md mt-3 text-center px-5 py-2 hover:bg-indigo-700 text-gray-200 outline-none"
                 onClick={closeModal}
               >
-                Cancel
+                {t("cancel")}
               </button>
             </div>
           </div>

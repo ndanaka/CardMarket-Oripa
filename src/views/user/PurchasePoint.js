@@ -220,45 +220,47 @@ function PurchasePoint() {
             </div>
             <div className="flex flex-col justify-between bg-white rounded-lg mt-2">
               <div className="p-1">
-                {points
-                  ? points.map((point, i) => (
-                      <div key={i}>
-                        <div className="p-2 flex justify-between items-center">
-                          <div className="flex">
-                            <img
-                              src={
-                                process.env.REACT_APP_SERVER_ADDRESS +
-                                point.img_url
-                              }
-                              alt="point"
-                              width="50px"
-                              height="50px"
-                            ></img>
-                            <div className="flex flex-col px-2">
-                              <div className="text-left text-lg font-bold">
-                                {formatPrice(point.point_num)}pt
-                              </div>
-                              <div className="text-s text-center text-theme_text_color">
-                                {t("purchase")} ¥{formatPrice(point.price)}
-                              </div>
+                {points && points.length !== 0 ? (
+                  points.map((point, i) => (
+                    <div key={i}>
+                      <div className="p-2 flex justify-between items-center">
+                        <div className="flex">
+                          <img
+                            src={
+                              process.env.REACT_APP_SERVER_ADDRESS +
+                              point.img_url
+                            }
+                            alt="point"
+                            width="50px"
+                            height="50px"
+                          ></img>
+                          <div className="flex flex-col px-2">
+                            <div className="text-left text-lg font-bold">
+                              {formatPrice(point.point_num)}pt
+                            </div>
+                            <div className="text-s text-center text-theme_text_color">
+                              {t("purchase")} ¥{formatPrice(point.price)}
                             </div>
                           </div>
-                          <div>
-                            <button
-                              className="py-1 px-2 xsm:py-2 xsm:px-3 bg-indigo-600 rounded-md text-white text-md font-bold"
-                              onClick={() => {
-                                setSelId(i); //set selected id for api
-                                testPay(point.price);
-                              }}
-                            >
-                              {t("buyNow")}
-                            </button>
-                          </div>
                         </div>
-                        <hr className="py-1"></hr>
+                        <div>
+                          <button
+                            className="py-1 px-2 xsm:py-2 xsm:px-3 bg-indigo-600 rounded-md text-white text-md font-bold"
+                            onClick={() => {
+                              setSelId(i); //set selected id for api
+                              testPay(point.price);
+                            }}
+                          >
+                            {t("buyNow")}
+                          </button>
+                        </div>
                       </div>
-                    ))
-                  : ""}
+                      {points.length !== i+1 && <hr className="py-1"></hr>}
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-center">{t("nopoint")}</span>
+                )}
               </div>
             </div>
           </div>

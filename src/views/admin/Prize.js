@@ -123,7 +123,7 @@ const Prize = () => {
           <div className="flex flex-col w-full xxsm:w-1/2">
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="prizename" className="text-gray-700">
-                {t("prize") + t("name")}:{" "}
+                {t("name")}
               </label>
               <input
                 name="name"
@@ -136,7 +136,7 @@ const Prize = () => {
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="rarity" className="text-gray-700">
-                {t("rarity")}:{" "}
+                {t("rarity")}
               </label>
               <input
                 name="rarity"
@@ -149,7 +149,7 @@ const Prize = () => {
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="cashBack" className="text-gray-700">
-                {t("cashback")}:{" "}
+                {t("cashback")} (pt)
               </label>
               <input
                 name="cashBack"
@@ -162,7 +162,7 @@ const Prize = () => {
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="grade" className="text-gray-700">
-                {t("Grade")}:{" "}
+                {t("Grade")}
               </label>
               <select
                 name="grade"
@@ -181,7 +181,7 @@ const Prize = () => {
           </div>
           <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
             <label htmlFor="fileInput" className="text-gray-700 p-1">
-              {t("prize") + t("image")}:{" "}
+              {t("prize") + t("image")}
             </label>
             <input
               name="file"

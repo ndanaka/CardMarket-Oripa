@@ -46,7 +46,7 @@ function Gacha() {
   const userUpdateData = () => {
     if (user) {
       api
-        .get(`/admin/get_admin/${user.user_id}`)
+        .get(`/admin/get_admin/${user._id}`)
         .then((res) => {
           if (res.data.status === 1) {
             res.data.admin.role = "admin";
@@ -212,7 +212,7 @@ function Gacha() {
           <div className="flex flex-col w-full xxsm:w-1/2">
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="name" className="text-gray-700">
-                {t("name")}:{" "}
+                {t("name")}
               </label>
               <input
                 name="name"
@@ -225,7 +225,7 @@ function Gacha() {
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="price" className="text-gray-700">
-                {t("price")}:{" "}
+                {t("price")} (pt)
               </label>
               <input
                 name="price"
@@ -238,7 +238,7 @@ function Gacha() {
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="category" className="text-gray-700">
-                {t("category")}:{" "}
+                {t("category")}
               </label>
               <select
                 name="category"
@@ -260,7 +260,7 @@ function Gacha() {
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="totalNum" className="text-gray-700">
-                {t("total") + t("number")}:{" "}
+                {t("total") + " " + t("number")}
               </label>
               <input
                 name="totalNum"
@@ -274,7 +274,7 @@ function Gacha() {
           </div>
           <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
             <label htmlFor="fileInput" className="text-gray-700 p-1">
-              {t("image")}:{" "}
+              {t("image")}
             </label>
             <input
               name="fileInput"
