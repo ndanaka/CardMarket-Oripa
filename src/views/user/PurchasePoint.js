@@ -50,6 +50,7 @@ function PurchasePoint() {
 
   const updateUserData = () => {
     setAuthToken();
+    
     if (user) {
       api
         .get(`/user/get_user/${user._id}`)

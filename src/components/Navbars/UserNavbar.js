@@ -24,20 +24,15 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
     updateUserData();
   }, [location]);
 
-  const updateUserData = () => {
+  const updateUserData = async () => {
     setAuthToken();
 
     if (user) {
-      api
-        .get(`/user/get_user/${user._id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            setUser(res.data.user);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // update user date
+      const res = await api.get(`/user/get_user/${user._id}`);
+      if (res.data.status === 1) {
+        setUser(res.data.user);
+      }
     }
   };
 
@@ -151,7 +146,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                             <img
                               src={
                                 process.env.REACT_APP_SERVER_ADDRESS +
-                                "/uploads/rank/1729083258508-silver.png"
+                                user.rankData.rank.img_url
                               }
                               alt="Background"
                               className="absolute top-0 right-4 w-full h-full object-cover z-0 opacity-50"
@@ -166,11 +161,11 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                 className="text-gray-800 text-5xl font-bold uppercase"
                                 style={{ fontFamily: "serif" }}
                               >
-                                {t("silver")}
+                                {t(user.rankData.rank.name)}
                               </span>
                               <span className="flex flex-wrap text-gray-800 text-lg justify-center">
-                                {formatPrice("1268000")} /{" "}
-                                {formatPrice("1500000")}pt
+                                {formatPrice(t(user.rankData.previous_amount))}{" "}
+                                / {formatPrice(user.rankData.rank.end_amount)}pt
                               </span>
                             </div>
                           </li>
@@ -256,11 +251,11 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                             <span>{t("my") + " " + t("cards")}</span>
                             <i className="fa fa-chevron-right"></i>
                           </li>
-                          <li className="p-2 my-3 flex flex-wrap justify-end">
+                          <li className="p-2 my-3 flex flex-wrap justify-start">
                             <ChangeLanguage type="menu" />
                           </li>
                           <li
-                            className="px-2 flex flex-wrap justify-end items-center"
+                            className="px-3 flex flex-wrap justify-start items-center"
                             onClick={() => logout()}
                           >
                             <button className="underline underline-offset-4 font-bold text-lg cursor-pointer">
