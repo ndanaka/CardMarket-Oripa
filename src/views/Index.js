@@ -171,20 +171,15 @@ const Index = () => {
   };
 
   // update user data and update localstorage
-  const updateUserData = () => {
+  const updateUserData = async () => {
     setAuthToken();
 
     if (user) {
-      api
-        .get(`/user/get_user/${user._id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            setUser(res.data.user);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // update user date
+      const res = await api.get(`/user/get_user/${user._id}`);
+      if (res.data.status === 1) {
+        setUser(res.data.user);
+      }
     }
   };
 
@@ -404,7 +399,6 @@ const Index = () => {
               <option value="highToLowPrice">{t("highToLowPrice")}</option>
               <option value="lowToHighPrice">{t("lowToHighPrice")}</option>
             </select>
-            {/* <i className="fa fa-arrows-v" /> */}
           </div>
         </div>
         <div className="w-full flex flex-wrap justify-between xm:px-3">

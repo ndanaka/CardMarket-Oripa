@@ -24,6 +24,7 @@ function Rank() {
     bonus: 0,
     start_amount: 0,
     end_amount: 0,
+    last: false,
     file: null,
   });
   const [ranks, setRanks] = useState([]);
@@ -88,6 +89,8 @@ function Rank() {
         `${t("rank") + " " + t("name") + " " + t("isRequired")}`,
         "error"
       );
+    } else if (!formData.last && formData.end_amount <= formData.start_amount) {
+      showToast(t("rankAmountinvalid"), "error");
     } else if (
       cuflag === 1 &&
       (formData.file === NaN ||
@@ -116,6 +119,7 @@ function Rank() {
           bonus: 0,
           start_amount: 0,
           end_amount: 0,
+          last: false,
           file: null,
         });
         setCuFlag(1);
@@ -148,6 +152,7 @@ function Rank() {
       bonus: 0,
       start_amount: 0,
       end_amount: 0,
+      last: false,
       file: null,
     });
     setCuFlag(1);
@@ -229,18 +234,36 @@ function Rank() {
                 autoComplete="start_amount"
               ></input>
             </div>
-            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="end_amount" className="text-gray-700">
-                {t("end_amount")} (pt)
-              </label>
-              <input
-                name="end_amount"
-                className="p-1 w-full form-control"
-                onChange={changeFormData}
-                value={formData.end_amount}
-                id="end_amount"
-                autoComplete="end_amount"
-              ></input>
+            <div className="flex flex-wrap justify-between">
+              <div className="flex flex-wrap justify-between items-center my-1 px-2 w-1/2">
+                <label htmlFor="end_amount" className="text-gray-700">
+                  {t("end_amount")} (pt)
+                </label>
+                <input
+                  name="end_amount"
+                  className="p-1 w-full form-control"
+                  onChange={changeFormData}
+                  value={formData.end_amount}
+                  id="end_amount"
+                  autoComplete="end_amount"
+                ></input>
+              </div>
+              <div className="flex flex-wrap justify-between items-center my-1 px-2 w-1/2">
+                <label htmlFor="end_amount" className="text-gray-700">
+                  {t("last") + " " + t("rank")}
+                </label>
+                <select
+                  name="last"
+                  className="p-1 w-full form-control cursor-pointer"
+                  onChange={changeFormData}
+                  value={formData.last}
+                  id="last"
+                  autoComplete="last"
+                >
+                  <option value={false}>{t("no")}</option>
+                  <option value={true}>{t("yes")}</option>
+                </select>
+              </div>
             </div>
           </div>
           <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
@@ -293,7 +316,7 @@ function Rank() {
             </tr>
           </thead>
           <tbody>
-            {ranks && ranks.length !==0 ? (
+            {ranks && ranks.length !== 0 ? (
               ranks.map((data, i) => (
                 <tr key={data._id} className="border-2">
                   <td>{i + 1}</td>
@@ -301,9 +324,7 @@ function Rank() {
                   <td>{data.bonus}%</td>
                   <td>
                     {formatPrice(data.start_amount) + "pt"} ~{" "}
-                    {data.name === "Platinum"
-                      ? ""
-                      : formatPrice(data.end_amount) + "pt"}
+                    {data.last ? "" : formatPrice(data.end_amount) + "pt"}
                   </td>
                   <td>
                     <img

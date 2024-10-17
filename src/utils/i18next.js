@@ -271,6 +271,9 @@ i18n.use(initReactI18next).init({
         withdrawedAccount:
           "Your account has withdrawn. Please log in with another account.",
         exsitEmail: "This email address already exists.",
+        rankAmountinvalid: "End amount must be greater than start amount.",
+        yes: "Yes",
+        no: "No",
       },
     },
     jp: {
@@ -540,6 +543,9 @@ i18n.use(initReactI18next).init({
         failedSaved: "データの保存に失敗しました。",
         failedEdited: "データの編集に失敗しました。",
         failedUpdated: "データの更新に失敗しました。",
+        rankAmountinvalid: "終了金額は開始金額より大きくなければならない。",
+        yes: "はい",
+        no: "いいえ",
       },
     },
     // Add more languages here

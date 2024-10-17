@@ -242,13 +242,13 @@ function Gacha() {
               </label>
               <select
                 name="category"
-                className="p-1 w-full form-control"
+                className="p-1 w-full form-control cursor-pointer"
                 onChange={changeFormData}
                 value={formData.category}
                 id="category"
                 autoComplete="name"
               >
-                <option></option>
+                <option>{t("selectOption")}</option>
                 {categoryList
                   ? categoryList.map((data, i) => (
                       <option key={i} id={data._id}>

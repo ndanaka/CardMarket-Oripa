@@ -4,11 +4,10 @@ import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
+import formatPrice from "../../utils/formatPrice";
 
 import Label from "../../components/Forms/Label";
-import PrizeCard from "../../components/Others/PrizeCard";
 import GroupHeader from "../../components/Forms/GroupHeader";
-import formatPrice from "../../utils/formatPrice";
 
 function UserDetail() {
   const navigate = useNavigate();
@@ -49,7 +48,9 @@ function UserDetail() {
           className="fa fa-chevron-left float-left"
           onClick={() => navigate("/admin/user")}
         ></i>
-        <span className="text-xl text-center py-3">{t("user") +" "+ t("detail")}</span>
+        <span className="text-xl text-center py-3">
+          {t("user") + " " + t("detail")}
+        </span>
       </div>
       <hr className="my-2"></hr>
       <div className="p-2 flex flex-col w-full">
