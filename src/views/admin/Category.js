@@ -186,7 +186,7 @@ function Category() {
                   <td>
                     <span
                       id={data._id}
-                      className="fa fa-edit p-1"
+                      className="fa fa-edit p-1 cursor-pointer"
                       onClick={() => {
                         openModal();
                         setEditRow(i);
@@ -196,7 +196,7 @@ function Category() {
                     ></span>
                     <span
                       id={data._id}
-                      className="fa fa-remove p-1"
+                      className="fa fa-remove p-1 cursor-pointer"
                       onClick={() => {
                         setDelId(data._id);
                         setIsModalOpen(true);
@@ -260,7 +260,7 @@ function Category() {
               </button>
               <button
                 id="marksBtn"
-                className="bg-indigo-600 rounded-md mt-3 text-center px-5 py-2 hover:bg-indigo-700 text-gray-200 outline-none"
+                className="bg-gray-600 rounded-md mt-3 text-center px-5 py-2 text-gray-200 outline-none"
                 onClick={closeModal}
               >
                 {t("cancel")}

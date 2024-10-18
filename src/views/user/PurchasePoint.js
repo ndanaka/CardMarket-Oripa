@@ -32,6 +32,7 @@ function PurchasePoint() {
   const [, setSelId] = useState(0);
   // Test version
   const [payPrice, setPayPrice] = useState(0);
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ function PurchasePoint() {
   useEffect(() => {
     setAuthToken();
     getPoints();
+    getThemeData();
 
     // google pay settings
     // const script = document.createElement("script");
@@ -47,6 +49,14 @@ function PurchasePoint() {
     // script.onload = onGooglePayLoaded;
     // document.body.appendChild(script);
   }, []);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const updateUserData = async () => {
     setAuthToken();
@@ -249,11 +259,12 @@ function PurchasePoint() {
                         </div>
                         <div>
                           <button
-                            className="py-1 px-2 xsm:py-2 xsm:px-3 bg-indigo-600 rounded-md text-white text-md font-bold"
+                            className="py-1 px-2 xsm:py-2 xsm:px-3 rounded-md text-white text-md font-bold"
                             onClick={() => {
                               setSelId(i); //set selected id for api
                               testPay(point.price);
                             }}
+                            style={{ backgroundColor: bgColor }}
                           >
                             {t("buyNow")}
                           </button>
@@ -275,6 +286,7 @@ function PurchasePoint() {
           okBtnClick={purchase_point}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
+          bgColor={bgColor}
         />
       </div>
     </div>

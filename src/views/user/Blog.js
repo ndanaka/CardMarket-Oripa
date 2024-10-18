@@ -12,14 +12,24 @@ import { showToast } from "../../utils/toastUtil";
 const Blog = () => {
   const { t } = useTranslation();
   const [user, setUser] = usePersistedUser();
-  const [isOpen, setIsOpen] = useState(false);
 
+  const [isOpen, setIsOpen] = useState(false);
   const [blogs, setBlogs] = useState();
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   useEffect(() => {
     setAuthToken();
     getBlogs();
+    getThemeData();
   }, []);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const getBlogs = () => {
     api
@@ -46,6 +56,7 @@ const Blog = () => {
                 onClick={() => {
                   setIsOpen(true);
                 }}
+                style={{ backgroundColor: bgColor }}
               >
                 {t("postBlog")}
               </button>
@@ -79,6 +90,7 @@ const Blog = () => {
         userId={user?._id}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        bgColor={bgColor}
       />
     </div>
   );

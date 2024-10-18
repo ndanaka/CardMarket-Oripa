@@ -154,11 +154,11 @@ function PrizeList({
                       <>
                         <span
                           id={data._id}
-                          className="fa fa-edit p-1"
+                          className="fa fa-edit p-1 cursor-pointer"
                           onClick={(e) => prizeEdit(i)}
                         ></span>
                         <span
-                          className="fa fa-remove p-1"
+                          className="fa fa-remove p-1 cursor-pointer"
                           onClick={(e) => {
                             setDelPrizeId(data._id);
                             setIsModalOpen(true);
@@ -167,7 +167,7 @@ function PrizeList({
                       </>
                     ) : (
                       <button
-                        className="bg-[#0276ff] text-white text-md py-1 px-3 rounded-md"
+                        className="bg-[#0276ff] text-white text-md py-1 px-3 rounded-md cursor-pointer"
                         onClick={() => setprizes(data._id)}
                       >
                         {t("add")}

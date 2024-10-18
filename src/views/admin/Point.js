@@ -289,14 +289,14 @@ function Point() {
                   <td>
                     <span
                       id={data._id}
-                      className="fa fa-edit p-1"
+                      className="fa fa-edit p-1 cursor-pointer"
                       onClick={() => {
                         handleEdit(i);
                       }}
                     ></span>
                     <span
                       id={data._id}
-                      className="fa fa-remove p-1"
+                      className="fa fa-remove p-1 cursor-pointer"
                       onClick={() => {
                         setDelPointId(data._id);
                         setIsModalOpen(true);

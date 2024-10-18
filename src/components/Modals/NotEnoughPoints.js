@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 function NotEnoughPoints(props) {
   const { t } = useTranslation();
   const { headerText, bodyText, okBtnClick, isOpen, setIsOpen } = props;
-  const bgColor = localStorage.getItem("bgColor");
 
   const closeModal = () => {
     setIsOpen(false);
@@ -39,14 +38,14 @@ function NotEnoughPoints(props) {
             id="closeBtn"
             className="rounded-md mx-2 text-center px-5 py-2 my-3 hover:bg-red-700 text-white outline-none"
             onClick={okBtnClick}
-            style={{ backgroundColor: bgColor }}
+            style={{ backgroundColor: props.bgColor }}
           >
             {t("purchasePoints")}
           </button>
           <div className="mx-auto py-2">
             <button
               id="marksBtn"
-              className="bg-indigo-600 rounded-md text-center mx-2 px-5 py-2 hover:bg-indigo-700 text-white outline-none"
+              className="bg-gray-600 rounded-md text-center mx-2 px-5 py-2 text-white outline-none"
               onClick={closeModal}
             >
               {t("cancel")}

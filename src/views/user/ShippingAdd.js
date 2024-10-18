@@ -14,7 +14,7 @@ function ShippingAdd() {
   const location = useLocation();
   const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
-  const bgColor = localStorage.getItem("bgColor");
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [shipAddress, setShipAddress] = useState({
@@ -37,7 +37,16 @@ function ShippingAdd() {
     setAuthToken();
     // if update
     if (initialData) setShipAddress(initialData);
+    getThemeData();
   }, []);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const isFormValidate = () => {
     if (
@@ -299,7 +308,7 @@ function ShippingAdd() {
           </div>
           <div className="flex flex-wrap justify-center mx-auto">
             <button
-              className="bg-indigo-600 rounded-md text-center mx-2 px-16 py-2 my-2 hover:bg-indigo-700 text-white outline-none"
+              className="bg-gray-600 rounded-md text-center mx-2 px-16 py-2 my-2 text-white outline-none"
               onClick={handleCancelShipAddress}
             >
               {t("cancel")}

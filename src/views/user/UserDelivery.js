@@ -13,17 +13,28 @@ import usePersistedUser from "../../store/usePersistedUser";
 import { useTranslation } from "react-i18next";
 
 function UserDelivery() {
-  const [user, setUser] = usePersistedUser();
-  const [pendingDelievers, setPendingDelievers] = useState([]);
-  const [delieveringDelievers, setDelieveringDelievers] = useState([]);
-  const [flag, setFlag] = useState(false); //return card confirm span flag
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [user, setUser] = usePersistedUser();
+
+  const [pendingDelievers, setPendingDelievers] = useState([]);
+  const [delieveringDelievers, setDelieveringDelievers] = useState([]);
+  const [flag, setFlag] = useState(false);
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   useEffect(() => {
     setAuthToken();
     getDeliver();
+    getThemeData();
   }, []);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const updateUserData = async () => {
     setAuthToken();
@@ -111,7 +122,10 @@ function UserDelivery() {
                               cashback={card.cashback}
                               img_url={card.img_url}
                             />
-                            <div className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 bg-red-300 group-hover:block transition-all duration-300 text-base text-gray-800 text-center cursor-pointer z-3 animate-[displayEase_linear]">
+                            <div
+                              className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 group-hover:block transition-all duration-300 text-base text-white text-center cursor-pointer z-3 animate-[displayEase_linear]"
+                              style={{ backgroundColor: bgColor }}
+                            >
                               {flag === true ? (
                                 <div className="flex justify-center">
                                   <i

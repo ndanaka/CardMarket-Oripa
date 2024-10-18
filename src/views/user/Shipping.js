@@ -4,10 +4,9 @@ import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
-import usePersistedUser from "../../store/usePersistedUser";
-
-import SubHeader from "../../components/Forms/SubHeader";
 import { showToast } from "../../utils/toastUtil";
+
+import usePersistedUser from "../../store/usePersistedUser";
 
 function Shipping() {
   const { t } = useTranslation();
@@ -16,12 +15,21 @@ function Shipping() {
   const [user, setUser] = usePersistedUser();
   const [pickedShipAddress, setPickedShipAddress] = useState();
   const [shipAddressData, setShipAddressData] = useState();
-  const bgColor = localStorage.getItem("bgColor");
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   useEffect(() => {
     setAuthToken();
     getShippingAddress();
+    getThemeData();
   }, []);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const getShippingAddress = async () => {
     try {
@@ -37,6 +45,9 @@ function Shipping() {
 
   const saveShipAddress = async () => {
     try {
+      if (!pickedShipAddress) {
+        return showToast(t("selectShipAddr"), "error");
+      }
       const res = await api.post("user/add_shipping_address", {
         userId: user?._id,
         shipAddress: pickedShipAddress,
@@ -115,7 +126,7 @@ function Shipping() {
                 </div>
                 <div className="flex flex-wrap items-center">
                   <button
-                    className="bg-indigo-600 hover:bg-indigo-700 rounded-md text-center mx-1 px-3 py-1 text-white outline-none"
+                    className="bg-gray-600 rounded-md text-center mx-1 px-3 py-1 text-white outline-none"
                     onClick={() => {
                       deleteShipAddress(data._id);
                     }}
@@ -141,7 +152,7 @@ function Shipping() {
         })}
         <div className="w-full xxsm:w-2/3 flex flex-col justify-center mx-auto my-4">
           <button
-            className="bg-indigo-600 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-indigo-700 text-white outline-none"
+            className="bg-gray-600 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-gray-700 text-white outline-none"
             onClick={saveShipAddress}
           >
             {t("decide")}
