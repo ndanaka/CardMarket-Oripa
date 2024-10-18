@@ -308,6 +308,7 @@ i18n.use(initReactI18next).init({
         background: "Background",
         text: "Text",
         selected: "Selected",
+        selectShipAddr: "Please select shipping address.",
       },
     },
     jp: {
@@ -614,6 +615,7 @@ i18n.use(initReactI18next).init({
         background: "背景",
         text: "テキスト",
         selected: "厳選された",
+        selectShipAddr: "配送先を選択してください。",
       },
     },
   },

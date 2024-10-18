@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-const DeleteConfirmModal = ({ isOpen, onClose, onConfirm }) => {
+const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, bgColor }) => {
   const { t } = useTranslation();
   if (!isOpen) return null;
 
@@ -18,16 +18,17 @@ const DeleteConfirmModal = ({ isOpen, onClose, onConfirm }) => {
           <h4 className="text-lg mb-3">{t("confirm")}</h4>
         </div>
         <h2 className="mb-5">{t("del_confirm")}</h2>
-        <div className="flex justify-center">
+        <div>
           <button
-            className="mr-6 bg-gray-500 hover:bg-gray-600 text-white py-3 px-4 rounded"
+            className="mr-6 bg-gray-600 hover:bg-gray-600 text-white py-2 px-4 rounded"
             onClick={onClose}
           >
             {t("cancel")}
           </button>
           <button
-            className="bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded"
+            className="hover:bg-red-700 text-white py-2 px-4 rounded"
             onClick={onConfirm}
+            style={{ backgroundColor: bgColor ? bgColor : "#dc3545" }}
           >
             {t("delete")}
           </button>

@@ -397,7 +397,7 @@ const Index = () => {
             {subCategory.map((category, i) => (
               <div
                 key={i}
-                className={`p-2 px-3 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                className={`p-2 px-3 mx-1 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                   filter.includes(category) ? "text-white" : ""
                 }`}
                 style={{
@@ -522,6 +522,7 @@ const Index = () => {
             onDraw={submitDrawGacha}
             isOpen={isOpenGachaModal}
             setIsOpen={setIsOpenGachaModal}
+            bgColor={bgColor}
           />
         ) : null}
 
@@ -531,6 +532,7 @@ const Index = () => {
           okBtnClick={() => navigate("/user/pur-point")}
           isOpen={isOpenPointModal}
           setIsOpen={setIsOpenPointModal}
+          bgColor={bgColor}
         />
       </div>
       <div

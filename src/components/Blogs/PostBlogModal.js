@@ -185,19 +185,19 @@ const PostBlogModal = (props) => {
           </div>
           <div className="flex justify-between px-4 pb-4">
             <button
-              id="closeBtn"
-              className="w-1/2 rounded-md mx-2 text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
-              onClick={() => submitPostBlog()}
-              style={{ backgroundColor: bgColor }}
-            >
-              {t("postBlog")}
-            </button>
-            <button
               id="marksBtn"
-              className="w-1/2 bg-indigo-600 rounded-md text-center mx-2 px-2 sm:px-5 py-2 hover:bg-indigo-700 text-white outline-none"
+              className="w-1/2 bg-gray-600 rounded-md text-center mx-2 px-2 sm:px-5 py-2 text-white outline-none"
               onClick={closeModal}
             >
               {t("cancel")}
+            </button>
+            <button
+              id="closeBtn"
+              className="w-1/2 rounded-md mx-2 text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
+              onClick={() => submitPostBlog()}
+              style={{ backgroundColor: props.bgColor }}
+            >
+              {t("postBlog")}
             </button>
           </div>
         </div>

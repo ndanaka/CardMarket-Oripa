@@ -408,6 +408,7 @@ function GachaDetail() {
           okBtnClick={() => navigate("/user/pur-point")}
           isOpen={isOpenPointModal}
           setIsOpen={setIsOpenPointModal}
+          bgColor={bgColor}
         />
       </div>
     </div>

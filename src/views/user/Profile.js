@@ -28,11 +28,21 @@ const Profile = () => {
     currentPwd: "",
     newPwd: "",
   });
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   useEffect(() => {
     setAuthToken();
     getUserData();
+    getThemeData();
   }, []);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const getUserData = async () => {
     try {
@@ -180,8 +190,9 @@ const Profile = () => {
               </div>
               <div className="w-full flex flex-wrap justify-end px-2">
                 <button
-                  className="button-22 px-4 py-2 my-3"
+                  className="px-4 py-2 my-1 rounded-md text-white"
                   onClick={handleUpdateUserData}
+                  style={{ backgroundColor: bgColor }}
                 >
                   {t("save")}
                 </button>
@@ -219,8 +230,9 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-wrap w-full justify-end px-2">
                   <button
-                    className="button-22 px-4 py-2 my-2"
+                    className="px-4 py-2 my-1 rounded-md text-white"
                     onClick={handleChangePass}
+                    style={{ backgroundColor: bgColor }}
                   >
                     {t("change")}
                   </button>
@@ -235,8 +247,9 @@ const Profile = () => {
               <p className="py-4 px-2">{t("withdrawalDes")}</p>
               <div className="flex flex-wrap w-full justify-end px-2">
                 <button
-                  className="button-22 my-2 px-4 py-2"
-                  onClick={() => setIsModalOpen(true)}
+                  className="px-4 py-2 my-1 rounded-md text-white"
+                  onClick={setIsModalOpen}
+                  style={{ backgroundColor: bgColor }}
                 >
                   {t("withdrawal")}
                 </button>
@@ -250,6 +263,7 @@ const Profile = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleWithdrawalAccount}
+        bgColor={bgColor}
       />
     </div>
   );
