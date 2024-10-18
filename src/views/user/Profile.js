@@ -49,11 +49,19 @@ const Profile = () => {
   };
   const handleUpdateUserData = async () => {
     try {
-      const res = await api.post("/user/update_user", userData);
-      if (res.data.status === 1) showToast(t("successSaved"), "success");
-      else showToast(t("failedSaved"), "error");
+      if (user) {
+        // update user date
+        const res = await api.get(`/user/get_user/${user._id}`);
+        if (res.data.status === 1) {
+          setUser(res.data.user);
+        } else {
+          showToast(t("tryLogin"), "error");
+          navigate("user/index");
+        }
+      }
     } catch (error) {
-      console.log(error);
+      showToast(t("tryLogin"), "error");
+      navigate("user/index");
     }
   };
 
