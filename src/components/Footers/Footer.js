@@ -5,9 +5,13 @@ import { useTranslation } from "react-i18next";
 const Footer = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const bgColor = localStorage.getItem("bgColor");
 
   return (
-    <div className="w-full bg-theme_color p-2 py-3 xsm:px-4 relative bottom-0 z-10 flex flex-wrap justify-between">
+    <div
+      className="w-full p-2 py-3 xsm:px-4 relative bottom-0 z-10 flex flex-wrap justify-between"
+      style={{ backgroundColor: bgColor }}
+    >
       <div className="copyright text-white px-3 py-1">
         © {new Date().getFullYear()}{" "}
         <button

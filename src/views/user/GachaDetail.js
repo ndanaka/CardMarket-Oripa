@@ -34,9 +34,11 @@ function GachaDetail() {
   const [showCardFlag, setShowCardFlag] = useState();
   const [existLastFlag, setExistLastFlag] = useState(false);
   const [lastEffect, setLastEffect] = useState(false);
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   useEffect(() => {
     getGacha();
+    getThemeData();
   }, [showCardFlag]);
 
   useEffect(() => {
@@ -47,6 +49,14 @@ function GachaDetail() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [lastScrollY]); // Dependency array includes lastScrollY
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -181,7 +191,7 @@ function GachaDetail() {
     let secondPrizes = [];
     let thirdPrizes = [];
     let fourthPrizes = [];
-    console.log(remainPrizes);
+
     remainPrizes?.forEach((remainPrize) => {
       switch (remainPrize.grade) {
         case 1:
@@ -307,18 +317,20 @@ function GachaDetail() {
           </div>
           <div className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]">
             <div
-              className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
+              className="cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
               onClick={() => {
                 drawGacha(gacha, 1);
               }}
+              style={{ backgroundColor: bgColor }}
             >
               1 {t("draw")}
             </div>
             <div
-              className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
+              className="cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
               onClick={() => {
                 drawGacha(gacha, 10);
               }}
+              style={{ backgroundColor: bgColor }}
             >
               10 {t("draws")}
             </div>

@@ -20,7 +20,6 @@ const UseTerms = () => {
   useEffect(() => {
     api.get("/admin/get_terms").then((res) => {
       if (res.data.status === 1) {
-        console.log(res.data.terms);
         if (res.data.terms) setContent(res.data.terms.content);
         else setContent("");
       } else if (res.data.status === 2) {

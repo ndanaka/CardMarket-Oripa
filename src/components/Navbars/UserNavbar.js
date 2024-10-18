@@ -13,7 +13,13 @@ import ChangeLanguage from "../Others/ChangeLanguage";
 import "../../assets/css/index.css";
 import formatPrice from "../../utils/formatPrice";
 
-const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
+const UserNavbar = ({
+  logoImg,
+  brand,
+  bgColor,
+  isOpenToggleMenu,
+  setIsOpenToggleMenu,
+}) => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,7 +32,6 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
 
   const updateUserData = async () => {
     setAuthToken();
-
     if (user) {
       // update user date
       const res = await api.get(`/user/get_user/${user._id}`);
@@ -49,15 +54,19 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
   };
 
   return (
-    <div className="w-full bg-theme_color p-2 fixed z-10 max-h-[100px] z-20">
+    <div
+      className={`w-full p-2 fixed z-10 max-h-[100px] z-20`}
+      style={{ backgroundColor: bgColor }}
+    >
       <div className="w-full navbar-dark">
         <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between py-[8px] xsm:px-[28px]">
           <Link className="h4 mb-0 text-white text-uppercase xxsm:block" to="/">
             <div className="flex flex-wrap justify-between">
               {location.pathname === "/user/gacha-detail" ? (
                 <button
-                  className="flex xsm:ruby px-2 py-[4px] rounded-lg bg-red-500 border-[1px] border-red-700 text-center text-white text-sm"
+                  className="flex xsm:ruby px-2 py-[4px] rounded-lg border-[1px] text-center text-white text-sm"
                   onClick={() => navigate("/user/index")}
+                  style={{ backgroundColor: bgColor }}
                 >
                   <i className="fa fa-chevron-left mt-1"></i>
                   <span className="ml-1 hidden xsm:block">
@@ -68,12 +77,13 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                 <>
                   <img
                     alt="..."
-                    src={require("../../assets/img/brand/oripa-logo.png")}
+                    src={logoImg}
                     width="50"
                     height="50"
+                    className="px-1"
                   />
                   <div className="text-lg font-NanumGothic hidden xxsm:block">
-                    Oripa
+                    {brand}
                   </div>
                 </>
               )}
@@ -97,7 +107,10 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                             height="30px"
                             className="-translate-x-[-50%]"
                           />
-                          <span className="bg-red-600 border-[1px] border-red-700 rounded-full px-4 py-1">
+                          <span
+                            className="border-[1px] rounded-full px-4 py-1"
+                            style={{ backgroundColor: bgColor }}
+                          >
                             {user.point_remain
                               ? formatPrice(user.point_remain)
                               : 0}{" "}
@@ -203,11 +216,12 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                 <hr className="w-full border-solid border-1 border-gray-800 mb-2"></hr>
                                 <button
                                   id="closeBtn"
-                                  className="bg-theme_color rounded-md text-center hover:bg-red-500 text-white outline-none w-full py-2"
+                                  className="text-center hover:bg-red-500 text-white outline-none w-full py-2"
                                   onClick={() => {
                                     setIsOpenToggleMenu(!isOpenToggleMenu);
                                     navigate("/user/pur-point");
                                   }}
+                                  style={{ backgroundColor: bgColor }}
                                 >
                                   {t("purchasePoints")}
                                 </button>

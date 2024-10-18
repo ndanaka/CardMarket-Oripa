@@ -16,6 +16,7 @@ function Shipping() {
   const [user, setUser] = usePersistedUser();
   const [pickedShipAddress, setPickedShipAddress] = useState();
   const [shipAddressData, setShipAddressData] = useState();
+  const bgColor = localStorage.getItem("bgColor");
 
   useEffect(() => {
     setAuthToken();
@@ -122,12 +123,13 @@ function Shipping() {
                     {t("delete")}
                   </button>
                   <button
-                    className="bg-theme_color rounded-md text-center px-3 py-1 hover:bg-red-800 text-white outline-none"
+                    className="rounded-md text-center px-3 py-1 hover:bg-red-800 text-white outline-none"
                     onClick={() =>
                       navigate("/user/userShipingAdd", {
                         state: { initialData: data },
                       })
                     }
+                    style={{ backgroundColor: bgColor }}
                   >
                     {t("edit")}
                   </button>
@@ -145,8 +147,9 @@ function Shipping() {
             {t("decide")}
           </button>
           <button
-            className="bg-theme_color rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-red-800 text-white outline-none"
+            className="rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-red-800 text-white outline-none"
             onClick={() => navigate("/user/userShipingAdd")}
+            style={{ backgroundColor: bgColor }}
           >
             {"+ " + t("addAddress")}
           </button>

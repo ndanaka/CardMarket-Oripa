@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 function ConfirmModal(props) {
   const { t } = useTranslation();
+  const bgColor = localStorage.getItem("bgColor");
 
   const { headerText, bodyText, okBtnClick, isOpen, setIsOpen } = props;
 
@@ -41,8 +42,9 @@ function ConfirmModal(props) {
           <div className="flex justify-between mx-auto">
             <button
               id="closeBtn"
-              className="bg-theme_color rounded-md mx-2 text-center px-5 py-2 hover:bg-red-700 text-white outline-none"
+              className="rounded-md mx-2 text-center px-5 py-2 hover:bg-red-700 text-white outline-none"
               onClick={okBtnClick}
+              style={{ backgroundColor: bgColor }}
             >
               {t("ok")}
             </button>

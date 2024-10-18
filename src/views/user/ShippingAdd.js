@@ -14,6 +14,7 @@ function ShippingAdd() {
   const location = useLocation();
   const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
+  const bgColor = localStorage.getItem("bgColor");
 
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [shipAddress, setShipAddress] = useState({
@@ -304,8 +305,9 @@ function ShippingAdd() {
               {t("cancel")}
             </button>
             <button
-              className="bg-theme_color rounded-md text-center mx-2 px-16 py-2 my-2 hover:bg-red-800 text-white outline-none"
+              className="rounded-md text-center mx-2 px-16 py-2 my-2 hover:bg-red-800 text-white outline-none"
               onClick={handleSaveShipAddress}
+              style={{ backgroundColor: bgColor }}
             >
               {initialData ? t("save") : t("add")}
             </button>

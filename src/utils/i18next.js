@@ -262,6 +262,7 @@ i18n.use(initReactI18next).init({
         successSaved: "Successfully saved data.",
         successEdited: "Successfully edited data.",
         successUpdated: "Successfully updated data.",
+        successChanged: "Successfully changed data.",
         successDeleted: "Successfully deleted data.",
         failedAdded: "Failed to add data.",
         failedSaved: "Failed to save data.",
@@ -300,6 +301,13 @@ i18n.use(initReactI18next).init({
         validPointAmount: "Point amount must be greater than than 0",
         validPointPrice: "Point price must be greater than than 0",
         incorrectCurPwd: "Current password is incorrect.",
+        theme: "Theme",
+        brand: "Brand",
+        logo: "Logo",
+        color: "Color",
+        background: "Background",
+        text: "Text",
+        selected: "Selected",
       },
     },
     jp: {
@@ -565,7 +573,7 @@ i18n.use(initReactI18next).init({
         exsitEmail: "このメールアドレスはすでに存在しています。",
         successSaved: "データの保存に成功しました。",
         successEdited: "データの編集に成功。",
-        successUpdated: "データの更新に成功。",
+        successChanged: "データ変更に成功。",
         failedSaved: "データの保存に失敗しました。",
         failedEdited: "データの編集に失敗しました。",
         failedUpdated: "データの更新に失敗しました。",
@@ -598,15 +606,21 @@ i18n.use(initReactI18next).init({
         failedSet: "賞金設定に失敗した。",
         validPointAmount: "ポイントは0より大きくなければならない。",
         validPointPrice: "ポイント価格は0より大きくなければならない。",
-        incorrectCurPwd: "Current password is incorrect.",
+        incorrectCurPwd: "現在のパスワードが間違っています。",
+        theme: "テーマ",
+        brand: "ブランド",
+        logo: "ロゴ",
+        color: "カラー",
+        background: "背景",
+        text: "テキスト",
+        selected: "厳選された",
       },
     },
-    // Add more languages here
   },
-  lng: "jp", // default language
+  lng: "jp",
   fallbackLng: "jp",
   interpolation: {
-    escapeValue: false, // React already does escaping
+    escapeValue: false,
   },
 });
 

@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { Navbar } from "reactstrap";
 
 import ChangeLanguage from "../Others/ChangeLanguage";
-
 import "../../assets/css/index.css";
 
-const AuthNavbar = () => {
-  const { t } = useTranslation();
-
+const AuthNavbar = ({ logoImg, brand, bgColor }) => {
   return (
-    <div className="w-full bg-theme_color p-2 fixed z-10 max-h-[100px] z-20">
+    <div
+      className="w-full p-2 fixed z-10 max-h-[100px] z-20"
+      style={{ backgroundColor: bgColor }}
+    >
       <Navbar className="w-full navbar-dark">
         <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between xsm:px-[28px]">
           <div>
@@ -18,12 +17,13 @@ const AuthNavbar = () => {
               <div className="flex items-center">
                 <img
                   alt="..."
-                  src={require("../../assets/img/brand/oripa-logo.png")}
+                  src={logoImg}
                   width="50"
                   height="50"
+                  className="px-1"
                 />
                 <div className="text-lg font-NanumGothic hidden xxsm:block">
-                  Oripa
+                  {brand}
                 </div>
               </div>
             </Link>
