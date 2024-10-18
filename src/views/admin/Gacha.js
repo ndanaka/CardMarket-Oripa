@@ -54,7 +54,7 @@ function Gacha() {
           }
         })
         .catch((err) => {
-          showToast("Try to login again", "error");
+          showToast(t("tryLogin"), "error");
         });
     }
   };
@@ -99,7 +99,7 @@ function Gacha() {
 
   const addGacha = () => {
     if (!user.authority["gacha"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -107,25 +107,25 @@ function Gacha() {
     setMultipart();
 
     if (formData.name.trim() === "") {
-      showToast("Required gacha name", "error");
+      showToast(t("requiredGachaName"), "error");
     } else if (parseFloat(formData.price) <= 0) {
-      showToast("Gacha price must be greater than than 0", "error");
+      showToast(t("greaterThan"), "error");
     } else if (formData.category.trim() === "") {
-      showToast("Must selete the gacha category", "error");
+      showToast(t("selectOption"), "error");
     } else if (parseInt(formData.totalNum) <= 0) {
-      showToast("Gacha total number must be greater than than 0", "error");
+      showToast(t("greaterThan"), "error");
     } else if (
       formData.file === NaN ||
       formData.file === null ||
       formData.file === undefined
     ) {
-      showToast("Must selete the gacha image", "error");
+      showToast(t("selectImage"), "error");
     } else {
       api
         .post("/admin/gacha/add", formData)
         .then((res) => {
           if (res.data.status === 1) {
-            showToast(res.data.msg);
+            showToast(t(res.data.msg), "success");
             setImgUrl("");
             fileInputRef.current.value = null;
             setFormData({
@@ -139,7 +139,7 @@ function Gacha() {
             removeMultipart();
             getCategory();
             getGacha();
-          } else showToast(res.data.msg, "error");
+          } else showToast(t(res.data.msg), "error");
         })
         .catch((err) => {
           console.error("Error uploading file:", err);
@@ -161,16 +161,16 @@ function Gacha() {
 
   const setRelease = (id) => {
     if (!user.authority["gacha"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
     api.get(`/admin/gacha/set_release/${id}`).then((res) => {
       if (res.data.status === 1) {
-        showToast("Set Gacha Release Successfully.");
+        showToast(t("successReleaseGacha"), "success");
         getGacha();
       } else {
-        showToast("Gacha Release Failed.");
+        showToast(t("failedReleaseGacha"), "error");
       }
     });
   };
@@ -180,9 +180,9 @@ function Gacha() {
       .delete(`/admin/gacha/${delGachaId}`)
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("Gacha delete successfully.");
+          showToast(t("successDeleted", "success"));
           getGacha();
-        } else showToast("Gacha Delete Failed.", "error");
+        } else showToast(t("failedDeleted", "error"));
       })
       .catch((err) => {
         console.log(err);
@@ -191,7 +191,7 @@ function Gacha() {
 
   const handleDelete = () => {
     if (!user.authority["gacha"]["delete"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 

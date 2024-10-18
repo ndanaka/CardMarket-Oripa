@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import chroma from "chroma-js";
 
 import usePersistedUser from "../../store/usePersistedUser";
+import api from "../../utils/api";
 
 import enFlag from "../../assets/img/icons/en.png";
 import jpFlag from "../../assets/img/icons/jp.png";
@@ -11,6 +13,22 @@ function ChangeLanguage({ type }) {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = usePersistedUser();
   const currentLanguage = i18n.language; //current language
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [hovered, setHovered] = useState(localStorage.getItem("bgColor"));
+
+  useEffect(() => {
+    getThemeData();
+  }, [bgColor]);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      const lighterColor = chroma(res.data.theme.bgColor).brighten(1).hex();
+      setHovered(lighterColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   const languages = [
     { code: "jp", name: "日本語", flag: jpFlag },
@@ -63,27 +81,48 @@ function ChangeLanguage({ type }) {
           ></i>
         )}
       </button>
-
       {isOpen && (
         <ul
-          className={`absolute top-full right-0 mt-1 border-1 border-gray-300 rounded-lg ${
+          className={`absolute top-full right-0 mt-1 border-1 border-gray-300 rounded-lg shadow-lg z-10 w-[100px] ${
             type === "menu"
               ? "bg-gray-200"
               : type !== "menu" && user?.role === "admin"
               ? "bg-[#26619c]"
-              : "bg-[#cc0000]"
-          } shadow-lg z-10 w-[100px]`}
+              : "bg-[${bgColor}] hover:bg-gray-300"
+          }`}
+          style={{
+            backgroundColor:
+              type === "menu"
+                ? "bg-gray-200"
+                : type !== "menu" && user?.role === "admin"
+                ? "#26619c"
+                : bgColor,
+          }}
         >
           {languages.map((lang) => (
             <li
               key={lang.code}
-              className={`flex items-center p-2 cursor-pointer rounded-lg ${
-                type === "menu"
-                  ? "hover:bg-gray-300"
-                  : type !== "menu" && user?.role === "admin"
-                  ? "hover:bg-blue-400"
-                  : "hover:bg-red-500"
-              }`}
+              className={`flex items-center p-2 cursor-pointer rounded-lg`}
+              style={{
+                backgroundColor:
+                  type === "menu"
+                    ? "bg-gray-200"
+                    : type !== "menu" && user?.role === "admin"
+                    ? "#26619c"
+                    : bgColor,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = hovered;
+              }}
+              onMouseLeave={(e) => {
+                // Reset to original background color based on type
+                e.currentTarget.style.backgroundColor =
+                  type === "menu"
+                    ? "#e2e8f0"
+                    : type !== "menu" && user?.role === "admin"
+                    ? "#26619c"
+                    : bgColor;
+              }}
               onClick={() => changeLanguage(lang.code)}
             >
               <img

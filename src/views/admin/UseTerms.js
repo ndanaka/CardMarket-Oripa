@@ -20,11 +20,10 @@ const UseTerms = () => {
   useEffect(() => {
     api.get("/admin/get_terms").then((res) => {
       if (res.data.status === 1) {
-        console.log(res.data.terms);
         if (res.data.terms) setContent(res.data.terms.content);
         else setContent("");
       } else if (res.data.status === 2) {
-        showToast("Failed to load content.");
+        showToast(t("faileReq"), "error");
       }
     });
   }, []);
@@ -35,16 +34,16 @@ const UseTerms = () => {
 
   const handleSubmit = () => {
     if (!user.authority["userterms"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
     setAuthToken();
     api.post("/admin/save_terms", { content: content }).then((res) => {
       if (res.data.status === 1) {
-        showToast("Content saved successfully.");
+        showToast(t("successSaved"), "success");
       } else if (res.data.status === 2) {
-        showToast("Failed to save content.");
+        showToast(t("failedSaved"), "error");
       }
     });
   };

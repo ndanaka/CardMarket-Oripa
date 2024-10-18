@@ -129,7 +129,7 @@ function PrizeList({
                     <img
                       className="m-auto object-cover h-[50px] w-[100px]"
                       src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
-                      alt={data.name} // Add alt text for accessibility
+                      alt={data.name}
                     />
                   </td>
                   <td>

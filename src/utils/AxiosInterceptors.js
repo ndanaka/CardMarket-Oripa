@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import api from "./api";
 import { showToast } from "./toastUtil";
@@ -11,6 +12,7 @@ const useAxiosInterceptor = () => {
   const navigate = useNavigate();
   const [isLoggedOut, setIsLoggedOut] = useState(false);
   const [, setUser] = usePersistedUser();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const interceptor = api.interceptors.response.use(
@@ -31,10 +33,7 @@ const useAxiosInterceptor = () => {
               break;
             case 403:
               // Forbidden error
-              showToast(
-                "You do not have permission to access this resource",
-                "error"
-              );
+              showToast(t("noPermission"), "error");
               break;
             // Add more cases as needed
             default:

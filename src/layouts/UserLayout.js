@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
+import api from "../utils/api.js";
 
 import routes from "../routes.js";
 
@@ -15,10 +16,14 @@ import routes from "../routes.js";
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
 import ScrollToTop from "../components/Others/ScrollTop.js";
+import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 const UserLayout = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [logoImg, setLogoImg] = useState(iniLogoImg);
+  const [brand, setBrand] = useState("Oripa");
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   const mainContent = useRef(null);
 
@@ -36,7 +41,19 @@ const UserLayout = (props) => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
+    getThemeData();
   }, [location]);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBrand(res.data.theme.brand);
+      setBgColor(res.data.theme.bgColor);
+      setLogoImg(process.env.REACT_APP_SERVER_ADDRESS + res.data.theme.logoUrl);
+
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   let flagShow = false;
   const handleScroll = () => {
@@ -85,15 +102,15 @@ const UserLayout = (props) => {
   };
 
   return (
-    <div
-      className="flex flex-col h-auto min-h-screen bg-[#f3f4f6]"
-      ref={mainContent}
-    >
+    <div className="flex flex-col h-auto min-h-screen" ref={mainContent}>
       <UserNavbar
         {...props}
         brandText={getBrandText(props?.location?.pathname)}
         isOpenToggleMenu={isOpenToggleMenu}
         setIsOpenToggleMenu={setIsOpenToggleMenu}
+        logoImg={logoImg}
+        brand={brand}
+        bgColor={bgColor}
       />
       <Routes>
         {getRoutes(routes)}

@@ -103,9 +103,9 @@ function PurchasePoint() {
       });
 
       if (res.data.status === 1) {
-        showToast(res.data.msg, "success");
+        showToast(t(res.data.msg), "success");
         updateUserData();
-      } else showToast(res.data.msg, "error");
+      } else showToast(t(res.data.msg), "error");
     } catch (error) {
       console.log(error);
     }

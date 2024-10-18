@@ -128,16 +128,16 @@ const GachaEdit = () => {
   // upload bulk prizes from csv file
   const uploadPrize = () => {
     if (!user.authority["gacha"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
     setAuthToken();
 
     if (gachaId.trim() === "") {
-      showToast("Not Found Gacha", "error");
+      showToast(t("failedReq"), "error");
     } else if (prizes.length === 0) {
-      showToast("No prize to upload. Select csv file.", "error");
+      showToast(t("selectCSV"), "error");
     } else {
       api
         .post("/admin/gacha/upload_bulk", {
@@ -149,9 +149,9 @@ const GachaEdit = () => {
             setPrizes([]);
             setcsvFile("");
             getGacha();
-            showToast(res.data.msg, "success");
+            showToast(t(res.data.msg), "success");
           } else {
-            showToast(res.data.msg, "error");
+            showToast(t(res.data.msg), "error");
           }
         })
         .catch((err) => console.log(err));
@@ -161,7 +161,7 @@ const GachaEdit = () => {
   // unset registered prizes from gacha
   const unsetPrize = (last, grade, index) => {
     if (!user.authority["gacha"]["write"]) {
-      showToast("You have no permission for this action", "error");
+      showToast(t("noPermission"), "error");
       return;
     }
 
@@ -196,11 +196,11 @@ const GachaEdit = () => {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          showToast("Unseting Prize Success.");
+          showToast(t("successUnset"));
           getGacha();
           setTrigger(!trigger);
         } else {
-          showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "error");
         }
       });
   };
@@ -209,7 +209,7 @@ const GachaEdit = () => {
   const setprizes = async (id, lastEffect) => {
     try {
       if (!user.authority["gacha"]["write"]) {
-        showToast("You have no permission for this action", "error");
+        showToast(t("noPermission"), "error");
         return;
       }
 
@@ -223,11 +223,11 @@ const GachaEdit = () => {
       const res = await api.post("/admin/gacha/set_prize", formData);
 
       if (res.data.status === 1) {
-        showToast("Set Prize success.", "success");
+        showToast(t("successSet"), "success");
         setTrigger(!trigger);
         getGacha();
       } else {
-        showToast("Set Prize failed.", "error");
+        showToast(t("failedSet"), "error");
       }
     } catch (error) {
       console.log(error);

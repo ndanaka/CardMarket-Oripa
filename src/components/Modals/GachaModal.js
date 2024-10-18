@@ -4,6 +4,8 @@ import formatPrice from "../../utils/formatPrice";
 function GachaModal(props) {
   const { headerText, name, price, draws, onDraw, isOpen, setIsOpen } = props;
   const { t } = useTranslation();
+  const bgColor = localStorage.getItem("bgColor");
+  
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -67,8 +69,9 @@ function GachaModal(props) {
             </button>
             <button
               id="closeBtn"
-              className="bg-theme_color rounded-md mt-3 text-center px-5 py-2 hover:bg-red-700 text-white outline-none"
+              className=" rounded-md mt-3 text-center px-5 py-2 hover:bg-red-700 text-white outline-none"
               onClick={() => onDraw()}
+              style={{ backgroundColor: bgColor }}
             >
               {t("draw")}
             </button>

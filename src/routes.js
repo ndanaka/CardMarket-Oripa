@@ -26,6 +26,7 @@ import BlogDetail from "./views/user/BlogDetail.js";
 import Shipping from "./views/user/Shipping.js";
 import ShippingAdd from "./views/user/ShippingAdd.js";
 import Rank from "./views/admin/Rank.js";
+import Theme from "./views/admin/Theme.js";
 
 var routes = [
   {
@@ -143,7 +144,7 @@ var routes = [
   {
     path: "/prize",
     name: "prize",
-    icon: "fa-solid fa-trophy",
+    icon: "fa fa-gift",
     component: <Prize />,
     layout: "/admin",
   },
@@ -179,7 +180,7 @@ var routes = [
   {
     path: "/rank",
     name: "rank",
-    icon: "fa-solid fa-list",
+    icon: "fa fa-trophy",
     component: <Rank />,
     layout: "/admin",
   },
@@ -197,7 +198,13 @@ var routes = [
     component: <UseTerms />,
     layout: "/admin",
   },
-
+  {
+    path: "/theme",
+    name: "theme",
+    icon: "fa fa-cogs",
+    component: <Theme />,
+    layout: "/admin",
+  },
   {
     path: "/login",
     name: "Login",

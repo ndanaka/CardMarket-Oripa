@@ -11,6 +11,7 @@ import { useEffect } from "react";
 
 const PostBlogModal = (props) => {
   const { t } = useTranslation();
+  const bgColor = localStorage.getItem("bgColor");
 
   const { userId, isOpen, setIsOpen, setBlogs } = props;
 
@@ -185,8 +186,9 @@ const PostBlogModal = (props) => {
           <div className="flex justify-between px-4 pb-4">
             <button
               id="closeBtn"
-              className="w-1/2 bg-theme_color rounded-md mx-2 text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
+              className="w-1/2 rounded-md mx-2 text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
               onClick={() => submitPostBlog()}
+              style={{ backgroundColor: bgColor }}
             >
               {t("postBlog")}
             </button>

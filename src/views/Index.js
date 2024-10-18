@@ -42,6 +42,7 @@ const Index = () => {
   const [existLastFlag, setExistLastFlag] = useState(false);
   const [lastEffect, setLastEffect] = useState(false);
   const lang = i18n.language;
+  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
   const carouselItems = [
     { id: 1, imgUrl: "theme/carousel/rank_banner.png" },
@@ -57,6 +58,7 @@ const Index = () => {
   useEffect(() => {
     getCategory();
     getGacha();
+    getThemeData();
   }, [showCardFlag]);
 
   useEffect(() => {
@@ -140,6 +142,14 @@ const Index = () => {
     // Set the final filtered array
     setFilteredGacha(filteredGachas);
   }, [gacha, categoryFilter, filter, order]);
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1) {
+      setBgColor(res.data.theme.bgColor);
+      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    }
+  };
 
   // get main categories
   const getCategory = () => {
@@ -329,10 +339,12 @@ const Index = () => {
         <div className="w-full flex justify-between overflow-auto px-3 mt-[-40px] text-red-800 shadow-md shadow-gray-200">
           <button
             className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
-              categoryFilter === "all"
-                ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
-                : ""
+              categoryFilter === "all" ? "bg-gray-100 border-t-4" : ""
             } `}
+            style={{
+              color: categoryFilter === "all" ? bgColor : "gray", // Set text color based on condition
+              borderColor: categoryFilter === "all" ? bgColor : "transparent",
+            }}
             onClick={() => changeMainCat("all")}
           >
             {t("all")}
@@ -343,10 +355,13 @@ const Index = () => {
                   key={i}
                   id={data.id}
                   className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
-                    categoryFilter === data.name
-                      ? "bg-gray-100 text-red-900 border-red-400 border-t-4"
-                      : ""
+                    categoryFilter === data.name ? "bg-gray-100 border-t-4" : ""
                   } `}
+                  style={{
+                    color: categoryFilter === data.name ? bgColor : "gray", // Set text color based on condition
+                    borderColor:
+                      categoryFilter === data.name ? bgColor : "transparent",
+                  }}
                   onClick={() => changeMainCat(data.name)}
                 >
                   {data.name}
@@ -361,9 +376,14 @@ const Index = () => {
             } flex justify-start items-center overflow-auto px-2 pt-2`}
           >
             <div
-              className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                filter.includes("all") ? "bg-red-600 text-white" : ""
+              className={`p-2 px-3 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("all") ? "text-white" : ""
               }`}
+              style={{
+                backgroundColor: filter.includes("all")
+                  ? bgColor
+                  : "#e2e8f0",
+              }} // Set bgColor if 'all' is included
               onClick={() => changeSubCat("all")}
             >
               {t("all")}
@@ -371,9 +391,14 @@ const Index = () => {
             {subCategory.map((category, i) => (
               <div
                 key={i}
-                className={`p-2 px-3 rounded-full min-w-fit bg-gray-200 focus:bg-red-400 text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                  filter.includes(category) ? "bg-red-600 text-white" : ""
+                className={`p-2 px-3 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                  filter.includes(category) ? "text-white" : ""
                 }`}
+                style={{
+                  backgroundColor: filter.includes(category)
+                    ? bgColor
+                    : "#e2e8f0",
+                }}
                 onClick={() => changeSubCat(category)}
               >
                 {t(category)}
@@ -411,7 +436,7 @@ const Index = () => {
           ) : (
             filteredGacha.map((data, i) => (
               <div className="w-full xxsm:w-1/2 xm:p-2 p-1" key={i}>
-                <div className="p-2 h-full flex flex-col justify-between border-2 bg-gray-100 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
+                <div className="p-2 h-full flex flex-col justify-between border-2 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
                   <button
                     className="relative cursor-pointer h-[450px] w-full"
                     onClick={() =>
@@ -458,7 +483,8 @@ const Index = () => {
                   </button>
                   <div className="w-full flex justify-center">
                     <div
-                      className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
+                      className="cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
+                      style={{ backgroundColor: bgColor }}
                       onClick={() => {
                         drawGacha(data, 1);
                       }}
@@ -466,10 +492,11 @@ const Index = () => {
                       1 {t("draw")}
                     </div>
                     <div
-                      className="bg-theme_color cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
+                      className="bg-theme_color cursor-pointer hover:bg-gray-200 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                       onClick={() => {
                         drawGacha(data, 10);
                       }}
+                      style={{ backgroundColor: bgColor }}
                     >
                       10 {t("draws")}
                     </div>

@@ -18,6 +18,7 @@ const BlogDetail = () => {
   const { blog } = location.state || {};
   const [comments, setComments] = useState();
   const [showErrMessage, setShowErrMessage] = useState(false);
+  const bgColor = localStorage.getItem("bgColor");
 
   const [formData, setFormData] = useState({
     content: "",
@@ -37,7 +38,7 @@ const BlogDetail = () => {
         if (res.data.status === 1) {
           setComments(res.data.comments);
         } else {
-          showToast(res.data.msg, "error");
+          showToast(t(res.data.msg), "error");
         }
       })
       .catch((err) => console.log(err));
@@ -68,10 +69,10 @@ const BlogDetail = () => {
         author: user?._id,
         parent_id: blog._id,
       });
-      showToast(res.data.msg, "success");
+      showToast(t(res.data.msg), "success");
       setComments(res.data.comments);
     } else {
-      showToast(res.data.msg, "error");
+      showToast(t(res.data.msg), "error");
     }
 
     setShowErrMessage(false);
@@ -157,8 +158,9 @@ const BlogDetail = () => {
                   ) : null}
                 </FormGroup>
                 <button
-                  className="float-right w-1/2 bg-theme_color rounded-md text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
+                  className="float-right w-1/2 rounded-md text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
                   onClick={() => leaveComment()}
+                  style={{ backgroundColor: bgColor }}
                 >
                   {t("postBlog")}
                 </button>

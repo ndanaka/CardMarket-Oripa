@@ -16,6 +16,7 @@ function Shipping() {
   const [user, setUser] = usePersistedUser();
   const [pickedShipAddress, setPickedShipAddress] = useState();
   const [shipAddressData, setShipAddressData] = useState();
+  const bgColor = localStorage.getItem("bgColor");
 
   useEffect(() => {
     setAuthToken();
@@ -30,7 +31,7 @@ function Shipping() {
         setPickedShipAddress(user?.shipAddress_id);
       }
     } catch (error) {
-      showToast("Something went wrong", "error");
+      showToast(t("failedReq"), "error");
     }
   };
 
@@ -42,12 +43,12 @@ function Shipping() {
       });
 
       if (res.data.status === 1) {
-        showToast("Successfully set shipping address.", "success");
+        showToast(t("successSet"), "success");
       } else {
-        showToast("Failed to set shipping address.", "error");
+        showToast(t("failedSet"), "error");
       }
     } catch (error) {
-      showToast("Something went wrong.", "error");
+      showToast(t("faileReq"), "error");
     }
   };
 
@@ -57,12 +58,12 @@ function Shipping() {
 
       if (res.data.status === 1) {
         getShippingAddress();
-        showToast("Successfully deleted data.", "success");
+        showToast(t("successDeleted"), "success");
       } else {
-        showToast("Failed to delete data.", "error");
+        showToast(t("failedDeleted"), "error");
       }
     } catch (error) {
-      showToast("Something went wrong.", "error");
+      showToast(t("faileReq"), "error");
     }
   };
 
@@ -122,12 +123,13 @@ function Shipping() {
                     {t("delete")}
                   </button>
                   <button
-                    className="bg-theme_color rounded-md text-center px-3 py-1 hover:bg-red-800 text-white outline-none"
+                    className="rounded-md text-center px-3 py-1 hover:bg-red-800 text-white outline-none"
                     onClick={() =>
                       navigate("/user/userShipingAdd", {
                         state: { initialData: data },
                       })
                     }
+                    style={{ backgroundColor: bgColor }}
                   >
                     {t("edit")}
                   </button>
@@ -145,8 +147,9 @@ function Shipping() {
             {t("decide")}
           </button>
           <button
-            className="bg-theme_color rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-red-800 text-white outline-none"
+            className="rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-red-800 text-white outline-none"
             onClick={() => navigate("/user/userShipingAdd")}
+            style={{ backgroundColor: bgColor }}
           >
             {"+ " + t("addAddress")}
           </button>
