@@ -45,6 +45,7 @@ const AdminNavbar = (props) => {
         })
         .catch((err) => {
           showToast(t("tryLogin"), "error");
+          navigate("user/index");
         });
     }
   };

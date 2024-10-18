@@ -184,12 +184,20 @@ const Index = () => {
   const updateUserData = async () => {
     setAuthToken();
 
-    if (user) {
-      // update user date
-      const res = await api.get(`/user/get_user/${user._id}`);
-      if (res.data.status === 1) {
-        setUser(res.data.user);
+    try {
+      if (user) {
+        // update user date
+        const res = await api.get(`/user/get_user/${user._id}`);
+        if (res.data.status === 1) {
+          setUser(res.data.user);
+        } else {
+          showToast(t("tryLogin"), "error");
+          navigate("user/index");
+        }
       }
+    } catch (error) {
+      showToast(t("tryLogin"), "error");
+      navigate("user/index");
     }
   };
 
@@ -380,9 +388,7 @@ const Index = () => {
                 filter.includes("all") ? "text-white" : ""
               }`}
               style={{
-                backgroundColor: filter.includes("all")
-                  ? bgColor
-                  : "#e2e8f0",
+                backgroundColor: filter.includes("all") ? bgColor : "#e2e8f0",
               }} // Set bgColor if 'all' is included
               onClick={() => changeSubCat("all")}
             >

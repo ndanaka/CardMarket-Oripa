@@ -39,11 +39,11 @@ function Gacha() {
 
   useEffect(() => {
     getCategory();
-    userUpdateData();
+    adminUpdateData();
     getGacha();
   }, []);
 
-  const userUpdateData = () => {
+  const adminUpdateData = () => {
     if (user) {
       api
         .get(`/admin/get_admin/${user._id}`)
@@ -55,6 +55,7 @@ function Gacha() {
         })
         .catch((err) => {
           showToast(t("tryLogin"), "error");
+          navigate("user/index");
         });
     }
   };

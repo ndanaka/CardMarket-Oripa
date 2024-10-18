@@ -48,20 +48,23 @@ function PurchasePoint() {
     // document.body.appendChild(script);
   }, []);
 
-  const updateUserData = () => {
+  const updateUserData = async () => {
     setAuthToken();
-    
-    if (user) {
-      api
-        .get(`/user/get_user/${user._id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            setUser(res.data.user);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+
+    try {
+      if (user) {
+        // update user date
+        const res = await api.get(`/user/get_user/${user._id}`);
+        if (res.data.status === 1) {
+          setUser(res.data.user);
+        } else {
+          showToast(t("tryLogin"), "error");
+          navigate("user/index");
+        }
+      }
+    } catch (error) {
+      showToast(t("tryLogin"), "error");
+      navigate("user/index");
     }
   };
 
@@ -256,7 +259,7 @@ function PurchasePoint() {
                           </button>
                         </div>
                       </div>
-                      {points.length !== i+1 && <hr className="py-1"></hr>}
+                      {points.length !== i + 1 && <hr className="py-1"></hr>}
                     </div>
                   ))
                 ) : (

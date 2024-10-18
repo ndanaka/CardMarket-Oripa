@@ -12,6 +12,7 @@ import ChangeLanguage from "../Others/ChangeLanguage";
 
 import "../../assets/css/index.css";
 import formatPrice from "../../utils/formatPrice";
+import { showToast } from "../../utils/toastUtil";
 
 const UserNavbar = ({
   logoImg,
@@ -32,12 +33,20 @@ const UserNavbar = ({
 
   const updateUserData = async () => {
     setAuthToken();
-    if (user) {
-      // update user date
-      const res = await api.get(`/user/get_user/${user._id}`);
-      if (res.data.status === 1) {
-        setUser(res.data.user);
+    try {
+      if (user) {
+        // update user date
+        const res = await api.get(`/user/get_user/${user._id}`);
+        if (res.data.status === 1) {
+          setUser(res.data.user);
+        } else {
+          showToast(t("tryLogin"), "error");
+          navigate("user/index");
+        }
       }
+    } catch (error) {
+      showToast(t("tryLogin"), "error");
+      navigate("user/index");
     }
   };
 
