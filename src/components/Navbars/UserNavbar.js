@@ -287,7 +287,7 @@ const UserNavbar = ({
                                   navigate("/user/delivery");
                                 }}
                               >
-                                <span>{t("deliveryHistory")}</span>
+                                <span>{t("acquisitionHistory")}</span>
                                 <i className="fa fa-chevron-right"></i>
                               </li>
                               <li
