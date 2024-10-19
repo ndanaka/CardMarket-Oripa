@@ -118,7 +118,7 @@ function ShippingAdd() {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-12">
+      <div className="w-full md:w-2/3 p-3 mx-auto mt-12">
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             <i
@@ -129,7 +129,7 @@ function ShippingAdd() {
           </div>
           <hr className="w-full my-2"></hr>
         </div>
-        <div className="flex flex-wrap justify-between">
+        <div className="flex flex-wrap justify-center mx-auto w-full xxsm:w-2/3">
           <div className="flex flex-wrap w-full">
             <div className="w-full px-2">
               <label htmlFor="category" className="font-Lexend p-1">
