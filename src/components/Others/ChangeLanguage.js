@@ -24,8 +24,6 @@ function ChangeLanguage({ type }) {
     const res = await api.get("/admin/getThemeData");
     if (res.data.status === 1) {
       setBgColor(res.data.theme.bgColor);
-      const lighterColor = chroma(res.data.theme.bgColor).brighten(1).hex();
-      setHovered(lighterColor);
       localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
     }
   };
@@ -102,7 +100,7 @@ function ChangeLanguage({ type }) {
           {languages.map((lang) => (
             <li
               key={lang.code}
-              className={`flex items-center p-2 cursor-pointer rounded-lg`}
+              className={`flex items-center p-2 cursor-pointer rounded-lg hover:opacity-50`}
               style={{
                 backgroundColor:
                   type === "menu"
@@ -110,18 +108,6 @@ function ChangeLanguage({ type }) {
                     : type !== "menu" && user?.role === "admin"
                     ? "#26619c"
                     : bgColor,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = hovered;
-              }}
-              onMouseLeave={(e) => {
-                // Reset to original background color based on type
-                e.currentTarget.style.backgroundColor =
-                  type === "menu"
-                    ? "#e2e8f0"
-                    : type !== "menu" && user?.role === "admin"
-                    ? "#26619c"
-                    : bgColor;
               }}
               onClick={() => changeLanguage(lang.code)}
             >

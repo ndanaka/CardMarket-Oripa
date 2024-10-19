@@ -123,7 +123,7 @@ function UserDelivery() {
                               img_url={card.img_url}
                             />
                             <div
-                              className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 group-hover:block transition-all duration-300 text-base text-white text-center cursor-pointer z-3 animate-[displayEase_linear]"
+                              className="hover:opacity-90 w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 group-hover:block transition-all duration-300 text-base text-white text-center cursor-pointer z-3 animate-[displayEase_linear]"
                               style={{ backgroundColor: bgColor }}
                             >
                               {flag === true ? (

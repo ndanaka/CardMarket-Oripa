@@ -259,7 +259,7 @@ function PurchasePoint() {
                         </div>
                         <div>
                           <button
-                            className="py-1 px-2 xsm:py-2 xsm:px-3 rounded-md text-white text-md font-bold"
+                            className="hover:opacity-50 py-1 px-2 xsm:py-2 xsm:px-3 rounded-md text-white text-md font-bold"
                             onClick={() => {
                               setSelId(i); //set selected id for api
                               testPay(point.price);

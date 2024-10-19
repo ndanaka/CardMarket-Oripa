@@ -94,7 +94,7 @@ const BlogDetail = () => {
           <div className="w-full text-center">
             <span className="text-xl text-slate-600">{t("blogDetail")}</span>
             <button
-              className="flex xsm:ruby float-left bg-red-500 rounded-md py-1 text-white px-3 text-md text-slate-600"
+              className="hover:opacity-50 flex xsm:ruby float-left bg-red-500 rounded-md py-1 text-white px-3 text-md text-slate-600"
               onClick={() => {
                 navigator(-1);
               }}
@@ -168,7 +168,7 @@ const BlogDetail = () => {
                   ) : null}
                 </FormGroup>
                 <button
-                  className="float-right w-1/2 rounded-md text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
+                  className="hover:opacity-50 float-right w-1/2 rounded-md text-center px-2 sm:px-5 py-2 hover:bg-red-700 text-white outline-none"
                   onClick={() => leaveComment()}
                   style={{ backgroundColor: bgColor }}
                 >

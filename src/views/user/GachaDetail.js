@@ -320,7 +320,7 @@ function GachaDetail() {
           </div>
           <div className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]">
             <div
-              className="cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
+              className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
               onClick={() => {
                 drawGacha(gacha, 1);
               }}
@@ -329,7 +329,7 @@ function GachaDetail() {
               1 {t("draw")}
             </div>
             <div
-              className="cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
+              className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
               onClick={() => {
                 drawGacha(gacha, 10);
               }}

@@ -52,7 +52,7 @@ const Blog = () => {
             <span className="text-xl text-slate-600">{t("blog")}</span>
             {user && (
               <button
-                className="float-right bg-red-500 rounded-md py-1 text-white px-3 text-md text-slate-600"
+                className="hover:opacity-50 float-right bg-red-500 rounded-md py-1 text-white px-3 text-md text-slate-600"
                 onClick={() => {
                   setIsOpen(true);
                 }}
