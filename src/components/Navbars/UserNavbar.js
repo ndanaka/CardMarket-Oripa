@@ -169,18 +169,22 @@ const UserNavbar = ({
                                 className="relative text-center shadow-md shadow-gray-300 cursor-pointer flex flex-col justify-center mx-2 my-2 p-3 border-solid border-4 border-gray-400 rounded-lg"
                                 onClick={() => console.log("rank")}
                               >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_SERVER_ADDRESS +
-                                    user.rankData.rank.img_url
-                                  }
-                                  alt="Background"
-                                  className="absolute top-0 right-4 w-full h-full object-cover z-0 opacity-50"
-                                  style={{
-                                    maxHeight: "150px",
-                                    maxWidth: "130px",
-                                  }}
-                                />
+                                {user.rankData.rank ? (
+                                  <img
+                                    src={
+                                      process.env.REACT_APP_SERVER_ADDRESS +
+                                      user.rankData.rank.img_url
+                                    }
+                                    alt="Background"
+                                    className="absolute top-0 right-4 w-full h-full object-cover z-0 opacity-50"
+                                    style={{
+                                      maxHeight: "150px",
+                                      maxWidth: "130px",
+                                    }}
+                                  />
+                                ) : (
+                                  ""
+                                )}
                                 <div className="relative z-10">
                                   <span className="text-gray-800 text-lg font-bold">
                                     {t("rank")}
@@ -190,14 +194,22 @@ const UserNavbar = ({
                                     className="text-gray-800 text-5xl font-bold uppercase"
                                     style={{ fontFamily: "serif" }}
                                   >
-                                    {t(user.rankData.rank.name)}
+                                    {t(
+                                      user.rankData.rank
+                                        ? user.rankData.rank.name
+                                        : "Normal"
+                                    )}
                                   </span>
                                   <span className="flex flex-wrap text-gray-800 text-lg justify-center">
                                     {formatPrice(
                                       t(user.rankData.totalPointsAmount)
                                     )}{" "}
                                     /{" "}
-                                    {formatPrice(user.rankData.rank.end_amount)}
+                                    {formatPrice(
+                                      user.rankData.rank
+                                        ? user.rankData.rank.end_amount
+                                        : "300000"
+                                    )}
                                     pt
                                   </span>
                                 </div>
