@@ -73,7 +73,7 @@ const UserNavbar = ({
             <div className="flex flex-wrap justify-between">
               {location.pathname === "/user/gacha-detail" ? (
                 <button
-                  className="flex xsm:ruby px-2 py-[4px] rounded-lg border-[1px] text-center text-white text-sm"
+                  className="flex xsm:ruby px-2 py-[4px] rounded-lg border-[1px] text-center text-white text-sm hover:opacity-50"
                   onClick={() => navigate("/user/index")}
                   style={{ backgroundColor: bgColor }}
                 >
@@ -237,7 +237,7 @@ const UserNavbar = ({
                                 <hr className="w-full border-solid border-1 border-gray-800 mb-2"></hr>
                                 <button
                                   id="closeBtn"
-                                  className="text-center hover:bg-red-500 text-white outline-none w-full py-2"
+                                  className="rounded-md hover:opacity-50 text-center hover:bg-red-500 text-white outline-none w-full py-2"
                                   onClick={() => {
                                     setIsOpenToggleMenu(!isOpenToggleMenu);
                                     navigate("/user/pur-point");

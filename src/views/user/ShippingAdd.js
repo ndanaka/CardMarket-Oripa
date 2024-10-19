@@ -308,13 +308,13 @@ function ShippingAdd() {
           </div>
           <div className="flex flex-wrap justify-center mx-auto">
             <button
-              className="bg-gray-600 rounded-md text-center mx-2 px-16 py-2 my-2 text-white outline-none"
+              className="hover:opacity-50 bg-gray-600 rounded-md text-center mx-2 px-16 py-2 my-2 text-white outline-none"
               onClick={handleCancelShipAddress}
             >
               {t("cancel")}
             </button>
             <button
-              className="rounded-md text-center mx-2 px-16 py-2 my-2 hover:bg-red-800 text-white outline-none"
+              className="hover:opacity-50 rounded-md text-center mx-2 px-16 py-2 my-2 hover:bg-red-800 text-white outline-none"
               onClick={handleSaveShipAddress}
               style={{ backgroundColor: bgColor }}
             >

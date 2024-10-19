@@ -489,7 +489,7 @@ const Index = () => {
                   </button>
                   <div className="w-full flex justify-center">
                     <div
-                      className="cursor-pointer hover:bg-[#f00] text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
+                      className="cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
                       style={{ backgroundColor: bgColor }}
                       onClick={() => {
                         drawGacha(data, 1);
@@ -498,7 +498,7 @@ const Index = () => {
                       1 {t("draw")}
                     </div>
                     <div
-                      className="bg-theme_color cursor-pointer hover:bg-gray-200 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
+                      className="bg-theme_color cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                       onClick={() => {
                         drawGacha(data, 10);
                       }}

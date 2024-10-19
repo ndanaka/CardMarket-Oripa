@@ -188,7 +188,7 @@ const Profile = () => {
                   />
                 </div>
               </div>
-              <div className="w-full flex flex-wrap justify-end px-2">
+              <div className="hover:opacity-50 w-full flex flex-wrap justify-end px-2">
                 <button
                   className="px-4 py-2 my-1 rounded-md text-white"
                   onClick={handleUpdateUserData}
@@ -228,7 +228,7 @@ const Profile = () => {
                     />
                   </div>
                 </div>
-                <div className="flex flex-wrap w-full justify-end px-2">
+                <div className="hover:opacity-50 flex flex-wrap w-full justify-end px-2">
                   <button
                     className="px-4 py-2 my-1 rounded-md text-white"
                     onClick={handleChangePass}
@@ -247,7 +247,7 @@ const Profile = () => {
               <p className="py-4 px-2">{t("withdrawalDes")}</p>
               <div className="flex flex-wrap w-full justify-end px-2">
                 <button
-                  className="px-4 py-2 my-1 rounded-md text-white"
+                  className="hover:opacity-50 px-4 py-2 my-1 rounded-md text-white"
                   onClick={setIsModalOpen}
                   style={{ backgroundColor: bgColor }}
                 >
