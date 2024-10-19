@@ -151,13 +151,14 @@ const UserNavbar = ({
                         >
                           <div className="my-status sticky top-0 bg-gray-100 z-20">
                             <h2 className="py-3 text-xl font-bold text-center">
-                              {t("my") + " " + t("status")}
+                              {user.name}
                             </h2>
                             <button
                               onClick={() =>
                                 setIsOpenToggleMenu(!isOpenToggleMenu)
                               }
-                              className="font-bold absolute top-2 right-2 text-gray-800 py-1 px-3 bg-gray-200 rounded-md"
+                              className="hover:opacity-50 font-bold absolute top-2 right-2 text-white py-1 px-3 bg-gray-200 rounded-md"
+                              style={{ backgroundColor: bgColor }}
                             >
                               X
                             </button>
@@ -203,13 +204,15 @@ const UserNavbar = ({
                                   <span className="flex flex-wrap text-gray-800 text-lg justify-center">
                                     {formatPrice(
                                       t(user.rankData.totalPointsAmount)
-                                    )}{" "}
-                                    /{" "}
-                                    {formatPrice(
-                                      user.rankData.rank
-                                        ? user.rankData.rank.end_amount
-                                        : "300000"
                                     )}
+                                    {user.rankData.rank.last
+                                      ? ""
+                                      : " / " +
+                                        formatPrice(
+                                          user.rankData.rank
+                                            ? user.rankData.rank.end_amount
+                                            : "300000"
+                                        )}
                                     pt
                                   </span>
                                 </div>
@@ -236,7 +239,7 @@ const UserNavbar = ({
 
                                 <hr className="w-full border-solid border-1 border-gray-800 mb-2"></hr>
                                 <button
-                                  id="closeBtn"
+                                  id="purchaseBtn"
                                   className="rounded-md hover:opacity-50 text-center hover:bg-red-500 text-white outline-none w-full py-2"
                                   onClick={() => {
                                     setIsOpenToggleMenu(!isOpenToggleMenu);
