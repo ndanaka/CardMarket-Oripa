@@ -156,6 +156,7 @@ function Rank() {
       file: null,
     });
     setCuFlag(1);
+    fileInputRef.current.value = null;
   };
 
   // handle edit update
@@ -268,7 +269,7 @@ function Rank() {
           </div>
           <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
             <label htmlFor="fileInput" className="text-gray-700 px-1">
-              {t("rank") + " " + t("image")}:{" "}
+              {t("rank") + " " + t("image")}
             </label>
             <input
               name="fileInput"
@@ -282,7 +283,7 @@ function Rank() {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
+              className={`${imgUrl ? "w-auto h-[250px]" : ""} object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
