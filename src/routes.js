@@ -27,6 +27,7 @@ import Shipping from "./views/user/Shipping.js";
 import ShippingAdd from "./views/user/ShippingAdd.js";
 import Rank from "./views/admin/Rank.js";
 import Theme from "./views/admin/Theme.js";
+import Carousel from "./views/admin/Carousel.js";
 
 var routes = [
   {
@@ -133,6 +134,13 @@ var routes = [
     icon: "fa fa-users",
     component: <UserDetail />,
     layout: "/admin/sub",
+  },
+  {
+    path: "/carousel",
+    name: "carousel",
+    icon: "fa fa-file-image",
+    component: <Carousel />,
+    layout: "/admin",
   },
   {
     path: "/category",

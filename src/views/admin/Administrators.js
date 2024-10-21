@@ -32,6 +32,8 @@ function Administrators() {
       .then((res) => {
         if (res.data.status === 1) {
           setAdminList(res.data.adminList);
+          setAdminId(res.data.adminList[0]._id);
+          setAdminName(res.data.adminList[0].name);
           setAuthority(res.data.adminList[0].authority);
         }
       })

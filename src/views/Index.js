@@ -44,13 +44,6 @@ const Index = () => {
   const lang = i18n.language;
   const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
 
-  const carouselItems = [
-    { id: 1, imgUrl: "theme/carousel/rank_banner.png" },
-    { id: 2, imgUrl: "theme/carousel/point.png" },
-    { id: 2, imgUrl: "theme/carousel/001.png" },
-    { id: 2, imgUrl: "theme/carousel/002.png" },
-  ];
-
   // check the URL parameters on page load to see if the affiliate ID is present.
   const handleAffiliateID = (affiliateID) => {};
   useAffiliateID(handleAffiliateID);
@@ -342,7 +335,7 @@ const Index = () => {
     <div className="flex flex-grow">
       <div className="w-full md:w-[90%] lg:w-[80%] xl:w-[70%] md:mx-2 mt-16 mx-auto xm:p-2">
         <div className="mx-auto p-1">
-          <ImageCarousel items={carouselItems} />
+          <ImageCarousel />
         </div>
         <div className="w-full flex justify-between overflow-auto px-3 mt-[-40px] text-red-800 shadow-md shadow-gray-200">
           <button
