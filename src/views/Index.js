@@ -380,7 +380,7 @@ const Index = () => {
         <div className="flex flex-wrap justify-between px-2">
           <div
             className={`${
-              lang === "en" ? "w-[calc(99%-172px)]" : "w-[calc(99%-112px)]"
+              lang !== "jp" ? "w-[calc(99%-180px)]" : "w-[calc(99%-112px)]"
             } flex justify-start items-center overflow-auto px-2 pt-2`}
           >
             <div
@@ -413,7 +413,7 @@ const Index = () => {
           </div>
           <div
             className={`${
-              lang === "en" ? "w-[172px]" : "w-[112px]"
+              lang !== "jp" ? "w-[180px]" : "w-[112px]"
             } flex justify-end items-center p-1 border-l-2 border-gray-[#e5e7eb]`}
           >
             <select

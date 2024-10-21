@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import chroma from "chroma-js";
 
 import usePersistedUser from "../../store/usePersistedUser";
 import api from "../../utils/api";
 
 import enFlag from "../../assets/img/icons/en.png";
 import jpFlag from "../../assets/img/icons/jp.png";
+import chFlag from "../../assets/img/icons/ch.png";
+import vnFlag from "../../assets/img/icons/vn.png";
 
 function ChangeLanguage({ type }) {
   const { i18n } = useTranslation();
@@ -14,7 +15,6 @@ function ChangeLanguage({ type }) {
   const [user, setUser] = usePersistedUser();
   const currentLanguage = i18n.language; //current language
   const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
-  const [hovered, setHovered] = useState(localStorage.getItem("bgColor"));
 
   useEffect(() => {
     getThemeData();
@@ -30,6 +30,9 @@ function ChangeLanguage({ type }) {
 
   const languages = [
     { code: "jp", name: "日本語", flag: jpFlag },
+    { code: "ch1", name: "中文（简体)", flag: chFlag },
+    { code: "ch2", name: "中文（繁體)", flag: chFlag },
+    { code: "vn", name: "Tiếng Việt", flag: vnFlag },
     { code: "en", name: "English", flag: enFlag },
   ];
 
@@ -44,7 +47,7 @@ function ChangeLanguage({ type }) {
 
   const getCurrentFlag = () => {
     const currentLang = languages.find((lang) => lang.code === currentLanguage);
-    return currentLang ? currentLang.flag : enFlag;
+    return currentLang ? currentLang.flag : jpFlag;
   };
 
   return (
@@ -56,14 +59,14 @@ function ChangeLanguage({ type }) {
         <img
           src={getCurrentFlag()}
           alt="current flag"
-          className="w-5 h-5 mr-2"
+          className="w-5 h-4 mr-2"
         />
         <span
           className={`${
             type === "menu" ? "text-gray" : "text-white"
           } hidden xsm:block`}
         >
-          {currentLanguage === "en" ? "English" : "日本語"}
+          {languages.find((lang) => lang.code === currentLanguage).name}
         </span>
         {isOpen ? (
           <i
@@ -81,7 +84,7 @@ function ChangeLanguage({ type }) {
       </button>
       {isOpen && (
         <ul
-          className={`absolute top-full right-0 mt-1 border-1 border-gray-300 rounded-lg shadow-lg z-10 w-[100px] ${
+          className={`absolute top-full left-0 mt-1 border-1 border-gray-300 rounded-lg shadow-lg z-10 w-[130px] ${
             type === "menu"
               ? "bg-gray-200"
               : type !== "menu" && user?.role === "admin"
@@ -114,7 +117,7 @@ function ChangeLanguage({ type }) {
               <img
                 src={lang.flag}
                 alt={`${lang.name} flag`}
-                className="w-5 h-5 mr-2"
+                className="w-5 h-4 mr-2"
               />
               <span
                 className={`${
