@@ -111,7 +111,7 @@ const BlogDetail = () => {
               </p>
             </div>
             <div className="w-full xxsm:w-2/3 flex flex-wrap justify-between pb-2">
-              <p className="font-bold"> {t("postedBy") + blog.author.name}</p>
+              <p className="font-bold"> {t("postedBy") + blog.author?.name}</p>
               <p className="font-bold">{formatDate(blog.createdAt)}</p>
             </div>
             <div className="w-full xxsm:w-2/3 py-2">
@@ -133,7 +133,7 @@ const BlogDetail = () => {
                 comments?.map((comment, i) => (
                   <div key={i} className="w-full py-1 pl-3">
                     <div className="flex flex-wrap justify-between pb-2">
-                      <p className="font-bold">{comment.author.name}</p>
+                      <p className="font-bold">{comment.author?.name}</p>
                       <p className="font-bold">
                         {formatDate(comment.createdAt)}
                       </p>

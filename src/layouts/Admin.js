@@ -13,19 +13,16 @@ import Sidebar from "../components/Sidebar/Sidebar.js";
 import ScrollToTop from "../components/Others/ScrollTop.js";
 
 import routes from "../routes.js";
-import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
-
 import usePersistedUser from "../store/usePersistedUser.js";
 
 const Admin = (props) => {
   const mainContent = useRef(null);
-  const [, setShow] = useState(false);
 
-  const { isLoggedOut } = useAxiosInterceptor();
   const location = useLocation();
   const [user] = usePersistedUser();
-
   const navigate = useNavigate();
+
+  const [, setShow] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -33,7 +30,6 @@ const Admin = (props) => {
 
   useEffect(() => {
     if (user?.role !== "admin") navigate("/user/index");
-    if (isLoggedOut) navigate("/auth/login");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
