@@ -9,9 +9,11 @@ const useAffiliateID = (callback) => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const affiliateID = params.get("aff_id");
-
-    if (affiliateID) {
+    const first = params.get("first");
+    if (first) {
       // Add click counts of affiliate
+      localStorage.setItem("affId", affiliateID);
+
       api
         .post("/api/affiliate/status/addClicks", { aff_id: affiliateID })
         .then((res) => {
@@ -21,9 +23,9 @@ const useAffiliateID = (callback) => {
         .catch((err) => {
           console.log(err);
         });
-
-      callback(affiliateID); // Call the provided callback function
     }
+
+    callback(affiliateID); // Call the provided callback function
   }, []);
 };
 
