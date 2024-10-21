@@ -7,10 +7,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 import api from "../utils/api.js";
 import routes from "../routes.js";
-import useAffiliateID from "../utils/useAffiliateID.js";
+import usePersistedUser from "../store/usePersistedUser.js";
 
 // core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
@@ -19,26 +18,26 @@ import ScrollToTop from "../components/Others/ScrollTop.js";
 import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 const UserLayout = (props) => {
+  const mainContent = useRef(null);
+
   const location = useLocation();
   const navigate = useNavigate();
+  const [user] = usePersistedUser();
+
   const [logoImg, setLogoImg] = useState(iniLogoImg);
   const [brand, setBrand] = useState("Oripa");
   const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
-  const [affId, setAffId] = useState(null);
-
-  const mainContent = useRef(null);
-
-  const { isLoggedOut } = useAxiosInterceptor();
-
   const [, setShow] = useState(false);
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
   useEffect(() => {
+    if (!localStorage.getItem("token") || !user) {
+      navigate("/user/index");
+    }
     window.addEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    if (isLoggedOut) navigate("/auth/login");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
@@ -102,13 +101,6 @@ const UserLayout = (props) => {
     return "Brand";
   };
 
-  // check the URL parameters on page load to see if the affiliate ID is present.
-  const handleAffiliateID = (affiliateID) => {
-    setAffId(affiliateID);
-    // Here, you can call your API or any other logic
-  };
-  useAffiliateID(handleAffiliateID);
-
   return (
     <div className="flex flex-col h-auto min-h-screen" ref={mainContent}>
       <UserNavbar
@@ -125,7 +117,7 @@ const UserLayout = (props) => {
         <Route path="*" element={<Navigate to="/user/index" replace />} />
       </Routes>
       <ScrollToTop />
-      {!isLoggedOut && location.pathname !== "/user/gacha-detail" && <Footer />}
+      {location.pathname !== "/user/gacha-detail" && <Footer />}
     </div>
   );
 };

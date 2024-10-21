@@ -18,7 +18,7 @@ function ShippingAdd() {
 
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [shipAddress, setShipAddress] = useState({
-    user_id: user._id,
+    user_id: user?._id,
     country: "",
     lastName: "",
     firstName: "",
@@ -73,7 +73,7 @@ function ShippingAdd() {
     if (initialData) setShipAddress(initialData);
     else
       setShipAddress({
-        user_id: user._id,
+        user_id: user?._id,
         country: "",
         lastName: "",
         firstName: "",

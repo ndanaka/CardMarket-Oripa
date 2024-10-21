@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Container } from "reactstrap";
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import AuthNavbar from "../components/Navbars/AuthNavbar.js";
 import AuthFooter from "../components/Footers/Footer.js";
@@ -8,11 +14,14 @@ import AuthFooter from "../components/Footers/Footer.js";
 import api from "../utils/api.js";
 import routes from "../routes.js";
 import useAffiliateID from "../utils/useAffiliateID.js";
+import usePersistedUser from "../store/usePersistedUser.js";
 
 import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 const Auth = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [user] = usePersistedUser();
 
   const [logoImg, setLogoImg] = useState(iniLogoImg);
   const [brand, setBrand] = useState("Oripa");
@@ -20,6 +29,10 @@ const Auth = () => {
   const [affId, setAffId] = useState(null);
 
   useEffect(() => {
+    if (localStorage.getItem("token") && user) {
+      if (user?.role === "admin") navigate("/admin/index");
+      if (user?.role !== "admin") navigate("/user/index");
+    }
     document.body.classList.add("bg-default");
     getThemeData();
 
