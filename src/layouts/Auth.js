@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { Container } from "reactstrap";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 
-import api from "../utils/api.js";
-
-// core components
 import AuthNavbar from "../components/Navbars/AuthNavbar.js";
 import AuthFooter from "../components/Footers/Footer.js";
 
-import iniLogoImg from "../assets/img/brand/oripa-logo.png";
-
+import api from "../utils/api.js";
 import routes from "../routes.js";
+import useAffiliateID from "../utils/useAffiliateID.js";
+
+import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 const Auth = () => {
   const location = useLocation();
@@ -18,6 +17,7 @@ const Auth = () => {
   const [logoImg, setLogoImg] = useState(iniLogoImg);
   const [brand, setBrand] = useState("Oripa");
   const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [affId, setAffId] = useState(null);
 
   useEffect(() => {
     document.body.classList.add("bg-default");
@@ -49,6 +49,13 @@ const Auth = () => {
       localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
     }
   };
+
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {
+    setAffId(affiliateID);
+    // Here, you can call your API or any other logic
+  };
+  useAffiliateID(handleAffiliateID);
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100">

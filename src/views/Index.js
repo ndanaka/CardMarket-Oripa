@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import api from "../utils/api";
 import { setAuthToken } from "../utils/setHeader";
 import { showToast } from "../utils/toastUtil";
-import useAffiliateID from "../utils/useAffiliateID";
 
 import GachaModal from "../components/Modals/GachaModal";
 import PrizeCard from "../components/Others/PrizeCard";
@@ -43,10 +42,6 @@ const Index = () => {
   const [lastEffect, setLastEffect] = useState(false);
   const lang = i18n.language;
   const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
-
-  // check the URL parameters on page load to see if the affiliate ID is present.
-  const handleAffiliateID = (affiliateID) => {};
-  useAffiliateID(handleAffiliateID);
 
   useEffect(() => {
     getCategory();

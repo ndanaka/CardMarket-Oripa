@@ -5,7 +5,6 @@ import { CardBody, FormGroup, Form, Input, InputGroup } from "reactstrap";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
-import useAffiliateID from "../../utils/useAffiliateID";
 
 import EmailVerification from "../../components/Others/EamilVerification";
 
@@ -14,7 +13,6 @@ const Register = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
-  const [affId, setAffId] = useState(null);
   const [checkTerms, setCheckTerms] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -28,13 +26,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  // check the URL parameters on page load to see if the affiliate ID is present.
-  const handleAffiliateID = (affiliateID) => {
-    setAffId(affiliateID);
-    // Here, you can call your API or any other logic
-  };
-  useAffiliateID(handleAffiliateID);
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
@@ -63,25 +54,23 @@ const Register = () => {
     handleSubmit();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isFormValidate()) return;
     if (!checkTerms) {
       showToast(t("termsWarnning"), "error");
       return;
     }
-    formData.affId = affId;
 
-    api
-      .post("/user/register", formData)
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t(res.data.msg, "success"));
-          navigate("/auth/login");
-        } else showToast(t(res.data.msg), "error");
-      })
-      .catch((error) => {
-        error = new Error();
-      });
+    const affId = localStorage.getItem("affId");
+    if (affId) formData.affId = affId;
+
+    const res = await api.post("/user/register", formData);
+    if (res.data.status === 1) {
+      showToast(t(res.data.msg, "success"));
+      navigate("/auth/login");
+      localStorage.removeItem("affId");
+      localStorage.removeItem("first");
+    } else showToast(t(res.data.msg), "error");
   };
 
   const checkPasswordStrength = (password) => {
