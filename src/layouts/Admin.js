@@ -14,6 +14,7 @@ import ScrollToTop from "../components/Others/ScrollTop.js";
 
 import routes from "../routes.js";
 import usePersistedUser from "../store/usePersistedUser.js";
+import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
 const Admin = (props) => {
   const mainContent = useRef(null);
@@ -21,6 +22,7 @@ const Admin = (props) => {
   const location = useLocation();
   const [user] = usePersistedUser();
   const navigate = useNavigate();
+  const {isLoggedOut} = useAxiosInterceptor(); 
 
   const [, setShow] = useState(false);
 
@@ -29,6 +31,7 @@ const Admin = (props) => {
   }, []);
 
   useEffect(() => {
+    if (isLoggedOut) navigate("/auth/login");
     if (user?.role !== "admin") navigate("/user/index");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
