@@ -11,6 +11,7 @@ import "../src/utils/i18next.js"; // Import i18n configuration
 
 export default function App() {
   useEffect(() => {
+    localStorage.setItem("bgColor", "#e50e0e");
     initializeToast();
   });
 

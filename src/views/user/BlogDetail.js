@@ -34,7 +34,7 @@ const BlogDetail = () => {
 
   const getThemeData = async () => {
     const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1) {
+    if (res.data.status === 1 && res.data.theme.bgColor) {
       setBgColor(res.data.theme.bgColor);
       localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
     }
