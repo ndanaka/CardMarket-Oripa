@@ -311,6 +311,7 @@ i18n.use(initReactI18next).init({
         selectShipAddr: "Please select shipping address.",
         carousel: "Carousel",
         link: "Link",
+        noadmin: "There is no admin.",
       },
     },
     jp: {
@@ -622,6 +623,7 @@ i18n.use(initReactI18next).init({
         carousel: "カルーセル",
         link: "リンク",
         noCarousel: "キャルーセルがありません",
+        noadmin: "管理者はいません。",
       },
     },
     ch1: {
@@ -928,6 +930,7 @@ i18n.use(initReactI18next).init({
         carousel: "轮播",
         link: "链接",
         noCarousel: "没有轮播",
+        noadmin: "没有管理员",
       },
     },
     ch2: {
@@ -1214,6 +1217,7 @@ i18n.use(initReactI18next).init({
         carousel: "輪播",
         link: "連結",
         noCarousel: "沒有輪播",
+        noadmin: "沒有管理員",
       },
     },
     vn: {
@@ -1527,6 +1531,7 @@ i18n.use(initReactI18next).init({
         carousel: "Băng chuyền",
         link: "Liên kết",
         noCarousel: "Không có băng chuyền",
+        noadmin: "Không có quản trị viên.",
       },
     },
   },
