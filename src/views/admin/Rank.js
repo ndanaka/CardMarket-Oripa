@@ -84,12 +84,17 @@ function Rank() {
     setMultipart();
     setAuthToken();
 
+    console.log(formData);
+
     if (formData.name.trim() === "") {
       showToast(
         `${t("rank") + " " + t("name") + " " + t("isRequired")}`,
         "error"
       );
-    } else if (!formData.last && formData.end_amount <= formData.start_amount) {
+    } else if (
+      !formData.last &&
+      parseInt(formData.end_amount) <= parseInt(formData.start_amount)
+    ) {
       showToast(t("rankAmountinvalid"), "error");
     } else if (
       cuflag === 1 &&
@@ -137,6 +142,7 @@ function Rank() {
       bonus: ranks[i].bonus,
       start_amount: ranks[i].start_amount,
       end_amount: ranks[i].end_amount,
+      last: ranks[i].last,
     });
     setCuFlag(0); //set create/update flag as updating
     setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + ranks[i].img_url);
