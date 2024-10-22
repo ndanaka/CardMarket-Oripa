@@ -29,7 +29,7 @@ const Admin = (props) => {
   }, []);
 
   useEffect(() => {
-    if (user?.role !== "admin") navigate("/user/index");
+    user?.role ? navigate("/admin/index") : navigate("/user/index");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;

@@ -10,6 +10,7 @@ import {
 import api from "../utils/api.js";
 import routes from "../routes.js";
 import usePersistedUser from "../store/usePersistedUser.js";
+import useAffiliateID from "../utils/useAffiliateID.js";
 
 // core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
@@ -26,14 +27,13 @@ const UserLayout = (props) => {
 
   const [logoImg, setLogoImg] = useState(iniLogoImg);
   const [brand, setBrand] = useState("Oripa");
+  const [affId, setAffId] = useState("");
   const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
   const [, setShow] = useState(false);
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("token") || !user) {
-      navigate("/user/index");
-    }
+    user?.role ? navigate("/admin/index") : navigate("/user/index");
     window.addEventListener("scroll", handleScroll);
   }, []);
 
@@ -100,6 +100,13 @@ const UserLayout = (props) => {
     }
     return "Brand";
   };
+
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {
+    setAffId(affiliateID);
+    // Here, you can call your API or any other logic
+  };
+  useAffiliateID(handleAffiliateID);
 
   return (
     <div className="flex flex-col h-auto min-h-screen" ref={mainContent}>
