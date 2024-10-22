@@ -5,11 +5,14 @@
 body {
   width: 100vw;
   height: 100vh;
+  overflow: hidden; /* Prevent body overflow */
 }
 
 #root {
   width: 100%;
   height: 100%;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 th,
 td {
