@@ -312,6 +312,7 @@ i18n.use(initReactI18next).init({
         carousel: "Carousel",
         link: "Link",
         noadmin: "There is no admin.",
+        noCarousel: "There is no carousel.",
       },
     },
     jp: {
