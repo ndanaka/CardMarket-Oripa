@@ -11,6 +11,7 @@ import api from "../utils/api.js";
 import routes from "../routes.js";
 import usePersistedUser from "../store/usePersistedUser.js";
 import useAffiliateID from "../utils/useAffiliateID.js";
+import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
 // core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
@@ -20,6 +21,7 @@ import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 const UserLayout = (props) => {
   const mainContent = useRef(null);
+  const {isLoggedOut} = useAxiosInterceptor(); 
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ const UserLayout = (props) => {
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
   useEffect(() => {
+    if (isLoggedOut) navigate("/auth/login");
     if (user?.role === "admin") navigate("/admin/index");
     window.addEventListener("scroll", handleScroll);
   }, []);
