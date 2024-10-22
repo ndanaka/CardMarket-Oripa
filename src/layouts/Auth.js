@@ -55,11 +55,16 @@ const Auth = () => {
 
   const getThemeData = async () => {
     const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1) {
-      setBrand(res.data.theme.brand);
-      setBgColor(res.data.theme.bgColor);
-      setLogoImg(process.env.REACT_APP_SERVER_ADDRESS + res.data.theme.logoUrl);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+    if (res.data.status === 1 && res.data.theme) {
+      if (res.data.theme.bgColor) {
+        setBgColor(res.data.theme.bgColor);
+        localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+      }
+      if (res.data.theme.logoUrl) {
+        setLogoImg(
+          process.env.REACT_APP_SERVER_ADDRESS + res.data.theme.logoUrl
+        );
+      }
     }
   };
 

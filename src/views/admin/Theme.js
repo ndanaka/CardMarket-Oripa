@@ -71,7 +71,7 @@ function Theme() {
         showToast(t("successChanged"), "success");
         cancelLogo();
       } else {
-        showToast(t("failedChanged"), "error");
+        showToast(t("failedReq"), "error");
       }
     } catch (error) {
       showToast(t("failedReq", "error"));
@@ -95,7 +95,7 @@ function Theme() {
         showToast(t("successChanged"), "success");
         cancelLogo();
       } else {
-        showToast(t("failedChanged"), "error");
+        showToast(t("failedReq"), "error");
       }
     } catch (error) {
       showToast(t("failedReq", "error"));
@@ -115,7 +115,7 @@ function Theme() {
         showToast(t("successChanged"), "success");
         cancelLogo();
       } else {
-        showToast(t("failedChanged"), "error");
+        showToast(t("failedReq"), "error");
       }
     } catch (error) {
       showToast(t("failedReq", "error"));
