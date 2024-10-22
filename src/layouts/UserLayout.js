@@ -33,7 +33,7 @@ const UserLayout = (props) => {
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
   useEffect(() => {
-    user?.role ? navigate("/admin/index") : navigate("/user/index");
+    if (user?.role === "admin") navigate("/admin/index");
     window.addEventListener("scroll", handleScroll);
   }, []);
 
