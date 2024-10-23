@@ -46,7 +46,7 @@ const GachaEdit = () => {
         setGacha(res.data.gacha[0]);
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 
@@ -154,7 +154,7 @@ const GachaEdit = () => {
             showToast(t(res.data.msg), "error");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => showToast(err, "error"));
     }
   };
 
@@ -230,7 +230,7 @@ const GachaEdit = () => {
         showToast(t("failedSet"), "error");
       }
     } catch (error) {
-      console.log(error);
+      showToast(error, "error");
     }
   };
 

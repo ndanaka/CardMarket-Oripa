@@ -52,7 +52,7 @@ function Point() {
       .then((res) => {
         if (res.data.status === 1) {
           setPoints(res.data.points);
-        } else console.log("getPoint Error---->", res.data.err);
+        }
       })
       .catch((err) => console.error(err));
   };

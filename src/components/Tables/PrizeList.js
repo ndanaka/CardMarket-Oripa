@@ -46,7 +46,7 @@ function PrizeList({
         }
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 
@@ -84,7 +84,7 @@ function PrizeList({
         }
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 

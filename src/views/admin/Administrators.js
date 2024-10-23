@@ -37,7 +37,7 @@ function Administrators() {
           setAuthority(res.data.adminList[0].authority);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   //handle add/update adminList
@@ -73,7 +73,7 @@ function Administrators() {
           getAdminList();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   // Delete admin
@@ -113,7 +113,7 @@ function Administrators() {
           setAdminId("");
         } else showToast(t("failedSaved"), "error");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   return (

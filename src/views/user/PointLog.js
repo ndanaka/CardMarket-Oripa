@@ -7,6 +7,7 @@ import { setAuthToken } from "../../utils/setHeader";
 import SubHeader from "../../components/Forms/SubHeader";
 import Pointlog from "../../components/Others/Pointlog";
 import { useTranslation } from "react-i18next";
+import { showToast } from "../../utils/toastUtil";
 
 function PointLog() {
   const [user, setUser] = usePersistedUser();
@@ -24,7 +25,7 @@ function PointLog() {
       .then((res) => {
         if (res.data.status === 1) setPointLog(res.data.pointLog);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   return (

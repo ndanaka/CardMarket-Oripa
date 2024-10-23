@@ -58,7 +58,7 @@ const Profile = () => {
       const res = await api.get(`/user/get_user/${user?._id}`);
       if (res.data.status === 1) setUserData(res.data.user);
     } catch (error) {
-      console.log(error);
+      showToast(error, "error");
     }
   };
 
@@ -118,7 +118,7 @@ const Profile = () => {
       const res = await api.post("/user/withdraw_user/", { user_id: user._id });
       if (res.data.status === 1) logout();
     } catch (error) {
-      console.log(error);
+      showToast(error, "error");
     }
   };
   const logout = () => {

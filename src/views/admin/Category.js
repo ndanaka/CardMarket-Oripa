@@ -113,7 +113,7 @@ function Category() {
         } else showToast(t(res.data.msg), "error");
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 

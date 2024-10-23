@@ -26,7 +26,7 @@ function Delivering() {
       .then((res) => {
         if (res.data.status === 1) setDeliverData(res.data.deliverData);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   const handleSetStatus = (i) => {
@@ -50,7 +50,7 @@ function Delivering() {
             getDeliverData();
           } else showToast(t("failedAdd"), "error");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => showToast(err, "error"));
     }
   };
 

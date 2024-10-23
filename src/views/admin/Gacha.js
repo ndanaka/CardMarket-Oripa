@@ -158,7 +158,7 @@ function Gacha() {
         if (res.data.status === 1) setGacha(res.data.gachaList);
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 
@@ -188,7 +188,7 @@ function Gacha() {
         } else showToast(t("failedDeleted", "error"));
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 

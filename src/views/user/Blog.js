@@ -50,7 +50,7 @@ const Blog = () => {
           showToast(t(res.data.msg), "error");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   return (

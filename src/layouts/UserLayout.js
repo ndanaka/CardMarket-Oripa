@@ -29,37 +29,19 @@ const UserLayout = (props) => {
 
   const [logoImg, setLogoImg] = useState(iniLogoImg);
   const [brand, setBrand] = useState("Oripa");
-  const [bgColor, setBgColor] = useState("");
   const [affId, setAffId] = useState("");
   const [, setShow] = useState(false);
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
   useEffect(() => {
-    if (isLoggedOut) navigate("/auth/login");
-    if (user?.role === "admin") navigate("/admin/index");
     window.addEventListener("scroll", handleScroll);
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    mainContent.current.scrollTop = 0;
-    getThemeData();
-  }, [location]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
+    if (mainContent.current) mainContent.current.scrollTop = 0;
+  }, [isLoggedOut, user, navigate]);
 
   let flagShow = false;
   const handleScroll = () => {
