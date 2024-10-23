@@ -27,10 +27,30 @@ const UserLayout = (props) => {
   const [affId, setAffId] = useState("");
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
+  // check the URL parameters on page load to see if the affiliate ID is present.
+  const handleAffiliateID = (affiliateID) => {
+    setAffId(affiliateID);
+    // Here, you can call your API or any other logic
+  };
+  useAffiliateID(handleAffiliateID);
+
+  // Add state to track if navigation is in progress
+  const [isNavigating, setIsNavigating] = useState(false);
+
   useEffect(() => {
-    if (isLoggedOut) navigate("/auth/login");
-    if (user?.role === "admin") navigate("/admin/index");
-  }, []);
+    if (isLoggedOut) {
+      setIsNavigating(true); // Prevent rendering the layout when navigating
+      navigate("/auth/login");
+    } else if (user?.role === "admin") {
+      setIsNavigating(true); // Prevent rendering the layout when navigating
+      navigate("/admin/index");
+    }
+  }, [isLoggedOut, user, navigate]);
+
+  // Stop rendering UserLayout if navigation is in progress
+  if (isNavigating || user?.role === "admin") {
+    return null; // Return null to prevent rendering UserNavbar and other elements
+  }
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -66,13 +86,6 @@ const UserLayout = (props) => {
     }
     return "Brand";
   };
-
-  // check the URL parameters on page load to see if the affiliate ID is present.
-  const handleAffiliateID = (affiliateID) => {
-    setAffId(affiliateID);
-    // Here, you can call your API or any other logic
-  };
-  useAffiliateID(handleAffiliateID);
 
   return (
     <div className="flex flex-col h-auto min-h-screen">
