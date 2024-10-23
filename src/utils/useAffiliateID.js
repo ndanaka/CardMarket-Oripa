@@ -20,9 +20,7 @@ const useAffiliateID = (callback) => {
           if (res.data.status === 1) {
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
 
     callback(affiliateID); // Call the provided callback function

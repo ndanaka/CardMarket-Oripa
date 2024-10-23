@@ -92,7 +92,7 @@ function PurchasePoint() {
       const res = await api.get("/admin/get_point");
       setPoints(res.data.points);
     } catch (error) {
-      console.log(error);
+      showToast(error, "error");
     }
   };
 
@@ -129,7 +129,7 @@ function PurchasePoint() {
         updateUserData();
       } else showToast(t(res.data.msg), "error");
     } catch (error) {
-      console.log(error);
+      showToast(error, "error");
     }
   };
 

@@ -82,7 +82,7 @@ function UserDelivery() {
         updateUserData();
       }
     } catch (error) {
-      console.log(error);
+      showToast(error, "error");
     }
   };
 
@@ -99,7 +99,7 @@ function UserDelivery() {
           showToast(t(res.data.msg), "success");
         } else showToast(t(res.data.msg), "error");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   return (

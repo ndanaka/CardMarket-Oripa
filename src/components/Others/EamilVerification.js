@@ -17,7 +17,7 @@ const EmailVerification = ({ email, password, setIsEmailVerifyPanel }) => {
         if (res.data.status === 1) showToast("Email send success.");
         else showToast("Email send Failed");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   return (

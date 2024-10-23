@@ -37,35 +37,13 @@ function GachaDetail() {
   const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
-    getGacha();
-  }, [showCardFlag]);
-
-  useEffect(() => {
     getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
+    getGacha();
+  }, [bgColor, showCardFlag]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-
-    // Cleanup listener on unmount
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollY]); // Dependency array includes lastScrollY
+  }, []);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -88,6 +66,20 @@ function GachaDetail() {
 
     // Update last scroll position
     setLastScrollY(currentScrollY);
+  };
+
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+    if (res.data.status === 1 && res.data.theme) {
+      if (res.data.theme.bgColor) {
+        setBgColor(res.data.theme.bgColor);
+        localStorage.setItem("bgColor", res.data.theme.bgColor);
+      } else {
+        setBgColor("#e50e0e");
+      }
+    } else {
+      setBgColor("#e50e0e");
+    }
   };
 
   // update user data and update localstorage
@@ -250,178 +242,174 @@ function GachaDetail() {
   };
 
   return (
-    <div className="flex flex-grow">
+    <div className="mx-auto" ref={mainContent}>
       <div
-        className="w-full md:w-[500px] md:mx-2 mt-15 mx-auto"
-        ref={mainContent}
+        className={`w-full xxsm:w-[500px] fixed top-0 ${blur} transition-all duration-100 bg-gray-800 h-screen h-[calc(100vh-160px)] shadow-md shadow-gray-400 mt-[66px] mx-auto bg-black`}
       >
-        <div className="m-auto">
-          <div className="fixed top-0">
-            <div
-              className={`h-screen ${blur} transition-all duration-100 bg-gray-800 h-[calc(100vh-160px)] mt-[62px] w-full md:w-[500px] shadow-md shadow-gray-400 mx-auto bg-black`}
-            >
-              {gacha ? (
-                <img
-                  src={
-                    process.env.REACT_APP_SERVER_ADDRESS +
-                    gacha.gacha_thumnail_url
-                  }
-                  alt="gacha thumnail"
-                  className="mx-auto w-full md:w-[500px] object-contain"
-                />
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-          <div
-            className="relative pt-10 pb-48 mt-[calc(100vh-100px)] z-10 bg-[#f3f4f6]"
-            style={{ boxShadow: "10px 10px 100px 0px rgba(0, 0, 0, 0.6)" }}
-          >
-            {gacha?.remain_prizes?.length > 0 &&
-              (firstPrizes?.length > 0
-                ? drawGradePrizes(firstPrizes, "first")
-                : "")}
-            {gacha?.remain_prizes?.length > 0 &&
-              (secondPrizes?.length > 0
-                ? drawGradePrizes(secondPrizes, "second")
-                : "")}
-            {gacha?.remain_prizes?.length > 0 &&
-              (thirdPrizes?.length > 0
-                ? drawGradePrizes(thirdPrizes, "third")
-                : "")}
-            {gacha?.remain_prizes?.length > 0 &&
-              (fourthPrizes?.length > 0
-                ? drawGradePrizes(fourthPrizes, "fourth")
-                : "")}
-            {gacha?.remain_prizes?.length === 0 && (
-              <div className="py-2 text-center text-lg font-bold">
-                {t("noprize")}
-              </div>
-            )}
-            {gacha?.last_prize ? (
-              <div>
-                <div className="my-2 text-3xl text-center font-bold">
-                  {t("last") + " " + t("prize")}
-                </div>
-                <div className="flex flex-wrap justify-center items-stretch">
-                  <PrizeCard
-                    name={gacha.last_prize?.name}
-                    rarity={gacha.last_prize?.rarity}
-                    cashback={gacha.last_prize?.cashback}
-                    img_url={gacha.last_prize?.img_url}
-                  />
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className="z-30 w-full md:w-[500px] fixed bottom-[65px] flex flex-col items-center text-center px-20 pb-2">
-            <GachaPriceLabel price={gacha?.price} />
-            <Progressbar
-              progress={progress}
-              label={
-                gacha?.remain_prizes.length +
-                (gacha?.last_prize ? 1 : 0) +
-                " / " +
-                gacha?.total_number
-              }
-            />
-          </div>
-          <div className="z-20 w-full md:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]">
-            <div
-              className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
-              onClick={() => {
-                drawGacha(gacha, 1);
-              }}
-              style={{ backgroundColor: bgColor }}
-            >
-              1 {t("draw")}
-            </div>
-            <div
-              className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
-              onClick={() => {
-                drawGacha(gacha, 10);
-              }}
-              style={{ backgroundColor: bgColor }}
-            >
-              10 {t("draws")}
-            </div>
-          </div>
-        </div>
-        <div
-          className={`flex flex-wrap justify-center items-center z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
-            showCardFlag ? "" : "hidden"
-          } `}
-        >
-          <div className="relative h-fit flex flex-wrap w-full md:w-4/5 lg:w-3/5 xl:w-2/5 py-10">
-            <div className="absolute top-0 right-0 text-gray-200 text-3xl">
-              <i
-                className="fa fa-close cursor-pointer"
-                onClick={() => setShowCardFlag(false)}
-              ></i>
-            </div>
-            {popedPrizes?.map((prize, i) => (
-              <div
-                key={i}
-                className="rounded-lg animate-[animatezoom_1s_ease-in-out] mx-auto"
-              >
-                <PrizeCard
-                  index={i}
-                  prizeType={prize.type}
-                  lastEffect={prize.last_effect}
-                  name={prize.name}
-                  rarity={prize.rarity}
-                  cashback={prize.cashback}
-                  img_url={prize.img_url}
-                />
-              </div>
-            ))}
-            <div
-              className={`${
-                lastEffect && existLastFlag ? "" : "hidden"
-              } absolute top-[20%] w-full flex justify-center items-center`}
-            >
-              <div className="bg-white text-center rounded-lg p-4 shadow-xl">
-                <h2 className="text-3xl font-bold text-pink-500 ">
-                  🎉 {t("wonLast")} 🎉
-                </h2>
-                <p className="text-md mt-4 text-gray-700">{t("wonDesc")}</p>
-                <div className="mt-6">
-                  <button
-                    className="bg-pink-500 hover:bg-pink-600 text-white py-1 px-3 rounded-lg"
-                    onClick={() => setExistLastFlag(false)}
-                  >
-                    {t("wonConfirm")}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {selGacha?.length > 0 ? (
-          <GachaModal
-            headerText={t("drawGacha")}
-            name={selGacha[0].name}
-            price={selGacha[0].price}
-            draws={selGacha[1]}
-            onDraw={submitDrawGacha}
-            isOpen={isOpenGachaModal}
-            setIsOpen={setIsOpenGachaModal}
+        {gacha ? (
+          <img
+            src={
+              process.env.REACT_APP_SERVER_ADDRESS + gacha.gacha_thumnail_url
+            }
+            alt="gacha thumnail"
+            className="mx-auto object-contain"
           />
-        ) : null}
-
-        <NotEnoughPoints
-          headerText={t("noEnoughPoints")}
-          bodyText={t("noEnoughPointsDesc")}
-          okBtnClick={() => navigate("/user/pur-point")}
-          isOpen={isOpenPointModal}
-          setIsOpen={setIsOpenPointModal}
-          bgColor={bgColor}
+        ) : (
+          ""
+        )}
+      </div>
+      <div
+        className="w-full xxsm:w-[500px] relative pb-48 mt-[calc(100vh-100px)] z-10 bg-[#f3f4f6]"
+        style={{ boxShadow: "10px 10px 100px 0px rgba(0, 0, 0, 0.6)" }}
+      >
+        <div className="flex flex-wrap py-3 justify-center items-center">
+          <div className="border border-1 h-[2px] w-[10%] border-black mx-3"></div>
+          <p className="font-bold text-center text-3xl">
+            {t("prize") + " " + t("list")}
+          </p>
+          <div className="border border-1 h-[2px] w-[10%] border-black mx-3"></div>
+        </div>
+        <hr className="my-2 text-sm mx-auto"></hr>
+        {gacha?.remain_prizes?.length > 0 &&
+          (firstPrizes?.length > 0
+            ? drawGradePrizes(firstPrizes, "first")
+            : "")}
+        {gacha?.remain_prizes?.length > 0 &&
+          (secondPrizes?.length > 0
+            ? drawGradePrizes(secondPrizes, "second")
+            : "")}
+        {gacha?.remain_prizes?.length > 0 &&
+          (thirdPrizes?.length > 0
+            ? drawGradePrizes(thirdPrizes, "third")
+            : "")}
+        {gacha?.remain_prizes?.length > 0 &&
+          (fourthPrizes?.length > 0
+            ? drawGradePrizes(fourthPrizes, "fourth")
+            : "")}
+        {gacha?.remain_prizes?.length === 0 && (
+          <div className="py-2 text-center text-lg font-bold">
+            {t("noprize")}
+          </div>
+        )}
+        {gacha?.last_prize ? (
+          <div>
+            <div className="my-2 text-3xl text-center font-bold">
+              {t("last") + " " + t("prize")}
+            </div>
+            <div className="flex flex-wrap justify-center items-stretch">
+              <PrizeCard
+                name={gacha.last_prize?.name}
+                rarity={gacha.last_prize?.rarity}
+                cashback={gacha.last_prize?.cashback}
+                img_url={gacha.last_prize?.img_url}
+              />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="z-30 w-full xxsm:w-[500px] fixed bottom-[65px] flex flex-col items-center text-center px-20 pb-2">
+        <GachaPriceLabel price={gacha?.price} />
+        <Progressbar
+          progress={progress}
+          label={
+            gacha?.remain_prizes.length +
+            (gacha?.last_prize ? 1 : 0) +
+            " / " +
+            gacha?.total_number
+          }
         />
       </div>
+      <div className="z-20 w-full xxsm:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]">
+        <div
+          className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
+          onClick={() => {
+            drawGacha(gacha, 1);
+          }}
+          style={{ backgroundColor: bgColor }}
+        >
+          1 {t("draw")}
+        </div>
+        <div
+          className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
+          onClick={() => {
+            drawGacha(gacha, 10);
+          }}
+          style={{ backgroundColor: bgColor }}
+        >
+          10 {t("draws")}
+        </div>
+      </div>
+      <div
+        className={`flex flex-wrap justify-center items-center z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
+          showCardFlag ? "" : "hidden"
+        } `}
+      >
+        <div className="relative h-fit flex flex-wrap w-full md:w-4/5 lg:w-3/5 xl:w-2/5 py-10">
+          <div className="absolute top-0 right-0 text-gray-200 text-3xl">
+            <i
+              className="fa fa-close cursor-pointer"
+              onClick={() => setShowCardFlag(false)}
+            ></i>
+          </div>
+          {popedPrizes?.map((prize, i) => (
+            <div
+              key={i}
+              className="rounded-lg animate-[animatezoom_1s_ease-in-out] mx-auto"
+            >
+              <PrizeCard
+                index={i}
+                prizeType={prize.type}
+                lastEffect={prize.last_effect}
+                name={prize.name}
+                rarity={prize.rarity}
+                cashback={prize.cashback}
+                img_url={prize.img_url}
+              />
+            </div>
+          ))}
+          <div
+            className={`${
+              lastEffect && existLastFlag ? "" : "hidden"
+            } absolute top-[20%] w-full flex justify-center items-center`}
+          >
+            <div className="bg-white text-center rounded-lg p-4 shadow-xl">
+              <h2 className="text-3xl font-bold text-pink-500 ">
+                🎉 {t("wonLast")} 🎉
+              </h2>
+              <p className="text-md mt-4 text-gray-700">{t("wonDesc")}</p>
+              <div className="mt-6">
+                <button
+                  className="bg-pink-500 hover:bg-pink-600 text-white py-1 px-3 rounded-lg"
+                  onClick={() => setExistLastFlag(false)}
+                >
+                  {t("wonConfirm")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {selGacha?.length > 0 ? (
+        <GachaModal
+          headerText={t("drawGacha")}
+          name={selGacha[0].name}
+          price={selGacha[0].price}
+          draws={selGacha[1]}
+          onDraw={submitDrawGacha}
+          isOpen={isOpenGachaModal}
+          setIsOpen={setIsOpenGachaModal}
+        />
+      ) : null}
+      <NotEnoughPoints
+        headerText={t("noEnoughPoints")}
+        bodyText={t("noEnoughPointsDesc")}
+        okBtnClick={() => navigate("/user/pur-point")}
+        isOpen={isOpenPointModal}
+        setIsOpen={setIsOpenPointModal}
+        bgColor={bgColor}
+      />
     </div>
   );
 }

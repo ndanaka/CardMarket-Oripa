@@ -8,6 +8,7 @@ import formatPrice from "../../utils/formatPrice";
 
 import Label from "../../components/Forms/Label";
 import GroupHeader from "../../components/Forms/GroupHeader";
+import { showToast } from "../../utils/toastUtil";
 
 function UserDetail() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function UserDetail() {
       .then((res) => {
         if (res.data.status === 1) setUser(res.data.user);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   const getPointLog = () => {

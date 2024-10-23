@@ -48,7 +48,7 @@ function Carousel() {
     const res = await api.get("/admin/get_carousels");
     if (res.data.status === 1) {
       setCarousels(res.data.carousels);
-    } else console.log("getCarousels Error---->", res.data.err);
+    }
   };
 
   const handleImageChange = (event) => {

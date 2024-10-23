@@ -158,7 +158,7 @@ const Index = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 
@@ -173,7 +173,7 @@ const Index = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        showToast(err, "error");
       });
   };
 
@@ -332,7 +332,7 @@ const Index = () => {
           }
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => showToast(err, "error"));
   };
 
   return (
@@ -441,7 +441,7 @@ const Index = () => {
           ) : (
             filteredGacha.map((data, i) => (
               <div
-                className="w-full xxsm:w-[80%] md:w-[60%] lg:w-1/2 mx-auto p-2 p-1"
+                className="w-full xsm:w-[70%] xxsm:w-[60%] md:w-[50%] mx-auto p-2 p-1"
                 key={i}
               >
                 <div className="p-2 flex flex-col justify-between border-2 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
@@ -465,7 +465,7 @@ const Index = () => {
                         process.env.REACT_APP_SERVER_ADDRESS +
                         data.gacha_thumnail_url
                       }
-                      className="rounded-t h-[200px] xsm:h-[90%] xxsm:h-[80%] md:h-[60%] lg:h-1/2 w-full object-cover"
+                      className="rounded-t h-[200px] xsm:h-[243px] xxsm:h-[276px] md:h-[300px] w-full object-cover"
                       alt=""
                     />
                     <div className="w-full h-[35px]">

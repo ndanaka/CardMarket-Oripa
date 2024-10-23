@@ -48,7 +48,7 @@ function Rank() {
       .then((res) => {
         if (res.data.status === 1) {
           setRanks(res.data.ranks);
-        } else console.log("getRanks Error---->", res.data.err);
+        }
       })
       .catch((err) => console.error(err));
   };
@@ -83,8 +83,6 @@ function Rank() {
 
     setMultipart();
     setAuthToken();
-
-    console.log(formData);
 
     if (formData.name.trim() === "") {
       showToast(
