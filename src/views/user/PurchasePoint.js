@@ -32,7 +32,7 @@ function PurchasePoint() {
   const [, setSelId] = useState(0);
   // Test version
   const [payPrice, setPayPrice] = useState(0);
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function PurchasePoint() {
   useEffect(() => {
     setAuthToken();
     getPoints();
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
 
     // google pay settings
     // const script = document.createElement("script");
@@ -49,14 +49,6 @@ function PurchasePoint() {
     // script.onload = onGooglePayLoaded;
     // document.body.appendChild(script);
   }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   const updateUserData = async () => {
     setAuthToken();

@@ -3,24 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
 import { useTranslation } from "react-i18next";
 
-import api from "../../utils/api";
-
 const Footer = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   return (
     <div

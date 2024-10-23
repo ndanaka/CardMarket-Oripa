@@ -63,13 +63,15 @@ function Gacha() {
   //handle image file select change
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
-    setFormData({ ...formData, file: file });
-    const reader = new FileReader();
+    if (file !== undefined) {
+      setFormData({ ...formData, file: file });
+      const reader = new FileReader();
 
-    reader.onload = (e) => {
-      setImgUrl(e.target.result);
-    };
-    reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setImgUrl(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const toGachaDetail = (gachaId) => {
@@ -275,16 +277,15 @@ function Gacha() {
           </div>
           <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
             <label htmlFor="fileInput" className="text-gray-700 p-1">
-              {t("image")}
+              {t("gacha") + " " + t("image")}
             </label>
             <input
               name="fileInput"
               type="file"
               id="fileInput"
+              ref={fileInputRef}
               className="image p-1 w-full form-control"
               onChange={handleFileInputChange}
-              value={formData.imgUrl}
-              ref={fileInputRef}
               autoComplete="name"
             ></input>
             <img

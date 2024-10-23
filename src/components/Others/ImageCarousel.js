@@ -26,37 +26,33 @@ function ImageCarousel() {
   };
 
   return (
-    <div className="">
-      <Swiper
-        navigation={{
-          nextEl: ".swiper-button-next-ex2",
-          prevEl: ".swiper-button-prev-ex2",
-        }}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 2000 }}
-        className="swiper max-w-sm mx-auto mb-5"
-        id="slider2"
-        key={"true"}
-      >
-        <div className="swiper-wrapper">
-          {carousels?.map((carousel, i) => {
-            return (
-              <SwiperSlide key={i}>
-                <a href={carousel.link} target="_blank">
-                  <img
-                    src={
-                      process.env.REACT_APP_SERVER_ADDRESS + carousel.img_url
-                    }
-                    className="w-full max-h-80 object-cover rounded-lg cursor-pointer bg-blend-lighten hover:opacity-50"
-                    alt="carouselImage"
-                  />
-                </a>
-              </SwiperSlide>
-            );
-          })}
-        </div>
-      </Swiper>
-    </div>
+    <Swiper
+      navigation={{
+        nextEl: ".swiper-button-next-ex2",
+        prevEl: ".swiper-button-prev-ex2",
+      }}
+      pagination={{ clickable: true }}
+      autoplay={{ delay: 2000 }}
+      className="swiper max-w-sm mx-auto my-2"
+      id="slider2"
+      key={"true"}
+    >
+      <div className="swiper-wrapper">
+        {carousels?.map((carousel, i) => {
+          return (
+            <SwiperSlide key={i}>
+              <a href={carousel.link} target="_blank">
+                <img
+                  src={process.env.REACT_APP_SERVER_ADDRESS + carousel.img_url}
+                  className="w-full max-h-80 object-cover rounded-lg cursor-pointer bg-blend-lighten hover:opacity-50"
+                  alt="carouselImage"
+                />
+              </a>
+            </SwiperSlide>
+          );
+        })}
+      </div>
+    </Swiper>
   );
 }
 

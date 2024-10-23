@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,6 @@ import { showToast } from "../../utils/toastUtil";
 const UserNavbar = ({
   logoImg,
   brand,
-  bgColor,
   isOpenToggleMenu,
   setIsOpenToggleMenu,
 }) => {
@@ -26,9 +25,11 @@ const UserNavbar = ({
   const navigate = useNavigate();
 
   const [user, setUser] = usePersistedUser();
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     updateUserData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, [location]);
 
   const updateUserData = async () => {

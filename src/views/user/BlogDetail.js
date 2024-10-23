@@ -18,7 +18,7 @@ const BlogDetail = () => {
   const { blog } = location.state || {};
   const [comments, setComments] = useState();
   const [showErrMessage, setShowErrMessage] = useState(false);
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   const [formData, setFormData] = useState({
     content: "",
@@ -29,16 +29,8 @@ const BlogDetail = () => {
   useEffect(() => {
     setAuthToken();
     getBlogDetail(blog._id);
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   const getBlogDetail = async (blogId) => {
     api

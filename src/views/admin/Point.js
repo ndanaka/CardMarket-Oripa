@@ -7,7 +7,6 @@ import { setMultipart, removeMultipart } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 import usePersistedUser from "../../store/usePersistedUser";
 
-import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
 

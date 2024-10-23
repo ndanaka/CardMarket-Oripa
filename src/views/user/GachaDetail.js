@@ -34,11 +34,11 @@ function GachaDetail() {
   const [showCardFlag, setShowCardFlag] = useState();
   const [existLastFlag, setExistLastFlag] = useState(false);
   const [lastEffect, setLastEffect] = useState(false);
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     getGacha();
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, [showCardFlag]);
 
   useEffect(() => {
@@ -49,14 +49,6 @@ function GachaDetail() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [lastScrollY]); // Dependency array includes lastScrollY
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;

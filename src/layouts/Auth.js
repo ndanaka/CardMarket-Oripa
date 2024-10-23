@@ -25,7 +25,7 @@ const Auth = () => {
 
   const [logoImg, setLogoImg] = useState(iniLogoImg);
   const [brand, setBrand] = useState("Oripa");
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
   const [affId, setAffId] = useState(null);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const Auth = () => {
     if (res.data.status === 1 && res.data.theme) {
       if (res.data.theme.bgColor) {
         setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+        localStorage.setItem("bgColor", res.data.theme.bgColor);
       }
       if (res.data.theme.logoUrl) {
         setLogoImg(
@@ -77,7 +77,7 @@ const Auth = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <AuthNavbar logoImg={logoImg} brand={brand} bgColor={bgColor} />
+      <AuthNavbar logoImg={logoImg} brand={brand} />
       <Container className="flex-grow bg-[#f3f4f6] py-3 mx-auto md:w-3/5 lg:w-2/5 mt-16">
         <Routes>
           {getRoutes(routes)}

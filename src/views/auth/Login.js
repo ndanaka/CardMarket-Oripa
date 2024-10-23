@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FormGroup, Form, Input, InputGroup } from "reactstrap";
@@ -19,12 +19,16 @@ const Login = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
-  const [affId, setAffId] = useState(null);
+  const [bgColor, setBgColor] = useState("");
 
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  useEffect(() => {
+    setBgColor(localStorage.getItem("bgColor"));
+  }, []);
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
@@ -147,9 +151,10 @@ const Login = () => {
               </FormGroup>
               <div className="flex flex-col text-center mt-10">
                 <button
-                  className="button-22 m-auto"
+                  className="px-10 py-2 text-white rounded-md m-auto hover:opacity-50"
                   type="button"
                   onClick={emailVerify}
+                  style={{ backgroundColor: bgColor }}
                 >
                   {t("sign_in")}
                 </button>

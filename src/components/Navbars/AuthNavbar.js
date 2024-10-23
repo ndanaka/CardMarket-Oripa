@@ -1,10 +1,17 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
 
 import ChangeLanguage from "../Others/ChangeLanguage";
 import "../../assets/css/index.css";
 
-const AuthNavbar = ({ logoImg, brand, bgColor }) => {
+const AuthNavbar = ({ logoImg, brand }) => {
+  const [bgColor, setBgColor] = useState("");
+
+  useEffect(() => {
+    setBgColor(localStorage.getItem("bgColor"));
+  });
+
   return (
     <div
       className="w-full p-2 fixed z-10 max-h-[100px] z-20"
