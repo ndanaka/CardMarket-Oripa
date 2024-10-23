@@ -9,23 +9,21 @@ import api from "../../utils/api";
 
 import usePersistedUser from "../../store/usePersistedUser";
 import ChangeLanguage from "../Others/ChangeLanguage";
+import iniLogoImg from "../../assets/img/brand/oripa-logo.png";
 
 import "../../assets/css/index.css";
 import formatPrice from "../../utils/formatPrice";
 import { showToast } from "../../utils/toastUtil";
 
-const UserNavbar = ({
-  logoImg,
-  brand,
-  isOpenToggleMenu,
-  setIsOpenToggleMenu,
-}) => {
+const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
 
   const [user, setUser] = usePersistedUser();
   const [bgColor, setBgColor] = useState("");
+  const [logoImg, setLogoImg] = useState(iniLogoImg);
+  const [brand, setBrand] = useState("Oripa");
 
   useEffect(() => {
     updateUserData();
@@ -35,6 +33,8 @@ const UserNavbar = ({
   const getThemeData = async () => {
     const res = await api.get("/admin/getThemeData");
     if (res.data.status === 1 && res.data.theme) {
+      if (res.data.theme.logoUrl) setLogoImg(res.data.theme.logoUrl);
+      if (res.data.theme.brand) setBrand(res.data.theme.brand);
       if (res.data.theme.bgColor) {
         setBgColor(res.data.theme.bgColor);
         localStorage.setItem("bgColor", res.data.theme.bgColor);
@@ -101,7 +101,7 @@ const UserNavbar = ({
                 <>
                   <img
                     alt="..."
-                    src={logoImg}
+                    src={process.env.REACT_APP_SERVER_ADDRESS + logoImg}
                     width="50"
                     height="50"
                     className="px-1"

@@ -5,10 +5,13 @@ import { Navbar } from "reactstrap";
 import api from "../../utils/api";
 
 import ChangeLanguage from "../Others/ChangeLanguage";
+import iniLogoImg from "../../assets/img/brand/oripa-logo.png";
 import "../../assets/css/index.css";
 
-const AuthNavbar = ({ logoImg, brand }) => {
+const AuthNavbar = () => {
   const [bgColor, setBgColor] = useState("");
+  const [logoImg, setLogoImg] = useState(iniLogoImg);
+  const [brand, setBrand] = useState("Oripa");
 
   useEffect(() => {
     getThemeData();
@@ -17,6 +20,8 @@ const AuthNavbar = ({ logoImg, brand }) => {
   const getThemeData = async () => {
     const res = await api.get("/admin/getThemeData");
     if (res.data.status === 1 && res.data.theme) {
+      if (res.data.theme.logoUrl) setLogoImg(res.data.theme.logoUrl);
+      if (res.data.theme.brand) setBrand(res.data.theme.brand);
       if (res.data.theme.bgColor) {
         setBgColor(res.data.theme.bgColor);
         localStorage.setItem("bgColor", res.data.theme.bgColor);
@@ -40,7 +45,7 @@ const AuthNavbar = ({ logoImg, brand }) => {
               <div className="flex items-center">
                 <img
                   alt="..."
-                  src={logoImg}
+                  src={process.env.REACT_APP_SERVER_ADDRESS + logoImg}
                   width="50"
                   height="50"
                   className="px-1"

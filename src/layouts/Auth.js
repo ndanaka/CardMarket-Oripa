@@ -1,31 +1,18 @@
 import { useEffect, useState } from "react";
 import { Container } from "reactstrap";
-import {
-  Route,
-  Routes,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 
-import AuthNavbar from "../components/Navbars/AuthNavbar.js";
-import AuthFooter from "../components/Footers/Footer.js";
-
-import api from "../utils/api.js";
 import routes from "../routes.js";
 import useAffiliateID from "../utils/useAffiliateID.js";
 import usePersistedUser from "../store/usePersistedUser.js";
 
-import iniLogoImg from "../assets/img/brand/oripa-logo.png";
+import AuthNavbar from "../components/Navbars/AuthNavbar.js";
+import AuthFooter from "../components/Footers/Footer.js";
 
 const Auth = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [user] = usePersistedUser();
 
-  const [logoImg, setLogoImg] = useState(iniLogoImg);
-  const [brand, setBrand] = useState("Oripa");
-  const [bgColor, setBgColor] = useState("");
   const [affId, setAffId] = useState(null);
 
   useEffect(() => {
@@ -34,12 +21,11 @@ const Auth = () => {
       if (user?.role !== "admin") navigate("/user/index");
     }
     document.body.classList.add("bg-default");
-    getThemeData();
 
     return () => {
       document.body.classList.remove("bg-default");
     };
-  }, [location]);
+  }, []);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -53,20 +39,6 @@ const Auth = () => {
     });
   };
 
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
-
   // check the URL parameters on page load to see if the affiliate ID is present.
   const handleAffiliateID = (affiliateID) => {
     setAffId(affiliateID);
@@ -76,7 +48,7 @@ const Auth = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <AuthNavbar logoImg={logoImg} brand={brand} />
+      <AuthNavbar />
       <Container className="flex-grow bg-[#f3f4f6] py-3 mx-auto md:w-3/5 lg:w-2/5 mt-16">
         <Routes>
           {getRoutes(routes)}
