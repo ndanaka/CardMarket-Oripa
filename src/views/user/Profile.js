@@ -33,7 +33,9 @@ const Profile = () => {
   useEffect(() => {
     setAuthToken();
     getUserData();
-    setBgColor(localStorage.getItem("bgColor"));
+    localStorage.getItem("bgColor")
+      ? setBgColor(localStorage.getItem("bgColor"))
+      : setBgColor("#e50e0e");
   }, []);
 
   const getUserData = async () => {

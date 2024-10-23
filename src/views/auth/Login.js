@@ -27,7 +27,9 @@ const Login = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   useEffect(() => {
-    setBgColor(localStorage.getItem("bgColor"));
+    localStorage.getItem("bgColor")
+      ? setBgColor(localStorage.getItem("bgColor"))
+      : setBgColor("#e50e0e");
   }, []);
 
   const togglePasswordVisibility = () => {

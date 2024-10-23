@@ -16,7 +16,9 @@ function ChangeLanguage({ type }) {
   const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
-    setBgColor(localStorage.getItem("bgColor"));
+    localStorage.getItem("bgColor")
+      ? setBgColor(localStorage.getItem("bgColor"))
+      : setBgColor("#e50e0e");
   }, [bgColor]);
 
   const languages = [

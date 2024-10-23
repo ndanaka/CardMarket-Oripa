@@ -46,7 +46,9 @@ const Index = () => {
   useEffect(() => {
     getCategory();
     getGacha();
-    setBgColor(localStorage.getItem("bgColor"));
+    localStorage.getItem("bgColor")
+      ? setBgColor(localStorage.getItem("bgColor"))
+      : setBgColor("#e50e0e");
   }, [showCardFlag]);
 
   useEffect(() => {
@@ -483,7 +485,7 @@ const Index = () => {
                       1 {t("draw")}
                     </div>
                     <div
-                      className="bg-theme_color cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
+                      className="cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                       onClick={() => {
                         drawGacha(data, 10);
                       }}
