@@ -47,19 +47,19 @@ td {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #ffb1b1;
+  background: #99a4af;
   border-radius: 2.5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #cc0000;
+  background: #9c8888;
   border-radius: 2.5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(207, 64, 64);
+  background: #887474;
 }
 input[type="file"].image {
   display: none;
