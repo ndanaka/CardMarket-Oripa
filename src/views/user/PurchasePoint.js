@@ -41,9 +41,6 @@ function PurchasePoint() {
   useEffect(() => {
     setAuthToken();
     getPoints();
-    localStorage.getItem("bgColor")
-      ? setBgColor(localStorage.getItem("bgColor"))
-      : setBgColor("#e50e0e");
 
     // google pay settings
     // const script = document.createElement("script");
@@ -51,6 +48,26 @@ function PurchasePoint() {
     // script.onload = onGooglePayLoaded;
     // document.body.appendChild(script);
   }, []);
+
+  useEffect(() => {
+    getThemeData();
+  }, [bgColor]);
+
+  const getThemeData = async () => {
+    if (!localStorage.getItem("bgColor")) {
+      const res = await api.get("/admin/getThemeData");
+      if (res.data.status === 1 && res.data.theme) {
+        if (res.data.theme.bgColor) {
+          setBgColor(res.data.theme.bgColor);
+          localStorage.setItem("bgColor", res.data.theme.bgColor);
+        }
+      } else {
+        setBgColor("#e50e0e");
+      }
+    } else {
+      setBgColor(localStorage.getItem("bgColor"));
+    }
+  };
 
   const updateUserData = async () => {
     setAuthToken();

@@ -360,7 +360,7 @@ const GachaEdit = () => {
           <a
             className="button-38 my-1"
             href={
-              process.env.REACT_APP_SERVER_ADDRESS + `/template/template.csv`
+              process.env.REACT_APP_SERVER_ADDRESS + `template/template.csv`
             }
             download
           >

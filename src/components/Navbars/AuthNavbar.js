@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
 
+import api from "../../utils/api";
+
 import ChangeLanguage from "../Others/ChangeLanguage";
 import "../../assets/css/index.css";
 
@@ -9,10 +11,24 @@ const AuthNavbar = ({ logoImg, brand }) => {
   const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
-    localStorage.getItem("bgColor")
-      ? setBgColor(localStorage.getItem("bgColor"))
-      : setBgColor("#e50e0e");
-  });
+    getThemeData();
+  }, []);
+
+  const getThemeData = async () => {
+    if (!localStorage.getItem("bgColor")) {
+      const res = await api.get("/admin/getThemeData");
+      if (res.data.status === 1 && res.data.theme) {
+        if (res.data.theme.bgColor) {
+          setBgColor(res.data.theme.bgColor);
+          localStorage.setItem("bgColor", res.data.theme.bgColor);
+        }
+      } else {
+        setBgColor("#e50e0e");
+      }
+    } else {
+      setBgColor(localStorage.getItem("bgColor"));
+    }
+  };
 
   return (
     <div
