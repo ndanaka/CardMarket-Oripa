@@ -20,7 +20,9 @@ function Shipping() {
   useEffect(() => {
     setAuthToken();
     getShippingAddress();
-    setBgColor(localStorage.getItem("bgColor"));
+    localStorage.getItem("bgColor")
+      ? setBgColor(localStorage.getItem("bgColor"))
+      : setBgColor("#e50e0e");
   }, []);
 
   const getShippingAddress = async () => {

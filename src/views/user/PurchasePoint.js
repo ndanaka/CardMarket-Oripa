@@ -41,7 +41,9 @@ function PurchasePoint() {
   useEffect(() => {
     setAuthToken();
     getPoints();
-    setBgColor(localStorage.getItem("bgColor"));
+    localStorage.getItem("bgColor")
+      ? setBgColor(localStorage.getItem("bgColor"))
+      : setBgColor("#e50e0e");
 
     // google pay settings
     // const script = document.createElement("script");

@@ -37,7 +37,9 @@ function ShippingAdd() {
     setAuthToken();
     // if update
     if (initialData) setShipAddress(initialData);
-    setBgColor(localStorage.getItem("bgColor"));
+    localStorage.getItem("bgColor")
+      ? setBgColor(localStorage.getItem("bgColor"))
+      : setBgColor("#e50e0e");
   }, []);
 
   const isFormValidate = () => {
