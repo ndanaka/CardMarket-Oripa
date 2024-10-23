@@ -25,7 +25,7 @@ const UserNavbar = ({
   const navigate = useNavigate();
 
   const [user, setUser] = usePersistedUser();
-  const [bgColor, setBgColor] = usePersistedColor();
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     updateUserData();
