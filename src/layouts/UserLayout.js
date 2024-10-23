@@ -53,12 +53,11 @@ const UserLayout = (props) => {
       if (res.data.theme.bgColor) {
         setBgColor(res.data.theme.bgColor);
         localStorage.setItem("bgColor", res.data.theme.bgColor);
+      } else {
+        setBgColor("#e50e0e");
       }
-      if (res.data.theme.logoUrl) {
-        setLogoImg(
-          process.env.REACT_APP_SERVER_ADDRESS + res.data.theme.logoUrl
-        );
-      }
+    } else {
+      setBgColor("#e50e0e");
     }
   };
 
