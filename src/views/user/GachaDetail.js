@@ -262,16 +262,18 @@ function GachaDetail() {
             <div
               className={`h-screen ${blur} transition-all duration-100 bg-gray-800 h-[calc(100vh-160px)] mt-[62px] w-full md:w-[500px] shadow-md shadow-gray-400 mx-auto bg-black`}
             >
-              <img
-                src={
-                  gacha
-                    ? process.env.REACT_APP_SERVER_ADDRESS +
-                      gacha.gacha_thumnail_url
-                    : ""
-                }
-                alt="gacha thumnail"
-                className="mx-auto w-full md:w-[500px] object-contain"
-              />
+              {gacha ? (
+                <img
+                  src={
+                    process.env.REACT_APP_SERVER_ADDRESS +
+                    gacha.gacha_thumnail_url
+                  }
+                  alt="gacha thumnail"
+                  className="mx-auto w-full md:w-[500px] object-contain"
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div
