@@ -13,7 +13,6 @@ import ChangeLanguage from "../Others/ChangeLanguage";
 import "../../assets/css/index.css";
 import formatPrice from "../../utils/formatPrice";
 import { showToast } from "../../utils/toastUtil";
-import usePersistedColor from "../../store/usePersistedColor";
 
 const UserNavbar = ({
   logoImg,
@@ -26,7 +25,7 @@ const UserNavbar = ({
   const navigate = useNavigate();
 
   const [user, setUser] = usePersistedUser();
-  const [bgColor, setBgColor] = usePersistedColor()
+  const [bgColor, setBgColor] = usePersistedColor();
 
   useEffect(() => {
     updateUserData();
