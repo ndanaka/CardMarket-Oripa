@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   useLocation,
   Route,
@@ -7,7 +7,6 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import api from "../utils/api.js";
 import routes from "../routes.js";
 import usePersistedUser from "../store/usePersistedUser.js";
 import useAffiliateID from "../utils/useAffiliateID.js";
@@ -17,42 +16,21 @@ import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
 import ScrollToTop from "../components/Others/ScrollTop.js";
-import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 const UserLayout = (props) => {
-  const mainContent = useRef(null);
   const { isLoggedOut } = useAxiosInterceptor();
 
   const location = useLocation();
   const navigate = useNavigate();
   const [user] = usePersistedUser();
 
-  const [logoImg, setLogoImg] = useState(iniLogoImg);
-  const [brand, setBrand] = useState("Oripa");
   const [affId, setAffId] = useState("");
-  const [, setShow] = useState(false);
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-  }, [location]);
-
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    if (mainContent.current) mainContent.current.scrollTop = 0;
-  }, [isLoggedOut, user, navigate]);
-
-  let flagShow = false;
-  const handleScroll = () => {
-    const doc = document.documentElement;
-    const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    const newFlagShow = scroll > 500;
-    if (flagShow !== newFlagShow) {
-      setShow(newFlagShow);
-      flagShow = newFlagShow;
-    }
-  };
+    if (isLoggedOut) navigate("/auth/login");
+    if (user?.role === "admin") navigate("/admin/index");
+  }, []);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -97,14 +75,12 @@ const UserLayout = (props) => {
   useAffiliateID(handleAffiliateID);
 
   return (
-    <div className="flex flex-col h-auto min-h-screen" ref={mainContent}>
+    <div className="flex flex-col h-auto min-h-screen">
       <UserNavbar
         {...props}
         brandText={getBrandText(props?.location?.pathname)}
         isOpenToggleMenu={isOpenToggleMenu}
         setIsOpenToggleMenu={setIsOpenToggleMenu}
-        logoImg={logoImg}
-        brand={brand}
       />
       <Routes>
         {getRoutes(routes)}
