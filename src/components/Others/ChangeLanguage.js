@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import usePersistedUser from "../../store/usePersistedUser";
+import api from "../../utils/api";
 
 import enFlag from "../../assets/img/icons/en.png";
 import jpFlag from "../../assets/img/icons/jp.png";
@@ -16,10 +17,24 @@ function ChangeLanguage({ type }) {
   const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
-    localStorage.getItem("bgColor")
-      ? setBgColor(localStorage.getItem("bgColor"))
-      : setBgColor("#e50e0e");
+    getThemeData();
   }, [bgColor]);
+
+  const getThemeData = async () => {
+    if (!localStorage.getItem("bgColor")) {
+      const res = await api.get("/admin/getThemeData");
+      if (res.data.status === 1 && res.data.theme) {
+        if (res.data.theme.bgColor) {
+          setBgColor(res.data.theme.bgColor);
+          localStorage.setItem("bgColor", res.data.theme.bgColor);
+        }
+      } else {
+        setBgColor("#e50e0e");
+      }
+    } else {
+      setBgColor(localStorage.getItem("bgColor"));
+    }
+  };
 
   const languages = [
     { code: "jp", name: "日本語", flag: jpFlag },
