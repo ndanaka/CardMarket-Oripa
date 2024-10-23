@@ -15,21 +15,13 @@ function Shipping() {
   const [user, setUser] = usePersistedUser();
   const [pickedShipAddress, setPickedShipAddress] = useState();
   const [shipAddressData, setShipAddressData] = useState();
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     setAuthToken();
     getShippingAddress();
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   const getShippingAddress = async () => {
     try {

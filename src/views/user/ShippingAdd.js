@@ -14,7 +14,7 @@ function ShippingAdd() {
   const location = useLocation();
   const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [shipAddress, setShipAddress] = useState({
@@ -37,16 +37,8 @@ function ShippingAdd() {
     setAuthToken();
     // if update
     if (initialData) setShipAddress(initialData);
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   const isFormValidate = () => {
     if (

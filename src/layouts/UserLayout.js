@@ -21,7 +21,7 @@ import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 const UserLayout = (props) => {
   const mainContent = useRef(null);
-  const {isLoggedOut} = useAxiosInterceptor(); 
+  const { isLoggedOut } = useAxiosInterceptor();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,8 +29,8 @@ const UserLayout = (props) => {
 
   const [logoImg, setLogoImg] = useState(iniLogoImg);
   const [brand, setBrand] = useState("Oripa");
+  const [bgColor, setBgColor] = useState("");
   const [affId, setAffId] = useState("");
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
   const [, setShow] = useState(false);
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
@@ -52,7 +52,7 @@ const UserLayout = (props) => {
     if (res.data.status === 1 && res.data.theme) {
       if (res.data.theme.bgColor) {
         setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+        localStorage.setItem("bgColor", res.data.theme.bgColor);
       }
       if (res.data.theme.logoUrl) {
         setLogoImg(
@@ -124,7 +124,6 @@ const UserLayout = (props) => {
         setIsOpenToggleMenu={setIsOpenToggleMenu}
         logoImg={logoImg}
         brand={brand}
-        bgColor={bgColor}
       />
       <Routes>
         {getRoutes(routes)}

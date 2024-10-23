@@ -1,11 +1,8 @@
-// src/ScrollToTop.js
 import { useEffect, useState } from "react";
-
-import api from "../../utils/api";
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   const handleScroll = () => {
     if (window.scrollY > 300) {
@@ -15,20 +12,12 @@ const ScrollToTop = () => {
     }
   };
 
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);

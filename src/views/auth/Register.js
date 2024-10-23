@@ -19,6 +19,7 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [bgColor, setBgColor] = useState("");
 
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
@@ -26,6 +27,10 @@ const Register = () => {
   const navigate = useNavigate();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  useEffect(() => {
+    setBgColor(localStorage.getItem("bgColor"));
+  }, []);
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
@@ -265,10 +270,12 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="text-center mt-4 bt">
+                  {console.log(bgColor)}
                   <button
-                    className="button-22 mx-auto mt-2 mb-4"
+                    className="px-10 py-2 text-white rounded-md mx-auto mb-4 hover:opacity-50"
                     type="button"
                     onClick={emailVerify}
+                    style={{ backgroundColor: bgColor }}
                   >
                     {t("create_account")}
                   </button>

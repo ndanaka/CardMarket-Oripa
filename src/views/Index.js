@@ -41,12 +41,12 @@ const Index = () => {
   const [existLastFlag, setExistLastFlag] = useState(false);
   const [lastEffect, setLastEffect] = useState(false);
   const lang = i18n.language;
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     getCategory();
     getGacha();
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, [showCardFlag]);
 
   useEffect(() => {
@@ -130,14 +130,6 @@ const Index = () => {
     // Set the final filtered array
     setFilteredGacha(filteredGachas);
   }, [gacha, categoryFilter, filter, order]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   // get main categories
   const getCategory = () => {
@@ -328,42 +320,44 @@ const Index = () => {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-full md:w-[90%] lg:w-[80%] xl:w-[70%] md:mx-2 mt-16 mx-auto xm:p-2">
-        <div className="mx-auto p-1">
-          <ImageCarousel />
-        </div>
-        <div className="w-full flex justify-between overflow-auto px-3 mt-[-40px] text-red-800 shadow-md shadow-gray-200">
-          <button
-            className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
-              categoryFilter === "all" ? "bg-gray-100 border-t-4" : ""
-            } `}
-            style={{
-              color: categoryFilter === "all" ? bgColor : "gray", // Set text color based on condition
-              borderColor: categoryFilter === "all" ? bgColor : "transparent",
-            }}
-            onClick={() => changeMainCat("all")}
-          >
-            {t("all")}
-          </button>
-          {category != null
-            ? category.map((data, i) => (
-                <button
-                  key={i}
-                  id={data.id}
-                  className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
-                    categoryFilter === data.name ? "bg-gray-100 border-t-4" : ""
-                  } `}
-                  style={{
-                    color: categoryFilter === data.name ? bgColor : "gray", // Set text color based on condition
-                    borderColor:
-                      categoryFilter === data.name ? bgColor : "transparent",
-                  }}
-                  onClick={() => changeMainCat(data.name)}
-                >
-                  {data.name}
-                </button>
-              ))
-            : null}{" "}
+      <div className="w-full lg:w-[90%] xm:w-[80%] xmd:w-[70%] xl:w-[60%] md:mx-2 mt-16 mx-auto xm:p-2">
+        <ImageCarousel />
+        <div className="px-2">
+          <div className="w-full flex justify-between overflow-auto text-red-800 shadow-md shadow-gray-200 px-2">
+            <button
+              className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
+                categoryFilter === "all" ? "bg-gray-100 border-t-4" : ""
+              } `}
+              style={{
+                color: categoryFilter === "all" ? bgColor : "gray", // Set text color based on condition
+                borderColor: categoryFilter === "all" ? bgColor : "transparent",
+              }}
+              onClick={() => changeMainCat("all")}
+            >
+              {t("all")}
+            </button>
+            {category != null
+              ? category.map((data, i) => (
+                  <button
+                    key={i}
+                    id={data.id}
+                    className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
+                      categoryFilter === data.name
+                        ? "bg-gray-100 border-t-4"
+                        : ""
+                    } `}
+                    style={{
+                      color: categoryFilter === data.name ? bgColor : "gray", // Set text color based on condition
+                      borderColor:
+                        categoryFilter === data.name ? bgColor : "transparent",
+                    }}
+                    onClick={() => changeMainCat(data.name)}
+                  >
+                    {data.name}
+                  </button>
+                ))
+              : null}{" "}
+          </div>
         </div>
         <div className="flex flex-wrap justify-between px-2">
           <div
@@ -429,10 +423,13 @@ const Index = () => {
             </div>
           ) : (
             filteredGacha.map((data, i) => (
-              <div className="w-full xxsm:w-1/2 xm:p-2 p-1" key={i}>
-                <div className="p-2 h-full flex flex-col justify-between border-2 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
+              <div
+                className="w-full xxsm:w-[80%] md:w-[60%] lg:w-1/2 mx-auto p-2 p-1"
+                key={i}
+              >
+                <div className="p-2 flex flex-col justify-between border-2 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
                   <button
-                    className="relative cursor-pointer h-[450px] w-full"
+                    className="relative cursor-pointer w-full"
                     onClick={() =>
                       navigate("/user/gacha-detail", {
                         state: {
@@ -451,10 +448,10 @@ const Index = () => {
                         process.env.REACT_APP_SERVER_ADDRESS +
                         data.gacha_thumnail_url
                       }
-                      className="rounded-t h-[410px] w-full object-cover"
+                      className="rounded-t h-[200px] xsm:h-[90%] xxsm:h-[80%] md:h-[60%] lg:h-1/2 w-full object-cover"
                       alt=""
                     />
-                    <div className="w-full h-[50px]">
+                    <div className="w-full h-[35px]">
                       <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-0 text-center">
                         <GachaPriceLabel price={data.price} />
                         <Progressbar

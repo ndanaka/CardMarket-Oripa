@@ -20,7 +20,7 @@ function UserDelivery() {
   const [pendingDelievers, setPendingDelievers] = useState([]);
   const [delieveringDelievers, setDelieveringDelievers] = useState([]);
   const [flag, setFlag] = useState(false);
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     setAuthToken();
@@ -32,7 +32,7 @@ function UserDelivery() {
     const res = await api.get("/admin/getThemeData");
     if (res.data.status === 1 && res.data.theme.bgColor) {
       setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
+      localStorage.setItem("bgColor", res.data.theme.bgColor);
     }
   };
 

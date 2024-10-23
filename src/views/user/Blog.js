@@ -15,21 +15,13 @@ const Blog = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [blogs, setBlogs] = useState();
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     setAuthToken();
     getBlogs();
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   const getBlogs = () => {
     api

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import usePersistedUser from "../../store/usePersistedUser";
-import api from "../../utils/api";
 
 import enFlag from "../../assets/img/icons/en.png";
 import jpFlag from "../../assets/img/icons/jp.png";
@@ -14,19 +13,11 @@ function ChangeLanguage({ type }) {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = usePersistedUser();
   const currentLanguage = i18n.language; //current language
-  const [bgColor, setBgColor] = useState(localStorage.getItem("bgColor"));
+  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
-    getThemeData();
+    setBgColor(localStorage.getItem("bgColor"));
   }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme.bgColor) {
-      setBgColor(res.data.theme.bgColor);
-      localStorage.setItem("bgColor", JSON.stringify(res.data.theme.bgColor));
-    }
-  };
 
   const languages = [
     { code: "jp", name: "日本語", flag: jpFlag },
