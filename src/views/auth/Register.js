@@ -16,6 +16,7 @@ const Register = () => {
   const [checkTerms, setCheckTerms] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
+    country: "",
     email: "",
     password: "",
   });
@@ -55,6 +56,7 @@ const Register = () => {
       formData.name &&
       formData.email &&
       formData.password &&
+      formData.country &&
       emailRegex.test(formData.email)
     )
       return true;
@@ -168,6 +170,28 @@ const Register = () => {
                     <span className="flex text-sm text-red-600">
                       <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
                       {t("requiredName")}
+                    </span>
+                  ) : null}
+                </FormGroup>
+                <FormGroup>
+                  <p className="p-1 font-bold text-xs">{t("country")} *</p>
+                  <InputGroup className="input-group-alternative mb-1">
+                    <Input
+                      placeholder={t("country")}
+                      type="text"
+                      name="country"
+                      className={`border-[1px] ${
+                        showErrMessage && !formData.country ? "is-invalid" : ""
+                      }`}
+                      value={formData.country}
+                      autoComplete="country"
+                      onChange={handleChangeFormData}
+                    />
+                  </InputGroup>
+                  {showErrMessage && !formData.country ? (
+                    <span className="flex text-sm text-red-600">
+                      <i className="fa-solid fa-triangle-exclamation text-red-600 mr-2 mt-1"></i>
+                      {t("country") + t("isRequired")}
                     </span>
                   ) : null}
                 </FormGroup>
