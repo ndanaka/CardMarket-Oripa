@@ -82,12 +82,15 @@ const Register = () => {
 
     const affId = localStorage.getItem("affId");
     if (affId) formData.affId = affId;
+    const linkId = localStorage.getItem("linkId");
+    if (linkId) formData.linkId = linkId;
 
     const res = await api.post("/user/register", formData);
     if (res.data.status === 1) {
       showToast(t(res.data.msg, "success"));
       navigate("/auth/login");
       localStorage.removeItem("affId");
+      localStorage.removeItem("linkId");
       localStorage.removeItem("first");
     } else showToast(t(res.data.msg), "error");
   };
