@@ -27,6 +27,9 @@ const UserLayout = (props) => {
   const [affId, setAffId] = useState("");
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
 
+  // Add state to track if navigation is in progress
+  const [isNavigating, setIsNavigating] = useState(false);
+
   // check the URL parameters on page load to see if the affiliate ID is present.
   const handleAffiliateID = (affiliateID) => {
     setAffId(affiliateID);
@@ -34,22 +37,19 @@ const UserLayout = (props) => {
   };
   useAffiliateID(handleAffiliateID);
 
-  // Add state to track if navigation is in progress
-  const [isNavigating, setIsNavigating] = useState(false);
-
   useEffect(() => {
     if (isLoggedOut) {
-      setIsNavigating(true); // Prevent rendering the layout when navigating
+      setIsNavigating(true);
       navigate("/auth/login");
     } else if (user?.role === "admin") {
-      setIsNavigating(true); // Prevent rendering the layout when navigating
+      setIsNavigating(true);
       navigate("/admin/index");
     }
   }, [isLoggedOut, user, navigate]);
 
   // Stop rendering UserLayout if navigation is in progress
   if (isNavigating || user?.role === "admin") {
-    return null; // Return null to prevent rendering UserNavbar and other elements
+    return null;
   }
 
   const getRoutes = (routes) => {
