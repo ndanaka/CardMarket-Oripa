@@ -312,6 +312,7 @@ i18n.use(initReactI18next).init({
         link: "Link",
         noadmin: "There is no admin.",
         noCarousel: "There is no carousel.",
+        search: "Search",
       },
     },
     jp: {
@@ -623,6 +624,7 @@ i18n.use(initReactI18next).init({
         link: "リンク",
         noCarousel: "キャルーセルがありません",
         noadmin: "管理者はいません。",
+        search: "検索",
       },
     },
     ch1: {
@@ -929,6 +931,7 @@ i18n.use(initReactI18next).init({
         link: "链接",
         noCarousel: "没有轮播",
         noadmin: "没有管理员",
+        search: "搜索",
       },
     },
     ch2: {
@@ -1215,6 +1218,7 @@ i18n.use(initReactI18next).init({
         link: "連結",
         noCarousel: "沒有輪播",
         noadmin: "沒有管理員",
+        search: "搜尋",
       },
     },
     vn: {
@@ -1528,6 +1532,7 @@ i18n.use(initReactI18next).init({
         link: "Liên kết",
         noCarousel: "Không có băng chuyền",
         noadmin: "Không có quản trị viên.",
+        search: "Tìm kiếm",
       },
     },
   },

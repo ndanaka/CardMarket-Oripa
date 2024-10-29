@@ -64,7 +64,7 @@ function UserCard() {
               })
             ) : (
               <div className="text-lg text-gray-600 text-center">
-                There is no card.
+                {t("noCard")}
               </div>
             )}
           </div>
