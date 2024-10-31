@@ -31,7 +31,7 @@ function UserCard() {
   };
 
   return (
-    <div className="w-full flex flex-grow md:w-4/6 p-3 mx-auto mt-16">
+    <div className="w-full flex flex-grow md:w-4/6 p-3 mx-auto mt-14">
       <div className="flex flex-col mx-auto">
         <SubHeader text={t("my") + " " + t("cards")} />
         <div className="fitems-stretch">

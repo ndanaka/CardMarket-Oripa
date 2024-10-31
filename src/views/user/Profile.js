@@ -131,7 +131,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-grow">
-      <div className={`relative w-full md:w-2/3 mx-auto mt-12 p-3`}>
+      <div className={`relative w-full md:w-2/3 mx-auto mt-14 p-3`}>
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             {t("my") + " " + t("profile")}

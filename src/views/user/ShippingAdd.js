@@ -127,7 +127,7 @@ function ShippingAdd() {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-full md:w-2/3 p-3 mx-auto mt-12">
+      <div className="w-full md:w-2/3 p-3 mx-auto mt-14">
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             <i

@@ -104,8 +104,17 @@ function UserDelivery() {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-full md:w-4/6 p-3 mx-auto mt-16">
-        <SubHeader text={t("my") + " " + t("delivery")} />
+      <div className="w-full md:w-4/6 p-3 mx-auto mt-14">
+        <div className="w-full py-2">
+          <div className="text-center text-xl text-slate-600">
+            <i
+              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              onClick={() => navigate(-1)}
+            ></i>
+            {t("my") + " " + t("delivery")}
+          </div>
+          <hr className="w-full my-2"></hr>
+        </div>
         <div className="w-full w-full">
           <p className="text-center text-xl text-base font-Lexend font-bold text-gray-500">
             {t("Pending") + " " + t("cards")} ({t("returnable")})
