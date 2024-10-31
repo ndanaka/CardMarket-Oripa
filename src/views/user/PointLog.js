@@ -30,7 +30,7 @@ function PointLog() {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-12">
+      <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-14">
         <SubHeader text={t("pointHistory")} />
         <div className="flex flex-col">
           {pointLog?.length > 0
