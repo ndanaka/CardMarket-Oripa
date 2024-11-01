@@ -12,6 +12,7 @@ import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ImageCarousel from "../components/Others/ImageCarousel";
 import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
+import LoginSucceedModal from "../components/Modals/LoginSucceedModal";
 
 import usePersistedUser from "../store/usePersistedUser";
 
@@ -42,15 +43,17 @@ const Index = () => {
   const [lastEffect, setLastEffect] = useState(false);
   const lang = i18n.language;
   const [bgColor, setBgColor] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    if (localStorage.getItem("loggedIn")) {
+      setIsOpen(true);
+    }
+
     getCategory();
     getGacha();
-  }, [showCardFlag]);
-
-  useEffect(() => {
     getThemeData();
-  }, [bgColor]);
+  }, [showCardFlag, bgColor]);
 
   const getThemeData = async () => {
     const res = await api.get("/admin/getThemeData");
@@ -534,6 +537,12 @@ const Index = () => {
           okBtnClick={() => navigate("/user/pur-point")}
           isOpen={isOpenPointModal}
           setIsOpen={setIsOpenPointModal}
+          bgColor={bgColor}
+        />
+
+        <LoginSucceedModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
           bgColor={bgColor}
         />
       </div>

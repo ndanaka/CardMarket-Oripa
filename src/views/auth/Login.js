@@ -5,7 +5,6 @@ import { FormGroup, Form, Input, InputGroup } from "reactstrap";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
-
 import EmailVerification from "../../components/Others/EamilVerification";
 
 import usePersistedUser from "../../store/usePersistedUser";
@@ -20,7 +19,6 @@ const Login = () => {
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [bgColor, setBgColor] = useState("");
-
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -66,24 +64,25 @@ const Login = () => {
     // setIsEmailVerifyPanel(true);
   };
 
-  const handleSubmit = (e) => {
-    api
-      .post("/user/login", formData)
-      .then((res) => {
-        if (res.data.status === 1) {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-          setUser(res.data.user);
+  const handleSubmit = async (e) => {
+    try {
+      const res = await api.post("/user/login", formData);
 
-          if (res.data.user.role === "admin") navigate("/admin/index");
-          else navigate("/user/index");
+      if (res.data.status === 1) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("loggedIn", true);
+        setUser(res.data.user);
 
-          showToast(t(res.data.msg), "success");
-        } else showToast(t(res.data.msg), "error");
-      })
-      .catch((error) => {
-        error = new Error();
-      });
+        if (res.data.user.role === "admin") {
+          navigate("/admin/index");
+        } else {
+          navigate("/user/index");
+        }
+      } else showToast(t(res.data.msg), "error");
+    } catch (error) {
+      showToast(t("failedReq"), "error");
+    }
   };
 
   return (

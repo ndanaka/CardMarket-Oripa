@@ -50,9 +50,9 @@ const AuthNavbar = () => {
                   height="50"
                   className="px-1"
                 />
-                <div className="text-lg font-NanumGothic hidden xxsm:block">
+                {/* <div className="text-lg font-NanumGothic hidden xxsm:block">
                   {brand}
-                </div>
+                </div> */}
               </div>
             </Link>
           </div>

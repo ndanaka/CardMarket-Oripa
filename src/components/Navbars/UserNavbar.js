@@ -106,9 +106,9 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                     height="50"
                     className="px-1"
                   />
-                  <div className="text-lg font-NanumGothic hidden xxsm:block">
+                  {/* <div className="text-lg font-NanumGothic hidden xxsm:block">
                     {brand}
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>
@@ -305,7 +305,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                 <span>{t("acquisitionHistory")}</span>
                                 <i className="fa fa-chevron-right"></i>
                               </li>
-                              <li
+                              {/* <li
                                 className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
                                 onClick={() => {
                                   setIsOpenToggleMenu(!isOpenToggleMenu);
@@ -314,7 +314,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                               >
                                 <span>{t("my") + " " + t("cards")}</span>
                                 <i className="fa fa-chevron-right"></i>
-                              </li>
+                              </li> */}
                               <li className="p-2 my-3 flex flex-wrap justify-start">
                                 <ChangeLanguage type="menu" />
                               </li>
@@ -340,7 +340,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                     className="flex items-center px-2 py-1 border rounded-lg text-white ml-2"
                     onClick={nav_login}
                   >
-                    {t("register")} / {t("login")}
+                    {t("sign_up_btn")} / {t("sign_in")}
                   </button>
                 </div>
               )}
