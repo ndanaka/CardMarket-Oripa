@@ -322,24 +322,44 @@ function GachaDetail() {
         />
       </div>
       <div className="z-20 w-full xxsm:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]">
-        <div
-          className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
+        <button
+          className="disabled:cursor-not-allowed hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 border-r-[1px] border-t-2 border-white rounded-lg mx-2 w-2/5"
           onClick={() => {
             drawGacha(gacha, 1);
           }}
-          style={{ backgroundColor: bgColor }}
+          style={{
+            backgroundColor:
+              gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0) === 0
+                ? "#aaaab1"
+                : bgColor,
+          }}
+          disabled={
+            gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0) === 0
+              ? true
+              : false
+          }
         >
           1 {t("draw")}
-        </div>
-        <div
-          className="hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
+        </button>
+        <button
+          className="disabled:cursor-not-allowed hover:opacity-50 cursor-pointer hover:bg-[#f00] text-white text-center py-2 rounded-lg border-t-2 border-white mx-2 w-2/5"
           onClick={() => {
             drawGacha(gacha, 10);
           }}
-          style={{ backgroundColor: bgColor }}
+          disabled={
+            gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0) < 10
+              ? true
+              : false
+          }
+          style={{
+            backgroundColor:
+              gacha?.remain_prizes.length + (gacha?.last_prize ? 1 : 0) < 10
+                ? "#aaaab1"
+                : bgColor,
+          }}
         >
           10 {t("draws")}
-        </div>
+        </button>
       </div>
       <div
         className={`flex flex-wrap justify-center items-center z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${

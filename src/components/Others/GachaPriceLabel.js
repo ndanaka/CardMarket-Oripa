@@ -2,7 +2,7 @@ import formatPrice from "../../utils/formatPrice";
 
 function GachaPriceLabel({ price }) {
   return (
-    <div className="w-auto bg-gray-100 flex items-center justify-center h-5 border-2 border-dotted border-yellow-900 text-white px-1">
+    <div className="w-auto bg-gray-100 flex items-center justify-center h-5 text-white px-1">
       <img
         src={require("../../assets/img/icons/dollar-coin.png")}
         alt="img"

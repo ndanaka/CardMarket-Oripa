@@ -32,7 +32,7 @@ const Index = () => {
   const [filteredGacha, setFilteredGacha] = useState();
   const [categoryFilter, setCategoryFilter] = useState("all"); //gacha filter
   const [filter, setFilter] = useState(["all"]);
-  const [order, setOrder] = useState("newest");
+  const [order, setOrder] = useState("recommended");
   const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
   const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
@@ -426,9 +426,9 @@ const Index = () => {
               onChange={(e) => changeOrder(e)}
               value={order}
             >
+              <option value="recommended">{t("recommended")}</option>
               <option value="newest">{t("newest")}</option>
               <option value="popularity">{t("popularity")}</option>
-              <option value="recommended">{t("recommended")}</option>
               <option value="highToLowPrice">{t("highToLowPrice")}</option>
               <option value="lowToHighPrice">{t("lowToHighPrice")}</option>
             </select>
@@ -493,24 +493,51 @@ const Index = () => {
                     </div>
                   </button>
                   <div className="w-full flex justify-center">
-                    <div
-                      className="cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
-                      style={{ backgroundColor: bgColor }}
+                    <button
+                      className="disabled:cursor-not-allowed cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
+                      style={{
+                        backgroundColor:
+                          data.remain_prizes.length +
+                            (data.last_prize ? 1 : 0) ===
+                          0
+                            ? "#aaaab1"
+                            : bgColor,
+                      }}
+                      disabled={
+                        data.remain_prizes.length +
+                          (data.last_prize ? 1 : 0) ===
+                        0
+                          ? true
+                          : false
+                      }
                       onClick={() => {
                         drawGacha(data, 1);
                       }}
                     >
                       1 {t("draw")}
-                    </div>
-                    <div
-                      className="cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
+                    </button>
+                    <button
+                      className="disabled:cursor-not-allowed cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
                       onClick={() => {
                         drawGacha(data, 10);
                       }}
-                      style={{ backgroundColor: bgColor }}
+                      disabled={
+                        data.remain_prizes.length + (data.last_prize ? 1 : 0) <
+                        10
+                          ? true
+                          : false
+                      }
+                      style={{
+                        backgroundColor:
+                          data.remain_prizes.length +
+                            (data.last_prize ? 1 : 0) <
+                          10
+                            ? "#aaaab1"
+                            : bgColor,
+                      }}
                     >
                       10 {t("draws")}
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -543,7 +570,6 @@ const Index = () => {
         <LoginSucceedModal
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          bgColor={bgColor}
         />
       </div>
       <div
