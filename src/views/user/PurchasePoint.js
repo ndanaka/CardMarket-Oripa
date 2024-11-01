@@ -9,6 +9,7 @@ import { googlePayConfig } from "../../payment/googlePayConfig";
 import { initiateUnivaPayTransaction } from "../../payment/univaPayRequest";
 
 import CustomSelect from "../../components/Forms/CustomSelect";
+import PuchaseSpinner from "../../utils/PuchaseSpinner";
 
 import Gpay from "../../assets/img/icons/common/google.png";
 import ApplePay from "../../assets/img/icons/common/apple.png";
@@ -24,14 +25,11 @@ function PurchasePoint() {
     { value: "univaPay", label: "Univa Pay", img: Univa },
   ];
   const [, setGPayReady] = useState(false);
-
-  const [points, setPoints] = useState(null); //registered point list
-  const [isOpen, setIsOpen] = useState(false); //modal open flag
-  const [paymentMethod, setPaymentMethod] = useState(null); //
+  const [points, setPoints] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState(null);
   const [, setSelId] = useState(0);
-  // Test version
-  const [payPrice, setPayPrice] = useState(0);
   const [bgColor, setBgColor] = useState("");
+  const [waiting, setWaiting] = useState(false);
 
   const [user, setUser] = usePersistedUser();
   const navigate = useNavigate();
@@ -106,8 +104,13 @@ function PurchasePoint() {
       });
 
       if (res.data.status === 1) {
-        showToast(t(res.data.msg), "success");
-        updateUserData();
+        setWaiting(true);
+
+        setTimeout(() => {
+          setWaiting(false);
+          updateUserData();
+          navigate("user/index");
+        }, 5000);
       } else showToast(t(res.data.msg), "error");
     } catch (error) {
       showToast(error, "error");
@@ -205,6 +208,7 @@ function PurchasePoint() {
 
   return (
     <div className="flex flex-grow">
+      {waiting && <PuchaseSpinner />}
       <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-14">
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">

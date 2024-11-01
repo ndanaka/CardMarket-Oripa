@@ -11,7 +11,7 @@ const CustomSelect = ({ options, selectedOption, setOption }) => {
   };
 
   return (
-    <div className="relative w-full rounded-lg bg-white">
+    <div className="w-full rounded-lg bg-white">
       <div
         className="p-3 border-[1px] cursor-pointer rounded-lg"
         onClick={() => setIsOpen(!isOpen)}

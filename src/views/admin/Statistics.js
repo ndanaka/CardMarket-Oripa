@@ -8,6 +8,7 @@ import formatPrice from "../../utils/formatPrice";
 import PageHeader from "../../components/Forms/PageHeader";
 import PieChart from "../../components/Charts/PieChart";
 import LineChart from "../../components/Charts/LineChart";
+import LoginSucceedModal from "../../components/Modals/LoginSucceedModal";
 
 const Statistics = () => {
   const [totalIncome, setTotalIncome] = useState(0);
@@ -18,10 +19,15 @@ const Statistics = () => {
   const [deliveringData, setDeliveringData] = useState([]);
   const [selDeliveredPeriod, setSelDeliveredPeriod] = useState(7);
   const [deliveredData, setDeliveredData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { t } = useTranslation();
 
   useEffect(() => {
+    if (localStorage.getItem("loggedIn")) {
+      setIsOpen(true);
+    }
+
     setAuthToken();
     getTotalData();
     getStatusIncome("Pending", selPendingPeriod);
@@ -225,6 +231,8 @@ const Statistics = () => {
           </div>
         </div>
       </div>
+
+      <LoginSucceedModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

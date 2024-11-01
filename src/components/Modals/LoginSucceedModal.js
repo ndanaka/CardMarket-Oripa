@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-function LoginSucceedModal({ isOpen, setIsOpen, bgColor }) {
+function LoginSucceedModal({ isOpen, setIsOpen }) {
   const { t } = useTranslation();
 
   const closeModal = () => {
