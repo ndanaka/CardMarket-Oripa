@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
@@ -27,12 +28,13 @@ function ImageCarousel() {
 
   return (
     <Swiper
+      modules={[Navigation, Pagination, Autoplay]}
       navigation={{
         nextEl: ".swiper-button-next-ex2",
         prevEl: ".swiper-button-prev-ex2",
       }}
       pagination={{ clickable: true }}
-      autoplay={{ delay: 2000 }}
+      autoplay={{ delay: 2000, disableOnInteraction: false }}
       className="swiper max-w-sm mx-auto my-2"
       id="slider2"
       key={"true"}

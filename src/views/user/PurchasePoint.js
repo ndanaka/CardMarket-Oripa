@@ -8,7 +8,6 @@ import { setAuthToken } from "../../utils/setHeader";
 import { googlePayConfig } from "../../payment/googlePayConfig";
 import { initiateUnivaPayTransaction } from "../../payment/univaPayRequest";
 
-import ConfirmModal from "../../components/Modals/ConfirmModal";
 import CustomSelect from "../../components/Forms/CustomSelect";
 
 import Gpay from "../../assets/img/icons/common/google.png";
@@ -43,10 +42,10 @@ function PurchasePoint() {
     getPoints();
 
     // google pay settings
-    // const script = document.createElement("script");
-    // script.src = "https://pay.google.com/gp/p/js/pay.js";
-    // script.onload = onGooglePayLoaded;
-    // document.body.appendChild(script);
+    const script = document.createElement("script");
+    script.src = "https://pay.google.com/gp/p/js/pay.js";
+    script.onload = onGooglePayLoaded;
+    document.body.appendChild(script);
   }, []);
 
   useEffect(() => {
@@ -96,32 +95,14 @@ function PurchasePoint() {
     }
   };
 
-  const testPay = async (amount) => {
-    if (paymentMethod === null) {
-      showToast(t("selectPayOption"), "error");
-      return;
-    }
-
-    setPayPrice(amount);
-    setIsOpen(true);
-  };
-
   const purchase_point = async (amount) => {
     try {
       setAuthToken();
 
-      // Test version
-      setIsOpen(false);
-
       const res = await api.post("/user/point/purchase", {
         user_id: user._id,
-        // Test verison
-        point_num: payPrice,
-        price: payPrice,
-
-        // Real version
-        // point_num: amount,
-        // price: amount,
+        point_num: amount,
+        price: amount,
       });
 
       if (res.data.status === 1) {
@@ -181,6 +162,7 @@ function PurchasePoint() {
           const paymentData = await paymentsClient.loadPaymentData(
             paymentDataRequest
           );
+
           if (paymentData) {
             await purchase_point(amount);
           }
@@ -210,6 +192,15 @@ function PurchasePoint() {
     } catch (error) {
       console.error("Payment failed:", error);
     }
+  };
+
+  const testPay = async (amount) => {
+    if (paymentMethod === null) {
+      showToast(t("selectPayOption"), "error");
+      return;
+    }
+
+    purchase_point(amount);
   };
 
   return (
@@ -289,14 +280,6 @@ function PurchasePoint() {
             </div>
           </div>
         </div>
-        <ConfirmModal
-          headerText={t("purchasePoints")}
-          bodyText={t("confirm")}
-          okBtnClick={purchase_point}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          bgColor={bgColor}
-        />
       </div>
     </div>
   );

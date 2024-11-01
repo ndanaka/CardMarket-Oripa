@@ -26,7 +26,7 @@ const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, bgColor }) => {
             {t("cancel")}
           </button>
           <button
-            className="hover:bg-red-700 text-white py-2 px-4 rounded"
+            className="hover:opacity-50 text-white py-2 px-4 rounded"
             onClick={onConfirm}
             style={{ backgroundColor: bgColor ? bgColor : "#dc3545" }}
           >

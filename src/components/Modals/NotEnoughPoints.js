@@ -19,7 +19,7 @@ function NotEnoughPoints(props) {
   return (
     <div
       id="modal"
-      className={`w-full h-full pt-[150px] z-[10000] bg-gray-600 bg-opacity-50 z-50 fixed top-0 left-0 ${
+      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 ${
         isOpen ? "" : "hidden"
       }`}
     >

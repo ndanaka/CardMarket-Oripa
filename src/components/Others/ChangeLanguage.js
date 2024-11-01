@@ -90,7 +90,7 @@ function ChangeLanguage({ type }) {
       </button>
       {isOpen && (
         <ul
-          className={`absolute top-full left-0 mt-1 border-1 border-gray-300 rounded-lg shadow-lg z-10 w-[130px] ${
+          className={`absolute top-full right-0 mt-1 border-1 border-gray-300 rounded-lg shadow-lg z-10 w-[130px] ${
             type === "menu"
               ? "bg-gray-200"
               : type !== "menu" && user?.role === "admin"
