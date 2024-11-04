@@ -104,7 +104,7 @@ function PrizeList({
             <th>{t("cashback") + t("point")}</th>
             <th>{t("image")}</th>
             <th>{t("Grade")}</th>
-            <th>{t("status")}</th>
+            {/* <th>{t("status")}</th> */}
             <th>{t("action")}</th>
           </tr>
         </thead>
@@ -148,7 +148,7 @@ function PrizeList({
                       }
                     })()}
                   </td>
-                  <td>{t(data.status)}</td>
+                  {/* <td>{t(data.status)}</td> */}
                   <td>
                     {role !== "setPrize" ? (
                       <>
@@ -179,7 +179,7 @@ function PrizeList({
             })
           ) : (
             <tr>
-              <td colSpan="8">{t("noprize")}</td>
+              <td colSpan="7">{t("noprize")}</td>
             </tr>
           )}
         </tbody>
