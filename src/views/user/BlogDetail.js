@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FormGroup, Input, InputGroup } from "reactstrap";
+import { FormGroup, Input } from "reactstrap";
 import { useAtom } from "jotai";
 
 import api from "../../utils/api";
@@ -12,17 +12,19 @@ import formatDate from "../../utils/formatDate";
 import usePersistedUser from "../../store/usePersistedUser";
 import { bgColorAtom } from "../../store/theme";
 
+import Spinner from "../../components/Others/Spinner";
+
 const BlogDetail = () => {
   const { t } = useTranslation();
   const navigator = useNavigate();
   const location = useLocation();
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const [bgColor] = useAtom(bgColorAtom);
-
   const { blog } = location.state || {};
+
   const [comments, setComments] = useState();
   const [showErrMessage, setShowErrMessage] = useState(false);
-
+  const [spinFlag, setSpinFlag] = useState(false);
   const [formData, setFormData] = useState({
     content: "",
     author: user?._id,
@@ -35,16 +37,15 @@ const BlogDetail = () => {
   }, []);
 
   const getBlogDetail = async (blogId) => {
-    api
-      .get(`/user/blog/${blogId}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          setComments(res.data.comments);
-        } else {
-          showToast(t(res.data.msg), "error");
-        }
-      })
-      .catch((err) => showToast(err, "error"));
+    setSpinFlag(true);
+    const res = await api.get(`/user/blog/${blogId}`);
+    setSpinFlag(false);
+
+    if (res.data.status === 1) {
+      setComments(res.data.comments);
+    } else {
+      showToast(t(res.data.msg), "error");
+    }
   };
 
   const isFormValidate = () => {
@@ -64,7 +65,9 @@ const BlogDetail = () => {
 
     setAuthToken();
 
+    setSpinFlag(true);
     const res = await api.post("/user/blog", formData);
+    setSpinFlag(false);
 
     if (res.data.status === 1) {
       setFormData({
@@ -83,6 +86,7 @@ const BlogDetail = () => {
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       <div className="w-full sm:w-[70%] lg:w-[60%] xl:w-[50%] mt-16 mx-4 mx-auto px-2">
         <div className="w-full py-2">
           <div className="w-full text-center">

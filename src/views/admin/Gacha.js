@@ -7,15 +7,15 @@ import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart, removeMultipart } from "../../utils/setHeader";
+import formatPrice from "../../utils/formatPrice";
+import subCategories from "../../utils/subCategories";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
-
 import uploadimage from "../../assets/img/icons/upload.png";
-import formatPrice from "../../utils/formatPrice";
-import subCategories from "../../utils/subCategories";
+import Spinner from "../../components/Others/Spinner";
 
 function Gacha() {
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ function Gacha() {
   const [gacha, setGacha] = useState(null);
   const [delGachaId, setDelGachaId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
 
   const subCats = subCategories.map((prize) => ({
     value: prize,
@@ -50,28 +51,20 @@ function Gacha() {
     getGacha();
   }, []);
 
-  const getCategory = () => {
-    api
-      .get("admin/get_category")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setCategories(res.data.category);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  const getCategory = async () => {
+    const res = await api.get("admin/get_category");
+
+    if (res.data.status === 1) {
+      setCategories(res.data.category);
+    }
   };
 
-  const getGacha = () => {
-    api
-      .get("/admin/gacha")
-      .then((res) => {
-        if (res.data.status === 1) setGacha(res.data.gachaList);
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
+  const getGacha = async () => {
+    setSpinFlag(true);
+    const res = await api.get("/admin/gacha");
+    setSpinFlag(false);
+
+    if (res.data.status === 1) setGacha(res.data.gachaList);
   };
 
   const handleFileInputChange = (event) => {
@@ -145,7 +138,9 @@ function Gacha() {
       ) {
         showToast(t("selectImage"), "error");
       } else {
+        setSpinFlag(true);
         const res = await api.post("/admin/gacha", formData);
+        setSpinFlag(false);
 
         if (res.data.status === 1) {
           showToast(t(res.data.msg), "success");
@@ -178,8 +173,10 @@ function Gacha() {
         showToast(t("noPermission"), "error");
         return;
       }
-
+      setSpinFlag(true);
       const res = await api.get(`/admin/gacha/set_release/${gachaId}`);
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         showToast(t("successReleaseGacha"), "success");
         getGacha();
@@ -200,7 +197,10 @@ function Gacha() {
 
       setIsModalOpen(false);
 
+      setSpinFlag(true);
       const res = await api.delete(`/admin/gacha/${delGachaId}`);
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         showToast(t("successDeleted", "success"));
         getGacha();
@@ -212,10 +212,10 @@ function Gacha() {
 
   return (
     <div className="relative p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("gacha")} />
       </div>
-
       <div className="flex flex-wrap">
         <div className="flex flex-col w-full lg:w-[35%] mb-2 border-1 h-fit">
           <div className="py-2 bg-admin_theme_color text-gray-200 text-center">

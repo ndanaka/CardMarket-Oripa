@@ -4,10 +4,12 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
+import formatPrice from "../../utils/formatPrice";
+
 import usePersistedUser from "../../store/usePersistedUser";
 
 import DeleteConfirmModal from "../Modals/DeleteConfirmModal";
-import formatPrice from "../../utils/formatPrice";
+import Spinner from "../Others/Spinner";
 
 function PrizeList({
   trigger,
@@ -25,6 +27,7 @@ function PrizeList({
   const [prizes, setPrizes] = useState([]);
   const [delPrizeId, setDelPrizeId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
@@ -33,7 +36,9 @@ function PrizeList({
 
   const getPrizes = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get("/admin/prize");
+      setSpinFlag(false);
 
       if (res.data.status === 1)
         switch (prizeType) {
@@ -102,7 +107,10 @@ function PrizeList({
         return;
       }
 
+      setSpinFlag(true);
       const res = await api.delete(`/admin/prize/${delPrizeId}`);
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         showToast(t(res.data.msg));
         getPrizes();
@@ -126,7 +134,9 @@ function PrizeList({
         prizeId: prizeId,
       };
 
+      setSpinFlag(true);
       const res = await api.post("/admin/gacha/set_prize", formData);
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         showToast(t("successSet"), "success");
@@ -142,6 +152,7 @@ function PrizeList({
 
   return (
     <div className="overflow-auto w-full">
+      {spinFlag && <Spinner />}
       <table className="border-[1px] w-full  m-auto">
         <thead className="bg-admin_theme_color border-[1px] text-gray-200">
           <tr>

@@ -1,16 +1,21 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import usePersistedUser from "../../store/usePersistedUser";
-
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 
+import usePersistedUser from "../../store/usePersistedUser";
+
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
+import Spinner from "../../components/Others/Spinner";
 
 function Category() {
+  const [user] = usePersistedUser();
+  const { t } = useTranslation();
+
+  const [spinFlag, setSpinFlag] = useState(false);
   const [catId, setCatId] = useState("");
   const [jpName, setJpName] = useState("");
   const [enName, setEnName] = useState("");
@@ -21,8 +26,6 @@ function Category() {
   const [cuflag, setCuFlag] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [delId, setDelId] = useState(null);
-  const [user] = usePersistedUser();
-  const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
@@ -30,7 +33,10 @@ function Category() {
   }, []);
 
   const get_category = async () => {
+    setSpinFlag(true);
     const res = await api.get("admin/get_category");
+    setSpinFlag(false);
+
     if (res.data.status === 1) {
       setCategory(res.data.category);
     }
@@ -44,6 +50,7 @@ function Category() {
       }
 
       if (jpName && enName && ch1Name && ch2Name && vtName) {
+        setSpinFlag(true);
         const res = await api.post("admin/add_category", {
           catId: catId,
           jpName: jpName,
@@ -52,6 +59,7 @@ function Category() {
           ch2Name: ch2Name,
           vtName: vtName,
         });
+        setSpinFlag(false);
 
         if (res.data.status === 1) {
           showToast(t("successAdded"), "success");
@@ -96,27 +104,27 @@ function Category() {
     setCuFlag(0);
   };
 
-  const categoryDel = () => {
+  const categoryDel = async () => {
     if (!user.authority["category"]["delete"]) {
       showToast(t("noPermission"), "error");
       return;
     }
 
-    api
-      .delete(`admin/del_category/${delId}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("successDeleted"), "success");
-          get_category();
-        } else showToast(t(res.data.msg), "error");
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
+    try {
+      setSpinFlag(true);
+      const res = await api.delete(`admin/del_category/${delId}`);
+      setSpinFlag(false);
+
+      if (res.data.status === 1) {
+        showToast(t("successDeleted"), "success");
+        get_category();
+      } else showToast(t(res.data.msg), "error");
+    } catch (error) {}
   };
 
   return (
     <div className="p-3 ">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("category")} />
       </div>

@@ -3,11 +3,12 @@ import { useState, useRef } from "react";
 import { HexColorPicker } from "react-colorful";
 
 import api from "../../utils/api";
-import { setMultipart, removeMultipart } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+import { setMultipart, removeMultipart } from "../../utils/setHeader";
 
 import PageHeader from "../../components/Forms/PageHeader";
+import Spinner from "../../components/Others/Spinner";
 import uploadimage from "../../assets/img/icons/upload.png";
 
 function Theme() {
@@ -17,6 +18,7 @@ function Theme() {
   const [imgUrl, setImgUrl] = useState(null);
   const [bgColor, setBgColor] = useState("#e50e0e");
   const [formData, setFormData] = useState({ bgColor: "", file: null });
+  const [spinFlag, setSpinFlag] = useState(false);
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
@@ -35,7 +37,7 @@ function Theme() {
     setFormData({ bgColor: "", file: null });
     fileInputRef.current.value = null;
     setImgUrl(null);
-    
+
     removeMultipart();
   };
 
@@ -55,7 +57,10 @@ function Theme() {
       setMultipart();
       setAuthToken();
 
+      setSpinFlag(true);
       const res = await api.post("/admin/changeLogo", formData);
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         showToast(t("successChanged"), "success");
         cancelLogo();
@@ -73,9 +78,12 @@ function Theme() {
     try {
       setAuthToken();
 
+      setSpinFlag(true);
       const res = await api.post("/admin/changeBgColor", {
         bgColor: formData.bgColor,
       });
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         showToast(t("successChanged"), "success");
         cancelLogo();

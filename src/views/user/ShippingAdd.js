@@ -11,6 +11,7 @@ import usePersistedUser from "../../store/usePersistedUser";
 import { bgColorAtom } from "../../store/theme";
 
 import InputGroup from "../../components/Forms/InputGroup";
+import Spinner from "../../components/Others/Spinner";
 
 function ShippingAdd() {
   const { t } = useTranslation();
@@ -18,8 +19,10 @@ function ShippingAdd() {
   const navigate = useNavigate();
   const [user] = usePersistedUser();
   const [bgColor] = useAtom(bgColorAtom);
+  const { initialData } = location.state || {};
 
   const [showErrMessage, setShowErrMessage] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
   const [shipAddress, setShipAddress] = useState({
     user_id: user?._id,
     country: "",
@@ -33,8 +36,6 @@ function ShippingAdd() {
     building: "",
     phoneNumber: "",
   });
-
-  const { initialData } = location.state || {};
 
   useEffect(() => {
     setAuthToken();
@@ -91,7 +92,9 @@ function ShippingAdd() {
 
       if (initialData) formatDate.update = true;
 
+      setSpinFlag(true);
       const res = await api.post("user/shipping_address", formatDate);
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         if (res.data.update) {
@@ -111,6 +114,7 @@ function ShippingAdd() {
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-2/3 p-3 mx-auto mt-14">
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">

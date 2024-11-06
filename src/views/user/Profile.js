@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api.js";
 import { showToast } from "../../utils/toastUtil.js";
@@ -11,7 +12,7 @@ import { bgColorAtom } from "../../store/theme.js";
 
 import InputGroup from "../../components/Forms/InputGroup.js";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal.js";
-import { useTranslation } from "react-i18next";
+import Spinner from "../../components/Others/Spinner.js";
 
 const Profile = () => {
   const { t } = useTranslation();
@@ -20,6 +21,7 @@ const Profile = () => {
   const [bgColor] = useAtom(bgColorAtom);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -39,7 +41,10 @@ const Profile = () => {
 
   const getUserData = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get(`/user/get_user/${user?._id}`);
+      setSpinFlag(false);
+
       if (res.data.status === 1) setUserData(res.data.user);
     } catch (error) {
       showToast(error, "error");
@@ -50,6 +55,7 @@ const Profile = () => {
   const handleSetUserData = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
+
   const handleUpdateUserData = async () => {
     try {
       if (user) {
@@ -72,8 +78,11 @@ const Profile = () => {
   const handleSetPwdData = (e) => {
     setPwdData({ ...pwdData, [e.target.name]: e.target.value });
   };
+
   const handleChangePass = async () => {
+    setSpinFlag(true);
     const res = await api.post("/user/changePwd", pwdData);
+    setSpinFlag(false);
 
     switch (res.data.status) {
       case 1:
@@ -96,15 +105,17 @@ const Profile = () => {
     });
   };
 
-  // withdrawal account
   const handleWithdrawalAccount = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.post("/user/withdraw_user/", { user_id: user._id });
+      setSpinFlag(false);
       if (res.data.status === 1) logout();
     } catch (error) {
       showToast(error, "error");
     }
   };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -115,6 +126,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       <div className={`relative w-full md:w-2/3 mx-auto mt-14 p-3`}>
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">

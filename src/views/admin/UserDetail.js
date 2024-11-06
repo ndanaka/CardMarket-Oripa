@@ -5,45 +5,46 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
 import formatPrice from "../../utils/formatPrice";
+import { showToast } from "../../utils/toastUtil";
 
 import Label from "../../components/Forms/Label";
 import GroupHeader from "../../components/Forms/GroupHeader";
-import { showToast } from "../../utils/toastUtil";
+import Spinner from "../../components/Others/Spinner";
 
 function UserDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const { userId } = location.state || {};
 
   const [user, setUser] = useState(null);
   const [pointLog, setPointLog] = useState(null);
-  const { userId } = location.state || {};
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     getPointLog();
     getUserData();
   }, []);
 
-  const getUserData = () => {
-    api
-      .get(`/user/get_user/${userId}`)
-      .then((res) => {
-        if (res.data.status === 1) setUser(res.data.user);
-      })
-      .catch((err) => showToast(err, "error"));
+  const getUserData = async () => {
+    setSpinFlag(true);
+    const res = await api.get(`/user/get_user/${userId}`);
+    setSpinFlag(false);
+
+    if (res.data.status === 1) setUser(res.data.user);
   };
 
-  const getPointLog = () => {
-    api
-      .get(`/user/get_point_log/${userId}`)
-      .then((res) => {
-        if (res.data.status === 1) setPointLog(res.data.pointLog);
-      })
-      .catch((err) => console.log(err));
+  const getPointLog = async () => {
+    setSpinFlag(true);
+    const res = await api.get(`/user/get_point_log/${userId}`);
+    setSpinFlag(false);
+
+    if (res.data.status === 1) setPointLog(res.data.pointLog);
   };
 
   return (
-    <div className="w-full  md:w-[70%] m-auto  p-3">
+    <div className="w-full  md:w-[70%] m-auto p-3">
+      {spinFlag && <Spinner />}
       <div className="text-xl text-center text-slate-600">
         <i
           className="fa fa-chevron-left float-left cursor-pointer"

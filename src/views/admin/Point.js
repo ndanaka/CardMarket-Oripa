@@ -5,31 +5,31 @@ import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart, removeMultipart } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
+import formatPrice from "../../utils/formatPrice";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
-
+import Spinner from "../../components/Others/Spinner";
 import uploadimage from "../../assets/img/icons/upload.png";
-import formatPrice from "../../utils/formatPrice";
 
 function Point() {
   const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
+  const fileInputRef = useRef(null);
 
+  const [points, setPoints] = useState([]);
+  const [cuflag, setCuFlag] = useState(1);
+  const [imgUrl, setImgUrl] = useState("");
+  const [delPointId, setDelPointId] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
     pointNum: 0,
     price: 0,
     file: null,
   });
-  const [points, setPoints] = useState([]);
-  const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
-  const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const [delPointId, setDelPointId] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setAuthToken();
@@ -45,16 +45,16 @@ function Point() {
   };
 
   //get registered point
-  const getPoint = () => {
+  const getPoint = async () => {
     setAuthToken();
-    api
-      .get("/admin/get_point")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setPoints(res.data.points);
-        }
-      })
-      .catch((err) => console.error(err));
+
+    setSpinFlag(true);
+    const res = await api.get("/admin/get_point");
+    setSpinFlag(false);
+
+    if (res.data.status === 1) {
+      setPoints(res.data.points);
+    }
   };
 
   const handleFileInputChange = (event) => {
@@ -72,7 +72,7 @@ function Point() {
 
   /* add and update prize with image file uploading
   if there is a property 'id' vin formData, this perform update of prize */
-  const AddPoint = () => {
+  const AddPoint = async () => {
     if (!user.authority["point"]["write"]) {
       showToast(t("noPermission"), "error");
       return;
@@ -93,37 +93,39 @@ function Point() {
     ) {
       showToast(t("selectImage"), "error");
     } else {
-      api.post("/admin/point_upload", formData).then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("successAdded"), "success");
-          setImgUrl("");
-          fileInputRef.current.value = null;
-          setFormData({
-            ...formData,
-            id: "",
-            pointNum: 0,
-            price: 0,
-            file: null,
-          });
-          setCuFlag(1); //set create/update flag as creating
-          removeMultipart();
-        } else if (res.data.status === 2) {
-          showToast(t("successUpdated"), "success");
-          setImgUrl("");
-          setFormData({
-            ...formData,
-            id: "",
-            pointNum: 0,
-            price: 0,
-            file: null,
-          });
-          setCuFlag(1); //set create/update flag as creating
-          removeMultipart();
-        } else {
-          showToast(t("faileReq"), "error");
-        }
-        getPoint();
-      });
+      setSpinFlag(true);
+      const res = await api.post("/admin/point_upload", formData);
+      setSpinFlag(false);
+
+      if (res.data.status === 1) {
+        showToast(t("successAdded"), "success");
+        setImgUrl("");
+        fileInputRef.current.value = null;
+        setFormData({
+          ...formData,
+          id: "",
+          pointNum: 0,
+          price: 0,
+          file: null,
+        });
+        setCuFlag(1); //set create/update flag as creating
+        removeMultipart();
+      } else if (res.data.status === 2) {
+        showToast(t("successUpdated"), "success");
+        setImgUrl("");
+        setFormData({
+          ...formData,
+          id: "",
+          pointNum: 0,
+          price: 0,
+          file: null,
+        });
+        setCuFlag(1); //set create/update flag as creating
+        removeMultipart();
+      } else {
+        showToast(t("faileReq"), "error");
+      }
+      getPoint();
     }
   };
 
@@ -164,18 +166,20 @@ function Point() {
   };
 
   //handle point delete
-  const pointDel = () => {
+  const pointDel = async () => {
     if (!user.authority["point"]["delete"]) {
       showToast(t("noPermission"), "error");
       return;
     }
 
-    api.delete(`/admin/del_point/${delPointId}`).then((res) => {
-      if (res.data.status === 1) {
-        showToast(t("successDeleted"), "success");
-        getPoint();
-      } else showToast(t("failedDeleted"), "success");
-    });
+    setSpinFlag(true);
+    const res = await api.delete(`/admin/del_point/${delPointId}`);
+    setSpinFlag(false);
+
+    if (res.data.status === 1) {
+      showToast(t("successDeleted"), "success");
+      getPoint();
+    } else showToast(t("failedDeleted"), "success");
   };
 
   const handleDelete = () => {
@@ -185,6 +189,7 @@ function Point() {
 
   return (
     <div className="p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("point")} />
       </div>

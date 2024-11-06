@@ -10,6 +10,7 @@ import formatDate from "../../utils/formatDate";
 
 import PrizeCard from "../../components/Others/PrizeCard";
 import SubHeader from "../../components/Forms/SubHeader";
+import Spinner from "../../components/Others/Spinner";
 
 import usePersistedUser from "../../store/usePersistedUser";
 import { bgColorAtom } from "../../store/theme";
@@ -23,6 +24,7 @@ function UserDelivery() {
   const [pendingDelievers, setPendingDelievers] = useState([]);
   const [delieveringDelievers, setDelieveringDelievers] = useState([]);
   const [flag, setFlag] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
@@ -31,9 +33,9 @@ function UserDelivery() {
 
   const updateUserData = async () => {
     setAuthToken();
+
     try {
       if (user) {
-        // update user date
         const res = await api.get(`/user/get_user/${user._id}`);
         if (res.data.status === 1) {
           setUser(res.data.user);
@@ -50,7 +52,9 @@ function UserDelivery() {
 
   const getDeliver = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get(`/user/get_deliver/${user?._id}`);
+      setSpinFlag(false);
 
       if (res.data.deliver.length > 0) {
         let pendings = [];
@@ -73,24 +77,24 @@ function UserDelivery() {
     }
   };
 
-  const returnPrize = (deliver_id, prize_id) => {
-    api
-      .post("/user/return_prize", {
-        deliver_id: deliver_id,
-        prize_id: prize_id,
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          getDeliver();
-          setFlag(false);
-          showToast(t(res.data.msg), "success");
-        } else showToast(t(res.data.msg), "error");
-      })
-      .catch((err) => showToast(err, "error"));
+  const returnPrize = async (deliver_id, prize_id) => {
+    setSpinFlag(true);
+    const res = await api.post("/user/return_prize", {
+      deliver_id: deliver_id,
+      prize_id: prize_id,
+    });
+    setSpinFlag(false);
+
+    if (res.data.status === 1) {
+      getDeliver();
+      setFlag(false);
+      showToast(t(res.data.msg), "success");
+    } else showToast(t(res.data.msg), "error");
   };
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-4/6 p-3 mx-auto mt-14">
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">

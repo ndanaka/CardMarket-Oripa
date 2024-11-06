@@ -10,6 +10,8 @@ import { showToast } from "../../utils/toastUtil";
 import usePersistedUser from "../../store/usePersistedUser";
 import { bgColorAtom } from "../../store/theme";
 
+import Spinner from "../../components/Others/Spinner";
+
 function Shipping() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ function Shipping() {
 
   const [pickedShipAddress, setPickedShipAddress] = useState();
   const [shipAddressData, setShipAddressData] = useState();
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
@@ -26,7 +29,10 @@ function Shipping() {
 
   const getShippingAddress = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get(`user/shipping_address/${user?._id}`);
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         setShipAddressData(res.data.shippingAddress);
         setPickedShipAddress(user?.shipAddress_id);
@@ -41,10 +47,12 @@ function Shipping() {
       if (!pickedShipAddress) {
         return showToast(t("selectShipAddr"), "error");
       }
+      setSpinFlag(true);
       const res = await api.post("user/add_shipping_address", {
         userId: user?._id,
         shipAddress: pickedShipAddress,
       });
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         showToast(t("successSet"), "success");
@@ -58,7 +66,9 @@ function Shipping() {
 
   const deleteShipAddress = async (address) => {
     try {
+      setSpinFlag(true);
       const res = await api.delete(`user/del_shipping_address/${address}`);
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         getShippingAddress();
@@ -73,6 +83,7 @@ function Shipping() {
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-2/3 p-3 mx-auto mt-14">
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">

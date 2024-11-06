@@ -1,37 +1,40 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import formatDate from "../../utils/formatDate";
+import { showToast } from "../../utils/toastUtil";
+
+import usePersistedUser from "../../store/usePersistedUser";
 
 import SubHeader from "../../components/Forms/SubHeader";
 import PrizeCard from "../../components/Others/PrizeCard";
-
-import usePersistedUser from "../../store/usePersistedUser";
-import { useTranslation } from "react-i18next";
-import { showToast } from "../../utils/toastUtil";
+import Spinner from "../../components/Others/Spinner";
 
 function UserCard() {
-  const [userCards, setUserCards] = useState();
-  const [user] = usePersistedUser();
   const { t } = useTranslation();
+  const [user] = usePersistedUser();
+
+  const [userCards, setUserCards] = useState();
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
     getUserCards();
   }, []);
 
-  const getUserCards = () => {
-    api
-      .get(`/user/get_cards/${user?._id}`)
-      .then((res) => {
-        if (res.data.status === 1) setUserCards(res.data.cards);
-      })
-      .catch((err) => showToast(err, "error"));
+  const getUserCards = async () => {
+    setSpinFlag(true);
+    const res = await api.get(`/user/get_cards/${user?._id}`);
+    setSpinFlag(false);
+
+    if (res.data.status === 1) setUserCards(res.data.cards);
   };
 
   return (
     <div className="w-full flex flex-grow md:w-4/6 p-3 mx-auto mt-14">
+      {spinFlag && <Spinner />}
       <div className="flex flex-col mx-auto">
         <SubHeader text={t("my") + " " + t("cards")} />
         <div className="fitems-stretch">

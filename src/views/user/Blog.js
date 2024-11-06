@@ -11,6 +11,7 @@ import { bgColorAtom } from "../../store/theme";
 
 import Card from "../../components/Blogs/Card";
 import PostBlogModal from "../../components/Blogs/PostBlogModal";
+import Spinner from "../../components/Others/Spinner";
 
 const Blog = () => {
   const { t } = useTranslation();
@@ -19,27 +20,28 @@ const Blog = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [blogs, setBlogs] = useState();
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
     getBlogs();
   }, []);
 
-  const getBlogs = () => {
-    api
-      .get(`/user/blog/0`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          setBlogs(res.data.blogs);
-        } else {
-          showToast(t(res.data.msg), "error");
-        }
-      })
-      .catch((err) => showToast(err, "error"));
+  const getBlogs = async () => {
+    setSpinFlag(true);
+    const res = await api.get(`/user/blog/0`);
+    setSpinFlag(false);
+
+    if (res.data.status === 1) {
+      setBlogs(res.data.blogs);
+    } else {
+      showToast(t(res.data.msg), "error");
+    }
   };
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       <div className="w-full xxsm:w-[80%] lg:w-[70%] xl:w-[60%] mt-16 mx-4 mx-auto px-2">
         <div className="w-full py-2">
           <div className="w-full text-center">

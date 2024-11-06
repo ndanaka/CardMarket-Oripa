@@ -9,25 +9,25 @@ import usePersistedUser from "../../store/usePersistedUser";
 
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
-
+import Spinner from "../../components/Others/Spinner";
 import uploadimage from "../../assets/img/icons/upload.png";
 
 function Carousel() {
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const { t } = useTranslation();
+  const fileInputRef = useRef(null);
 
+  const [carousels, setCarousels] = useState([]);
+  const [cuflag, setCuFlag] = useState(1);
+  const [imgUrl, setImgUrl] = useState("");
+  const [carouselId, setCarouselId] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
     link: "",
     file: null,
   });
-  const [carousels, setCarousels] = useState([]);
-  const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
-  const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const [carouselId, setCarouselId] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setAuthToken();
@@ -45,7 +45,10 @@ function Carousel() {
   const getCarousels = async () => {
     setAuthToken();
 
+    setSpinFlag(true);
     const res = await api.get("/admin/get_carousels");
+    setSpinFlag(false);
+
     if (res.data.status === 1) {
       setCarousels(res.data.carousels);
     }
@@ -83,7 +86,9 @@ function Carousel() {
     ) {
       showToast(t("selectImage"), "error");
     } else {
+      setSpinFlag(true);
       const res = await api.post("/admin/carousel", formData);
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         showToast(t("successAdded"), "success");
@@ -98,7 +103,7 @@ function Carousel() {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setIsModalOpen(false);
 
     if (!user.authority["carousel"]["delete"]) {
@@ -106,12 +111,14 @@ function Carousel() {
       return;
     }
 
-    api.delete(`/admin/del_carousel/${carouselId}`).then((res) => {
-      if (res.data.status === 1) {
-        showToast(t("successDeleted"), "success");
-        getCarousels();
-      } else showToast(t("failedDeleted"), "error");
-    });
+    setSpinFlag(true);
+    const res = await api.delete(`/admin/del_carousel/${carouselId}`);
+    setSpinFlag(false);
+
+    if (res.data.status === 1) {
+      showToast(t("successDeleted"), "success");
+      getCarousels();
+    } else showToast(t("failedDeleted"), "error");
   };
 
   const handleCancel = () => {
@@ -137,6 +144,7 @@ function Carousel() {
 
   return (
     <div className="p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("carousel")} />
       </div>
@@ -187,7 +195,7 @@ function Carousel() {
             <div className="addBtn flex justify-end m-1">
               {!cuflag ? (
                 <button
-                  className="button-22 !bg-red-500"
+                  className="button-22 !bg-red-500 mx-1"
                   onClick={handleCancel}
                 >
                   {t("cancel")}

@@ -6,11 +6,12 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+import formatPrice from "../../utils/formatPrice";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import PrizeList from "../../components/Tables/PrizeList";
 import PrizeCard from "../../components/Others/PrizeCard";
-import formatPrice from "../../utils/formatPrice";
+import Spinner from "../../components/Others/Spinner";
 
 const GachaEdit = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const GachaEdit = () => {
   const [extraPrizes, setExtraprizes] = useState([]);
   const [lastPrizes, setLastprizes] = useState([]);
   const [roundPrizes, setRoundprizes] = useState([]);
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
@@ -43,7 +45,9 @@ const GachaEdit = () => {
   //get Gacha by id
   const getGacha = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get(`/admin/gacha/${gachaId}`);
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         setGacha(res.data.gacha);
@@ -189,10 +193,12 @@ const GachaEdit = () => {
         return;
       }
 
+      setSpinFlag(true);
       const res = await api.post("/admin/gacha/unset_prize", {
         gachaId: gachaId,
         prizeId: prize._id,
       });
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         showToast(t("successUnset"), "success");
@@ -208,6 +214,8 @@ const GachaEdit = () => {
 
   return (
     <div className="p-3 w-full h-full md:w-[70%] m-auto">
+      {spinFlag && <Spinner />}
+
       <div className="text-xl text-center text-slate-600">
         <i
           className="fa fa-chevron-left float-left cursor-pointer"

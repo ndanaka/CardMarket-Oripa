@@ -7,6 +7,7 @@ import { setAuthToken } from "../../utils/setHeader";
 
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
+import Spinner from "../../components/Others/Spinner";
 
 function Administrators() {
   const { t } = useTranslation();
@@ -20,66 +21,76 @@ function Administrators() {
   const [adminName, setAdminName] = useState();
   const [cuflag, setCuFlag] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
     getAdminList();
   }, []);
 
-  const getAdminList = () => {
-    api
-      .get("/admin/get_adminList")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setAdminList(res.data.adminList);
-          setAdminId(res.data.adminList[0]._id);
-          setAdminName(res.data.adminList[0].name);
-          setAuthority(res.data.adminList[0].authority);
-        }
-      })
-      .catch((err) => showToast(err, "error"));
+  const getAdminList = async () => {
+    setSpinFlag(true);
+    const res = await api.get("/admin/get_adminList");
+    setSpinFlag(false);
+
+    try {
+      if (res.data.status === 1) {
+        setAdminList(res.data.adminList);
+        setAdminId(res.data.adminList[0]._id);
+        setAdminName(res.data.adminList[0].name);
+        setAuthority(res.data.adminList[0].authority);
+      }
+    } catch (error) {
+      showToast(error, "error");
+    }
   };
 
   //handle add/update adminList
-  const handleAddAdmin = () => {
+  const handleAddAdmin = async () => {
     if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
       showToast(t("requiredAll"), "error");
       return;
     }
 
-    api
-      .post("/admin/add_admin", {
+    try {
+      setSpinFlag(true);
+      const res = await api.post("/admin/add_admin", {
         adminId: adminId,
         name: name,
         email: email,
         password: password,
         cuflag: cuflag,
-      })
-      .then((res) => {
-        if (res.data.status === 0) {
-          showToast(t(res.data.msg), "error");
-        } else {
-          if (res.data.status === 2) {
-            showToast(t("successUpdated"), "success");
-          } else if (res.data.status === 1) {
-            showToast(t("successAdded"), "success");
-            getAdminList();
-          }
-          setName("");
-          setEmail("");
-          setPass("");
-          setCuFlag(false);
-          setAdminId("");
+      });
+      setSpinFlag(false);
+
+      if (res.data.status === 0) {
+        showToast(t(res.data.msg), "error");
+      } else {
+        if (res.data.status === 2) {
+          showToast(t("successUpdated"), "success");
+        } else if (res.data.status === 1) {
+          showToast(t("successAdded"), "success");
           getAdminList();
         }
-      })
-      .catch((err) => showToast(err, "error"));
+        setName("");
+        setEmail("");
+        setPass("");
+        setCuFlag(false);
+        setAdminId("");
+        getAdminList();
+      }
+    } catch (error) {
+      showToast(error, "error");
+    }
   };
 
   // Delete admin
   const handleDelete = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.delete(`/admin/del_admin/${adminId}`);
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         showToast(t("successDeleted"), "success");
         setIsModalOpen(false);
@@ -99,25 +110,29 @@ function Administrators() {
     authority[item][type] = !permission;
     setAuthority({ ...authority, [item]: authority[item] });
   };
-  const handleSaveAuth = () => {
-    api
-      .post("admin/chang_auth", {
+  const handleSaveAuth = async () => {
+    try {
+      setSpinFlag(true);
+      const res = await api.post("admin/chang_auth", {
         adminId: adminId,
         authority: authority,
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("successSaved"), "success");
-          getAdminList();
-          setAdminName("");
-          setAdminId("");
-        } else showToast(t("failedSaved"), "error");
-      })
-      .catch((err) => showToast(err, "error"));
+      });
+      setSpinFlag(false);
+
+      if (res.data.status === 1) {
+        showToast(t("successSaved"), "success");
+        getAdminList();
+        setAdminName("");
+        setAdminId("");
+      } else showToast(t("failedSaved"), "error");
+    } catch (error) {
+      showToast(error, "error");
+    }
   };
 
   return (
     <div className="p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("administrators")} />
       </div>
