@@ -261,7 +261,6 @@ const Index = () => {
       const res = await api.post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
         drawCounts: selGacha[1],
-        drawDate: new Date(),
       });
       console.log(res.data);
 
@@ -274,10 +273,6 @@ const Index = () => {
         // updateUserData();
       } else {
         switch (res.data.msg) {
-          // case 0:
-          //   showToast(t("dranAdmin"), "error");
-          //   break;
-
           case 0:
             showToast(t("noEnoughPoints"), "error");
             break;
@@ -426,10 +421,7 @@ const Index = () => {
           ) : (
             filteredGacha.map((data, i) => {
               const gachaNum =
-                data.grade_prizes.length +
-                data.extra_prizes.length +
-                data.round_prizes.length +
-                data.last_prizes.length;
+                data.remain_prizes.length;
 
               return (
                 <div
@@ -500,22 +492,24 @@ const Index = () => {
                                   {t("drawTen")}
                                 </button>
                               )}
-                              <button
-                                className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
-                                onClick={() => {
-                                  drawGacha(
-                                    data,
-                                    "all",
-                                    t("drawAll"),
-                                    gachaNum
-                                  );
-                                }}
-                                style={{
-                                  backgroundColor: bgColor,
-                                }}
-                              >
-                                {t("drawAll")}
-                              </button>
+                              {gachaNum !== 1 && (
+                                <button
+                                  className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
+                                  onClick={() => {
+                                    drawGacha(
+                                      data,
+                                      "all",
+                                      t("drawAll"),
+                                      gachaNum
+                                    );
+                                  }}
+                                  style={{
+                                    backgroundColor: bgColor,
+                                  }}
+                                >
+                                  {t("drawAll")}
+                                </button>
+                              )}
                             </>
                           ) : (
                             ""

@@ -96,7 +96,7 @@ function Theme() {
   };
 
   return (
-    <div className="w-full p-3">
+    <div className="w-full px-3 pt-2 py-24">
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("theme")} />
       </div>

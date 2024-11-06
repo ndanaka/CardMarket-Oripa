@@ -35,7 +35,7 @@ const ScrollToTop = () => {
       <div
         onClick={scrollToTop}
         className="border-0 text-white text-center rounded-full shadow-lg transform transition-transform duration-300 hover:scale-110"
-        style={{ backgroundColor: bgColor }}
+        style={{ backgroundColor: bgColor ? bgColor : "rgb(38 97 156)" }}
       >
         <i className="fa fa-arrow-up p-3"></i>
       </div>

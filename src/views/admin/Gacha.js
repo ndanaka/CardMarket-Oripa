@@ -211,7 +211,7 @@ function Gacha() {
   };
 
   return (
-    <div className="relative p-3">
+    <div className="relative px-3 pt-2 py-24">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("gacha")} />
@@ -370,6 +370,9 @@ function Gacha() {
           </div>
         </div>
         <div className="overflow-auto flex flex-wrap w-full lg:w-[65%] h-fit">
+          <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+            {t("currentPrizeList")}
+          </div>
           <table className="w-full m-auto">
             <thead className="bg-admin_theme_color font-bold text-gray-200">
               <tr>
@@ -421,7 +424,7 @@ function Gacha() {
                               process.env.REACT_APP_SERVER_ADDRESS +
                               data.img_url
                             }
-                            className="w-[100px] h-auto mx-auto"
+                            className="h-[100px] mx-auto"
                             alt="gacha thumnail"
                           />
                         </td>
@@ -434,11 +437,7 @@ function Gacha() {
                           ))}
                         </td>
                         <td>
-                          {data.grade_prizes.length +
-                            data.extra_prizes.length +
-                            data.round_prizes.length +
-                            data.last_prizes.length}{" "}
-                          / {data.total_number}
+                          {data.remain_prizes.length} / {data.total_number}
                         </td>
                         <td>{data.order}</td>
                       </tr>

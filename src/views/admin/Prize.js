@@ -172,7 +172,7 @@ const Prize = () => {
   };
 
   return (
-    <div className="p-3">
+    <div className="px-3 pt-2 py-24">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("prize")} />
@@ -377,6 +377,9 @@ const Prize = () => {
             ) : (
               ""
             )}
+          </div>
+          <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+            {t("currentPrizeList")}
           </div>
           <PrizeList
             trigger={trigger}

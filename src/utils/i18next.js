@@ -321,6 +321,8 @@ i18n.use(initReactI18next).init({
         soldOut: "Sold Out",
         awardRarity: "Award rarity",
         order: "Order",
+        currentPrizeList: "Current prize list",
+        currentGachaList: "Current gacha list",
       },
     },
     jp: {
@@ -642,6 +644,8 @@ i18n.use(initReactI18next).init({
         soldOut: "売り切れ",
         awardRarity: "賞の希少度",
         order: "順の",
+        currentPrizeList: "現在の賞品リスト",
+        currentGachaList: "現在のガチャリスト",
       },
     },
     ch1: {
@@ -957,6 +961,8 @@ i18n.use(initReactI18next).init({
         soldOut: "售罄",
         awardRarity: "奖项稀有度",
         order: "顺序的",
+        currentPrizeList: "当前奖品列表",
+        currentGachaList: "当前扭蛋列表",
       },
     },
     ch2: {
@@ -1252,6 +1258,8 @@ i18n.use(initReactI18next).init({
         soldOut: "售罄",
         awardRarity: "獎項稀有度",
         order: "順序的",
+        currentPrizeList: "當前獎品列表",
+        currentGachaList: "當前扭蛋列表",
       },
     },
     vn: {
@@ -1574,6 +1582,8 @@ i18n.use(initReactI18next).init({
         soldOut: "Hết hàng",
         awardRarity: "Độ hiếm của giải thưởng",
         order: "Theo thứ tự",
+        currentPrizeList: "Danh sách giải thưởng hiện tại",
+        currentGachaList: "Danh sách gacha hiện tại",
       },
     },
   },

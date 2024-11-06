@@ -43,7 +43,7 @@ function UserDetail() {
   };
 
   return (
-    <div className="w-full  md:w-[70%] m-auto p-3">
+    <div className="w-full md:w-[70%] m-auto px-3 pt-2 py-24">
       {spinFlag && <Spinner />}
       <div className="text-xl text-center text-slate-600">
         <i
