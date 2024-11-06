@@ -121,64 +121,69 @@ function Administrators() {
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("administrators")} />
       </div>
-      <div className="flex flex-col justify-center items-center p-5 w-full md:w-[70%] m-auto">
-        <div className="my-1 form-group w-full">
-          <label htmlFor="name" className="text-gray-700">
-            {t("name")}
-          </label>
-          <input
-            id="name"
-            name="name"
-            className="form-control w-full"
-            onChange={(e) => setName(e.target.value)}
-            value={name ? name : ""}
-            autoComplete="name"
-          ></input>
+      <div className="flex flex-col w-full md:w-[70%] lg:w-[50%] border-1 h-fit mx-auto mb-4">
+        <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
+          {t("admin") + " " + t("add")}
         </div>
-        <div className="my-1 form-group w-full">
-          <label htmlFor="email" className="text-gray-700">
-            {t("email")}
-          </label>
-          <input
-            id="email"
-            name="email"
-            className="form-control w-full"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email ? email : ""}
-            autoComplete="name"
-          ></input>
-        </div>
-        <div className="my-1 form-group w-full">
-          <label htmlFor="password" className="text-gray-700">
-            {t("password")}
-          </label>
-          <input
-            id="password"
-            name="password"
-            className="form-control w-full"
-            onChange={(e) => setPass(e.target.value)}
-            value={password ? password : ""}
-            autoComplete="name"
-          ></input>
-        </div>
-        <div className="flex justify-end">
-          {cuflag ? (
-            <button
-              className="button-22 !bg-red-500 !mr-2"
-              onClick={() => {
-                setCuFlag(false);
-                setAdminId("");
-                setName("");
-                setEmail("");
-                setPass("");
-              }}
-            >
-              {t("cancel")}
+        <div className="p-2">
+          <div className="my-1 form-group w-full">
+            <label htmlFor="name" className="text-gray-700">
+              {t("name")}
+            </label>
+            <input
+              id="name"
+              name="name"
+              className="form-control w-full"
+              onChange={(e) => setName(e.target.value)}
+              value={name ? name : ""}
+              autoComplete="name"
+            ></input>
+          </div>
+          <div className="my-1 form-group w-full">
+            <label htmlFor="email" className="text-gray-700">
+              {t("email")}
+            </label>
+            <input
+              id="email"
+              name="email"
+              className="form-control w-full"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email ? email : ""}
+              autoComplete="name"
+            ></input>
+          </div>
+          <div className="my-1 form-group w-full">
+            <label htmlFor="password" className="text-gray-700">
+              {t("password")}
+            </label>
+            <input
+              id="password"
+              name="password"
+              className="form-control w-full"
+              onChange={(e) => setPass(e.target.value)}
+              value={password ? password : ""}
+              autoComplete="name"
+            ></input>
+          </div>
+          <div className="flex justify-end w-full">
+            {cuflag ? (
+              <button
+                className="button-22 !bg-red-500 !mr-2"
+                onClick={() => {
+                  setCuFlag(false);
+                  setAdminId("");
+                  setName("");
+                  setEmail("");
+                  setPass("");
+                }}
+              >
+                {t("cancel")}
+              </button>
+            ) : null}
+            <button className="button-22" onClick={handleAddAdmin}>
+              {cuflag ? t("update") : t("add")}
             </button>
-          ) : null}
-          <button className="button-22" onClick={handleAddAdmin}>
-            {cuflag ? t("update") : t("add")}
-          </button>
+          </div>
         </div>
       </div>
       <div className="flex flex-wrap justify-between items-start w-full mx-auto">

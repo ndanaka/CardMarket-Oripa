@@ -33,20 +33,20 @@ const AdminNavbar = (props) => {
     updateAdminData();
   }, [location]);
 
-  const updateAdminData = () => {
-    setAuthToken();
-    if (user) {
-      api
-        .get(`/admin/get_admin/${user._id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            setUser(res.data.admin);
-          }
-        })
-        .catch((err) => {
-          showToast(t("tryLogin"), "error");
-          navigate("user/index");
-        });
+  const updateAdminData = async () => {
+    try {
+      setAuthToken();
+
+      if (user) {
+        const res = await api.get(`/admin/get_admin/${user.user_id}`);
+        if (res.data.status === 1) setUser(res.data.admin);
+      } else {
+        showToast(t("tryLogin"), "error");
+        navigate("user/index");
+      }
+    } catch (error) {
+      showToast(t("tryLogin"), "error");
+      navigate("user/index");
     }
   };
 

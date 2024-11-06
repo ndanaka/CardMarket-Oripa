@@ -46,9 +46,9 @@ function UserDetail() {
     <div className="w-full  md:w-[70%] m-auto  p-3">
       <div className="text-xl text-center text-slate-600">
         <i
-          className="fa fa-chevron-left float-left"
+          className="fa fa-chevron-left float-left cursor-pointer"
           onClick={() => navigate("/admin/user")}
-        ></i>
+        />
         <span className="text-xl text-center py-3">
           {t("user") + " " + t("detail")}
         </span>
@@ -65,7 +65,7 @@ function UserDetail() {
             <Label htmlFor="text" text="email" classname="pr-3" />
             {user?.email}
           </div>
-          <div className="w-full px-2">
+          {/* <div className="w-full px-2">
             <Label htmlFor="text" text="address" classname="pr-3" />
             {user?.address}
           </div>
@@ -76,7 +76,7 @@ function UserDetail() {
           <div className="w-full md:w-1/2 px-2">
             <Label htmlFor="text" text="country" classname="pr-3" />
             {user?.country}
-          </div>
+          </div> */}
         </div>
         <hr className="my-2"></hr>
         <div className="flex flex-wrap justify-between">
@@ -96,7 +96,7 @@ function UserDetail() {
                   pointLog.map((log, i) => (
                     <tr key={i}>
                       <td>{i + 1}</td>
-                      <td>{formatPrice(log.point_num)} pt</td>
+                      <td>{formatPrice(log.point_num)}pt</td>
                       <td>{log.usage}</td>
                       <td>{formatDate(log.date)}</td>
                     </tr>
@@ -109,41 +109,6 @@ function UserDetail() {
               </tbody>
             </table>
           </div>
-          {/* <div className="w-full">
-            <GroupHeader text="obtained_cards" />
-            <div className="flex flex-wrap justify-evenly p-2">
-              {user?.obtain_cards?.length > 0 ? (
-                user.obtain_cards.map((gacha, i) => {
-                  return (
-                    <div className="my-1">
-                      <div>
-                        {gacha?.gacha_name} {formatDate(gacha?.gacha_date)}
-                      </div>
-                      <div className="flex flex-wrap">
-                        {gacha?.prizes?.length > 0
-                          ? gacha.prizes.map((card) => (
-                              <div className="mt-2 mr-2">
-                                <PrizeCard
-                                  name={card.name}
-                                  rarity={card.rarity}
-                                  cashback={card.cashback}
-                                  img_url={card.img_url}
-                                />
-                              </div>
-                            ))
-                          : null}
-                      </div>
-                      <hr className="w-full my-2"></hr>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="text-lg text-gray-200 text-center">
-                  {t("nocard")}
-                </div>
-              )}
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

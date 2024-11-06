@@ -14,7 +14,7 @@ const Sidebar = (props) => {
         return (
           <div
             key={key}
-            className={`group py-2 px-4 flex justify-between hover:bg-[#1e3a6b] dark:text-gray-300 text-gray-200 hover:text-white cursor-pointer select-none border-b-[1px] border-gray-300 ${
+            className={`w-[200px] group py-2 px-4 flex justify-between hover:bg-[#1e3a6b] dark:text-gray-300 text-gray-200 hover:text-white cursor-pointer select-none border-b-[1px] border-gray-300 ${
               currentPath === prop.layout + prop.path
                 ? "bg-[#1e3a6b] text-white"
                 : ""

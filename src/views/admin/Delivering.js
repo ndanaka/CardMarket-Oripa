@@ -38,7 +38,7 @@ function Delivering() {
       const res = await api.get("/admin/get_deliver");
       if (res.data.status === 1) {
         setDeliverData(res.data.deliverData);
-        setFilteredData(res.data.deliverData); // Initialize filtered data
+        setFilteredData(res.data.deliverData);
       }
     } catch (error) {
       showToast(error, "error");

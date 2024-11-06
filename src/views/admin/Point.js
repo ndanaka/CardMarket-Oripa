@@ -188,12 +188,37 @@ function Point() {
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("point")} />
       </div>
-      <div className="flex flex-col w-full md:w-[70%] border-2 m-auto">
-        <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
-          {t("point") + " " + t("add")}
-        </div>
-        <div className="flex flex-wrap justify-center sm:px-4 pt-2 w-full">
-          <div className="flex flex-col w-full xxsm:w-1/2">
+      <div className="flex flex-wrap">
+        <div className="flex flex-col w-full lg:w-[35%] border-1 mb-2 h-fit">
+          <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
+            {t("point") + " " + t("add")}
+          </div>
+          <div className="flex flex-col justify-between items-center p-2 w-full">
+            <label
+              htmlFor="fileInput"
+              className="text-gray-700 px-1 justify-start flex flex-wrap w-full"
+            >
+              {t("point") + " " + t("image")}
+            </label>
+            <input
+              name="fileInput"
+              type="file"
+              id="fileInput"
+              ref={fileInputRef}
+              className="image p-1 w-full form-control"
+              onChange={handleFileInputChange}
+              autoComplete="name"
+            ></input>
+            <img
+              src={imgUrl ? imgUrl : uploadimage}
+              alt="prize"
+              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
+              onClick={() => {
+                document.getElementById("fileInput").click();
+              }}
+            />
+          </div>
+          <div className="flex flex-col p-2">
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="pointNum" className="text-gray-700">
                 {t("amount")} (pt)
@@ -220,97 +245,77 @@ function Point() {
                 autoComplete="name"
               ></input>
             </div>
-          </div>
-          <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
-            <label htmlFor="fileInput" className="text-gray-700 px-1">
-              {t("point") + " " + t("image")}:{" "}
-            </label>
-            <input
-              name="fileInput"
-              type="file"
-              id="fileInput"
-              ref={fileInputRef}
-              className="image p-1 w-full form-control"
-              onChange={handleFileInputChange}
-              autoComplete="name"
-            ></input>
-            <img
-              src={imgUrl ? imgUrl : uploadimage}
-              alt="prize"
-              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
-              onClick={() => {
-                document.getElementById("fileInput").click();
-              }}
-            />
+            <div className="flex flex-wrap justify-end px-2 py-1">
+              {!cuflag ? (
+                <button
+                  className="button-22 !bg-red-500 !mr-2"
+                  onClick={CancelPoint}
+                >
+                  {t("cancel")}
+                </button>
+              ) : null}
+              <button className="button-22" onClick={UpdatePoint}>
+                {!cuflag ? t("update") : t("add")}
+              </button>
+            </div>
           </div>
         </div>
-        <div className="flex flex-wrap justify-end px-3 pb-2">
-          {!cuflag ? (
-            <button
-              className="button-22 !bg-red-500 !mr-2"
-              onClick={CancelPoint}
-            >
-              {t("cancel")}
-            </button>
-          ) : null}
-          <button className="button-22" onClick={UpdatePoint}>
-            {!cuflag ? t("update") : t("add")}
-          </button>
-        </div>
-      </div>
-      <div className="mx-auto my-3 w-full md:w-[70%] overflow-auto">
-        <table className="border-2 w-full  m-auto">
-          <thead>
-            <tr className="bg-admin_theme_color font-bold text-gray-200">
-              <th>{t("no")}</th>
-              <th>{t("point") + " " + t("amount")}</th>
-              <th>{t("price")}</th>
-              <th>{t("point") + " " + t("image")}</th>
-              <th>{t("action")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {points && points.length !== 0 ? (
-              points.map((data, i) => (
-                <tr key={data._id} className="border-2">
-                  <td>{i + 1}</td>
-                  <td>{formatPrice(data.point_num)} pt</td>
-                  <td>¥ {formatPrice(data.price)}</td>
-                  <td>
-                    <img
-                      className="m-auto"
-                      src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
-                      width="50px"
-                      height="50px"
-                      alt={`${data.point_num} points`} // Meaningful alt text
-                    />
-                  </td>
-                  <td>
-                    <span
-                      id={data._id}
-                      className="fa fa-edit p-1 cursor-pointer"
-                      onClick={() => {
-                        handleEdit(i);
-                      }}
-                    ></span>
-                    <span
-                      id={data._id}
-                      className="fa fa-remove p-1 cursor-pointer"
-                      onClick={() => {
-                        setDelPointId(data._id);
-                        setIsModalOpen(true);
-                      }}
-                    ></span>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5">{t("nopoint")}</td>
+        <div className="overflow-auto flex flex-wrap w-full lg:w-[65%] h-fit">
+          <table className="w-full m-auto">
+            <thead>
+              <tr className="bg-admin_theme_color font-bold text-gray-200">
+                <th>{t("no")}</th>
+                <th>{t("image")}</th>
+                <th>{t("point")}</th>
+                <th>{t("price")}</th>
+                <th>{t("action")}</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {points && points.length !== 0 ? (
+                points.map((data, i) => (
+                  <tr key={data._id} className="border-2">
+                    <td>{i + 1}</td>
+                    <td>
+                      <img
+                        className="m-auto"
+                        src={
+                          process.env.REACT_APP_SERVER_ADDRESS + data.img_url
+                        }
+                        width="50px"
+                        height="50px"
+                        alt={`${data.point_num} points`} // Meaningful alt text
+                      />
+                    </td>
+                    <td>{formatPrice(data.point_num)}pt</td>
+                    <td>¥{formatPrice(data.price)}</td>
+                    <td>
+                      <span
+                        id={data._id}
+                        className="fa fa-edit p-1 cursor-pointer"
+                        onClick={() => {
+                          handleEdit(i);
+                        }}
+                      ></span>
+                      <span
+                        id={data._id}
+                        className="fa fa-remove p-1 cursor-pointer"
+                        onClick={() => {
+                          setDelPointId(data._id);
+                          setIsModalOpen(true);
+                        }}
+                      ></span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5">{t("nopoint")}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
       <DeleteConfirmModal
         isOpen={isModalOpen}

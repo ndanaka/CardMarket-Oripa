@@ -1,22 +1,17 @@
-import { useState, useEffect } from "react";
-
 const Progress_bar = ({ label, progress }) => {
-  const [bgColor, setBgColor] = useState("");
-  useEffect(() => {
-    if (progress < 30) {
-      setBgColor("#FF0800");
-    } else if (progress < 60) setBgColor("#FF8C00");
-    else setBgColor("#4CBB17");
-  }, []);
-
   return (
     <div className="w-full ">
-      <div style={{ width: "100%", backgroundColor: "#e0e0e0" }}>
+      <div className="h-[20px] bg-[#bbb] flex items-center w-full">
         <div
+          className={`h-[18px] mx-[1px]`}
           style={{
-            width: `${progress}%`,
-            height: "20px",
-            backgroundColor: `${bgColor}`,
+            width: `${Math.round(progress)}%`,
+            backgroundColor:
+              Math.round(progress) < 30
+                ? "#FF0800"
+                : Math.round(progress) < 60
+                ? "#FF8C00"
+                : "#4CBB17",
           }}
         />
       </div>

@@ -61,6 +61,7 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.26.2",
     "react-scripts": "^5.0.1",
+    "react-select": "^5.8.2",
     "reactstrap": "9.2.2",
     "sass": "1.79.1",
     "sass-loader": "^16.0.1",

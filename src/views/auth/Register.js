@@ -9,25 +9,23 @@ import { showToast } from "../../utils/toastUtil";
 import EmailVerification from "../../components/Others/EamilVerification";
 
 const Register = () => {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+  const navigate = useNavigate();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const [strength, setStrength] = useState(""); //password strength
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [checkTerms, setCheckTerms] = useState(false);
+  const [bgColor, setBgColor] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     country: "",
     email: "",
     password: "",
   });
-  const [bgColor, setBgColor] = useState("");
-
-  const { t, i18n } = useTranslation();
-  const currentLanguage = i18n.language;
-
-  const navigate = useNavigate();
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   useEffect(() => {
     getThemeData();
@@ -238,6 +236,7 @@ const Register = () => {
                     />
                     <div
                       onClick={togglePasswordVisibility}
+                      className="cursor-pointer"
                       style={{
                         position: "absolute",
                         right: "20px",

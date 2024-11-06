@@ -13,41 +13,67 @@ function PrizeList({
   trigger,
   setFormData,
   setCuFlag,
-  setprizes,
-  role = "showPrize",
+  role,
   setImgUrl,
+  prizeType,
+  gachaId,
+  getGacha,
 }) {
-  const [prizes, setPrizes] = useState(""); //registered prizes list
-  const [flag, setFlag] = useState(false); //registered prizes list
+  const [user] = usePersistedUser();
+  const { t } = useTranslation();
+
+  const [prizes, setPrizes] = useState([]);
   const [delPrizeId, setDelPrizeId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [user, setUser] = usePersistedUser();
-  const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
-    getPrize();
-  }, [trigger]);
+    getPrizes();
+  }, [trigger, prizeType]);
 
-  //get registered prize list
-  const getPrize = () => {
-    api
-      .get("/admin/get_prize")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setPrizes(res.data.prize);
-          for (let index = 0; index < res.data.prize.length; index++) {
-            const element = res.data.prize[index];
-            if (element.status === "unset") {
-              setFlag(!flag);
-              break;
-            }
-          }
+  const getPrizes = async () => {
+    try {
+      const res = await api.get("/admin/prize");
+
+      if (res.data.status === 1)
+        switch (prizeType) {
+          case "grade":
+            setPrizes(
+              res.data.prizes.filter(
+                (item) =>
+                  item.kind === "first" ||
+                  item.kind === "second" ||
+                  item.kind === "third" ||
+                  item.kind === "fourth"
+              )
+            );
+            break;
+
+          case "round":
+            setPrizes(
+              res.data.prizes.filter(
+                (item) => item.kind === "round_number_prize"
+              )
+            );
+            break;
+
+          case "last":
+            setPrizes(
+              res.data.prizes.filter((item) => item.kind === "last_prize")
+            );
+            break;
+
+          case "extra":
+            setPrizes(
+              res.data.prizes.filter((item) => item.kind === "extra_prize")
+            );
+            break;
+
+          default:
+            setPrizes(res.data.prizes);
+            break;
         }
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
+    } catch (error) {}
   };
 
   const prizeEdit = (index) => {
@@ -61,59 +87,80 @@ function PrizeList({
       name: prizes[index].name,
       rarity: prizes[index].rarity,
       cashBack: prizes[index].cashback,
-      grade: prizes[index].grade,
+      kind: prizes[index].kind,
     });
-    setCuFlag(0); //set create/edit status editing(0)
+    setCuFlag(0);
     setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + prizes[index].img_url);
   };
 
-  const prizeDel = () => {
-    if (!user.authority["prize"]["delete"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
+  const delPrize = async () => {
+    setIsModalOpen(false);
 
-    api
-      .delete(`/admin/del_prize/${delPrizeId}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t(res.data.msg));
-          getPrize();
-        } else {
-          showToast(t(res.data.msg), "error");
-        }
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
+    try {
+      if (!user.authority["prize"]["delete"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
+
+      const res = await api.delete(`/admin/prize/${delPrizeId}`);
+      if (res.data.status === 1) {
+        showToast(t(res.data.msg));
+        getPrizes();
+      } else {
+        showToast(t(res.data.msg), "error");
+      }
+    } catch (error) {
+      showToast(t("failedReq"), "error");
+    }
   };
 
-  const handleDelete = () => {
-    setIsModalOpen(false);
-    prizeDel();
+  const setPrize = async (prizeId) => {
+    try {
+      if (!user.authority["gacha"]["write"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
+
+      const formData = {
+        gachaId: gachaId,
+        prizeId: prizeId,
+      };
+
+      const res = await api.post("/admin/gacha/set_prize", formData);
+
+      if (res.data.status === 1) {
+        showToast(t("successSet"), "success");
+        getGacha();
+        getPrizes();
+      } else {
+        showToast(t("failedSet"), "error");
+      }
+    } catch (error) {
+      showToast(t("failedReq"), "error");
+    }
   };
 
   return (
-    <>
+    <div className="overflow-auto w-full">
       <table className="border-[1px] w-full  m-auto">
         <thead className="bg-admin_theme_color border-[1px] text-gray-200">
           <tr>
             <th>{t("no")}</th>
+            <th>{t("image")}</th>
             <th>{t("name")}</th>
             <th>{t("rarity")}</th>
-            <th>{t("cashback") + t("point")}</th>
-            <th>{t("image")}</th>
-            <th>{t("Grade")}</th>
-            {/* <th>{t("status")}</th> */}
+            <th>{t("cashback")}</th>
+            <th>{t("kind")}</th>
             <th>{t("action")}</th>
           </tr>
         </thead>
         <tbody>
           {prizes && prizes.length !== 0 ? (
             prizes.map((data, i) => {
-              if (role === "setPrize" && data.status === "set") {
-                return null; // Return null instead of nothing
+              if (role === "gacha" && data.status === true) {
+                return null;
               }
+
               return (
                 <tr
                   key={data._id}
@@ -122,9 +169,6 @@ function PrizeList({
                   }`}
                 >
                   <td>{i + 1}</td>
-                  <td>{data.name}</td>
-                  <td>{data.rarity}</td>
-                  <td>{formatPrice(data.cashback)} pt</td>
                   <td>
                     <img
                       className="m-auto object-cover h-[50px] w-[100px]"
@@ -132,46 +176,33 @@ function PrizeList({
                       alt={data.name}
                     />
                   </td>
+                  <td>{data.name}</td>
+                  <td>{data.rarity}</td>
+                  <td>{formatPrice(data.cashback)}pt</td>
+                  <td>{t(data.kind)}</td>
                   <td>
-                    {(() => {
-                      switch (data.grade) {
-                        case 1:
-                          return t("first");
-                        case 2:
-                          return t("second");
-                        case 3:
-                          return t("third");
-                        case 4:
-                          return t("fourth");
-                        default:
-                          return null; // Return null for other grades
-                      }
-                    })()}
-                  </td>
-                  {/* <td>{t(data.status)}</td> */}
-                  <td>
-                    {role !== "setPrize" ? (
+                    {role === "gacha" ? (
+                      <button
+                        className="bg-[#0276ff] text-white text-md py-1 px-3 rounded-md cursor-pointer"
+                        onClick={() => setPrize(data._id)}
+                      >
+                        {t("add")}
+                      </button>
+                    ) : (
                       <>
                         <span
                           id={data._id}
                           className="fa fa-edit p-1 cursor-pointer"
                           onClick={(e) => prizeEdit(i)}
-                        ></span>
+                        />
                         <span
                           className="fa fa-remove p-1 cursor-pointer"
                           onClick={(e) => {
                             setDelPrizeId(data._id);
                             setIsModalOpen(true);
                           }}
-                        ></span>
+                        />
                       </>
-                    ) : (
-                      <button
-                        className="bg-[#0276ff] text-white text-md py-1 px-3 rounded-md cursor-pointer"
-                        onClick={() => setprizes(data._id)}
-                      >
-                        {t("add")}
-                      </button>
                     )}
                   </td>
                 </tr>
@@ -188,9 +219,9 @@ function PrizeList({
       <DeleteConfirmModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={handleDelete}
+        onConfirm={delPrize}
       />
-    </>
+    </div>
   );
 }
 

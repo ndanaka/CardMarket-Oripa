@@ -1,23 +1,27 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import api from "../../utils/api";
-import { setAuthToken } from "../../utils/setHeader";
 import usePersistedUser from "../../store/usePersistedUser";
 
+import api from "../../utils/api";
+import { setAuthToken } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
-import AgreeButton from "../../components/Forms/AgreeButton";
+
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
 
 function Category() {
-  const [name, setName] = useState("");
-  const [description, setDes] = useState("");
+  const [catId, setCatId] = useState("");
+  const [jpName, setJpName] = useState("");
+  const [enName, setEnName] = useState("");
+  const [ch1Name, setCh1Name] = useState("");
+  const [ch2Name, setCh2Name] = useState("");
+  const [vtName, setVtName] = useState("");
   const [category, setCategory] = useState(null);
-  const [editRow, setEditRow] = useState(0);
+  const [cuflag, setCuFlag] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [delId, setDelId] = useState(null);
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -25,77 +29,71 @@ function Category() {
     get_category();
   }, []);
 
+  const get_category = async () => {
+    const res = await api.get("admin/get_category");
+    if (res.data.status === 1) {
+      setCategory(res.data.category);
+    }
+  };
+
+  const handleSubmitCat = async () => {
+    try {
+      if (!user.authority["category"]["write"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
+
+      if (jpName && enName && ch1Name && ch2Name && vtName) {
+        const res = await api.post("admin/add_category", {
+          catId: catId,
+          jpName: jpName,
+          enName: enName,
+          ch1Name: ch1Name,
+          ch2Name: ch2Name,
+          vtName: vtName,
+        });
+
+        if (res.data.status === 1) {
+          showToast(t("successAdded"), "success");
+          handleCancel();
+          get_category();
+        } else if (res.data.status === 2) {
+          showToast(t("successUpdated"), "success");
+          handleCancel();
+          get_category();
+        } else showToast(t("failedReq"), "error");
+      } else {
+        showToast(t("requiredAll"), "error");
+      }
+    } catch (error) {
+      showToast(t("failedReq", "error"));
+    }
+  };
+
   const handleDelete = () => {
     // Logic for deleting the item
     categoryDel();
     setIsModalOpen(false);
   };
 
-  const get_category = () => {
-    api
-      .get("admin/get_category")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setCategory(res.data.category);
-        }
-      })
-      .catch((err) => {
-        // error = new Error();
-      });
+  const handleCancel = () => {
+    setCatId("");
+    setJpName("");
+    setCh1Name("");
+    setCh2Name("");
+    setVtName("");
+    setEnName("");
+    setCuFlag(1);
   };
 
-  const addCategory = () => {
-    if (!user.authority["category"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
-
-    if (name && description) {
-      api
-        .post("admin/add_category", {
-          name: name,
-          description: description,
-        })
-        .then((res) => {
-          if (res.data.status === 1) {
-            get_category();
-            setName("");
-            setDes("");
-            showToast(t(res.data.msg), "success");
-          }
-        })
-        .catch((error) => {
-          error = new Error();
-        });
-    } else {
-      showToast(t("requiredAll"), "error");
-    }
-  };
-
-  const categoryEdit = () => {
-    if (!user.authority["category"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
-
-    const id = category[editRow]._id;
-
-    api
-      .post("/admin/edit_category", {
-        id: id,
-        name: name,
-        description: description,
-      })
-      .then((res) => {
-        if (res.data.status) {
-          showToast(t("successEdited"), "success");
-          closeModal();
-          get_category();
-        } else console.error(res.data.err);
-      })
-      .catch((err) => {
-        console.err(err);
-      });
+  const categoryEdit = (cat) => {
+    setCatId(cat._id);
+    setJpName(cat.jpName);
+    setCh1Name(cat.ch1Name);
+    setCh2Name(cat.ch2Name);
+    setVtName(cat.vtName);
+    setEnName(cat.enName);
+    setCuFlag(0);
   };
 
   const categoryDel = () => {
@@ -117,159 +115,145 @@ function Category() {
       });
   };
 
-  /* modal */
-  const closeModal = () => {
-    document.getElementById("modal").style.display = "none";
-    setName("");
-    setDes("");
-  };
-
-  const openModal = () => {
-    document.getElementById("modal").style.display = "block";
-  };
-
   return (
     <div className="p-3 ">
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("category")} />
       </div>
-      <div className="flex flex-wrap justify-around items-end p-2 w-full md:w-[70%] m-auto">
-        <div className="my-1 w-full md:w-[35%]">
-          <label htmlFor="catName" className="text-gray-700">
-            {t("name")}
-          </label>
-          <input
-            className="p-1 w-full form-control"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            id="catName"
-            name="catName"
-            autoComplete="name"
-          ></input>
-        </div>
-        <div className="my-1 w-full md:w-[35%]">
-          <label htmlFor="catDesc" className="text-gray-700">
-            {t("description")}
-          </label>
-          <input
-            className="p-1 w-full form-control"
-            value={description}
-            onChange={(e) => setDes(e.target.value)}
-            id="catDesc"
-            name="catDesc"
-            autoComplete="name"
-          ></input>
-        </div>
-        <AgreeButton
-          name={t("add") + t("category")}
-          className=""
-          onClick={addCategory}
-        />
-      </div>
-      <div className="m-auto w-full md:w-[70%]">
-        <table className="border-2 m-auto w-full">
-          <thead className="bg-admin_theme_color font-bold text-gray-200">
-            <tr>
-              <th>{t("no")}</th>
-              <th>{t("name")}</th>
-              <th>{t("description")}</th>
-              <th>{t("action")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {category && category.length !== 0 ? (
-              category.map((data, i) => (
-                <tr key={data._id} className="border-2">
-                  <td>{i + 1}</td>
-                  <td>{data.name}</td>
-                  <td>{data.description}</td>
-                  <td>
-                    <span
-                      id={data._id}
-                      className="fa fa-edit p-1 cursor-pointer"
-                      onClick={() => {
-                        openModal();
-                        setEditRow(i);
-                        setName(category[i].name);
-                        setDes(category[i].description);
-                      }}
-                    ></span>
-                    <span
-                      id={data._id}
-                      className="fa fa-remove p-1 cursor-pointer"
-                      onClick={() => {
-                        setDelId(data._id);
-                        setIsModalOpen(true);
-                      }}
-                    ></span>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">{t("noCategory")}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div
-        id="modal"
-        className="w-full h-full pt-[150px] bg-gray-600 bg-opacity-50 fixed top-0 left-0 hidden"
-      >
-        <div className="w-2/5 bg-white rounded-xl shadow-xl shadow-gray-500  m-auto p-2 z-10">
-          <div className="text-3xl text-theme_text_color text-center py-1">
-            {t("edit")}
+      <div className="flex flex-wrap">
+        <div className="flex flex-col w-full md:w-[35%] lg:w-[25%] border-1 h-fit">
+          <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
+            {t("category") + " " + t("add")}
           </div>
-          <div className="flex flex-col p-3 px-5 text-theme_text_color">
-            <div className="w-full flex flex-col justify-start">
-              <div className="my-1">
-                <label htmlFor="catNam" className="text-gray-700">
-                  {t("name")}
-                </label>
-                <input
-                  className="p-1 w-full rounded-md border-[1px] border-gray-400 focus:border-gray-600 focus:outline-gray-600"
-                  onChange={(e) => setName(e.target.value)}
-                  value={name}
-                  id="catNam"
-                  name="catNam"
-                  autoComplete="name"
-                ></input>
-              </div>
-              <div className="my-1">
-                <label htmlFor="catDes" className="text-gray-700">
-                  {t("description")}
-                </label>
-                <input
-                  className="p-1 w-full rounded-md border-[1px] border-gray-400 focus:border-gray-600 focus:outline-gray-600"
-                  onChange={(e) => setDes(e.target.value)}
-                  value={description}
-                  id="catDes"
-                  name="catDes"
-                  autoComplete="name"
-                ></input>
-              </div>
-            </div>
-            <div className="flex justify-end">
+          <div className="flex flex-col px-2 py-1">
+            <label htmlFor="jpName" className="text-gray-700 px-1">
+              {"名前- 日本語"}
+            </label>
+            <input
+              name="jpName"
+              className="form-control py-2"
+              id="jpName"
+              value={jpName}
+              onChange={(e) => setJpName(e.target.value)}
+              autoComplete="jpName"
+            />
+          </div>
+          <div className="flex flex-col px-2 py-1">
+            <label htmlFor="ch1Name" className="text-gray-700 px-1">
+              {"姓名 - 中文（简体)"}
+            </label>
+            <input
+              name="ch1Name"
+              className="form-control py-2"
+              id="ch1Name"
+              value={ch1Name}
+              onChange={(e) => setCh1Name(e.target.value)}
+              autoComplete="ch1Name"
+            />
+          </div>
+          <div className="flex flex-col px-2 py-1">
+            <label htmlFor="ch2Name" className="text-gray-700 px-2">
+              {"姓名 - 中文（繁體)"}
+            </label>
+            <input
+              name="ch2Name"
+              className="form-control py-2"
+              id="ch2Name"
+              value={ch2Name}
+              onChange={(e) => setCh2Name(e.target.value)}
+              autoComplete="ch2Name"
+            />
+          </div>
+          <div className="flex flex-col px-2 py-1">
+            <label htmlFor="vtName" className="text-gray-700 px-2">
+              {"Tên - Tiếng Việt"}
+            </label>
+            <input
+              name="vtName"
+              className="form-control py-2"
+              id="vtName"
+              value={vtName}
+              onChange={(e) => setVtName(e.target.value)}
+              autoComplete="vtName"
+            />
+          </div>
+          <div className="flex flex-col px-2 py-1">
+            <label htmlFor="enName" className="text-gray-700 px-1">
+              {"Name - Engish"}
+            </label>
+            <input
+              name="enName"
+              className="form-control py-2"
+              id="enName"
+              value={enName}
+              onChange={(e) => setEnName(e.target.value)}
+              autoComplete="enName"
+            />
+          </div>
+          <div className="addBtn flex justify-end m-1">
+            {!cuflag ? (
               <button
-                id="closeBtn"
-                className="bg-admin_theme_color rounded-md mt-3 mr-3 text-center px-5 py-2 hover:bg-red-700 text-gray-200 outline-none"
-                onClick={categoryEdit}
-              >
-                {t("save")}
-              </button>
-              <button
-                id="marksBtn"
-                className="bg-gray-600 rounded-md mt-3 text-center px-5 py-2 text-gray-200 outline-none"
-                onClick={closeModal}
+                className="button-22 !bg-red-500 mx-1"
+                onClick={handleCancel}
               >
                 {t("cancel")}
               </button>
-            </div>
+            ) : null}
+            <button className="button-22" onClick={handleSubmitCat}>
+              {!cuflag ? t("update") : t("add")}
+            </button>
           </div>
         </div>
+        <div className="flex flex-wrap w-full md:w-[65%] lg:w-[75%] h-fit overflow-auto">
+          <table className="w-full">
+            <thead className="bg-admin_theme_color font-bold text-gray-200">
+              <tr>
+                <th>{t("no")}</th>
+                <th>{"日本語"}</th>
+                <th>{"中文（简体)"}</th>
+                <th>{"中文（繁體)"}</th>
+                <th>{"Tiếng Việt"}</th>
+                <th>{"Engish"}</th>
+                <th>{t("action")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {category && category.length !== 0 ? (
+                category.map((data, i) => (
+                  <tr key={data._id} className="border-2">
+                    <td>{i + 1}</td>
+                    <td>{data.jpName}</td>
+                    <td>{data.ch1Name}</td>
+                    <td>{data.ch2Name}</td>
+                    <td>{data.vtName}</td>
+                    <td>{data.enName}</td>
+                    <td>
+                      <span
+                        id={data._id}
+                        className="fa fa-edit p-1 cursor-pointer"
+                        onClick={() => categoryEdit(data)}
+                      />
+                      <span
+                        id={data._id}
+                        className="fa fa-remove p-1 cursor-pointer"
+                        onClick={() => {
+                          setDelId(data._id);
+                          setIsModalOpen(true);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7">{t("noCategory")}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div></div>
+
       <DeleteConfirmModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

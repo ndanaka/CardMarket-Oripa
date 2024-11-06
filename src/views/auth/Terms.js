@@ -7,25 +7,24 @@ import { showToast } from "../../utils/toastUtil";
 
 const Terms = () => {
   const { t, i18n } = useTranslation();
-  const [terms, setTerms] = useState("");
+  const lang = i18n.language;
+
+  const [content, setContent] = useState("");
 
   useEffect(() => {
-    // Fetch terms content
-    const fetchTerms = async () => {
-      try {
-        const res = await api.get("/admin/get_terms");
-        if (res.data.status === 1) {
-          setTerms(res.data.terms.content);
-        } else if (res.data.status === 2) {
-          showToast(t("faileReq"), "error");
-        }
-      } catch (error) {
-        showToast(t("faileReq"), "error");
-      }
-    };
+    getContent();
+  }, [lang]);
 
-    fetchTerms();
-  }, []);
+  const getContent = async () => {
+    const res = await api.get(`/admin/terms/${lang}`);
+
+    if (res.data.status === 1) {
+      if (res.data.terms) setContent(res.data.terms.content);
+      else setContent("");
+    } else if (res.data.status === 2) {
+      setContent("");
+    }
+  };
 
   return (
     <div className="w-full mx-auto mt-2">
@@ -37,7 +36,7 @@ const Terms = () => {
       </div>
       <div
         className="border-1 border-gray-300 p-4"
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(terms) }} // Correctly set dangerouslySetInnerHTML here
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} // Correctly set dangerouslySetInnerHTML here
       />
     </div>
   );

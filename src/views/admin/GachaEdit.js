@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Papa from "papaparse";
+
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
-import formatDate from "../../utils/formatDate";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import usePersistedUser from "../../store/usePersistedUser";
@@ -14,93 +13,164 @@ import PrizeCard from "../../components/Others/PrizeCard";
 import formatPrice from "../../utils/formatPrice";
 
 const GachaEdit = () => {
-  const [gacha, setGacha] = useState(); //selected gacha
-  const [csvFile, setcsvFile] = useState(""); //prizes from csv file
-  const [prizes, setPrizes] = useState([]); //prizes from csv file
-  const [firstPrizes, setFirstprizes] = useState([]); //prizes from csv file
-  const [secondPrizes, setSecondprizes] = useState([]); //prizes from csv file
-  const [thirdPrizes, setThirdprizes] = useState([]); //prizes from csv file
-  const [fourthPrizes, setFourthprizes] = useState([]); //prizes from csv file
-  const [loadFlag, setLoadFlag] = useState(false); //flag fro loading registered prize
-  const [isLastPrize, setIsLastPrize] = useState(false); //flag for setting prize as lastPrize
-  const [trigger, setTrigger] = useState(false);
-
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const [user] = usePersistedUser();
+  const lang = i18n.language;
 
-  const [user, setUser] = usePersistedUser();
   const { gachaId } = location.state || {};
+
+  const [gacha, setGacha] = useState();
+  const [gachaNum, setGachaNum] = useState(0);
+  const [gachaCat, setGachaCat] = useState(0);
+  const [loadFlag, setLoadFlag] = useState(false);
+  const [prizeType, setPrizeType] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+  const [firstPrizes, setFirstprizes] = useState([]);
+  const [secondPrizes, setSecondprizes] = useState([]);
+  const [thirdPrizes, setThirdprizes] = useState([]);
+  const [fourthPrizes, setFourthprizes] = useState([]);
+  const [extraPrizes, setExtraprizes] = useState([]);
+  const [lastPrizes, setLastprizes] = useState([]);
+  const [roundPrizes, setRoundprizes] = useState([]);
 
   useEffect(() => {
     setAuthToken();
     getGacha();
-  }, []);
+  }, [lang]);
 
   //get Gacha by id
-  const getGacha = () => {
-    api
-      .get(`/admin/gacha/${gachaId}`)
-      .then((res) => {
-        setGradePrizes(res.data.gacha[0].remain_prizes);
-        setGacha(res.data.gacha[0]);
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
+  const getGacha = async () => {
+    try {
+      const res = await api.get(`/admin/gacha/${gachaId}`);
+
+      if (res.data.status === 1) {
+        setGacha(res.data.gacha);
+        setGradePrizes(res.data.gacha);
+        setGachaNum(
+          res.data.gacha.grade_prizes.length +
+            res.data.gacha.extra_prizes.length +
+            res.data.gacha.round_prizes.length +
+            res.data.gacha.last_prizes.length
+        );
+
+        switch (lang) {
+          case "ch1":
+            setGachaCat(res.data.gacha.category.ch1Name);
+            break;
+          case "ch2":
+            setGachaCat(res.data.gacha.category.ch2Name);
+            break;
+          case "vt":
+            setGachaCat(res.data.gacha.category.vtName);
+            break;
+          case "en":
+            setGachaCat(res.data.gacha.category.enName);
+            break;
+
+          default:
+            setGachaCat(res.data.gacha.category.jpName);
+            break;
+        }
+      }
+    } catch (error) {
+      showToast(t("failedReq"), "error");
+    }
   };
 
   // divide remain prizes by grade
-  const setGradePrizes = (remainPrizes) => {
-    let firstPrizes = [];
-    let secondPrizes = [];
-    let thirdPrizes = [];
-    let fourthPrizes = [];
+  const setGradePrizes = (gacha) => {
+    if (gacha.grade_prizes.length !== 0) {
+      let firstPrizes = [];
+      let secondPrizes = [];
+      let thirdPrizes = [];
+      let fourthPrizes = [];
 
-    remainPrizes.forEach((remainPrize) => {
-      // Change map() to forEach()
-      switch (remainPrize.grade) {
-        case 1:
-          firstPrizes.push(remainPrize);
-          break;
-        case 2:
-          secondPrizes.push(remainPrize);
-          break;
-        case 3:
-          thirdPrizes.push(remainPrize);
-          break;
-        case 4:
-          fourthPrizes.push(remainPrize);
-          break;
-        default:
-          break;
-      }
-    });
+      gacha.grade_prizes.forEach((prize) => {
+        switch (prize.kind) {
+          case "first":
+            firstPrizes.push(prize);
+            break;
+          case "second":
+            secondPrizes.push(prize);
+            break;
+          case "third":
+            thirdPrizes.push(prize);
+            break;
+          case "fourth":
+            fourthPrizes.push(prize);
+            break;
+          default:
+            break;
+        }
+      });
 
-    setFirstprizes(firstPrizes);
-    setSecondprizes(secondPrizes);
-    setThirdprizes(thirdPrizes);
-    setFourthprizes(fourthPrizes);
+      setFirstprizes(firstPrizes);
+      setSecondprizes(secondPrizes);
+      setThirdprizes(thirdPrizes);
+      setFourthprizes(fourthPrizes);
+    } else {
+      setFirstprizes([]);
+      setSecondprizes([]);
+      setThirdprizes([]);
+      setFourthprizes([]);
+    }
+
+    if (gacha.extra_prizes.length !== 0) {
+      let extraPrizes = [];
+
+      gacha.extra_prizes.forEach((prize) => {
+        extraPrizes.push(prize);
+      });
+
+      setExtraprizes(extraPrizes);
+    } else {
+      setExtraprizes([]);
+    }
+
+    if (gacha.last_prizes.length !== 0) {
+      let lastPrizes = [];
+
+      gacha.last_prizes.forEach((prize) => {
+        lastPrizes.push(prize);
+      });
+
+      setLastprizes(lastPrizes);
+    } else {
+      setLastprizes([]);
+    }
+
+    if (gacha.round_prizes.length !== 0) {
+      let roundPrizes = [];
+
+      gacha.round_prizes.forEach((prize) => {
+        roundPrizes.push(prize);
+      });
+
+      setRoundprizes(roundPrizes);
+    } else {
+      setRoundprizes([]);
+    }
   };
 
-  // drawing prizes by grade
-  const drawGradePrizes = (prizes, grade) => {
+  // drawing prizes by kind
+  const drawPrizesByKind = (prizes, kind) => {
     return (
       <div>
-        <div className="my-2 text-3xl text-center font-bold">{t(grade)}</div>
+        <div className="my-2 text-3xl text-center font-bold">{t(kind)}</div>
+        {kind === "round_number_prize" && (
+          <div className="my-2 text-3xl text-center font-bold">
+            1 / {gacha.award_rarity}
+          </div>
+        )}
         <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
             <div className="group relative" key={i}>
-              <PrizeCard
-                key={i}
-                name={prize?.name}
-                rarity={prize?.rarity}
-                cashback={prize?.cashback}
-                img_url={prize?.img_url}
-              />
+              <PrizeCard img_url={prize?.img_url} />
               <button
-                className="absolute top-1 right-1 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
-                onClick={() => unsetPrize(false, grade, i)}
+                className="absolute top-1 right-1 rounded-bl-[100%] w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
+                onClick={() => unsetPrize(prize)}
               >
                 <i className="fa fa-close text-gray-200 middle"></i>
               </button>
@@ -111,126 +181,28 @@ const GachaEdit = () => {
     );
   };
 
-  // handle loading data from csv file
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      Papa.parse(file, {
-        complete: (results) => {
-          results.data.pop();
-          setPrizes(results.data); // Store the parsed data in state
-        },
-        header: true, // Set to true if your CSV has headers
-      });
-    }
-  };
-
-  // upload bulk prizes from csv file
-  const uploadPrize = () => {
-    if (!user.authority["gacha"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
-
-    setAuthToken();
-
-    if (gachaId.trim() === "") {
-      showToast(t("failedReq"), "error");
-    } else if (prizes.length === 0) {
-      showToast(t("selectCSV"), "error");
-    } else {
-      api
-        .post("/admin/gacha/upload_bulk", {
-          gachaId: gachaId,
-          prizes: prizes,
-        })
-        .then((res) => {
-          if (res.data.status === 1) {
-            setPrizes([]);
-            setcsvFile("");
-            getGacha();
-            showToast(t(res.data.msg), "success");
-          } else {
-            showToast(t(res.data.msg), "error");
-          }
-        })
-        .catch((err) => showToast(err, "error"));
-    }
-  };
-
   // unset registered prizes from gacha
-  const unsetPrize = (last, grade, index) => {
-    if (!user.authority["gacha"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
-
-    let prizeId = "";
-    if (last) {
-      prizeId = gacha.last_prize._id;
-    } else {
-      switch (grade) {
-        case "first":
-          prizeId = firstPrizes[index]._id;
-          break;
-        case "second":
-          prizeId = secondPrizes[index]._id;
-          break;
-        case "third":
-          prizeId = thirdPrizes[index]._id;
-          break;
-        case "fourth":
-          prizeId = fourthPrizes[index]._id;
-          break;
-
-        default:
-          break;
-      }
-    }
-
-    api
-      .post("/admin/gacha/unset_prize/", {
-        gachaId: gachaId,
-        prizeId: prizeId,
-        last: last, // if i is -1, handle unset last prize
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("successUnset"));
-          getGacha();
-          setTrigger(!trigger);
-        } else {
-          showToast(t(res.data.msg), "error");
-        }
-      });
-  };
-
-  // set prize from registerd prizes by manualy
-  const setprizes = async (id, lastEffect) => {
+  const unsetPrize = async (prize) => {
     try {
       if (!user.authority["gacha"]["write"]) {
         showToast(t("noPermission"), "error");
         return;
       }
 
-      const formData = {
-        isLastPrize: isLastPrize,
-        lastEffect: lastEffect,
+      const res = await api.post("/admin/gacha/unset_prize", {
         gachaId: gachaId,
-        prizeId: id,
-      };
-
-      const res = await api.post("/admin/gacha/set_prize", formData);
+        prizeId: prize._id,
+      });
 
       if (res.data.status === 1) {
-        showToast(t("successSet"), "success");
+        showToast(t("successUnset"), "success");
         setTrigger(!trigger);
         getGacha();
       } else {
-        showToast(t("failedSet"), "error");
+        showToast(t("failedUnset"), "error");
       }
     } catch (error) {
-      showToast(error, "error");
+      showToast(t("failedReq"), "error");
     }
   };
 
@@ -245,237 +217,127 @@ const GachaEdit = () => {
           {t("gacha") + " " + t("detail")}
         </span>
       </div>
-      <hr className="w-5/6 my-2 text-sm mx-auto"></hr>
+      <hr className="my-2" />
 
-      {/* Gacha display table */}
-      <div className="mx-auto overflow-auto">
-        <table className="border-[1px] m-auto">
+      <div className="overflow-auto">
+        <table className="m-auto">
           <thead className="bg-admin_theme_color font-bold text-gray-200">
             <tr>
               <td>{t("category")}</td>
               <td>{t("image")}</td>
               <td>{t("name")}</td>
               <td>{t("price")}</td>
+              <td>{t("kind")}</td>
               <td>{t("number")}</td>
+              <td>{t("order")}</td>
             </tr>
           </thead>
           <tbody>
             {gacha ? (
-              <tr key={gacha._id} className="border-2">
-                <td>{gacha?.category}</td>
+              <tr key={gacha._id}>
+                <td>{gachaCat}</td>
                 <td>
                   <img
-                    src={
-                      process.env.REACT_APP_SERVER_ADDRESS +
-                      gacha.gacha_thumnail_url
-                    }
-                    alt="gacha thumnail"
+                    src={process.env.REACT_APP_SERVER_ADDRESS + gacha.img_url}
+                    alt="img"
                     className="m-auto w-[100px] h-auto"
-                  ></img>
+                  />
                 </td>
                 <td>{gacha?.name}</td>
-                <td>{formatPrice(gacha?.price)} pt</td>
+                <td>{formatPrice(gacha?.price)}pt</td>
                 <td>
-                  {gacha?.last_prize
-                    ? gacha?.remain_prizes.length + 1
-                    : gacha?.remain_prizes.length}{" "}
-                  / {gacha?.total_number}
+                  {gacha?.kind.map((item, i) => (
+                    <p key={i}>{t(item.value)}</p>
+                  ))}
                 </td>
+                <td>
+                  {gachaNum} / {gacha.total_number}
+                </td>
+                <td>{gacha?.order}</td>
               </tr>
             ) : (
               <tr>
-                <td colSpan="6">{t("nogacha")}</td>
+                <td colSpan="8">{t("nogacha")}</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-      <hr className="mt-2 mb-4"></hr>
+      <hr className="my-2" />
 
-      {/* Gacha Prizes */}
-      <div>
-        {gacha?.remain_prizes?.length > 0 && (
-          <div>
-            {firstPrizes?.length > 0
-              ? drawGradePrizes(firstPrizes, "first")
-              : ""}
-            {secondPrizes?.length > 0
-              ? drawGradePrizes(secondPrizes, "second")
-              : ""}
-            {thirdPrizes?.length > 0
-              ? drawGradePrizes(thirdPrizes, "third")
-              : ""}
-            {fourthPrizes?.length > 0
-              ? drawGradePrizes(fourthPrizes, "fourth")
-              : ""}
-          </div>
-        )}
-
-        {/* last prize */}
-        {gacha?.last_prize && (
-          <div>
-            <div className="my-2 text-3xl text-center font-bold">
-              {t("last") + " " + t("prize")}
-            </div>
-            <div className="flex flex-wrap justify-center items-stretch">
-              <div className="group relative">
-                <PrizeCard
-                  name={gacha.last_prize?.name}
-                  rarity={gacha.last_prize?.rarity}
-                  cashback={gacha.last_prize?.cashback}
-                  img_url={gacha.last_prize?.img_url}
-                />
-                <div className="absolute top-0 w-full h-full bg-gray-100 opacity-0 hover:opacity-10"></div>
-                <button
-                  className="absolute top-1 right-1 rounded-bl-[100%] rounded-tr-lg w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
-                  onClick={() => unsetPrize(true)}
-                >
-                  <i className="fa fa-close text-gray-200 middle"></i>
-                </button>
-
-                <div className="w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 bg-red-500 opacity-80 hover:opacity-100 group-hover:block transition-all duration-300 text-base text-gray-200 text-center cursor-pointer z-3 animate-[displayEase_linear]">
-                  <div className="py-1">
-                    <span onClick={() => setprizes(gacha.last_prize._id, 1)}>
-                      {gacha.last_prize.last_effect
-                        ? t("removeEffect")
-                        : t("addEffect")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {gacha?.remain_prizes?.length === 0 && !gacha?.last_prize && (
-          <div className="py-2 text-center">{t("noprize")}</div>
-        )}
-      </div>
-
-      {/* setting prize to gacha */}
-      <div className="mx-auto w-full mt-3">
-        <hr className="my-2 text-sm"></hr>
-        <div className="my-2 text-lg text-center font-bold">{t("set_CSV")}</div>
-        <div className="flex flex-wrap justify-between items-center w-full mt-2">
-          <a
-            className="button-38 my-1"
-            href={
-              process.env.REACT_APP_SERVER_ADDRESS + `template/template.csv`
-            }
-            download
-          >
-            {t("template")}.csv
-            <i className="fa fa-download ml-2"></i>
-          </a>
-          <label
-            htmlFor="file-upload"
-            className="flex flex-col items-center button-22 my-1"
-          >
-            <span className="text-sm">{t("upload")} CSV</span>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".csv"
-              className="hidden" // Hide the default input
-              onChange={handleFileChange}
-            />
-          </label>
-          <button
-            className={`button-22 my-1 ${prizes ? "" : "disable"}`}
-            onClick={uploadPrize}
-          >
-            {t("uploadAll")}
-          </button>
-        </div>
-        {/* set prizes table */}
-        {prizes && prizes.length !== 0 ? (
-          <div className="overflow-auto">
-            <table className="border-[1px]  mx-auto mt-2 w-full">
-              <thead className="bg-admin_theme_color font-bold text-gray-200">
-                <tr>
-                  <td>{t("no")}</td>
-                  <td>{t("name")}</td>
-                  <td>{t("rarity")}</td>
-                  <td>{t("cashback") + " " + t("point")}</td>
-                  <td>{t("Grade")}</td>
-                  <td>{t("image")}</td>
-                </tr>
-              </thead>
-              <tbody>
-                {prizes.map((data, i) => (
-                  <tr key={i} className="border-2">
-                    <td>{i + 1}</td>
-                    <td>{data.name}</td>
-                    <td>{data.rarity}</td>
-                    <td>{formatPrice(data.cashback)} pt</td>
-                    <td>
-                      {(() => {
-                        switch (parseInt(data.grade)) {
-                          case 1:
-                            return t("first");
-                          case 2:
-                            return t("second");
-                          case 3:
-                            return t("third");
-                          case 4:
-                            return t("fourth");
-                          default:
-                            break;
-                        }
-                      })()}
-                    </td>
-                    <td>
-                      <img
-                        width="100"
-                        height="200"
-                        src={
-                          process.env.REACT_APP_SERVER_ADDRESS + data.img_url
-                        }
-                        alt="prize"
-                        className="m-auto"
-                      ></img>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
-
-      {/* Registered prizes */}
-      <div className="w-full mt-3 overflow-auto">
-        <hr className="w-full text-theme_text_color my-1"></hr>
-        <div className="my-2 text-lg text-center font-bold">
-          {t("set_registered_prize")}
-        </div>
-        <div className="flex justify-between items-end mx-auto my-2">
+      <div className="w-full">
+        <div className="text-lg text-center font-bold">{t("load_prizes")}</div>
+        <div className="flex justify-between my-2 overflow-auto">
           <button
             className="button-38"
             onClick={() => {
               setLoadFlag(true);
+              setPrizeType("");
             }}
           >
-            {t("load_prizes")}
+            {t("uploadAll")}
           </button>
-          <div className="form-check form-check-inline">
-            <label htmlFor="text" className="form-check-label">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                checked={isLastPrize}
-                onChange={() => setIsLastPrize((prev) => !prev)}
-              />
-              {t("set_as_lastPrize")}
-            </label>
-          </div>
+          <button
+            className="button-38"
+            onClick={() => {
+              setLoadFlag(true);
+              setPrizeType("grade");
+            }}
+          >
+            {t("grade_prizes")}
+          </button>
+          <button
+            className="button-38"
+            onClick={() => {
+              setLoadFlag(true);
+              setPrizeType("round");
+            }}
+          >
+            {t("round_prizes")}
+          </button>
+          <button
+            className="button-38"
+            onClick={() => {
+              setLoadFlag(true);
+              setPrizeType("extra");
+            }}
+          >
+            {t("extra_prize")}
+          </button>
+          <button
+            className="button-38"
+            onClick={() => {
+              setLoadFlag(true);
+              setPrizeType("last");
+            }}
+          >
+            {t("last_prize")}
+          </button>
         </div>
         {loadFlag ? (
-          <PrizeList trigger={trigger} setprizes={setprizes} role="setPrize" />
+          <div className="overflow-auto">
+            <PrizeList
+              trigger={trigger}
+              prizeType={prizeType}
+              role="gacha"
+              gachaId={gacha._id}
+              getGacha={getGacha}
+            />
+          </div>
         ) : null}
       </div>
+      <hr className="my-2" />
+
+      {firstPrizes.length > 0 && drawPrizesByKind(firstPrizes, "first")}
+      {secondPrizes.length > 0 && drawPrizesByKind(secondPrizes, "second")}
+      {thirdPrizes.length > 0 && drawPrizesByKind(thirdPrizes, "third")}
+      {fourthPrizes.length > 0 && drawPrizesByKind(fourthPrizes, "fourth")}
+      {extraPrizes.length > 0 && drawPrizesByKind(extraPrizes, "extra_prize")}
+      {roundPrizes.length > 0 &&
+        drawPrizesByKind(roundPrizes, "round_number_prize")}
+      {lastPrizes.length > 0 && drawPrizesByKind(lastPrizes, "last_prize")}
+
+      {gachaNum === 0 && <div className="py-2 text-center">{t("noprize")}</div>}
     </div>
   );
 };
