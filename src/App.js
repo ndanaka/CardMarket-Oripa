@@ -4,14 +4,13 @@ import { Navigate } from "react-router-dom";
 
 import AdminLayout from "./layouts/Admin.js";
 import AuthLayout from "./layouts/Auth.js";
-import UserLayout from "./layouts/UserLayout.js";
+import UserLayout from "./layouts/User.js";
 
 import { initializeToast } from "./utils/toastUtil.js";
 import "../src/utils/i18next.js"; // Import i18n configuration
 
 export default function App() {
   useEffect(() => {
-    localStorage.setItem("bgColor", "#e50e0e");
     initializeToast();
   });
 

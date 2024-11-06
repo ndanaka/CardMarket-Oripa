@@ -1,32 +1,14 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
 
-import api from "../../utils/api";
+import { bgColorAtom } from "../../store/theme";
 
 const Footer = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [bgColor, setBgColor] = useState("");
-
-  useEffect(() => {
-    getThemeData();
-  }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
+  const [bgColor] = useAtom(bgColorAtom);
 
   return (
     <div

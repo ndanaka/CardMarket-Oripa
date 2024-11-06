@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FormGroup, Form, Input, InputGroup } from "reactstrap";
+import { FormGroup, Input, InputGroup } from "reactstrap";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import formatDate from "../../utils/formatDate";
+
 import usePersistedUser from "../../store/usePersistedUser";
+import { bgColorAtom } from "../../store/theme";
 
 const BlogDetail = () => {
   const { t } = useTranslation();
   const navigator = useNavigate();
   const location = useLocation();
   const [user, setUser] = usePersistedUser();
+  const [bgColor] = useAtom(bgColorAtom);
 
   const { blog } = location.state || {};
   const [comments, setComments] = useState();
   const [showErrMessage, setShowErrMessage] = useState(false);
-  const [bgColor, setBgColor] = useState("");
 
   const [formData, setFormData] = useState({
     content: "",
@@ -30,24 +33,6 @@ const BlogDetail = () => {
     setAuthToken();
     getBlogDetail(blog._id);
   }, []);
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const getBlogDetail = async (blogId) => {
     api

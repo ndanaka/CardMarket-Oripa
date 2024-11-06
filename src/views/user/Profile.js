@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api.js";
 import { showToast } from "../../utils/toastUtil.js";
 import { setAuthToken } from "../../utils/setHeader.js";
 
 import usePersistedUser from "../../store/usePersistedUser.js";
+import { bgColorAtom } from "../../store/theme.js";
 
 import InputGroup from "../../components/Forms/InputGroup.js";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal.js";
@@ -14,8 +16,9 @@ import { useTranslation } from "react-i18next";
 const Profile = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
   const [user, setUser] = usePersistedUser();
+  const [bgColor] = useAtom(bgColorAtom);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
@@ -28,30 +31,11 @@ const Profile = () => {
     currentPwd: "",
     newPwd: "",
   });
-  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     setAuthToken();
     getUserData();
   }, []);
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const getUserData = async () => {
     try {

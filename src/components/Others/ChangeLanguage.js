@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
 
 import usePersistedUser from "../../store/usePersistedUser";
-import api from "../../utils/api";
+import { bgColorAtom } from "../../store/theme";
 
 import enFlag from "../../assets/img/icons/en.png";
 import jpFlag from "../../assets/img/icons/jp.png";
@@ -11,28 +12,11 @@ import vnFlag from "../../assets/img/icons/vn.png";
 
 function ChangeLanguage({ type }) {
   const { i18n } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = usePersistedUser();
-  const currentLanguage = i18n.language; //current language
-  const [bgColor, setBgColor] = useState("");
+  const [bgColor] = useAtom(bgColorAtom);
+  const currentLanguage = i18n.language;
 
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
+  const [isOpen, setIsOpen] = useState(false);
 
   const languages = [
     { code: "jp", name: "日本語", flag: jpFlag },

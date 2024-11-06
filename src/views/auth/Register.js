@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CardBody, FormGroup, Form, Input, InputGroup } from "reactstrap";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+
+import { bgColorAtom } from "../../store/theme";
 
 import Spinner from "../../components/Others/Spinner";
 
@@ -12,13 +15,13 @@ const Register = () => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
   const navigate = useNavigate();
+  const [bgColor] = useAtom(bgColorAtom);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const [strength, setStrength] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [checkTerms, setCheckTerms] = useState(false);
-  const [bgColor, setBgColor] = useState("");
   const [spinFlag, setSpinFlag] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -26,24 +29,6 @@ const Register = () => {
     email: "",
     password: "",
   });
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);

@@ -6,7 +6,6 @@ const usePersistedUser = () => {
   const [user, setUser] = useAtom(UserAtom);
 
   useEffect(() => {
-    // Save the user to localStorage whenever the user state changes
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
     } else {
