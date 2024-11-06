@@ -5,18 +5,23 @@ import DOMPurify from "dompurify";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 
+import Spinner from "../../components/Others/Spinner";
+
 const Terms = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
   const [content, setContent] = useState("");
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     getContent();
   }, [lang]);
 
   const getContent = async () => {
+    setSpinFlag(true);
     const res = await api.get(`/admin/terms/${lang}`);
+    setSpinFlag(false);
 
     if (res.data.status === 1) {
       if (res.data.terms) setContent(res.data.terms.content);
@@ -28,6 +33,7 @@ const Terms = () => {
 
   return (
     <div className="w-full mx-auto mt-2">
+      {spinFlag && <Spinner />}
       <div className="flex flex-wrap mb-4">
         <div className=" border-l-[6px] border-blue-500"></div>
         <p className="text-3xl text-center text-gray-700 font-Lexend font-extrabold pl-4">

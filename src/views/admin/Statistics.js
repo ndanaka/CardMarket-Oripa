@@ -9,6 +9,7 @@ import PageHeader from "../../components/Forms/PageHeader";
 import PieChart from "../../components/Charts/PieChart";
 import LineChart from "../../components/Charts/LineChart";
 import LoginSucceedModal from "../../components/Modals/LoginSucceedModal";
+import Spinner from "../../components/Others/Spinner";
 
 const Statistics = () => {
   const [totalIncome, setTotalIncome] = useState(0);
@@ -20,6 +21,7 @@ const Statistics = () => {
   const [selDeliveredPeriod, setSelDeliveredPeriod] = useState(7);
   const [deliveredData, setDeliveredData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
 
   const { t } = useTranslation();
 
@@ -37,7 +39,10 @@ const Statistics = () => {
 
   const getTotalData = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get("/admin/get_statistics");
+      setSpinFlag(false);
+
       setTotalIncome(res.data.totalIncome);
       setGachaData(res.data.gachaData);
     } catch (error) {
@@ -52,10 +57,12 @@ const Statistics = () => {
         Date.now() - (period - 1) * 24 * 60 * 60 * 1000
       );
 
+      setSpinFlag(true);
       const res = await api.post("admin/getStatusIncome", {
         status: type,
         startDate: startDate,
       });
+      setSpinFlag(false);
 
       const pendingIncomes = res.data.pendingIncomes;
       const endDate = new Date(); // Most recent date from your existing data
@@ -124,7 +131,8 @@ const Statistics = () => {
   };
 
   return (
-    <div className="p-3 ">
+    <div className="p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[100%] lg:w-[70%] mx-auto">
         <PageHeader text={t("statistics")} />
       </div>

@@ -14,6 +14,7 @@ import { initiateUnivaPayTransaction } from "../../payment/univaPayRequest";
 import CustomSelect from "../../components/Forms/CustomSelect";
 import PuchaseSpinner from "../../components/Others/PuchaseSpinner";
 import Gpay from "../../assets/img/icons/common/google.png";
+import Spinner from "../../components/Others/Spinner";
 import ApplePay from "../../assets/img/icons/common/apple.png";
 import Univa from "../../assets/img/icons/common/univa.png";
 
@@ -36,6 +37,7 @@ function PurchasePoint() {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [, setSelId] = useState(0);
   const [waiting, setWaiting] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
@@ -53,8 +55,10 @@ function PurchasePoint() {
 
     try {
       if (user) {
-        // update user date
+        setSpinFlag(true);
         const res = await api.get(`/user/get_user/${user._id}`);
+        setSpinFlag(false);
+
         if (res.data.status === 1) {
           setUser(res.data.user);
         } else {
@@ -70,7 +74,10 @@ function PurchasePoint() {
 
   const getPoints = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get("/admin/get_point");
+      setSpinFlag(false);
+
       setPoints(res.data.points);
     } catch (error) {
       showToast(error, "error");
@@ -192,6 +199,7 @@ function PurchasePoint() {
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       {waiting && <PuchaseSpinner />}
       <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-14">
         <div className="w-full py-2">

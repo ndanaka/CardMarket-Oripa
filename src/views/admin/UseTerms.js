@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "./textEditor/editor.css";
-
 import { useTranslation } from "react-i18next";
+
 import { setAuthToken } from "../../utils/setHeader";
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import PageHeader from "../../components/Forms/PageHeader";
+import Spinner from "../../components/Others/Spinner";
+
+import "react-quill/dist/quill.snow.css";
+import "./textEditor/editor.css";
 
 const UseTerms = () => {
   const { t, i18n } = useTranslation();
@@ -18,13 +20,16 @@ const UseTerms = () => {
   const quillRef = useRef(null);
 
   const [content, setContent] = useState("");
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     getContent();
   }, [lang]);
 
   const getContent = async () => {
+    setSpinFlag(true);
     const res = await api.get(`/admin/terms/${lang}`);
+    setSpinFlag(false);
 
     if (res.data.status === 1) {
       if (res.data.terms) setContent(res.data.terms.content);
@@ -47,10 +52,13 @@ const UseTerms = () => {
 
       setAuthToken();
 
+      setSpinFlag(true);
       const res = await api.post("/admin/save_terms", {
         content: content,
         lang: lang,
       });
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         showToast(t("successSaved"), "success");
       } else {
@@ -63,6 +71,7 @@ const UseTerms = () => {
 
   return (
     <div className="w-full md:w-[70%] p-3 mx-auto">
+      {spinFlag && <Spinner />}
       <div className="w-full mx-auto">
         <PageHeader text={t("userterms")} />
       </div>

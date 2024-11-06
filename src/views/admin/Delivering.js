@@ -8,14 +8,17 @@ import formatDate from "../../utils/formatDate";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import PageHeader from "../../components/Forms/PageHeader";
+import Spinner from "../../components/Others/Spinner";
 
 function Delivering() {
   const [user] = usePersistedUser();
+  const { t } = useTranslation();
+
   const [deliverData, setDeliverData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
-  const [searchQuery, setSearchQuery] = useState(""); // State for the search query
-  const { t } = useTranslation();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
@@ -35,7 +38,10 @@ function Delivering() {
 
   const getDeliverData = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get("/admin/get_deliver");
+      setSpinFlag(false);
+
       if (res.data.status === 1) {
         setDeliverData(res.data.deliverData);
         setFilteredData(res.data.deliverData);
@@ -45,29 +51,29 @@ function Delivering() {
     }
   };
 
-  const handleSetStatus = (i) => {
+  const handleSetStatus = async (i) => {
     if (!user.authority["delivering"]["write"]) {
       showToast(t("noPermission"), "error");
       return;
     }
-
-    if (deliverData[i].status === "Delivered") {
-      showToast(t("alrDelivered"), "error");
-    } else {
-      api
-        .post("/admin/set_deliver_status", {
+    try {
+      if (deliverData[i].status === "Delivered") {
+        showToast(t("alrDelivered"), "error");
+      } else {
+        setSpinFlag(true);
+        const res = await api.post("/admin/set_deliver_status", {
           id: deliverData[i]._id,
           user_id: deliverData[i].user_id,
           status: deliverData[i].status,
-        })
-        .then((res) => {
-          if (res.data.status === 1) {
-            showToast(t("successAdd"), "success");
-            getDeliverData();
-          } else showToast(t("failedAdd"), "error");
-        })
-        .catch((err) => showToast(err, "error"));
-    }
+        });
+        setSpinFlag(false);
+
+        if (res.data.status === 1) {
+          showToast(t("successAdd"), "success");
+          getDeliverData();
+        } else showToast(t("failedAdd"), "error");
+      }
+    } catch (error) {}
   };
 
   const handleSort = (key) => {
@@ -98,6 +104,7 @@ function Delivering() {
 
   return (
     <div className="w-full p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("Delivering")} />
       </div>

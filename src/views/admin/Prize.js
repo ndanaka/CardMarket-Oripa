@@ -15,9 +15,10 @@ import {
 import AgreeButton from "../../components/Forms/AgreeButton";
 import PrizeList from "../../components/Tables/PrizeList";
 import PageHeader from "../../components/Forms/PageHeader";
-import usePersistedUser from "../../store/usePersistedUser";
-
 import uploadimage from "../../assets/img/icons/upload.png";
+import Spinner from "../../components/Others/Spinner";
+
+import usePersistedUser from "../../store/usePersistedUser";
 
 const Prize = () => {
   const { t } = useTranslation();
@@ -25,6 +26,11 @@ const Prize = () => {
   const csvInputRef = useRef(null);
   const [user] = usePersistedUser();
 
+  const [cuflag, setCuFlag] = useState(1);
+  const [trigger, setTrigger] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
+  const [prizes, setPrizes] = useState([]);
+  const [spinFlag, setSpinFlag] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -33,10 +39,6 @@ const Prize = () => {
     file: null,
     kind: "first",
   });
-  const [cuflag, setCuFlag] = useState(1);
-  const [trigger, setTrigger] = useState(false);
-  const [imgUrl, setImgUrl] = useState("");
-  const [prizes, setPrizes] = useState([]);
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
@@ -82,7 +84,9 @@ const Prize = () => {
       ) {
         showToast(t("selectImage"), "error");
       } else {
+        setSpinFlag(true);
         const res = await api.post("/admin/prize", formData);
+        setSpinFlag(false);
 
         if (res.data.status === 1) {
           setImgUrl(null);
@@ -119,7 +123,6 @@ const Prize = () => {
   // handle loading data from csv file
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
     if (file) {
       Papa.parse(file, {
         complete: (results) => {
@@ -149,9 +152,11 @@ const Prize = () => {
       if (prizes.length === 0) {
         showToast(t("selectCSV"), "error");
       } else {
+        setSpinFlag(true);
         const res = await api.post("/admin/gacha/upload_bulk", {
           prizes: prizes,
         });
+        setSpinFlag(false);
 
         if (res.data.status === 1) {
           showToast(t("successAdded"), "success");
@@ -168,6 +173,7 @@ const Prize = () => {
 
   return (
     <div className="p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("prize")} />
       </div>

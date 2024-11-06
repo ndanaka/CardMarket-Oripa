@@ -5,19 +5,26 @@ import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart, removeMultipart } from "../../utils/setHeader";
 import { showToast } from "../../utils/toastUtil";
+import formatPrice from "../../utils/formatPrice";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
-
 import uploadimage from "../../assets/img/icons/upload.png";
-import formatPrice from "../../utils/formatPrice";
+import Spinner from "../../components/Others/Spinner";
 
 function Rank() {
   const [user, setUser] = usePersistedUser();
   const { t } = useTranslation();
+  const fileInputRef = useRef(null);
 
+  const [ranks, setRanks] = useState([]);
+  const [cuflag, setCuFlag] = useState(1);
+  const [imgUrl, setImgUrl] = useState("");
+  const [delRankId, setDelRankId] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -27,13 +34,6 @@ function Rank() {
     last: false,
     file: null,
   });
-  const [ranks, setRanks] = useState([]);
-  const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
-  const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const [delRankId, setDelRankId] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setAuthToken();
@@ -42,15 +42,17 @@ function Rank() {
 
   // get all ranks
   const getRanks = async () => {
-    setAuthToken();
-    api
-      .get("/admin/get_rank")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setRanks(res.data.ranks);
-        }
-      })
-      .catch((err) => console.error(err));
+    try {
+      setAuthToken();
+
+      setSpinFlag(true);
+      const res = await api.get("/admin/get_rank");
+      setSpinFlag(false);
+
+      if (res.data.status === 1) {
+        setRanks(res.data.ranks);
+      }
+    } catch (error) {}
   };
 
   //handle form change, formData input
@@ -75,7 +77,7 @@ function Rank() {
   };
 
   // add or update rank
-  const AddRank = () => {
+  const AddRank = async () => {
     if (!user.authority["rank"]["write"]) {
       showToast(t("noPermission"), "error");
       return;
@@ -105,17 +107,19 @@ function Rank() {
         "error"
       );
     } else {
-      api.post("/admin/rank_save", formData).then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("successAdded", "success"));
-        } else if (res.data.status === 2) {
-          showToast(t("successUpdated", "success"));
-        } else {
-          showToast(t("failedReq"), "error");
-        }
-        cancelRank();
-        getRanks();
-      });
+      setSpinFlag(true);
+      const res = await api.post("/admin/rank_save", formData);
+      setSpinFlag(false);
+
+      if (res.data.status === 1) {
+        showToast(t("successAdded", "success"));
+      } else if (res.data.status === 2) {
+        showToast(t("successUpdated", "success"));
+      } else {
+        showToast(t("failedReq"), "error");
+      }
+      cancelRank();
+      getRanks();
     }
   };
 
@@ -170,7 +174,10 @@ function Rank() {
       return;
     }
 
+    setSpinFlag(true);
     const res = await api.delete(`/admin/del_rank/${delRankId}`);
+    setSpinFlag(false);
+
     if (res.data.status === 1) {
       showToast(t("successDeleted"), "success");
       getRanks();
@@ -179,6 +186,7 @@ function Rank() {
 
   return (
     <div className="p-3">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("rank")} />
       </div>

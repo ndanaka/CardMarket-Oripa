@@ -3,38 +3,38 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
+import formatPrice from "../../utils/formatPrice";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import usePersistedUser from "../../store/usePersistedUser";
 
 import PageHeader from "../../components/Forms/PageHeader";
-import formatPrice from "../../utils/formatPrice";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
+import Spinner from "../../components/Others/Spinner";
 
 function Users() {
   const navigate = useNavigate();
-
   const { t } = useTranslation();
+  const [user, setUser] = usePersistedUser("");
 
   const [userList, setUserList] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState("");
-  const [user, setUser] = usePersistedUser("");
+  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
     getUserList();
   }, []);
 
-  const getUserList = () => {
-    api
-      .get("/user/get_userList")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setUserList(res.data.userList);
-        }
-      })
-      .catch((err) => console.error(err));
+  const getUserList = async () => {
+    try {
+      setSpinFlag(true);
+      const res = await api.get("/user/get_userList");
+      setSpinFlag(false);
+
+      if (res.data.status === 1) setUserList(res.data.userList);
+    } catch (error) {}
   };
 
   const handleDelete = async () => {
@@ -43,8 +43,9 @@ function Users() {
         showToast(t("noPermission"), "error");
         return;
       }
-
+      setSpinFlag(true);
       const res = await api.delete(`/user/del_user/${userId}`);
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         showToast(t("successDeleted"), "success");
@@ -60,6 +61,7 @@ function Users() {
 
   return (
     <div className="p-3 ">
+      {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("users")} />
       </div>
