@@ -14,6 +14,7 @@ import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ImageCarousel from "../components/Others/ImageCarousel";
 import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
 import LoginSucceedModal from "../components/Modals/LoginSucceedModal";
+import Spinner from "../components/Others/Spinner";
 
 import usePersistedUser from "../store/usePersistedUser";
 
@@ -23,6 +24,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
 
+  const [spinFlag, setSpinFlag] = useState(false);
   const [category, setCategory] = useState(null);
   const [subCategory, setSubCategory] = useState(subCategories);
   const [gacha, setGacha] = useState(null);
@@ -161,7 +163,9 @@ const Index = () => {
   // get all gachas
   const getGacha = async () => {
     try {
+      setSpinFlag(true);
       const res = await api.get("/admin/gacha");
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         setGacha(res.data.gachaList);
@@ -307,6 +311,7 @@ const Index = () => {
 
   return (
     <div className="flex flex-grow">
+      {spinFlag && <Spinner />}
       <div className="w-full lg:w-[90%] xm:w-[80%] xmd:w-[70%] xl:w-[60%] md:mx-2 mt-16 mx-auto xm:p-2">
         <ImageCarousel />
         <div className="px-2">
