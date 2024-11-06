@@ -109,13 +109,8 @@ function GachaDetail() {
 
       if (res.data.status === 1) {
         setGacha(res.data.gacha);
-        setGradePrizes(res.data.gacha);
-        setGachaNum(
-          res.data.gacha.grade_prizes.length +
-            res.data.gacha.extra_prizes.length +
-            res.data.gacha.round_prizes.length +
-            res.data.gacha.last_prizes.length
-        );
+        devideRemainPrizes(res.data.gacha);
+        setGachaNum(res.data.gacha.remain_prizes.length);
       }
     } catch (error) {
       showToast(t("failedReq"), "error");
@@ -123,78 +118,58 @@ function GachaDetail() {
   };
 
   // divide remain prizes by grade
-  const setGradePrizes = (gacha) => {
-    if (gacha.grade_prizes.length !== 0) {
-      let firstPrizes = [];
-      let secondPrizes = [];
-      let thirdPrizes = [];
-      let fourthPrizes = [];
+  const devideRemainPrizes = (gacha) => {
+    let firstPrizes = [];
+    let secondPrizes = [];
+    let thirdPrizes = [];
+    let fourthPrizes = [];
+    let roundPrizes = [];
+    let extraPrizes = [];
+    let lastPrizes = [];
 
-      gacha.grade_prizes.forEach((prize) => {
+    if (gacha.remain_prizes.length > 0) {
+      gacha.remain_prizes.forEach((prize) => {
         switch (prize.kind) {
           case "first":
             firstPrizes.push(prize);
             break;
+
           case "second":
             secondPrizes.push(prize);
             break;
+
           case "third":
             thirdPrizes.push(prize);
             break;
+
           case "fourth":
             fourthPrizes.push(prize);
+            break;
+
+          case "round_number_prize":
+            roundPrizes.push(prize);
+            break;
+
+          case "extra_prize":
+            extraPrizes.push(prize);
+            break;
+
+          case "last_prize":
+            lastPrizes.push(prize);
             break;
           default:
             break;
         }
       });
-
-      setFirstprizes(firstPrizes);
-      setSecondprizes(secondPrizes);
-      setThirdprizes(thirdPrizes);
-      setFourthprizes(fourthPrizes);
-    } else {
-      setFirstprizes([]);
-      setSecondprizes([]);
-      setThirdprizes([]);
-      setFourthprizes([]);
     }
 
-    if (gacha.extra_prizes.length !== 0) {
-      let extraPrizes = [];
-
-      gacha.extra_prizes.forEach((prize) => {
-        extraPrizes.push(prize);
-      });
-
-      setExtraprizes(extraPrizes);
-    } else {
-      setExtraprizes([]);
-    }
-
-    if (gacha.last_prizes.length !== 0) {
-      let lastPrizes = [];
-
-      gacha.last_prizes.forEach((prize) => {
-        lastPrizes.push(prize);
-      });
-
-      setLastprizes(lastPrizes);
-    } else {
-      setLastprizes([]);
-    }
-
-    if (gacha.round_prizes.length !== 0) {
-      let roundPrizes = [];
-
-      gacha.round_prizes.forEach((prize) => {
-        roundPrizes.push(prize);
-      });
-
-      setRoundprizes(roundPrizes);
-    } else {
-      setRoundprizes([]);
-    }
+    setFirstprizes(firstPrizes);
+    setSecondprizes(secondPrizes);
+    setThirdprizes(thirdPrizes);
+    setFourthprizes(fourthPrizes);
+    setRoundprizes(roundPrizes);
+    setExtraprizes(extraPrizes);
+    setLastprizes(lastPrizes);
   };
 
   // drawing prizes by kind
@@ -368,17 +343,19 @@ function GachaDetail() {
                       {t("drawTen")}
                     </button>
                   )}
-                  <button
-                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
-                    onClick={() => {
-                      drawGacha(gacha, "all", t("drawAll"), gachaNum);
-                    }}
-                    style={{
-                      backgroundColor: bgColor,
-                    }}
-                  >
-                    {t("drawAll")}
-                  </button>
+                  {gachaNum !== 1 && (
+                    <button
+                      className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
+                      onClick={() => {
+                        drawGacha(gacha, "all", t("drawAll"), gachaNum);
+                      }}
+                      style={{
+                        backgroundColor: bgColor,
+                      }}
+                    >
+                      {t("drawAll")}
+                    </button>
+                  )}
                 </>
               ) : (
                 ""

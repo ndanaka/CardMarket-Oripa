@@ -153,8 +153,8 @@ function PrizeList({
   return (
     <div className="overflow-auto w-full">
       {spinFlag && <Spinner />}
-      <table className="border-[1px] w-full  m-auto">
-        <thead className="bg-admin_theme_color border-[1px] text-gray-200">
+      <table className="w-full m-auto">
+        <thead className="bg-admin_theme_color text-gray-200">
           <tr>
             <th>{t("no")}</th>
             <th>{t("image")}</th>

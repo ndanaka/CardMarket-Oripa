@@ -19,7 +19,6 @@ const GachaEdit = () => {
   const navigate = useNavigate();
   const [user] = usePersistedUser();
   const lang = i18n.language;
-
   const { gachaId } = location.state || {};
 
   const [gacha, setGacha] = useState();
@@ -51,13 +50,8 @@ const GachaEdit = () => {
 
       if (res.data.status === 1) {
         setGacha(res.data.gacha);
-        setGradePrizes(res.data.gacha);
-        setGachaNum(
-          res.data.gacha.grade_prizes.length +
-            res.data.gacha.extra_prizes.length +
-            res.data.gacha.round_prizes.length +
-            res.data.gacha.last_prizes.length
-        );
+        devideRemainPrizes(res.data.gacha);
+        setGachaNum(res.data.gacha.remain_prizes.length);
 
         switch (lang) {
           case "ch1":
@@ -84,78 +78,58 @@ const GachaEdit = () => {
   };
 
   // divide remain prizes by grade
-  const setGradePrizes = (gacha) => {
-    if (gacha.grade_prizes.length !== 0) {
-      let firstPrizes = [];
-      let secondPrizes = [];
-      let thirdPrizes = [];
-      let fourthPrizes = [];
+  const devideRemainPrizes = (gacha) => {
+    let firstPrizes = [];
+    let secondPrizes = [];
+    let thirdPrizes = [];
+    let fourthPrizes = [];
+    let roundPrizes = [];
+    let extraPrizes = [];
+    let lastPrizes = [];
 
-      gacha.grade_prizes.forEach((prize) => {
+    if (gacha.remain_prizes.length > 0) {
+      gacha.remain_prizes.forEach((prize) => {
         switch (prize.kind) {
           case "first":
             firstPrizes.push(prize);
             break;
+
           case "second":
             secondPrizes.push(prize);
             break;
+
           case "third":
             thirdPrizes.push(prize);
             break;
+
           case "fourth":
             fourthPrizes.push(prize);
+            break;
+
+          case "round_number_prize":
+            roundPrizes.push(prize);
+            break;
+
+          case "extra_prize":
+            extraPrizes.push(prize);
+            break;
+
+          case "last_prize":
+            lastPrizes.push(prize);
             break;
           default:
             break;
         }
       });
-
-      setFirstprizes(firstPrizes);
-      setSecondprizes(secondPrizes);
-      setThirdprizes(thirdPrizes);
-      setFourthprizes(fourthPrizes);
-    } else {
-      setFirstprizes([]);
-      setSecondprizes([]);
-      setThirdprizes([]);
-      setFourthprizes([]);
     }
 
-    if (gacha.extra_prizes.length !== 0) {
-      let extraPrizes = [];
-
-      gacha.extra_prizes.forEach((prize) => {
-        extraPrizes.push(prize);
-      });
-
-      setExtraprizes(extraPrizes);
-    } else {
-      setExtraprizes([]);
-    }
-
-    if (gacha.last_prizes.length !== 0) {
-      let lastPrizes = [];
-
-      gacha.last_prizes.forEach((prize) => {
-        lastPrizes.push(prize);
-      });
-
-      setLastprizes(lastPrizes);
-    } else {
-      setLastprizes([]);
-    }
-
-    if (gacha.round_prizes.length !== 0) {
-      let roundPrizes = [];
-
-      gacha.round_prizes.forEach((prize) => {
-        roundPrizes.push(prize);
-      });
-
-      setRoundprizes(roundPrizes);
-    } else {
-      setRoundprizes([]);
-    }
+    setFirstprizes(firstPrizes);
+    setSecondprizes(secondPrizes);
+    setThirdprizes(thirdPrizes);
+    setFourthprizes(fourthPrizes);
+    setRoundprizes(roundPrizes);
+    setExtraprizes(extraPrizes);
+    setLastprizes(lastPrizes);
   };
 
   // drawing prizes by kind
@@ -174,7 +148,7 @@ const GachaEdit = () => {
               <PrizeCard img_url={prize?.img_url} />
               <button
                 className="absolute top-1 right-1 rounded-bl-[100%] w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
-                onClick={() => unsetPrize(prize)}
+                onClick={() => unsetPrize(prize._id)}
               >
                 <i className="fa fa-close text-gray-200 middle"></i>
               </button>
@@ -186,7 +160,7 @@ const GachaEdit = () => {
   };
 
   // unset registered prizes from gacha
-  const unsetPrize = async (prize) => {
+  const unsetPrize = async (prizeId) => {
     try {
       if (!user.authority["gacha"]["write"]) {
         showToast(t("noPermission"), "error");
@@ -196,7 +170,7 @@ const GachaEdit = () => {
       setSpinFlag(true);
       const res = await api.post("/admin/gacha/unset_prize", {
         gachaId: gachaId,
-        prizeId: prize._id,
+        prizeId: prizeId,
       });
       setSpinFlag(false);
 
@@ -213,7 +187,7 @@ const GachaEdit = () => {
   };
 
   return (
-    <div className="p-3 w-full h-full md:w-[70%] m-auto">
+    <div className="px-3 pt-2 py-24 w-full h-full md:w-[70%] m-auto">
       {spinFlag && <Spinner />}
 
       <div className="text-xl text-center text-slate-600">
@@ -335,17 +309,23 @@ const GachaEdit = () => {
         ) : null}
       </div>
       <hr className="my-2" />
+      <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+        {t("currentPrizeList")}
+      </div>
+      <div className="py-2 border-1 text-center w-full">
+        {firstPrizes.length > 0 && drawPrizesByKind(firstPrizes, "first")}
+        {secondPrizes.length > 0 && drawPrizesByKind(secondPrizes, "second")}
+        {thirdPrizes.length > 0 && drawPrizesByKind(thirdPrizes, "third")}
+        {fourthPrizes.length > 0 && drawPrizesByKind(fourthPrizes, "fourth")}
+        {extraPrizes.length > 0 && drawPrizesByKind(extraPrizes, "extra_prize")}
+        {roundPrizes.length > 0 &&
+          drawPrizesByKind(roundPrizes, "round_number_prize")}
+        {lastPrizes.length > 0 && drawPrizesByKind(lastPrizes, "last_prize")}
 
-      {firstPrizes.length > 0 && drawPrizesByKind(firstPrizes, "first")}
-      {secondPrizes.length > 0 && drawPrizesByKind(secondPrizes, "second")}
-      {thirdPrizes.length > 0 && drawPrizesByKind(thirdPrizes, "third")}
-      {fourthPrizes.length > 0 && drawPrizesByKind(fourthPrizes, "fourth")}
-      {extraPrizes.length > 0 && drawPrizesByKind(extraPrizes, "extra_prize")}
-      {roundPrizes.length > 0 &&
-        drawPrizesByKind(roundPrizes, "round_number_prize")}
-      {lastPrizes.length > 0 && drawPrizesByKind(lastPrizes, "last_prize")}
-
-      {gachaNum === 0 && <div className="py-2 text-center">{t("noprize")}</div>}
+        {gachaNum === 0 && (
+          <div className="py-2 text-center">{t("noprize")}</div>
+        )}
+      </div>
     </div>
   );
 };

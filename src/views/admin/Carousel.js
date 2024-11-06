@@ -143,7 +143,7 @@ function Carousel() {
   };
 
   return (
-    <div className="p-3">
+    <div className="px-3 pt-2 py-24">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("carousel")} />
@@ -229,8 +229,7 @@ function Carousel() {
                           process.env.REACT_APP_SERVER_ADDRESS +
                           carousel.img_url
                         }
-                        width="50px"
-                        height="50px"
+                        width="100px"
                       />
                     </td>
                     <td>{carousel.link}</td>
