@@ -131,12 +131,7 @@ function UserDelivery() {
                     {data.prizes?.length > 0
                       ? data.prizes.map((card, i) => (
                           <div key={i} className="group relative">
-                            <PrizeCard
-                              name={card.name}
-                              rarity={card.rarity}
-                              cashback={card.cashback}
-                              img_url={card.img_url}
-                            />
+                            <PrizeCard img_url={card.img_url} />
                             <div
                               className="hover:opacity-90 w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 group-hover:block transition-all duration-300 text-base text-white text-center cursor-pointer z-3 animate-[displayEase_linear]"
                               style={{ backgroundColor: bgColor }}
@@ -196,13 +191,7 @@ function UserDelivery() {
                   <div className="mt-2 mr-2 flex flex-wrap justify-center items-stretch">
                     {data.prizes?.length > 0
                       ? data.prizes.map((card) => (
-                          <PrizeCard
-                            key={card._id}
-                            name={card.name}
-                            rarity={card.rarity}
-                            cashback={card.cashback}
-                            img_url={card.img_url}
-                          />
+                          <PrizeCard key={card._id} img_url={card.img_url} />
                         ))
                       : null}
                   </div>

@@ -56,8 +56,7 @@ const UserLayout = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/user") {
         const token = localStorage.getItem("token");
-
-        if (prop.path === "/user-profile" && !token)
+        if (prop.path !== "/index" && prop.path !== "/gacha-detail" && !token)
           return (
             <Route
               path={prop.path}

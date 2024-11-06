@@ -33,7 +33,10 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
   const getThemeData = async () => {
     const res = await api.get("/admin/getThemeData");
     if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.logoUrl) setLogoImg(res.data.theme.logoUrl);
+      if (res.data.theme.logoUrl)
+        setLogoImg(
+          process.env.REACT_APP_SERVER_ADDRESS + res.data.theme.logoUrl
+        );
       if (res.data.theme.brand) setBrand(res.data.theme.brand);
       if (res.data.theme.bgColor) {
         setBgColor(res.data.theme.bgColor);
@@ -48,9 +51,9 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
 
   const updateUserData = async () => {
     setAuthToken();
+
     try {
       if (user) {
-        // update user date
         const res = await api.get(`/user/get_user/${user._id}`);
         if (res.data.status === 1) {
           setUser(res.data.user);
@@ -79,7 +82,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
 
   return (
     <div
-      className={`w-full p-2 fixed z-10 max-h-[100px] z-20`}
+      className={`w-full p-2 fixed max-h-[100px] z-20`}
       style={{ backgroundColor: bgColor }}
     >
       <div className="w-full navbar-dark">
@@ -98,18 +101,13 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                   </span>
                 </button>
               ) : (
-                <>
-                  <img
-                    alt="..."
-                    src={process.env.REACT_APP_SERVER_ADDRESS + logoImg}
-                    width="50"
-                    height="50"
-                    className="px-1"
-                  />
-                  {/* <div className="text-lg font-NanumGothic hidden xxsm:block">
-                    {brand}
-                  </div> */}
-                </>
+                <img
+                  alt="..."
+                  src={logoImg}
+                  width="50"
+                  height="50"
+                  className="px-1"
+                />
               )}
             </div>
           </Link>
@@ -162,10 +160,9 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                               ? "translate-x-0"
                               : "translate-x-full"
                           }`}
-                          // onClick={() => setIsOpenToggleMenu(!isOpenToggleMenu)}
                         >
-                          <div className="w-80 h-[100vh] shadow-md shadow-gray-400 overflow-y-auto ease-in-out bg-gray-100 text-gray-800 transform transition-transform">
-                            <div className="my-status sticky top-0 bg-gray-100 z-20">
+                          <div className="z-50 w-80 h-[100vh] shadow-md shadow-gray-400 overflow-y-auto ease-in-out bg-gray-100 text-gray-800 transform transition-transform">
+                            <div className="my-status sticky top-0 bg-gray-100">
                               <h2 className="py-3 text-xl font-bold text-center">
                                 {user.name}
                               </h2>
@@ -193,7 +190,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                         user.rankData.rank.img_url
                                       }
                                       alt="Background"
-                                      className="absolute top-0 right-4 w-full h-full object-cover z-0 opacity-50"
+                                      className="absolute top-0 right-4 w-full h-full object-cover opacity-50"
                                       style={{
                                         maxHeight: "150px",
                                         maxWidth: "130px",
@@ -202,7 +199,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                   ) : (
                                     ""
                                   )}
-                                  <div className="relative z-10">
+                                  <div className="relative">
                                     <span className="text-gray-800 text-lg font-bold">
                                       {t("rank")}
                                     </span>

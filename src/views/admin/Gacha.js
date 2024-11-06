@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Select from "react-select";
 
 import api from "../../utils/api";
-import formatDate from "../../utils/formatDate";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart, removeMultipart } from "../../utils/setHeader";
@@ -15,52 +15,65 @@ import PageHeader from "../../components/Forms/PageHeader";
 
 import uploadimage from "../../assets/img/icons/upload.png";
 import formatPrice from "../../utils/formatPrice";
+import subCategories from "../../utils/subCategories";
 
 function Gacha() {
   const navigate = useNavigate();
-  const [user, setUser] = usePersistedUser();
-  const { t } = useTranslation();
+  const [user] = usePersistedUser();
+  const { t, i18n } = useTranslation();
+  const fileInputRef = useRef(null);
+  const lang = i18n.language;
 
-  //new Gacha data
   const [formData, setFormData] = useState({
     name: "",
     price: 0,
-    totalNum: 0,
     category: "",
+    kind: [],
+    awardRarity: 0,
+    order: 1,
     file: null,
   });
-  const [categoryList, setCategoryList] = useState(""); //registered Category list for category select
-  const [imgUrl, setImgUrl] = useState(""); //local image url when image file select
-  const [gacha, setGacha] = useState(null); //registered Gacha list
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [imgUrl, setImgUrl] = useState("");
+  const [gacha, setGacha] = useState(null);
   const [delGachaId, setDelGachaId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const fileInputRef = useRef(null); // Create a ref for the file input
+  const subCats = subCategories.map((prize) => ({
+    value: prize,
+    label: t(prize),
+  }));
+  const [selSubCats, setSelSubCats] = useState([]);
 
   useEffect(() => {
     getCategory();
-    adminUpdateData();
     getGacha();
   }, []);
 
-  const adminUpdateData = () => {
-    if (user) {
-      api
-        .get(`/admin/get_admin/${user._id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            res.data.admin.role = "admin";
-            setUser(res.data.admin);
-          }
-        })
-        .catch((err) => {
-          showToast(t("tryLogin"), "error");
-          navigate("user/index");
-        });
-    }
+  const getCategory = () => {
+    api
+      .get("admin/get_category")
+      .then((res) => {
+        if (res.data.status === 1) {
+          setCategories(res.data.category);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
-  //handle image file select change
+  const getGacha = () => {
+    api
+      .get("/admin/gacha")
+      .then((res) => {
+        if (res.data.status === 1) setGacha(res.data.gachaList);
+      })
+      .catch((err) => {
+        showToast(err, "error");
+      });
+  };
+
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
     if (file !== undefined) {
@@ -86,120 +99,104 @@ function Gacha() {
     });
   };
 
-  //get registered Category list
-  const getCategory = () => {
-    api
-      .get("admin/get_category")
-      .then((res) => {
+  const changeKind = (options) => {
+    setSelSubCats(options);
+    setFormData({ ...formData, ["kind"]: options });
+    !options.some((item) => item.value === "round_number_prize") &&
+      setFormData({ ...formData, ["awardRarity"]: 0 });
+  };
+
+  const addGacha = async () => {
+    try {
+      if (!user.authority["gacha"]["write"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
+
+      setAuthToken();
+      setMultipart();
+
+      if (formData.name.trim() === "") {
+        showToast(t("requiredGachaName"), "error");
+      } else if (parseFloat(formData.price) <= 0) {
+        showToast(t("price") + " " + t("greaterThan"), "error");
+      } else if (formData.category.trim() === "") {
+        showToast(t("selectOption") + " : " + t("category"), "error");
+      } else if (
+        selSubCats.some((item) => item.value === "round_number_prize") &&
+        parseFloat(formData.awardRarity) <= 0
+      ) {
+        showToast(t("awardRarity") + " " + t("greaterThan"), "error");
+      } else if (
+        formData.file === NaN ||
+        formData.file === null ||
+        formData.file === undefined
+      ) {
+        showToast(t("selectImage"), "error");
+      } else {
+        const res = await api.post("/admin/gacha", formData);
+
         if (res.data.status === 1) {
-          setCategoryList(res.data.category);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  const addGacha = () => {
-    if (!user.authority["gacha"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
-
-    setAuthToken();
-    setMultipart();
-
-    if (formData.name.trim() === "") {
-      showToast(t("requiredGachaName"), "error");
-    } else if (parseFloat(formData.price) <= 0) {
-      showToast(t("greaterThan"), "error");
-    } else if (formData.category.trim() === "") {
-      showToast(t("selectOption"), "error");
-    } else if (parseInt(formData.totalNum) <= 0) {
-      showToast(t("greaterThan"), "error");
-    } else if (
-      formData.file === NaN ||
-      formData.file === null ||
-      formData.file === undefined
-    ) {
-      showToast(t("selectImage"), "error");
-    } else {
-      api
-        .post("/admin/gacha/add", formData)
-        .then((res) => {
-          if (res.data.status === 1) {
-            showToast(t(res.data.msg), "success");
-            setImgUrl("");
-            fileInputRef.current.value = null;
-            setFormData({
-              ...formData,
-              file: null,
-              name: "",
-              price: 0,
-              totalNum: 0,
-              category: "",
-            });
-            removeMultipart();
-            getCategory();
-            getGacha();
-          } else showToast(t(res.data.msg), "error");
-        })
-        .catch((err) => {
-          console.error("Error uploading file:", err);
-        });
+          showToast(t(res.data.msg), "success");
+          setImgUrl("");
+          fileInputRef.current.value = null;
+          setFormData({
+            ...formData,
+            name: "",
+            price: 0,
+            awardRarity: 0,
+            order: 1,
+            kind: [],
+            category: "",
+            file: null,
+          });
+          setSelSubCats([]);
+          removeMultipart();
+          getCategory();
+          getGacha();
+        } else showToast(t(res.data.msg), "error");
+      }
+    } catch (error) {
+      showToast(t("failedReq"), "error");
     }
   };
 
-  //get registered Gacha list
-  const getGacha = () => {
-    api
-      .get("/admin/gacha")
-      .then((res) => {
-        if (res.data.status === 1) setGacha(res.data.gachaList);
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
-  };
+  const setRelease = async (gachaId) => {
+    try {
+      if (!user.authority["gacha"]["write"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
 
-  const setRelease = (id) => {
-    if (!user.authority["gacha"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
-
-    api.get(`/admin/gacha/set_release/${id}`).then((res) => {
+      const res = await api.get(`/admin/gacha/set_release/${gachaId}`);
       if (res.data.status === 1) {
         showToast(t("successReleaseGacha"), "success");
         getGacha();
       } else {
         showToast(t("failedReleaseGacha"), "error");
       }
-    });
-  };
-
-  const gachaDel = () => {
-    api
-      .delete(`/admin/gacha/${delGachaId}`)
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("successDeleted", "success"));
-          getGacha();
-        } else showToast(t("failedDeleted", "error"));
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
-  };
-
-  const handleDelete = () => {
-    if (!user.authority["gacha"]["delete"]) {
-      showToast(t("noPermission"), "error");
-      return;
+    } catch (error) {
+      showToast(t("failedReq"), "error");
     }
+  };
 
-    gachaDel();
-    setIsModalOpen(false);
+  const delGacha = async () => {
+    try {
+      if (!user.authority["gacha"]["delete"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
+
+      setIsModalOpen(false);
+
+      const res = await api.delete(`/admin/gacha/${delGachaId}`);
+      if (res.data.status === 1) {
+        showToast(t("successDeleted", "success"));
+        getGacha();
+      } else showToast(t("failedDeleted", "error"));
+    } catch (error) {
+      showToast(t("failedReq"), "error");
+    }
   };
 
   return (
@@ -207,12 +204,35 @@ function Gacha() {
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("gacha")} />
       </div>
-      <div className="flex flex-col w-full md:w-[70%] border-2 m-auto">
-        <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
-          {t("gacha") + t("add")}
-        </div>
-        <div className="flex flex-wrap justify-center sm:px-4 pt-2 w-full">
-          <div className="flex flex-col w-full xxsm:w-1/2">
+
+      <div className="flex flex-wrap">
+        <div className="flex flex-col w-full lg:w-[35%] mb-2 border-1 h-fit">
+          <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
+            {t("rank") + " " + t("add")}
+          </div>
+          <div className="flex flex-col justify-between items-center p-2 w-full">
+            <label htmlFor="fileInput" className="text-gray-700 p-1 mb-2">
+              {t("gacha") + " " + t("image")}
+            </label>
+            <input
+              name="fileInput"
+              type="file"
+              id="fileInput"
+              ref={fileInputRef}
+              className="image p-1 w-full form-control"
+              onChange={handleFileInputChange}
+              autoComplete="fileInput"
+            />
+            <img
+              src={imgUrl ? imgUrl : uploadimage}
+              alt="prize"
+              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
+              onClick={() => {
+                document.getElementById("fileInput").click();
+              }}
+            />
+          </div>
+          <div className="flex flex-col p-2">
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="name" className="text-gray-700">
                 {t("name")}
@@ -224,7 +244,7 @@ function Gacha() {
                 value={formData.name}
                 id="name"
                 autoComplete="name"
-              ></input>
+              />
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="price" className="text-gray-700">
@@ -232,12 +252,13 @@ function Gacha() {
               </label>
               <input
                 name="price"
+                type="number"
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
                 value={formData.price}
                 id="price"
-                autoComplete="name"
-              ></input>
+                autoComplete="price"
+              />
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="category" className="text-gray-700">
@@ -251,153 +272,214 @@ function Gacha() {
                 id="category"
                 autoComplete="name"
               >
-                <option>{t("selectOption")}</option>
-                {categoryList
-                  ? categoryList.map((data, i) => (
-                      <option key={i} id={data._id}>
-                        {data.name}
-                      </option>
-                    ))
+                <option value="">{t("selectOption")}</option>
+                {categories
+                  ? categories.map((data, i) => {
+                      let catName;
+                      switch (lang) {
+                        case "ch1":
+                          catName = data.ch1Name;
+                          break;
+                        case "ch2":
+                          catName = data.ch2Name;
+                          break;
+                        case "vt":
+                          catName = data.vtName;
+                          break;
+                        case "en":
+                          catName = data.enName;
+                          break;
+
+                        default:
+                          catName = data.jpName;
+                          break;
+                      }
+
+                      return (
+                        <option key={i} id={data._id} value={data._id}>
+                          {catName}
+                        </option>
+                      );
+                    })
                   : ""}
               </select>
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="totalNum" className="text-gray-700">
-                {t("total") + " " + t("number")}
+              <label htmlFor="kind" className="text-gray-700">
+                {t("kind")}
+              </label>
+              <Select
+                isMulti
+                name="kind"
+                options={subCats}
+                value={selSubCats}
+                onChange={changeKind}
+                placeholder={t("selectOption")}
+                className="basic-multi-select w-full cursor-pointer"
+                classNamePrefix="select"
+              />
+            </div>
+            {selSubCats.some((item) => item.value === "round_number_prize") && (
+              <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+                <label htmlFor="awardRarity" className="text-gray-700">
+                  {t("awardRarity")}
+                </label>
+                <input
+                  name="awardRarity"
+                  type="number"
+                  className="p-1 w-full form-control"
+                  onChange={changeFormData}
+                  value={formData.awardRarity}
+                  id="awardRarity"
+                  autoComplete="awardRarity"
+                />
+              </div>
+            )}
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="order" className="text-gray-700">
+                {t("order")}
               </label>
               <input
-                name="totalNum"
+                name="order"
+                type="number"
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
-                value={formData.totalNum}
-                id="totalNum"
-                autoComplete="name"
-              ></input>
+                value={formData.order}
+                id="order"
+                autoComplete="order"
+              />
+            </div>
+            <div className="flex flex-wrap justify-end">
+              <AgreeButton
+                name={t("add")}
+                addclassName="inline-block float-right"
+                onClick={addGacha}
+              />
             </div>
           </div>
-          <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
-            <label htmlFor="fileInput" className="text-gray-700 p-1">
-              {t("gacha") + " " + t("image")}
-            </label>
-            <input
-              name="fileInput"
-              type="file"
-              id="fileInput"
-              ref={fileInputRef}
-              className="image p-1 w-full form-control"
-              onChange={handleFileInputChange}
-              autoComplete="name"
-            ></input>
-            <img
-              src={imgUrl ? imgUrl : uploadimage}
-              alt="prize"
-              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
-              onClick={() => {
-                document.getElementById("fileInput").click();
-              }}
-            ></img>
-          </div>
         </div>
-        <div className="flex flex-wrap justify-end px-3 pb-2">
-          <AgreeButton
-            name={t("add")}
-            addclassName="inline-block float-right"
-            onClick={addGacha}
-          />
-        </div>
-      </div>
-      <div className="mx-auto my-3 overflow-auto">
-        <table className="border-[1px]  m-auto w-full md:w-[70%]">
-          <thead className="bg-admin_theme_color font-bold text-gray-200">
-            <tr>
-              <th>{t("no")}</th>
-              <th>{t("category")}</th>
-              <th>{t("image")}</th>
-              <th>{t("name")}</th>
-              <th>{t("price")}</th>
-              <th>{t("number")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {gacha && gacha.length !== 0 ? (
-              gacha.map((data, i) => {
-                return (
-                  <React.Fragment key={data._id}>
-                    <tr
-                      key={i}
-                      className={`border-2 ${
-                        data.isRelease ? "bg-[#f2f2f2]" : ""
-                      }`}
-                    >
-                      <td rowSpan="2">{i + 1}</td>
-                      <td>{data.category}</td>
-                      <td>
-                        <img
-                          src={
-                            process.env.REACT_APP_SERVER_ADDRESS +
-                            data.gacha_thumnail_url
-                          }
-                          className="w-[100px] h-auto mx-auto"
-                          alt="gacha thumnail"
-                        ></img>
-                      </td>
-                      <td>{data.name}</td>
-                      <td>{formatPrice(data.price)} pt</td>
-                      <td>
-                        {data.last_prize
-                          ? data.remain_prizes.length + 1
-                          : data.remain_prizes.length}{" "}
-                        / {data.total_number}
-                      </td>
-                    </tr>
-                    <tr
-                      className={`border-2 ${
-                        data.isRelease ? "bg-[#f2f2f2]" : ""
-                      }`}
-                    >
-                      <td colSpan="6">
-                        <div className="flex flex-wrap justify-center">
-                          <button
-                            className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
-                            onClick={() => toGachaDetail(data._id)}
-                          >
-                            {t("gacha") + " " + t("detail")}
-                          </button>
-                          <button
-                            className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
-                            onClick={() => setRelease(data._id)}
-                          >
-                            {data.isRelease
-                              ? t("unrelease") + " " + t("gacha")
-                              : t("release") + " " + t("gacha")}
-                          </button>
-                          <button
-                            className="py-1 px-4 m-1 bg-red-500 text-center text-gray-200"
-                            onClick={() => {
-                              setDelGachaId(data._id);
-                              setIsModalOpen(true);
-                            }}
-                          >
-                            {t("delete") + " " + t("gacha")}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </React.Fragment>
-                );
-              })
-            ) : (
+        <div className="overflow-auto flex flex-wrap w-full lg:w-[65%] h-fit">
+          <table className="w-full m-auto">
+            <thead className="bg-admin_theme_color font-bold text-gray-200">
               <tr>
-                <td colSpan="6">{t("nogacha")}</td>
+                <th>{t("no")}</th>
+                <th>{t("image")}</th>
+                <th>{t("name")}</th>
+                <th>{t("price")}</th>
+                <th>{t("category")}</th>
+                <th>{t("kind")}</th>
+                <th>{t("number")}</th>
+                <th>{t("order")}</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {gacha && gacha.length !== 0 ? (
+                gacha.map((data, i) => {
+                  let catName;
+                  switch (lang) {
+                    case "ch1":
+                      catName = data.category.ch1Name;
+                      break;
+                    case "ch2":
+                      catName = data.category.ch2Name;
+                      break;
+                    case "vt":
+                      catName = data.category.vtName;
+                      break;
+                    case "en":
+                      catName = data.category.enName;
+                      break;
+
+                    default:
+                      catName = data.category.jpName;
+                      break;
+                  }
+
+                  return (
+                    <React.Fragment key={data._id}>
+                      <tr
+                        key={i}
+                        className={`border-2 ${
+                          data.isRelease ? "bg-[#f2f2f2]" : ""
+                        }`}
+                      >
+                        <td rowSpan="2">{i + 1}</td>
+                        <td>
+                          <img
+                            src={
+                              process.env.REACT_APP_SERVER_ADDRESS +
+                              data.img_url
+                            }
+                            className="w-[100px] h-auto mx-auto"
+                            alt="gacha thumnail"
+                          />
+                        </td>
+                        <td>{data.name}</td>
+                        <td>{formatPrice(data.price)}pt</td>
+                        <td>{catName}</td>
+                        <td>
+                          {data.kind.map((item, i) => (
+                            <p key={i}>{t(item.value)}</p>
+                          ))}
+                        </td>
+                        <td>
+                          {data.grade_prizes.length +
+                            data.extra_prizes.length +
+                            data.round_prizes.length +
+                            data.last_prizes.length}{" "}
+                          / {data.total_number}
+                        </td>
+                        <td>{data.order}</td>
+                      </tr>
+                      <tr
+                        className={`border-2 ${
+                          data.isRelease ? "bg-[#f2f2f2]" : ""
+                        }`}
+                      >
+                        <td colSpan="8">
+                          <div className="flex flex-wrap justify-center">
+                            <button
+                              className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
+                              onClick={() => toGachaDetail(data._id)}
+                            >
+                              {t("gacha") + " " + t("detail")}
+                            </button>
+                            <button
+                              className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
+                              onClick={() => setRelease(data._id)}
+                            >
+                              {data.isRelease
+                                ? t("unrelease") + " " + t("gacha")
+                                : t("release") + " " + t("gacha")}
+                            </button>
+                            <button
+                              className="py-1 px-4 m-1 bg-red-500 text-center text-gray-200"
+                              onClick={() => {
+                                setDelGachaId(data._id);
+                                setIsModalOpen(true);
+                              }}
+                            >
+                              {t("delete") + " " + t("gacha")}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </React.Fragment>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="8">{t("nogacha")}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
       <DeleteConfirmModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={handleDelete}
+        onConfirm={delGacha}
       />
     </div>
   );

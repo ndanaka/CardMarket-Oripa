@@ -141,7 +141,7 @@ function Carousel() {
         <PageHeader text={t("carousel")} />
       </div>
       <div className="flex flex-wrap">
-        <div className="flex flex-col w-full md:w-[35%] border-1 h-fit">
+        <div className="flex flex-col w-full md:w-[35%] border-1 mb-2 h-fit">
           <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
             {t("carousel") + " " + t("add")}
           </div>
@@ -174,34 +174,32 @@ function Carousel() {
             <label htmlFor="pointNum" className="text-gray-700 px-1">
               {t("link")}
             </label>
-            <div className="flex flex-wrap w-full justify-between">
-              <div className="input flex-grow mr-1">
-                <input
-                  name="link"
-                  className="form-control py-2"
-                  onChange={changeFormData}
-                  value={formData.link}
-                  id="link"
-                  autoComplete="link"
-                />
-              </div>
-              <div className="addBtn flex-shrink-0">
-                {!cuflag ? (
-                  <button
-                    className="button-22 !bg-red-500"
-                    onClick={handleCancel}
-                  >
-                    {t("cancel")}
-                  </button>
-                ) : null}
-                <button className="button-22" onClick={handleAddOrEdit}>
-                  {!cuflag ? t("update") : t("add")}
+            <div className="input flex-grow m-1">
+              <input
+                name="link"
+                className="form-control py-2"
+                onChange={changeFormData}
+                value={formData.link}
+                id="link"
+                autoComplete="link"
+              />
+            </div>
+            <div className="addBtn flex justify-end m-1">
+              {!cuflag ? (
+                <button
+                  className="button-22 !bg-red-500"
+                  onClick={handleCancel}
+                >
+                  {t("cancel")}
                 </button>
-              </div>
+              ) : null}
+              <button className="button-22" onClick={handleAddOrEdit}>
+                {!cuflag ? t("update") : t("add")}
+              </button>
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap w-full md:w-[65%] h-fit">
+        <div className="overflow-auto flex flex-wrap w-full md:w-[65%] h-fit">
           <table className="w-full">
             <thead>
               <tr className="bg-admin_theme_color font-bold text-gray-200">

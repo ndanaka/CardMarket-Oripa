@@ -12,40 +12,53 @@ import usePersistedUser from "../../store/usePersistedUser";
 import PageHeader from "../../components/Forms/PageHeader";
 
 const UseTerms = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+  const [user] = usePersistedUser();
+  const quillRef = useRef(null);
+
   const [content, setContent] = useState("");
-  const [user, setUser] = usePersistedUser();
-  const quillRef = useRef(null); // Add a ref for the ReactQuill component
 
   useEffect(() => {
-    api.get("/admin/get_terms").then((res) => {
-      if (res.data.status === 1) {
-        if (res.data.terms) setContent(res.data.terms.content);
-        else setContent("");
-      } else if (res.data.status === 2) {
-        showToast(t("faileReq"), "error");
-      }
-    });
-  }, []);
+    getContent();
+  }, [lang]);
+
+  const getContent = async () => {
+    const res = await api.get(`/admin/terms/${lang}`);
+
+    if (res.data.status === 1) {
+      if (res.data.terms) setContent(res.data.terms.content);
+      else setContent("");
+    } else if (res.data.status === 2) {
+      setContent("");
+    }
+  };
 
   const handleContentChange = (value) => {
     setContent(value);
   };
 
-  const handleSubmit = () => {
-    if (!user.authority["userterms"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
+  const handleSubmit = async () => {
+    try {
+      if (!user.authority["userterms"]["write"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
 
-    setAuthToken();
-    api.post("/admin/save_terms", { content: content }).then((res) => {
+      setAuthToken();
+
+      const res = await api.post("/admin/save_terms", {
+        content: content,
+        lang: lang,
+      });
       if (res.data.status === 1) {
         showToast(t("successSaved"), "success");
-      } else if (res.data.status === 2) {
+      } else {
         showToast(t("failedSaved"), "error");
       }
-    });
+    } catch (error) {
+      showToast(t("failedSaved"), "error");
+    }
   };
 
   return (
@@ -53,12 +66,12 @@ const UseTerms = () => {
       <div className="w-full mx-auto">
         <PageHeader text={t("userterms")} />
       </div>
-      <div className="flex flex-col items-center mt-8">
+      <div className="flex flex-col items-center">
         <ReactQuill
           ref={quillRef} // Attach the ref here
           value={content}
           onChange={handleContentChange}
-          theme="snow" // Basic Quill theme
+          theme="snow"
           className="w-full h-96 border border-gray-300 rounded-lg shadow-md"
           placeholder="Start typing..."
           modules={{

@@ -142,6 +142,7 @@ const Login = () => {
                   />
                   <div
                     onClick={togglePasswordVisibility}
+                    className="cursor-pointer"
                     style={{
                       position: "absolute",
                       right: "20px",

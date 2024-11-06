@@ -115,8 +115,8 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/administrator",
-    name: "administrators",
+    path: "/admin",
+    name: "admin",
     icon: "fa-solid fa-user-secret",
     component: <Administrators />,
     layout: "/admin",
@@ -140,6 +140,20 @@ var routes = [
     name: "carousel",
     icon: "fa fa-file-image",
     component: <Carousel />,
+    layout: "/admin",
+  },
+  {
+    path: "/rank",
+    name: "rank",
+    icon: "fa fa-trophy",
+    component: <Rank />,
+    layout: "/admin",
+  },
+  {
+    path: "/point",
+    name: "point",
+    icon: "fa-brands fa-product-hunt",
+    component: <Point />,
     layout: "/admin",
   },
   {
@@ -170,14 +184,6 @@ var routes = [
     component: <GachaEdit />,
     layout: "/admin/sub",
   },
-
-  {
-    path: "/point",
-    name: "point",
-    icon: "fa-brands fa-product-hunt",
-    component: <Point />,
-    layout: "/admin",
-  },
   {
     path: "/delivering",
     name: "Delivering",
@@ -185,20 +191,13 @@ var routes = [
     component: <Delivering />,
     layout: "/admin",
   },
-  {
-    path: "/rank",
-    name: "rank",
-    icon: "fa fa-trophy",
-    component: <Rank />,
-    layout: "/admin",
-  },
-  {
-    path: "/notion",
-    name: "notion",
-    icon: "fa-solid fa-file-contract",
-    component: <NotionPage />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/notion",
+  //   name: "notion",
+  //   icon: "fa-solid fa-file-contract",
+  //   component: <NotionPage />,
+  //   layout: "/admin",
+  // },
   {
     path: "/useterm",
     name: "userterms",

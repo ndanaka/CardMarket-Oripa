@@ -64,13 +64,12 @@ function Users() {
         <PageHeader text={t("users")} />
       </div>
       <div className="m-auto overflow-auto w-full md:w-[70%]">
-        <table className="w-full border-2 m-auto min-w-[60%]">
+        <table className="w-full">
           <thead>
             <tr className="bg-admin_theme_color font-bold text-gray-200">
               <th>{t("no")}</th>
               <th>{t("name")}</th>
               <th>{t("email")}</th>
-              {/* <th>{t("password")}</th> */}
               <th>{t("point")}</th>
               <th>{t("status")}</th>
               <th>{t("action")}</th>
@@ -79,7 +78,7 @@ function Users() {
           <tbody>
             {userList && userList.length !== 0 ? (
               userList.map((data, i) => (
-                <tr key={i} className="border-2 cursor-pointer">
+                <tr key={i} className="cursor-pointer">
                   <td
                     onClick={() =>
                       navigate("/admin/user-detail", {
@@ -107,7 +106,6 @@ function Users() {
                   >
                     {data.email}
                   </td>
-                  {/* <td>{data.password}</td> */}
                   <td
                     onClick={() =>
                       navigate("/admin/user-detail", {
@@ -115,7 +113,7 @@ function Users() {
                       })
                     }
                   >
-                    {formatPrice(data.point_remain)} pt
+                    {formatPrice(data.point_remain)}pt
                   </td>
                   <td
                     onClick={() =>

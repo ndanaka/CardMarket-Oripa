@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import api from "../utils/api";
 import { setAuthToken } from "../utils/setHeader";
 import { showToast } from "../utils/toastUtil";
+import subCategories from "../utils/subCategories";
 
 import GachaModal from "../components/Modals/GachaModal";
 import PrizeCard from "../components/Others/PrizeCard";
@@ -18,32 +19,28 @@ import usePersistedUser from "../store/usePersistedUser";
 
 const Index = () => {
   const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const navigate = useNavigate();
+  const [user, setUser] = usePersistedUser();
 
-  const defaultCategory = [
-    "last_prize",
-    "extra_prize",
-    "appraised_item",
-    "once_per_day",
-  ];
-  const [category, setCategory] = useState(null); //category list
-  const [subCategory, setSubCategory] = useState(defaultCategory);
-  const [gacha, setGacha] = useState(null); //gacah list
+  const [category, setCategory] = useState(null);
+  const [subCategory, setSubCategory] = useState(subCategories);
+  const [gacha, setGacha] = useState(null);
   const [filteredGacha, setFilteredGacha] = useState();
-  const [categoryFilter, setCategoryFilter] = useState("all"); //gacha filter
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [filter, setFilter] = useState(["all"]);
   const [order, setOrder] = useState("recommended");
-  const [isOpenPointModal, setIsOpenPointModal] = useState(false); //gacha confirm modal show flag
-  const [isOpenGachaModal, setIsOpenGachaModal] = useState(false); //gacha confirm modal show flag
-  const [selGacha, setSelGacha] = useState([0, 0]); //variable that determine which gacha and which draw
-  const [popedPrizes, setPopedPrizes] = useState(null); //obtained prize through gacha draw
-  const [showCardFlag, setShowCardFlag] = useState(); //showflag for obtained prize
-  const [user, setUser] = usePersistedUser();
-  const [existLastFlag, setExistLastFlag] = useState(false);
-  const [lastEffect, setLastEffect] = useState(false);
-  const lang = i18n.language;
+  const [isOpenPointModal, setIsOpenPointModal] = useState(false);
+  const [isOpenGachaModal, setIsOpenGachaModal] = useState(false);
+  const [selGacha, setSelGacha] = useState([0, 0]);
   const [bgColor, setBgColor] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [label, setLabel] = useState("");
+  const [totalNum, setTotalNum] = useState("");
+  const [popedPrizes, setPopedPrizes] = useState(null);
+  const [showCardFlag, setShowCardFlag] = useState();
+  const [existLastFlag, setExistLastFlag] = useState(false);
+  const [lastEffect, setLastEffect] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("loggedIn")) {
@@ -53,92 +50,52 @@ const Index = () => {
     getCategory();
     getGacha();
     getThemeData();
-  }, [showCardFlag, bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
+  }, [bgColor]);
 
   useEffect(() => {
     // Get gachas by main category
     let filteredGachas = gacha?.filter(
       (gacha) =>
         gacha.isRelease === true &&
-        (categoryFilter === "all" ? true : gacha.category === categoryFilter)
+        gacha.total_number > 0 &&
+        (categoryFilter === "all"
+          ? true
+          : gacha.category._id === categoryFilter)
     );
 
     // Get gachas by sub category
     if (!filter.includes("all")) {
-      // get gachas has 'last_prize'
-      if (filter.includes("last_prize")) {
-        filteredGachas = filteredGachas?.filter(
-          (gacha) => gacha.last_prize !== undefined && gacha.last_prize !== null
+      filter.forEach((element) => {
+        filteredGachas = filteredGachas.filter((item) =>
+          Array.isArray(item.kind)
+            ? item.kind.some((kindItem) => kindItem.value === element)
+            : item.kind.value === element
         );
-      }
-
-      // get gachas has 'round_number_prize'
-      if (filter.includes("round_number_prize")) {
-        filteredGachas = filteredGachas?.filter(
-          (gacha) =>
-            gacha.rounded_number_prize !== undefined &&
-            gacha.rounded_number_prize !== null
-        );
-      }
-
-      // get gachas has 'extra_prize'
-      if (filter.includes("extra_prize")) {
-        filteredGachas = filteredGachas?.filter(
-          (gacha) =>
-            gacha.extra_prize !== undefined && gacha.extra_prize !== null
-        );
-      }
-
-      // get gachas has 'appraised_item'
-      if (filter.includes("appraised_item")) {
-        filteredGachas = filteredGachas?.filter(
-          (gacha) =>
-            gacha.appraised_item !== undefined && gacha.appraised_item !== null
-        );
-      }
-
-      // get gachas has 'once_per_day'
-      if (filter.includes("once_per_day")) {
-        filteredGachas = filteredGachas?.filter(
-          (gacha) =>
-            gacha.once_per_day !== undefined && gacha.once_per_day !== null
-        );
-      }
+      });
     }
 
     // Get gachas by order
     switch (order) {
       case "recommended":
-        filteredGachas?.sort(() => Math.random() - 0.5);
         break;
+
       case "newest":
         filteredGachas?.sort(
-          (a, b) => new Date(b.create_date) - new Date(a.create_date)
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         break;
+
       case "popularity":
         filteredGachas?.sort(
           (a, b) =>
             Number(b.poped_prizes.length) - Number(a.poped_prizes.length)
         );
         break;
+
       case "highToLowPrice":
         filteredGachas?.sort((a, b) => Number(b.price) - Number(a.price));
         break;
+
       case "lowToHighPrice":
         filteredGachas?.sort((a, b) => Number(a.price) - Number(b.price));
         break;
@@ -149,36 +106,7 @@ const Index = () => {
 
     // Set the final filtered array
     setFilteredGacha(filteredGachas);
-  }, [gacha, categoryFilter, filter, order]);
-
-  // get main categories
-  const getCategory = () => {
-    api
-      .get("admin/get_category")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setCategory(res.data.category);
-        }
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
-  };
-
-  // get all gachas
-  const getGacha = () => {
-    api
-      .get("/admin/gacha")
-      .then((res) => {
-        if (res.data.status === 1) {
-          setGacha(res.data.gachaList);
-          setFilteredGacha(res.data.gachaList);
-        }
-      })
-      .catch((err) => {
-        showToast(err, "error");
-      });
-  };
+  }, [gacha, filter]);
 
   // update user data and update localstorage
   const updateUserData = async () => {
@@ -201,6 +129,51 @@ const Index = () => {
     }
   };
 
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+
+    if (res.data.status === 1 && res.data.theme) {
+      if (res.data.theme.bgColor) {
+        setBgColor(res.data.theme.bgColor);
+        localStorage.setItem("bgColor", res.data.theme.bgColor);
+      } else {
+        setBgColor("#e50e0e");
+      }
+    } else {
+      setBgColor("#e50e0e");
+    }
+  };
+
+  // get main categories
+  const getCategory = () => {
+    api
+      .get("admin/get_category")
+      .then((res) => {
+        if (res.data.status === 1) {
+          setCategory(res.data.category);
+        }
+      })
+      .catch((err) => {
+        showToast(err, "error");
+      });
+  };
+
+  // get all gachas
+  const getGacha = async () => {
+    try {
+      const res = await api.get("/admin/gacha");
+
+      if (res.data.status === 1) {
+        setGacha(res.data.gachaList);
+        setFilteredGacha(res.data.gachaList);
+      } else {
+        showToast(t("failedReq"), "error");
+      }
+    } catch (error) {
+      showToast(t("failedReq"), "error");
+    }
+  };
+
   // change gacha by sub order
   const changeMainCat = (cat) => {
     getGacha();
@@ -209,8 +182,6 @@ const Index = () => {
 
   // change gacha by sub category
   const changeSubCat = (selSubGat) => {
-    getGacha();
-
     // Make selected categories array
     let selSubCats;
     if (selSubGat === "all") {
@@ -237,7 +208,7 @@ const Index = () => {
     // Ordering selected categories by selecting
     if (!selSubCats.includes("all")) {
       if (filter.includes(selSubGat)) {
-        const restCategories = defaultCategory.filter(
+        const restCategories = subCategory.filter(
           (item) => !selSubCats.includes(item)
         );
         // Add those values to the filter array
@@ -253,7 +224,7 @@ const Index = () => {
         setSubCategory(updatedFilter);
       }
     } else {
-      setSubCategory(defaultCategory);
+      setSubCategory(subCategories);
     }
 
     // Set the final selSubCats array in one go
@@ -267,75 +238,71 @@ const Index = () => {
   };
 
   // check draw conditions
-  const drawGacha = (gacha, num) => {
+  const drawGacha = (gacha, num, label, totalNum) => {
     if (!user) {
       navigate("/auth/login");
       return;
     }
-    const remainPrizes = gacha.last_prize
-      ? gacha.remain_prizes.length + 1
-      : gacha.remain_prizes.length;
-    const totalPoints = gacha.price * num;
-    const remainPoints = user.point_remain;
 
-    // return when user is admin
     if (user.role === "admin") {
       showToast(t("drawnAdmin"), "error");
       return;
     }
 
-    // return when remain prize is less than selected drawing counts
-    if (remainPrizes < num) {
-      showToast(t("drawnEnoughPrize"), "error");
-      return;
-    }
-
-    // remain point is less than selected drawing points
+    const totalPoints = gacha.price * (num === "all" ? totalNum : num);
+    const remainPoints = user.point_remain;
     if (remainPoints < totalPoints) {
       setIsOpenPointModal(true);
       return;
     }
 
     setSelGacha([gacha, num]);
+    setLabel(label);
+    setTotalNum(totalNum);
     setIsOpenGachaModal(true);
   };
 
   // draw gacha
-  const submitDrawGacha = () => {
-    setAuthToken();
-    setIsOpenGachaModal(false);
+  const submitDrawGacha = async () => {
+    try {
+      setAuthToken();
+      setIsOpenGachaModal(false);
 
-    api
-      .post("/admin/gacha/draw_gacha", {
+      const res = await api.post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
         drawCounts: selGacha[1],
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("drawnSuccess"), "success");
-          setPopedPrizes(res.data.prizes);
-          setExistLastFlag(res.data.existLastFlag);
-          setLastEffect(res.data.lastEffect);
-          setShowCardFlag(true);
-          updateUserData();
-        } else {
-          switch (res.data.msg) {
-            case 0:
-              showToast(t("drawnAdmin"), "error");
-              break;
-            case 1:
-              showToast(t("noEnoughPoints"), "error");
-              break;
-            case 2:
-              showToast(t("drawnEnoughPrize"), "error");
-              break;
+        drawDate: new Date(),
+      });
+      console.log(res.data);
 
-            default:
-              break;
-          }
+      if (res.data.status === 1) {
+        showToast(t("drawnSuccess"), "success");
+        // setPopedPrizes(res.data.prizes);
+        // setExistLastFlag(res.data.existLastFlag);
+        // setLastEffect(res.data.lastEffect);
+        // setShowCardFlag(true);
+        // updateUserData();
+      } else {
+        switch (res.data.msg) {
+          // case 0:
+          //   showToast(t("dranAdmin"), "error");
+          //   break;
+
+          case 0:
+            showToast(t("noEnoughPoints"), "error");
+            break;
+
+          case 1:
+            showToast(t("drawnEnoughPrize"), "error");
+            break;
+
+          default:
+            break;
         }
-      })
-      .catch((err) => showToast(err, "error"));
+      }
+    } catch (error) {
+      showToast(t("faileReq", "error"));
+    }
   };
 
   return (
@@ -357,25 +324,47 @@ const Index = () => {
               {t("all")}
             </button>
             {category != null
-              ? category.map((data, i) => (
-                  <button
-                    key={i}
-                    id={data.id}
-                    className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
-                      categoryFilter === data.name
-                        ? "bg-gray-100 border-t-4"
-                        : ""
-                    } `}
-                    style={{
-                      color: categoryFilter === data.name ? bgColor : "gray", // Set text color based on condition
-                      borderColor:
-                        categoryFilter === data.name ? bgColor : "transparent",
-                    }}
-                    onClick={() => changeMainCat(data.name)}
-                  >
-                    {data.name}
-                  </button>
-                ))
+              ? category.map((data, i) => {
+                  let catName;
+                  switch (lang) {
+                    case "ch1":
+                      catName = data.ch1Name;
+                      break;
+                    case "ch2":
+                      catName = data.ch2Name;
+                      break;
+                    case "vt":
+                      catName = data.vtName;
+                      break;
+                    case "en":
+                      catName = data.enName;
+                      break;
+
+                    default:
+                      catName = data.jpName;
+                      break;
+                  }
+
+                  return (
+                    <button
+                      key={i}
+                      id={data.id}
+                      className={`p-2 text-[18px] break-keep whitespace-nowrap font-bold border-b-red-500 hover:bg-gray-100 focus:bg-gray-100 hover:text-red-900 ${
+                        categoryFilter === data._id
+                          ? "bg-gray-100 border-t-4"
+                          : ""
+                      } `}
+                      style={{
+                        color: categoryFilter === data._id ? bgColor : "gray", // Set text color based on condition
+                        borderColor:
+                          categoryFilter === data._id ? bgColor : "transparent",
+                      }}
+                      onClick={() => changeMainCat(data._id)}
+                    >
+                      {catName}
+                    </button>
+                  );
+                })
               : null}{" "}
           </div>
         </div>
@@ -391,27 +380,29 @@ const Index = () => {
               }`}
               style={{
                 backgroundColor: filter.includes("all") ? bgColor : "#e2e8f0",
-              }} // Set bgColor if 'all' is included
+              }}
               onClick={() => changeSubCat("all")}
             >
               {t("all")}
             </div>
-            {subCategory.map((category, i) => (
-              <div
-                key={i}
-                className={`p-2 px-3 mx-1 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
-                  filter.includes(category) ? "text-white" : ""
-                }`}
-                style={{
-                  backgroundColor: filter.includes(category)
-                    ? bgColor
-                    : "#e2e8f0",
-                }}
-                onClick={() => changeSubCat(category)}
-              >
-                {t(category)}
-              </div>
-            ))}
+            {subCategory.map((category, i) => {
+              return (
+                <div
+                  key={i}
+                  className={`p-2 px-3 mx-1 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                    filter.includes(category) ? "text-white" : ""
+                  }`}
+                  style={{
+                    backgroundColor: filter.includes(category)
+                      ? bgColor
+                      : "#e2e8f0",
+                  }}
+                  onClick={() => changeSubCat(category)}
+                >
+                  {t(category)}
+                </div>
+              );
+            })}
           </div>
           <div
             className={`${
@@ -442,137 +433,104 @@ const Index = () => {
               {t("nogacha")}
             </div>
           ) : (
-            filteredGacha.map((data, i) => (
-              <div
-                className="w-full xsm:w-[70%] xxsm:w-[60%] md:w-[50%] mx-auto p-2 p-1"
-                key={i}
-              >
-                <div className="p-2 flex flex-col justify-between border-2 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
-                  <button
-                    className="relative cursor-pointer w-full"
-                    onClick={() =>
-                      navigate("/user/gacha-detail", {
-                        state: {
-                          gachaId: data._id,
-                          progress:
-                            ((data.remain_prizes.length +
-                              (data.last_prize ? 1 : 0)) /
-                              data.total_number) *
-                            100,
-                        },
-                      })
-                    }
-                  >
-                    <img
-                      src={
-                        process.env.REACT_APP_SERVER_ADDRESS +
-                        data.gacha_thumnail_url
+            filteredGacha.map((data, i) => {
+              const gachaNum =
+                data.grade_prizes.length +
+                data.extra_prizes.length +
+                data.round_prizes.length +
+                data.last_prizes.length;
+
+              return (
+                <div
+                  className="w-full xsm:w-[90%] xxsm:w-[70%] md:w-[50%] mx-auto p-2 p-1"
+                  key={i}
+                >
+                  <div className="p-2 flex flex-col justify-between border-2 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
+                    <button
+                      className="relative cursor-pointer w-full"
+                      onClick={() =>
+                        navigate("/user/gacha-detail", {
+                          state: { gachaId: data._id },
+                        })
                       }
-                      className="rounded-t h-[200px] xsm:h-[243px] xxsm:h-[276px] md:h-[300px] w-full object-cover"
-                      alt=""
-                    />
-                    <div className="w-full h-[35px]">
-                      <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-0 text-center">
-                        <GachaPriceLabel price={data.price} />
-                        <Progressbar
-                          progress={
-                            ((data.remain_prizes.length +
-                              (data.last_prize ? 1 : 0)) /
-                              data.total_number) *
-                            100
-                          }
-                          label={
-                            data.remain_prizes.length +
-                            (data.last_prize ? 1 : 0) +
-                            " / " +
-                            data.total_number
-                          }
-                          height={20}
-                        />
+                    >
+                      <img
+                        src={
+                          process.env.REACT_APP_SERVER_ADDRESS + data.img_url
+                        }
+                        className="rounded-t h-[200px] xsm:h-[243px] xxsm:h-[276px] md:h-[300px] w-full object-cover"
+                      />
+                      <div className="w-full h-[35px]">
+                        <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-0 text-center">
+                          <GachaPriceLabel price={data.price} />
+                          <Progressbar
+                            progress={(gachaNum / data.total_number) * 100}
+                            label={gachaNum + " / " + data.total_number}
+                            height={20}
+                          />
+                        </div>
                       </div>
+                    </button>
+                    <div className="w-full flex flex-wrap justify-center">
+                      {gachaNum === 0 ? (
+                        <button
+                          className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
+                          disabled={true}
+                        >
+                          {t("soldOut")}
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
+                            style={{
+                              backgroundColor: bgColor,
+                            }}
+                            onClick={() => {
+                              drawGacha(data, 1, t("drawOne"), gachaNum);
+                            }}
+                          >
+                            {t("drawOne")}
+                          </button>
+                          {gachaNum >= 10 && (
+                            <button
+                              className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
+                              onClick={() => {
+                                drawGacha(data, 10, t("drawTen"), gachaNum);
+                              }}
+                              style={{
+                                backgroundColor: bgColor,
+                              }}
+                            >
+                              {t("drawTen")}
+                            </button>
+                          )}
+                          {!data.kind.some(
+                            (item) => item.value === "once_per_day"
+                          ) && (
+                            <button
+                              className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
+                              onClick={() => {
+                                drawGacha(data, "all", t("drawAll"), gachaNum);
+                              }}
+                              style={{
+                                backgroundColor: bgColor,
+                              }}
+                            >
+                              {t("drawAll")}
+                            </button>
+                          )}
+                        </>
+                      )}
                     </div>
-                  </button>
-                  <div className="w-full flex justify-center">
-                    <button
-                      className="disabled:cursor-not-allowed cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 border-r-[1px] border-t-2 border-white rounded-bl-lg m-0 xs:px-4 w-1/2"
-                      style={{
-                        backgroundColor:
-                          data.remain_prizes.length +
-                            (data.last_prize ? 1 : 0) ===
-                          0
-                            ? "#aaaab1"
-                            : bgColor,
-                      }}
-                      disabled={
-                        data.remain_prizes.length +
-                          (data.last_prize ? 1 : 0) ===
-                        0
-                          ? true
-                          : false
-                      }
-                      onClick={() => {
-                        drawGacha(data, 1);
-                      }}
-                    >
-                      1 {t("draw")}
-                    </button>
-                    <button
-                      className="disabled:cursor-not-allowed cursor-pointer hover:opacity-50 text-white text-center py-3 px-2 rounded-br-lg border-t-2 border-white m-0 xs:px-4 w-1/2"
-                      onClick={() => {
-                        drawGacha(data, 10);
-                      }}
-                      disabled={
-                        data.remain_prizes.length + (data.last_prize ? 1 : 0) <
-                        10
-                          ? true
-                          : false
-                      }
-                      style={{
-                        backgroundColor:
-                          data.remain_prizes.length +
-                            (data.last_prize ? 1 : 0) <
-                          10
-                            ? "#aaaab1"
-                            : bgColor,
-                      }}
-                    >
-                      10 {t("draws")}
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
-
-        {selGacha?.length > 0 ? (
-          <GachaModal
-            headerText={t("drawGacha")}
-            name={selGacha[0].name}
-            price={selGacha[0].price}
-            draws={selGacha[1]}
-            onDraw={submitDrawGacha}
-            isOpen={isOpenGachaModal}
-            setIsOpen={setIsOpenGachaModal}
-            bgColor={bgColor}
-          />
-        ) : null}
-
-        <NotEnoughPoints
-          headerText={t("noEnoughPoints")}
-          bodyText={t("noEnoughPointsDesc")}
-          okBtnClick={() => navigate("/user/pur-point")}
-          isOpen={isOpenPointModal}
-          setIsOpen={setIsOpenPointModal}
-          bgColor={bgColor}
-        />
-
-        <LoginSucceedModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
       </div>
-      <div
+      {/* <div
         className={`flex flex-wrap justify-center items-center z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
           showCardFlag ? "" : "hidden"
         } `}
@@ -582,22 +540,14 @@ const Index = () => {
             <i
               className="fa fa-close cursor-pointer"
               onClick={() => setShowCardFlag(false)}
-            ></i>
+            />
           </div>
           {popedPrizes?.map((prize, i) => (
             <div
               key={i}
               className="rounded-lg animate-[animatezoom_1s_ease-in-out] mx-auto"
             >
-              <PrizeCard
-                index={i}
-                prizeType={prize.type}
-                lastEffect={prize.last_effect}
-                name={prize.name}
-                rarity={prize.rarity}
-                cashback={prize.cashback}
-                img_url={prize.img_url}
-              />
+              <PrizeCard img_url={prize.img_url} />
             </div>
           ))}
           <div
@@ -621,7 +571,29 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      {selGacha?.length > 0 ? (
+        <GachaModal
+          label={label}
+          gachaName={selGacha[0].name}
+          price={selGacha[0].price}
+          draws={selGacha[1]}
+          totalNum={totalNum}
+          onDraw={submitDrawGacha}
+          isOpen={isOpenGachaModal}
+          setIsOpen={setIsOpenGachaModal}
+          bgColor={bgColor}
+        />
+      ) : null}
+      <NotEnoughPoints
+        headerText={t("noEnoughPoints")}
+        bodyText={t("noEnoughPointsDesc")}
+        okBtnClick={() => navigate("/user/pur-point")}
+        isOpen={isOpenPointModal}
+        setIsOpen={setIsOpenPointModal}
+        bgColor={bgColor}
+      />
+      <LoginSucceedModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

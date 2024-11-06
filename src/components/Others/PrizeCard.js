@@ -1,15 +1,7 @@
-function PrizeCard({
-  index,
-  name,
-  rarity,
-  cashback,
-  img_url,
-  prizeType,
-  lastEffect,
-}) {
+function PrizeCard({ img_url, prizeType, lastEffect }) {
   return (
     <div
-      className="flex flex-col rounded-md border-[1px] shadow-md shadow-gray-400 bg-gray-200 items-center p-2 m-1"
+      className="flex flex-col border-[1px] shadow-md shadow-gray-400 bg-gray-200 items-center p-1.5 m-1"
       style={{
         animation:
           lastEffect && prizeType === "last" ? "bounce 1s infinite" : "none",
@@ -32,26 +24,9 @@ function PrizeCard({
       </style>
       <img
         src={process.env.REACT_APP_SERVER_ADDRESS + img_url}
-        className="w-[100px] h-[150px] object-cover rounded-md"
+        className="w-[100px] h-[150px] object-cover"
         alt="img"
       />
-      {/* <div className="flex flex-col items-center mt-1">
-          <div className="flex justify-between items-center">
-            <span className="mr-1">Name : </span>
-            <span>{name}</span>
-          </div>
-          <hr className="w-full"></hr>
-          <div className="flex justify-between">
-            <div className="mr-1">Rarity : </div>
-            <div>{rarity}</div>
-          </div>
-          <hr className="w-full"></hr>
-          <div className="flex justify-between">
-            <span className="mr-1">Cashback : </span>
-            <span>{formatPrice(cashback)} pt</span>
-          </div>
-          <hr className="w-full"></hr>
-        </div> */}
     </div>
   );
 }

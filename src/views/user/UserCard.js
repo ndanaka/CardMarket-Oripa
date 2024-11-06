@@ -48,12 +48,7 @@ function UserCard() {
                       {gacha.prizes?.length > 0
                         ? gacha.prizes.map((card, i) => (
                             <div className="mt-2 mr-2" key={i}>
-                              <PrizeCard
-                                name={card.name}
-                                rarity={card.rarity}
-                                cashback={card.cashback}
-                                img_url={card.img_url}
-                              />
+                              <PrizeCard img_url={card.img_url} />
                             </div>
                           ))
                         : null}

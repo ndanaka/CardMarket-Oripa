@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import Papa from "papaparse";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+import prizeType from "../../utils/prizeType";
+import formatPrice from "../../utils/formatPrice";
 import {
   setAuthToken,
   setMultipart,
@@ -17,19 +20,23 @@ import usePersistedUser from "../../store/usePersistedUser";
 import uploadimage from "../../assets/img/icons/upload.png";
 
 const Prize = () => {
+  const { t } = useTranslation();
+  const fileInputRef = useRef(null);
+  const csvInputRef = useRef(null);
+  const [user] = usePersistedUser();
+
   const [formData, setFormData] = useState({
     id: "",
     name: "",
     rarity: 0,
     cashBack: 0,
     file: null,
-    grade: 1,
+    kind: "first",
   });
-  const [cuflag, setCuFlag] = useState(1); //determine whether the status is adding or editing, default is adding (1)
-  const [trigger, setTrigger] = useState(null); //for PrizeList component refresh
-  const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
-  const [user, setUser] = usePersistedUser();
-  const { t } = useTranslation();
+  const [cuflag, setCuFlag] = useState(1);
+  const [trigger, setTrigger] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
+  const [prizes, setPrizes] = useState([]);
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
@@ -44,7 +51,6 @@ const Prize = () => {
     }
   };
 
-  //handle form change, formData input
   const changeFormData = (e) => {
     setFormData({
       ...formData,
@@ -52,52 +58,51 @@ const Prize = () => {
     });
   };
 
-  /* Add/Update prize with image file uploading
-  If formData.id has value, this function perform as update one */
   const addPrize = async () => {
-    if (!user.authority["prize"]["write"]) {
-      showToast(t("noPermission"), "error");
-      return;
-    }
+    try {
+      if (!user.authority["prize"]["write"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
 
-    setAuthToken();
-    setMultipart();
+      setAuthToken();
+      setMultipart();
 
-    if (formData.name.trim() === "") {
-      showToast(t("requiredName"), "error");
-    } else if (parseFloat(formData.rarity) <= 0) {
-      showToast(t("greaterThan"), "error");
-    } else if (parseInt(formData.cashBack) <= 0) {
-      showToast(t("greaterThan"), "error");
-    } else if (
-      cuflag === 1 &&
-      (formData.file === NaN ||
-        formData.file === null ||
-        formData.file === undefined)
-    ) {
-      showToast(t("selectImage"), "error");
-    } else {
-      api
-        .post("/admin/prize_upload", formData)
-        .then((res) => {
-          if (res.data.status === 1) {
-            setImgUrl(null);
-            setFormData({
-              ...formData,
-              file: null,
-              name: "",
-              rarity: 0,
-              cashBack: 0,
-              grade: 1,
-            });
-            removeMultipart();
-            showToast(t(res.data.msg), "success");
-          } else showToast(t(res.data.msg), "error");
-          setTrigger(res.data);
-        })
-        .catch((err) => {
-          console.error("Error uploading file:", err);
-        });
+      if (formData.name.trim() === "") {
+        showToast(t("requiredName"), "error");
+      } else if (parseFloat(formData.rarity) <= 0) {
+        showToast(t("rarity") + " " + t("greaterThan"), "error");
+      } else if (parseInt(formData.cashBack) <= 0) {
+        showToast(t("cashback") + " " + t("greaterThan"), "error");
+      } else if (
+        cuflag === 1 &&
+        (formData.file === NaN ||
+          formData.file === null ||
+          formData.file === undefined)
+      ) {
+        showToast(t("selectImage"), "error");
+      } else {
+        const res = await api.post("/admin/prize", formData);
+
+        if (res.data.status === 1) {
+          setImgUrl(null);
+          setTrigger(!trigger);
+          fileInputRef.current.value = null;
+          setFormData({
+            ...formData,
+            id: "",
+            name: "",
+            rarity: 0,
+            cashBack: 0,
+            file: null,
+            kind: "first",
+          });
+          removeMultipart();
+          showToast(t(res.data.msg), "success");
+        } else showToast(t(res.data.msg), "error");
+      }
+    } catch (error) {
+      showToast(t("failedReq"), "error");
     }
   };
 
@@ -106,8 +111,59 @@ const Prize = () => {
       showToast(t("noPermission"), "error");
       return;
     }
+
     setCuFlag(1);
     addPrize();
+  };
+
+  // handle loading data from csv file
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      Papa.parse(file, {
+        complete: (results) => {
+          results.data.pop();
+          setPrizes(results.data);
+        },
+        header: true,
+      });
+    }
+  };
+
+  const uploadCancel = () => {
+    csvInputRef.current.value = null;
+    setPrizes([]);
+  };
+
+  // upload bulk prizes from csv file
+  const uploadPrize = async () => {
+    try {
+      if (!user.authority["gacha"]["write"]) {
+        showToast(t("noPermission"), "error");
+        return;
+      }
+
+      setAuthToken();
+
+      if (prizes.length === 0) {
+        showToast(t("selectCSV"), "error");
+      } else {
+        const res = await api.post("/admin/gacha/upload_bulk", {
+          prizes: prizes,
+        });
+
+        if (res.data.status === 1) {
+          showToast(t("successAdded"), "success");
+          setTrigger(!trigger);
+          uploadCancel();
+        } else {
+          showToast(t("failedAdded"), "error");
+        }
+      }
+    } catch (error) {
+      showToast(t("failedReq"), "error");
+    }
   };
 
   return (
@@ -115,12 +171,37 @@ const Prize = () => {
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("prize")} />
       </div>
-      <div className="flex flex-col w-full md:w-[70%] border-2 m-auto">
-        <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
-          {t("prize") + " " + t("add")}
-        </div>
-        <div className="flex flex-wrap justify-center sm:px-4 pt-2 w-full">
-          <div className="flex flex-col w-full xxsm:w-1/2">
+      <div className="flex flex-wrap">
+        <div className="flex flex-col w-full lg:w-[35%] mb-2 border-1 h-fit">
+          <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
+            {t("prize") + " " + t("add")}
+          </div>
+          <div className="flex flex-col justify-between items-center p-2 w-full">
+            <label
+              htmlFor="fileInput"
+              className="text-gray-700 px-1 justify-start flex flex-wrap w-full"
+            >
+              {t("rank") + " " + t("image")}
+            </label>
+            <input
+              name="fileInput"
+              type="file"
+              id="fileInput"
+              ref={fileInputRef}
+              className="image p-1 w-full form-control"
+              onChange={handleFileInputChange}
+              autoComplete="name"
+            />
+            <img
+              src={imgUrl ? imgUrl : uploadimage}
+              alt="prize"
+              className={`${imgUrl ? "w-auto h-[250px]" : ""} object-cover`}
+              onClick={() => {
+                document.getElementById("fileInput").click();
+              }}
+            />
+          </div>
+          <div className="flex flex-col p-2">
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="prizename" className="text-gray-700">
                 {t("name")}
@@ -161,80 +242,143 @@ const Prize = () => {
               ></input>
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="grade" className="text-gray-700">
-                {t("Grade")}
+              <label htmlFor="kind" className="text-gray-700">
+                {t("kind")}
               </label>
               <select
-                name="grade"
-                className="p-1 w-full form-control"
+                name="kind"
+                className="p-1 w-full form-control cursor-pointer"
                 onChange={changeFormData}
-                value={formData.grade}
-                id="grade"
-                autoComplete="name"
+                value={formData.kind}
+                id="kind"
+                autoComplete="kind"
               >
-                <option value="1">First</option>
-                <option value="2">Second</option>
-                <option value="3">Third</option>
-                <option value="4">Fourth</option>
+                {prizeType.map((item, i) => {
+                  return (
+                    <option key={i} value={item}>
+                      {t(item)}
+                    </option>
+                  );
+                })}
               </select>
             </div>
-          </div>
-          <div className="flex flex-col justify-between items-center px-2 pb-2 w-full xxsm:w-1/2">
-            <label htmlFor="fileInput" className="text-gray-700 p-1">
-              {t("prize") + t("image")}
-            </label>
-            <input
-              name="file"
-              type="file"
-              id="fileInput"
-              className="image p-1 w-full form-control"
-              onChange={handleFileInputChange}
-              autoComplete="name"
-            ></input>
-            <img
-              src={imgUrl ? imgUrl : uploadimage}
-              alt="prize"
-              className={`${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
-              onClick={() => {
-                document.getElementById("fileInput").click();
-              }}
-            />
+            <div className="flex flex-wrap justify-end">
+              {cuflag ? (
+                <AgreeButton name={t("add")} onClick={addPrize} />
+              ) : (
+                <>
+                  <button
+                    className="p-2 px-4 my-1 text-white hover:bg-opacity-50 bg-red-500 rounded-md"
+                    onClick={() => {
+                      setCuFlag(true);
+                      setImgUrl(null);
+                      setFormData({
+                        ...formData,
+                        id: "",
+                        name: "",
+                        rarity: 0,
+                        cashBack: 0,
+                        file: null,
+                        kind: "first",
+                      });
+                    }}
+                  >
+                    {t("cancel")}
+                  </button>
+                  <AgreeButton name={t("update")} onClick={updatePrize} />
+                </>
+              )}
+            </div>
           </div>
         </div>
-        <div className="flex flex-wrap justify-end px-3 pb-2">
-          {!cuflag ? (
-            <button
-              className="p-2 px-4 my-1 button-22 text-white !bg-red-500 !mr-2"
-              onClick={() => {
-                setCuFlag(true);
-                setImgUrl(null);
-                setFormData({
-                  ...formData,
-                  file: null,
-                  name: "",
-                  rarity: 0,
-                  cashBack: 0,
-                  grade: 1,
-                });
-              }}
-            >
-              {t("cancel")}
-            </button>
-          ) : null}
-          {cuflag ? (
-            <AgreeButton name={t("add")} addclass="" onClick={addPrize} />
-          ) : (
-            <AgreeButton name={t("update")} addclass="" onClick={updatePrize} />
-          )}
+        <div className="flex flex-wrap w-full lg:w-[65%] h-fit">
+          <div className="mx-auto w-full border-1 mb-2">
+            <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
+              {t("set_CSV")}
+            </div>
+            <div className="flex flex-wrap justify-center w-full">
+              <a
+                className="button-38 my-1 mx-1"
+                href={
+                  process.env.REACT_APP_SERVER_ADDRESS + `template/template.csv`
+                }
+                download
+              >
+                {t("template")}.csv
+                <i className="fa fa-download ml-2"></i>
+              </a>
+              <label
+                htmlFor="file-upload"
+                className="flex flex-col items-center button-22 m-1"
+              >
+                <span className="text-sm">{t("importCSV")}</span>
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept=".csv"
+                  ref={csvInputRef}
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </label>
+              <button className={`button-22 m-1`} onClick={uploadPrize}>
+                {t("add")}
+              </button>
+              {prizes.length > 0 && (
+                <button className={`button-22 m-1`} onClick={uploadCancel}>
+                  {t("cancel")}
+                </button>
+              )}
+            </div>
+            {prizes && prizes.length !== 0 ? (
+              <div className="overflow-auto">
+                <table className="w-full">
+                  <thead className="bg-admin_theme_color font-bold text-gray-200">
+                    <tr>
+                      <td>{t("no")}</td>
+                      <td>{t("image")}</td>
+                      <td>{t("name")}</td>
+                      <td>{t("rarity")}</td>
+                      <td>{t("cashback")}</td>
+                      <td>{t("kind")}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {prizes.map((data, i) => (
+                      <tr key={i}>
+                        <td>{i + 1}</td>
+                        <td>
+                          <img
+                            width="100"
+                            height="200"
+                            src={
+                              process.env.REACT_APP_SERVER_ADDRESS +
+                              data.img_url
+                            }
+                            alt="prize"
+                            className="m-auto"
+                          ></img>
+                        </td>
+                        <td>{data.name}</td>
+                        <td>{data.rarity}</td>
+                        <td>{formatPrice(data.cashback)}pt</td>
+                        <td>{t(data.kind)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+          <PrizeList
+            trigger={trigger}
+            setFormData={setFormData}
+            setCuFlag={setCuFlag}
+            setImgUrl={setImgUrl}
+          />
         </div>
-      </div>
-      <div className="mx-auto my-3 w-full md:w-[70%] overflow-auto">
-        <PrizeList
-          trigger={trigger}
-          setFormData={setFormData}
-          setCuFlag={setCuFlag}
-          setImgUrl={setImgUrl}
-        />
       </div>
     </div>
   );
