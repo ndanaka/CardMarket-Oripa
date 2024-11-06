@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
 
 import api from "../utils/api";
 import { setAuthToken } from "../utils/setHeader";
@@ -17,14 +18,15 @@ import LoginSucceedModal from "../components/Modals/LoginSucceedModal";
 import Spinner from "../components/Others/Spinner";
 
 import usePersistedUser from "../store/usePersistedUser";
+import { bgColorAtom } from "../store/theme";
 
 const Index = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
+  const [bgColor] = useAtom(bgColorAtom);
 
-  const [spinFlag, setSpinFlag] = useState(false);
   const [category, setCategory] = useState(null);
   const [subCategory, setSubCategory] = useState(subCategories);
   const [gacha, setGacha] = useState(null);
@@ -35,10 +37,10 @@ const Index = () => {
   const [isOpenPointModal, setIsOpenPointModal] = useState(false);
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false);
   const [selGacha, setSelGacha] = useState([0, 0]);
-  const [bgColor, setBgColor] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [label, setLabel] = useState("");
   const [totalNum, setTotalNum] = useState("");
+  const [spinFlag, setSpinFlag] = useState(false);
   const [popedPrizes, setPopedPrizes] = useState(null);
   const [showCardFlag, setShowCardFlag] = useState();
   const [existLastFlag, setExistLastFlag] = useState(false);
@@ -51,8 +53,7 @@ const Index = () => {
 
     getCategory();
     getGacha();
-    getThemeData();
-  }, [bgColor]);
+  }, []);
 
   useEffect(() => {
     // Get gachas by main category
@@ -128,21 +129,6 @@ const Index = () => {
     } catch (error) {
       showToast(t("tryLogin"), "error");
       navigate("user/index");
-    }
-  };
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
     }
   };
 

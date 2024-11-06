@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import api from "../../utils/api";
+import { useAtom } from "jotai";
+
+import { bgColorAtom } from "../../store/theme";
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [bgColor, setBgColor] = useState("");
+  const [bgColor] = useAtom(bgColorAtom);
 
   const handleScroll = () => {
     if (window.scrollY > 300) {
@@ -23,24 +25,6 @@ const ScrollToTop = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   return (
     <div

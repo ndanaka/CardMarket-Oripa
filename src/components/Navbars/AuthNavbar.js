@@ -1,37 +1,14 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
-
-import api from "../../utils/api";
+import { useAtom } from "jotai";
 
 import ChangeLanguage from "../Others/ChangeLanguage";
-import iniLogoImg from "../../assets/img/brand/oripa-logo.png";
+import { bgColorAtom, logoAtom } from "../../store/theme";
 import "../../assets/css/index.css";
 
 const AuthNavbar = () => {
-  const [bgColor, setBgColor] = useState("");
-  const [logoImg, setLogoImg] = useState(iniLogoImg);
-  const [brand, setBrand] = useState("Oripa");
-
-  useEffect(() => {
-    getThemeData();
-  }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.logoUrl) setLogoImg(res.data.theme.logoUrl);
-      if (res.data.theme.brand) setBrand(res.data.theme.brand);
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
+  const [bgColor] = useAtom(bgColorAtom);
+  const [logo] = useAtom(logoAtom);
 
   return (
     <div
@@ -45,14 +22,11 @@ const AuthNavbar = () => {
               <div className="flex items-center">
                 <img
                   alt="..."
-                  src={process.env.REACT_APP_SERVER_ADDRESS + logoImg}
+                  src={logo}
                   width="50"
                   height="50"
                   className="px-1"
                 />
-                {/* <div className="text-lg font-NanumGothic hidden xxsm:block">
-                  {brand}
-                </div> */}
               </div>
             </Link>
           </div>

@@ -1,24 +1,31 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api";
+import formatPrice from "../../utils/formatPrice";
 import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+
 import { googlePayConfig } from "../../payment/googlePayConfig";
 import { initiateUnivaPayTransaction } from "../../payment/univaPayRequest";
 
 import CustomSelect from "../../components/Forms/CustomSelect";
 import PuchaseSpinner from "../../components/Others/PuchaseSpinner";
-
 import Gpay from "../../assets/img/icons/common/google.png";
 import ApplePay from "../../assets/img/icons/common/apple.png";
 import Univa from "../../assets/img/icons/common/univa.png";
 
 import usePersistedUser from "../../store/usePersistedUser";
-import formatPrice from "../../utils/formatPrice";
+import { bgColorAtom } from "../../store/theme";
 
 function PurchasePoint() {
+  const [bgColor] = useAtom(bgColorAtom);
+  const [user, setUser] = usePersistedUser();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const paymentOptions = [
     { value: "gPay", label: "Google Pay", img: Gpay },
     { value: "applePay", label: "Apple Pay", img: ApplePay },
@@ -28,12 +35,7 @@ function PurchasePoint() {
   const [points, setPoints] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [, setSelId] = useState(0);
-  const [bgColor, setBgColor] = useState("");
   const [waiting, setWaiting] = useState(false);
-
-  const [user, setUser] = usePersistedUser();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   useEffect(() => {
     setAuthToken();
@@ -45,24 +47,6 @@ function PurchasePoint() {
     script.onload = onGooglePayLoaded;
     document.body.appendChild(script);
   }, []);
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const updateUserData = async () => {
     setAuthToken();

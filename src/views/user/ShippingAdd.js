@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api";
+import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+
 import usePersistedUser from "../../store/usePersistedUser";
+import { bgColorAtom } from "../../store/theme";
 
 import InputGroup from "../../components/Forms/InputGroup";
-import { showToast } from "../../utils/toastUtil";
 
 function ShippingAdd() {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const [user, setUser] = usePersistedUser();
-  const [bgColor, setBgColor] = useState("");
+  const [user] = usePersistedUser();
+  const [bgColor] = useAtom(bgColorAtom);
 
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [shipAddress, setShipAddress] = useState({
@@ -35,27 +38,8 @@ function ShippingAdd() {
 
   useEffect(() => {
     setAuthToken();
-    // if update
     if (initialData) setShipAddress(initialData);
   }, []);
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const isFormValidate = () => {
     if (

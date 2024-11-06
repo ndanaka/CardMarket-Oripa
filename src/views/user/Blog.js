@@ -1,44 +1,29 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api";
+import { showToast } from "../../utils/toastUtil";
 import { setAuthToken } from "../../utils/setHeader";
+
 import usePersistedUser from "../../store/usePersistedUser";
+import { bgColorAtom } from "../../store/theme";
 
 import Card from "../../components/Blogs/Card";
 import PostBlogModal from "../../components/Blogs/PostBlogModal";
-import { showToast } from "../../utils/toastUtil";
 
 const Blog = () => {
   const { t } = useTranslation();
   const [user, setUser] = usePersistedUser();
+  const [bgColor] = useAtom(bgColorAtom);
 
   const [isOpen, setIsOpen] = useState(false);
   const [blogs, setBlogs] = useState();
-  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     setAuthToken();
     getBlogs();
   }, []);
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const getBlogs = () => {
     api

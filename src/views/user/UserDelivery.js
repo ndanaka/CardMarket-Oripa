@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
@@ -10,37 +12,22 @@ import PrizeCard from "../../components/Others/PrizeCard";
 import SubHeader from "../../components/Forms/SubHeader";
 
 import usePersistedUser from "../../store/usePersistedUser";
-import { useTranslation } from "react-i18next";
+import { bgColorAtom } from "../../store/theme";
 
 function UserDelivery() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
+  const [bgColor] = useAtom(bgColorAtom);
 
   const [pendingDelievers, setPendingDelievers] = useState([]);
   const [delieveringDelievers, setDelieveringDelievers] = useState([]);
   const [flag, setFlag] = useState(false);
-  const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
     setAuthToken();
     getDeliver();
-    getThemeData();
   }, []);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const updateUserData = async () => {
     setAuthToken();

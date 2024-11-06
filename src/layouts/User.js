@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAtom } from "jotai";
 import {
   useLocation,
   Route,
@@ -8,36 +9,40 @@ import {
 } from "react-router-dom";
 
 import routes from "../routes.js";
-import usePersistedUser from "../store/usePersistedUser.js";
+
+import api from "../utils/api.js";
 import useAffiliateID from "../utils/useAffiliateID.js";
 import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
-// core components
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
 import ScrollToTop from "../components/Others/ScrollTop.js";
+import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
-const UserLayout = (props) => {
-  const { isLoggedOut } = useAxiosInterceptor();
+import usePersistedUser from "../store/usePersistedUser.js";
+import { bgColorAtom, logoAtom } from "../store/theme.js";
 
+const User = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isLoggedOut } = useAxiosInterceptor();
   const [user] = usePersistedUser();
+  const [,setBgColor] = useAtom(bgColorAtom);
+  const [,setLogo] = useAtom(logoAtom);
 
   const [affId, setAffId] = useState("");
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
-
-  // Add state to track if navigation is in progress
   const [isNavigating, setIsNavigating] = useState(false);
 
   // check the URL parameters on page load to see if the affiliate ID is present.
   const handleAffiliateID = (affiliateID) => {
     setAffId(affiliateID);
-    // Here, you can call your API or any other logic
   };
   useAffiliateID(handleAffiliateID);
 
   useEffect(() => {
+    getThemeData();
+
     if (isLoggedOut) {
       setIsNavigating(true);
       navigate("/auth/login");
@@ -47,7 +52,27 @@ const UserLayout = (props) => {
     }
   }, [isLoggedOut, user, navigate]);
 
-  // Stop rendering UserLayout if navigation is in progress
+  const getThemeData = async () => {
+    const res = await api.get("/admin/getThemeData");
+
+    if (res.data.status === 1 && res.data.theme) {
+      if (res.data.theme.logoUrl) {
+        setLogo(process.env.REACT_APP_SERVER_ADDRESS + res.data.theme.logoUrl);
+      } else {
+        setLogo(iniLogoImg);
+      }
+
+      if (res.data.theme.bgColor) {
+        setBgColor(res.data.theme.bgColor);
+      } else {
+        setBgColor("#ff0000");
+      }
+    } else {
+      setLogo(iniLogoImg);
+      setBgColor("#ff0000");
+    }
+  };
+
   if (isNavigating || user?.role === "admin") {
     return null;
   }
@@ -56,7 +81,13 @@ const UserLayout = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/user") {
         const token = localStorage.getItem("token");
-        if (prop.path !== "/index" && prop.path !== "/gacha-detail" && !token)
+
+        if (
+          prop.path !== "/index" &&
+          prop.path !== "/gacha-detail" &&
+          prop.path !== "/blog" &&
+          !token
+        )
           return (
             <Route
               path={prop.path}
@@ -104,4 +135,4 @@ const UserLayout = (props) => {
   );
 };
 
-export default UserLayout;
+export default User;

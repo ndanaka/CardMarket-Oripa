@@ -3,17 +3,18 @@ import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Nav } from "reactstrap";
+import { useAtom } from "jotai";
 
-import { setAuthToken } from "../../utils/setHeader";
 import api from "../../utils/api";
+import { showToast } from "../../utils/toastUtil";
+import formatPrice from "../../utils/formatPrice";
+import { setAuthToken } from "../../utils/setHeader";
 
 import usePersistedUser from "../../store/usePersistedUser";
-import ChangeLanguage from "../Others/ChangeLanguage";
-import iniLogoImg from "../../assets/img/brand/oripa-logo.png";
+import { bgColorAtom, logoAtom } from "../../store/theme";
 
+import ChangeLanguage from "../Others/ChangeLanguage";
 import "../../assets/css/index.css";
-import formatPrice from "../../utils/formatPrice";
-import { showToast } from "../../utils/toastUtil";
 
 const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
   const { t } = useTranslation();
@@ -21,33 +22,12 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = usePersistedUser();
-  const [bgColor, setBgColor] = useState("");
-  const [logoImg, setLogoImg] = useState(iniLogoImg);
-  const [brand, setBrand] = useState("Oripa");
+  const [bgColor] = useAtom(bgColorAtom);
+  const [logo] = useAtom(logoAtom);
 
   useEffect(() => {
     updateUserData();
-    getThemeData();
   }, [location]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.logoUrl)
-        setLogoImg(
-          process.env.REACT_APP_SERVER_ADDRESS + res.data.theme.logoUrl
-        );
-      if (res.data.theme.brand) setBrand(res.data.theme.brand);
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const updateUserData = async () => {
     setAuthToken();
@@ -103,7 +83,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
               ) : (
                 <img
                   alt="..."
-                  src={logoImg}
+                  src={logo}
                   width="50"
                   height="50"
                   className="px-1"
@@ -253,7 +233,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                   <hr className="w-full border-solid border-1 border-gray-800 mb-2"></hr>
                                   <button
                                     id="purchaseBtn"
-                                    className="rounded-md hover:opacity-50 text-center hover:bg-red-500 text-white outline-none w-full py-2"
+                                    className="rounded-md hover:opacity-50 text-center hover:bg-opacity-50 text-white outline-none w-full py-2"
                                     onClick={() => {
                                       setIsOpenToggleMenu(!isOpenToggleMenu);
                                       navigate("/user/pur-point");
@@ -303,16 +283,6 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                   <span>{t("acquisitionHistory")}</span>
                                   <i className="fa fa-chevron-right"></i>
                                 </li>
-                                {/* <li
-                                className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
-                                onClick={() => {
-                                  setIsOpenToggleMenu(!isOpenToggleMenu);
-                                  navigate("/user/card");
-                                }}
-                              >
-                                <span>{t("my") + " " + t("cards")}</span>
-                                <i className="fa fa-chevron-right"></i>
-                              </li> */}
                                 <li className="p-2 my-3 flex flex-wrap justify-start">
                                   <ChangeLanguage type="menu" />
                                 </li>

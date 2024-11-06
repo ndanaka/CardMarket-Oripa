@@ -12,25 +12,11 @@ import uploadimage from "../../assets/img/icons/upload.png";
 
 function Theme() {
   const { t } = useTranslation();
-
-  const [imgUrl, setImgUrl] = useState(null);
-  const [formData, setFormData] = useState({
-    brand: "Oripa",
-    bgColor: "#de1313",
-    textColor: "",
-    file: null,
-  });
-  const [bgColor, setBgColor] = useState("#ffffff");
-
   const fileInputRef = useRef(null);
 
-  //handle form change, formData input
-  const changeFormData = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const [imgUrl, setImgUrl] = useState(null);
+  const [bgColor, setBgColor] = useState("#e50e0e");
+  const [formData, setFormData] = useState({ bgColor: "", file: null });
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
@@ -44,12 +30,15 @@ function Theme() {
       reader.readAsDataURL(file);
     }
   };
+
   const cancelLogo = () => {
-    setFormData({ brand: "", bgColor: "", textColor: "", file: null });
-    setImgUrl(null);
-    removeMultipart();
+    setFormData({ bgColor: "", file: null });
     fileInputRef.current.value = null;
+    setImgUrl(null);
+    
+    removeMultipart();
   };
+
   const handleCangeLogo = async () => {
     if (
       formData.file === NaN ||
@@ -67,30 +56,6 @@ function Theme() {
       setAuthToken();
 
       const res = await api.post("/admin/changeLogo", formData);
-      if (res.data.status === 1) {
-        showToast(t("successChanged"), "success");
-        cancelLogo();
-      } else {
-        showToast(t("failedReq"), "error");
-      }
-    } catch (error) {
-      showToast(t("failedReq", "error"));
-    }
-  };
-
-  const handleCangeBrand = async () => {
-    if (formData.brand.trim() === "") {
-      return showToast(
-        `${t("brand") + " " + t("name") + " " + t("isRequired")}`,
-        "error"
-      );
-    }
-
-    try {
-      setAuthToken();
-      const res = await api.post("/admin/changeBrand", {
-        brand: formData.brand,
-      });
       if (res.data.status === 1) {
         showToast(t("successChanged"), "success");
         cancelLogo();
@@ -170,7 +135,7 @@ function Theme() {
         </div>
         <div className="overflow-auto w-full md:w-1/2 p-2">
           <div className="text-xl text-center">
-            <label htmlFor="brand" className="text-center text-gray-700">
+            <label htmlFor="color" className="text-center text-gray-700">
               {t("color")}
             </label>
             <hr className="my-1"></hr>

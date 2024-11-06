@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FormGroup, Form, Input, InputGroup } from "reactstrap";
+import { useAtom } from "jotai";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
@@ -10,16 +11,17 @@ import EmailVerification from "../../components/Others/EamilVerification";
 import Spinner from "../../components/Others/Spinner";
 
 import usePersistedUser from "../../store/usePersistedUser";
+import { bgColorAtom } from "../../store/theme";
 
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [, setUser] = usePersistedUser();
+  const [bgColor] = useAtom(bgColorAtom);
 
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
-  const [bgColor, setBgColor] = useState("");
   const [spinFlag, setSpinFlag] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -27,24 +29,6 @@ const Login = () => {
   });
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  useEffect(() => {
-    getThemeData();
-  }, [bgColor]);
-
-  const getThemeData = async () => {
-    const res = await api.get("/admin/getThemeData");
-    if (res.data.status === 1 && res.data.theme) {
-      if (res.data.theme.bgColor) {
-        setBgColor(res.data.theme.bgColor);
-        localStorage.setItem("bgColor", res.data.theme.bgColor);
-      } else {
-        setBgColor("#e50e0e");
-      }
-    } else {
-      setBgColor("#e50e0e");
-    }
-  };
 
   const togglePasswordVisibility = () => {
     setIsVisible(!isVisible);
