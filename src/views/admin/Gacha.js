@@ -101,9 +101,20 @@ function Gacha() {
 
   const changeKind = (options) => {
     setSelSubCats(options);
-    setFormData({ ...formData, ["kind"]: options });
-    !options.some((item) => item.value === "round_number_prize") &&
-      setFormData({ ...formData, ["awardRarity"]: 0 });
+
+    setFormData((prevFormData) => {
+      const updatedFormData = {
+        ...prevFormData,
+        kind: options,
+      };
+
+      // If options do not contain "round_number_prize", set awardRarity to 0
+      if (!options.some((item) => item.value === "round_number_prize")) {
+        updatedFormData.awardRarity = 0;
+      }
+
+      return updatedFormData;
+    });
   };
 
   const addGacha = async () => {
@@ -134,27 +145,28 @@ function Gacha() {
       ) {
         showToast(t("selectImage"), "error");
       } else {
-        const res = await api.post("/admin/gacha", formData);
+        console.log(formData);
+        // const res = await api.post("/admin/gacha", formData);
 
-        if (res.data.status === 1) {
-          showToast(t(res.data.msg), "success");
-          setImgUrl("");
-          fileInputRef.current.value = null;
-          setFormData({
-            ...formData,
-            name: "",
-            price: 0,
-            awardRarity: 0,
-            order: 1,
-            kind: [],
-            category: "",
-            file: null,
-          });
-          setSelSubCats([]);
-          removeMultipart();
-          getCategory();
-          getGacha();
-        } else showToast(t(res.data.msg), "error");
+        // if (res.data.status === 1) {
+        //   showToast(t(res.data.msg), "success");
+        //   setImgUrl("");
+        //   fileInputRef.current.value = null;
+        //   setFormData({
+        //     ...formData,
+        //     name: "",
+        //     price: 0,
+        //     awardRarity: 0,
+        //     order: 1,
+        //     kind: [],
+        //     category: "",
+        //     file: null,
+        //   });
+        //   setSelSubCats([]);
+        //   removeMultipart();
+        //   getCategory();
+        //   getGacha();
+        // } else showToast(t(res.data.msg), "error");
       }
     } catch (error) {
       showToast(t("failedReq"), "error");
