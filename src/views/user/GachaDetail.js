@@ -35,18 +35,18 @@ function GachaDetail() {
   const [isOpenPointModal, setIsOpenPointModal] = useState(false);
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false);
   const [selGacha, setSelGacha] = useState([0, 0]);
+  const [bgColor, setBgColor] = useState("");
+  const [label, setLabel] = useState("");
+  const [totalNum, setTotalNum] = useState("");
   const [popedPrizes, setPopedPrizes] = useState(null);
   const [showCardFlag, setShowCardFlag] = useState();
   const [existLastFlag, setExistLastFlag] = useState(false);
   const [lastEffect, setLastEffect] = useState(false);
-  const [bgColor, setBgColor] = useState("");
-  const [label, setLabel] = useState("");
-  const [totalNum, setTotalNum] = useState("");
 
   useEffect(() => {
     getThemeData();
     getGacha();
-  }, [bgColor, showCardFlag]);
+  }, [bgColor]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -237,7 +237,7 @@ function GachaDetail() {
       return;
     }
 
-    const totalPoints = gacha.price * num;
+    const totalPoints = gacha.price * (num === "all" ? totalNum : num);
     const remainPoints = user.point_remain;
     if (remainPoints < totalPoints) {
       setIsOpenPointModal(true);
@@ -252,40 +252,45 @@ function GachaDetail() {
 
   // draw gacha
   const submitDrawGacha = async () => {
-    setAuthToken();
-    setIsOpenGachaModal(false);
+    try {
+      setAuthToken();
+      setIsOpenGachaModal(false);
 
-    api
-      .post("/admin/gacha/draw_gacha", {
+      const res = await api.post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
         drawCounts: selGacha[1],
-      })
-      .then((res) => {
-        if (res.data.status === 1) {
-          showToast(t("drawnSuccess"), "success");
-          setPopedPrizes(res.data.prizes);
-          setExistLastFlag(res.data.existLastFlag);
-          setLastEffect(res.data.lastEffect);
-          setShowCardFlag(true);
-          updateUserData();
-        } else {
-          switch (res.data.msg) {
-            case 0:
-              showToast(t("drawnAdmin"), "error");
-              break;
-            case 1:
-              showToast(t("noEnoughPoints"), "error");
-              break;
-            case 2:
-              showToast(t("drawnEnoughPrize"), "error");
-              break;
+        drawDate: new Date(),
+      });
+      console.log(res.data);
 
-            default:
-              break;
-          }
+      if (res.data.status === 1) {
+        showToast(t("drawnSuccess"), "success");
+        // setPopedPrizes(res.data.prizes);
+        // setExistLastFlag(res.data.existLastFlag);
+        // setLastEffect(res.data.lastEffect);
+        // setShowCardFlag(true);
+        // updateUserData();
+      } else {
+        switch (res.data.msg) {
+          // case 0:
+          //   showToast(t("dranAdmin"), "error");
+          //   break;
+
+          case 0:
+            showToast(t("noEnoughPoints"), "error");
+            break;
+
+          case 1:
+            showToast(t("drawnEnoughPrize"), "error");
+            break;
+
+          default:
+            break;
         }
-      })
-      .catch((err) => console.log(err));
+      }
+    } catch (error) {
+      showToast(t("faileReq", "error"));
+    }
   };
 
   return (
@@ -352,31 +357,35 @@ function GachaDetail() {
             >
               {t("drawOne")}
             </button>
-            {gachaNum >= 10 && (
-              <button
-                className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
-                onClick={() => {
-                  drawGacha(gacha, 10, t("drawTen"), gachaNum);
-                }}
-                style={{
-                  backgroundColor: bgColor,
-                }}
-              >
-                {t("drawTen")}
-              </button>
-            )}
-            {!gacha.kind.some((item) => item.value === "once_per_day") && (
-              <button
-                className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
-                onClick={() => {
-                  drawGacha(gacha, "all", t("drawAll"), gachaNum);
-                }}
-                style={{
-                  backgroundColor: bgColor,
-                }}
-              >
-                {t("drawAll")}
-              </button>
+            {!gacha.kind.some((item) => item.value === "once_per_day") ? (
+              <>
+                {gachaNum >= 10 && (
+                  <button
+                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
+                    onClick={() => {
+                      drawGacha(gacha, 10, t("drawTen"), gachaNum);
+                    }}
+                    style={{
+                      backgroundColor: bgColor,
+                    }}
+                  >
+                    {t("drawTen")}
+                  </button>
+                )}
+                <button
+                  className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
+                  onClick={() => {
+                    drawGacha(gacha, "all", t("drawAll"), gachaNum);
+                  }}
+                  style={{
+                    backgroundColor: bgColor,
+                  }}
+                >
+                  {t("drawAll")}
+                </button>
+              </>
+            ) : (
+              ""
             )}
           </>
         )}
