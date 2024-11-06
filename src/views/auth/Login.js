@@ -5,22 +5,26 @@ import { FormGroup, Form, Input, InputGroup } from "reactstrap";
 
 import api from "../../utils/api";
 import { showToast } from "../../utils/toastUtil";
+
 import EmailVerification from "../../components/Others/EamilVerification";
+import Spinner from "../../components/Others/Spinner";
 
 import usePersistedUser from "../../store/usePersistedUser";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [, setUser] = usePersistedUser();
+
   const [isVisible, setIsVisible] = useState(false);
   const [isEmailVerifyPanel, setIsEmailVerifyPanel] = useState(false);
   const [showErrMessage, setShowErrMessage] = useState(false);
   const [bgColor, setBgColor] = useState("");
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+  const [spinFlag, setSpinFlag] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -66,7 +70,9 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     try {
+      setSpinFlag(true);
       const res = await api.post("/user/login", formData);
+      setSpinFlag(false);
 
       if (res.data.status === 1) {
         localStorage.setItem("token", res.data.token);
@@ -93,7 +99,8 @@ const Login = () => {
           setIsEmailVerifyPanel={setIsEmailVerifyPanel}
         />
       ) : (
-        <div className="w-full  mx-auto rounded-lg bg-white shadow border-0 my-5">
+        <div className="w-full mx-auto rounded-lg bg-white shadow border-0 my-5">
+          {spinFlag && <Spinner />}
           <div className="p-lg-4 p-2">
             <div className="text-center mb-5 mt-3 font-bold text-2xl">
               {t("sign_in")}

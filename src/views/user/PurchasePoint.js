@@ -9,7 +9,7 @@ import { googlePayConfig } from "../../payment/googlePayConfig";
 import { initiateUnivaPayTransaction } from "../../payment/univaPayRequest";
 
 import CustomSelect from "../../components/Forms/CustomSelect";
-import PuchaseSpinner from "../../utils/PuchaseSpinner";
+import PuchaseSpinner from "../../components/Others/PuchaseSpinner";
 
 import Gpay from "../../assets/img/icons/common/google.png";
 import ApplePay from "../../assets/img/icons/common/apple.png";
