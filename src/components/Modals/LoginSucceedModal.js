@@ -8,19 +8,11 @@ function LoginSucceedModal({ isOpen, setIsOpen }) {
     localStorage.removeItem("loggedIn");
   };
 
-  // Close modal when clicking outside of it
-  window.onclick = function (event) {
-    var modal = document.getElementById("modal");
-    if (event.target === modal) {
-      setIsOpen(false);
-    }
-  };
-
   return (
     <div
       className={`${
         isOpen ? "" : "hidden"
-      } fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20`}
+      } fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-20`}
     >
       <div className="bg-white p-3 rounded shadow-lg">
         <div className="flex justify-around items-center">
