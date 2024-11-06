@@ -145,28 +145,27 @@ function Gacha() {
       ) {
         showToast(t("selectImage"), "error");
       } else {
-        console.log(formData);
-        // const res = await api.post("/admin/gacha", formData);
+        const res = await api.post("/admin/gacha", formData);
 
-        // if (res.data.status === 1) {
-        //   showToast(t(res.data.msg), "success");
-        //   setImgUrl("");
-        //   fileInputRef.current.value = null;
-        //   setFormData({
-        //     ...formData,
-        //     name: "",
-        //     price: 0,
-        //     awardRarity: 0,
-        //     order: 1,
-        //     kind: [],
-        //     category: "",
-        //     file: null,
-        //   });
-        //   setSelSubCats([]);
-        //   removeMultipart();
-        //   getCategory();
-        //   getGacha();
-        // } else showToast(t(res.data.msg), "error");
+        if (res.data.status === 1) {
+          showToast(t(res.data.msg), "success");
+          setImgUrl("");
+          fileInputRef.current.value = null;
+          setFormData({
+            ...formData,
+            name: "",
+            price: 0,
+            awardRarity: 0,
+            order: 1,
+            kind: [],
+            category: "",
+            file: null,
+          });
+          setSelSubCats([]);
+          removeMultipart();
+          getCategory();
+          getGacha();
+        } else showToast(t(res.data.msg), "error");
       }
     } catch (error) {
       showToast(t("failedReq"), "error");
