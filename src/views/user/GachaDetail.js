@@ -37,7 +37,6 @@ function GachaDetail() {
   const [lastPrizes, setLastprizes] = useState([]);
   const [roundPrizes, setRoundprizes] = useState([]);
   const [blurLevel, setBlurLevel] = useState(0);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isOpenPointModal, setIsOpenPointModal] = useState(false);
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false);
   const [selGacha, setSelGacha] = useState([0, 0]);
