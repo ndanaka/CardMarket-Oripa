@@ -37,17 +37,12 @@ function GachaDetail() {
   const [lastPrizes, setLastprizes] = useState([]);
   const [roundPrizes, setRoundprizes] = useState([]);
   const [blurLevel, setBlurLevel] = useState(0);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isOpenPointModal, setIsOpenPointModal] = useState(false);
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false);
   const [selGacha, setSelGacha] = useState([0, 0]);
   const [label, setLabel] = useState("");
   const [totalNum, setTotalNum] = useState("");
   const [spinFlag, setSpinFlag] = useState(false);
-  const [popedPrizes, setPopedPrizes] = useState(null);
-  const [showCardFlag, setShowCardFlag] = useState();
-  const [existLastFlag, setExistLastFlag] = useState(false);
-  const [lastEffect, setLastEffect] = useState(false);
 
   useEffect(() => {
     getGacha();
