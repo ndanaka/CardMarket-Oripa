@@ -44,10 +44,6 @@ function GachaDetail() {
   const [label, setLabel] = useState("");
   const [totalNum, setTotalNum] = useState("");
   const [spinFlag, setSpinFlag] = useState(false);
-  const [popedPrizes, setPopedPrizes] = useState(null);
-  const [showCardFlag, setShowCardFlag] = useState();
-  const [existLastFlag, setExistLastFlag] = useState(false);
-  const [lastEffect, setLastEffect] = useState(false);
 
   useEffect(() => {
     getGacha();

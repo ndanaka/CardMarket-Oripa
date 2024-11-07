@@ -41,10 +41,6 @@ const Index = () => {
   const [label, setLabel] = useState("");
   const [totalNum, setTotalNum] = useState("");
   const [spinFlag, setSpinFlag] = useState(false);
-  const [popedPrizes, setPopedPrizes] = useState(null);
-  const [showCardFlag, setShowCardFlag] = useState();
-  const [existLastFlag, setExistLastFlag] = useState(false);
-  const [lastEffect, setLastEffect] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("loggedIn")) {
@@ -523,48 +519,6 @@ const Index = () => {
           )}
         </div>
       </div>
-      {/* <div
-        className={`flex flex-wrap justify-center items-center z-[50] overflow-auto bg-gray-800 py-4 px-3 w-full h-full bg-opacity-50 fixed top-0 left-0 ${
-          showCardFlag ? "" : "hidden"
-        } `}
-      >
-        <div className="relative h-fit flex flex-wrap w-full md:w-4/5 lg:w-3/5 xl:w-2/5 py-10">
-          <div className="absolute top-0 right-0 text-gray-200 text-3xl">
-            <i
-              className="fa fa-close cursor-pointer"
-              onClick={() => setShowCardFlag(false)}
-            />
-          </div>
-          {popedPrizes?.map((prize, i) => (
-            <div
-              key={i}
-              className="rounded-lg animate-[animatezoom_1s_ease-in-out] mx-auto"
-            >
-              <PrizeCard img_url={prize.img_url} />
-            </div>
-          ))}
-          <div
-            className={`${
-              lastEffect && existLastFlag ? "" : "hidden"
-            } absolute top-[20%] w-full flex justify-center items-center`}
-          >
-            <div className="bg-white text-center rounded-lg p-4 shadow-xl">
-              <h2 className="text-3xl font-bold text-pink-500 ">
-                🎉 {t("wonLast")} 🎉
-              </h2>
-              <p className="text-md mt-4 text-gray-700">{t("wonDesc")}</p>
-              <div className="mt-6">
-                <button
-                  className="bg-pink-500 hover:bg-pink-600 text-white py-1 px-3 rounded-lg"
-                  onClick={() => setExistLastFlag(false)}
-                >
-                  {t("wonConfirm")}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
       {selGacha?.length > 0 ? (
         <GachaModal
           label={label}
