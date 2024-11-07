@@ -420,8 +420,7 @@ const Index = () => {
             </div>
           ) : (
             filteredGacha.map((data, i) => {
-              const gachaNum =
-                data.remain_prizes.length;
+              const gachaNum = data.remain_prizes.length;
 
               return (
                 <div
@@ -431,11 +430,11 @@ const Index = () => {
                   <div className="p-2 flex flex-col justify-between border-2 hover:bg-white rounded-lg shadow-md shadow-gray-400 border-gray-300 hover:scale-[101%] outline-2 hover:outline-pink-500">
                     <button
                       className="relative cursor-pointer w-full"
-                      onClick={() =>
+                      onClick={() => {
                         navigate("/user/gacha-detail", {
                           state: { gachaId: data._id },
-                        })
-                      }
+                        });
+                      }}
                     >
                       <img
                         src={

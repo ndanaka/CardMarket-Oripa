@@ -27,8 +27,8 @@ const User = (props) => {
   const navigate = useNavigate();
   const { isLoggedOut } = useAxiosInterceptor();
   const [user] = usePersistedUser();
-  const [,setBgColor] = useAtom(bgColorAtom);
-  const [,setLogo] = useAtom(logoAtom);
+  const [, setBgColor] = useAtom(bgColorAtom);
+  const [, setLogo] = useAtom(logoAtom);
 
   const [affId, setAffId] = useState("");
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);

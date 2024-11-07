@@ -190,12 +190,12 @@ const GachaEdit = () => {
     <div className="px-3 pt-2 py-24 w-full h-full md:w-[70%] m-auto">
       {spinFlag && <Spinner />}
 
-      <div className="text-xl text-center text-slate-600">
+      <div className="text-center">
         <i
-          className="fa fa-chevron-left float-left cursor-pointer"
+          className="fa fa-chevron-left float-left cursor-pointer mt-2"
           onClick={() => navigate("/admin/gacha")}
-        ></i>
-        <span className="my-3 text-xl text-center font-bold">
+        />
+        <span className="text-xl text-center text-slate-600">
           {t("gacha") + " " + t("detail")}
         </span>
       </div>
@@ -309,6 +309,7 @@ const GachaEdit = () => {
         ) : null}
       </div>
       <hr className="my-2" />
+
       <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
         {t("currentPrizeList")}
       </div>

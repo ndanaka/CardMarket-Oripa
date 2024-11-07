@@ -45,12 +45,12 @@ function UserDetail() {
   return (
     <div className="w-full md:w-[70%] m-auto px-3 pt-2 py-24">
       {spinFlag && <Spinner />}
-      <div className="text-xl text-center text-slate-600">
+      <div className="text-center">
         <i
-          className="fa fa-chevron-left float-left cursor-pointer"
-          onClick={() => navigate("/admin/user")}
+          className="fa fa-chevron-left float-left cursor-pointer mt-2"
+          onClick={() => navigate("/admin/gacha")}
         />
-        <span className="text-xl text-center py-3">
+        <span className="text-xl text-center text-slate-600">
           {t("user") + " " + t("detail")}
         </span>
       </div>
