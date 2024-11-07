@@ -36,7 +36,7 @@ function GachaDetail() {
   const [extraPrizes, setExtraprizes] = useState([]);
   const [lastPrizes, setLastprizes] = useState([]);
   const [roundPrizes, setRoundprizes] = useState([]);
-  const [blur, setBlur] = useState("blur-[0px]");
+  const [blurLevel, setBlurLevel] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isOpenPointModal, setIsOpenPointModal] = useState(false);
   const [isOpenGachaModal, setIsOpenGachaModal] = useState(false);
@@ -54,31 +54,19 @@ function GachaDetail() {
   }, [bgColor]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const handleScroll = () => {
+      const scrollPos = window.scrollY;
+      const newBlurLevel = Math.min(scrollPos / 50, 20);
+      setBlurLevel(newBlurLevel);
+    };
+
     window.addEventListener("scroll", handleScroll);
-  }, []);
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    const delta = currentScrollY - lastScrollY;
-
-    // Calculate blur based on scroll direction
-    if (delta > 0) {
-      // Scrolling down
-      setBlur((prev) => {
-        const currentBlur = Math.floor(parseInt(prev.match(/\d+/)[0]));
-        return `blur-[${Math.min(currentBlur + 1, 20)}px]`; // Increase blur but cap at 20px
-      });
-    } else if (delta < 0) {
-      // Scrolling up
-      setBlur((prev) => {
-        const currentBlur = Math.floor(parseInt(prev.match(/\d+/)[0]));
-        return `blur-[${Math.max(currentBlur - 1, 0)}px]`; // Decrease blur but not below 0px
-      });
-    }
-
-    // Update last scroll position
-    setLastScrollY(currentScrollY);
-  };
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [location]);
 
   // update user data and update localstorage
   const updateUserData = async () => {
@@ -266,7 +254,11 @@ function GachaDetail() {
       {spinFlag && <Spinner />}
       <div className="xxsm:mx-auto" ref={mainContent}>
         <div
-          className={`w-full xxsm:w-[500px] fixed top-0 ${blur} transition-all duration-100 bg-gray-800 h-screen h-[calc(100vh-160px)] shadow-md shadow-gray-400 mt-[66px] mx-auto`}
+          className={`w-full xxsm:w-[500px] fixed top-0 transition-all duration-100 bg-gray-800 h-screen h-[calc(100vh-160px)] shadow-md shadow-gray-400 mt-[66px] mx-auto`}
+          style={{
+            filter: `blur(${blurLevel}px)`,
+            transition: "filter 0.2s ease",
+          }}
         >
           <img
             src={process.env.REACT_APP_SERVER_ADDRESS + gacha?.img_url}

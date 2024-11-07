@@ -7,7 +7,7 @@ import AuthLayout from "./layouts/Auth.js";
 import UserLayout from "./layouts/User.js";
 
 import { initializeToast } from "./utils/toastUtil.js";
-import "../src/utils/i18next.js"; // Import i18n configuration
+import "../src/utils/i18next.js";
 
 export default function App() {
   useEffect(() => {
