@@ -32,7 +32,6 @@ function Pointlog({ date, point_num, usage, ioFlag }) {
             - {formatPrice(point_num)} pt
           </div>
         )}
-        {/* <div>{remain_point.current}</div> */}
         <div>{t(usage)}</div>
       </div>
     </div>
