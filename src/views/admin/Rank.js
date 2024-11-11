@@ -8,14 +8,13 @@ import { showToast } from "../../utils/toastUtil";
 import formatPrice from "../../utils/formatPrice";
 import usePersistedUser from "../../store/usePersistedUser";
 
-import AgreeButton from "../../components/Forms/AgreeButton";
 import DeleteConfirmModal from "../../components/Modals/DeleteConfirmModal";
 import PageHeader from "../../components/Forms/PageHeader";
 import uploadimage from "../../assets/img/icons/upload.png";
 import Spinner from "../../components/Others/Spinner";
 
 function Rank() {
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const { t } = useTranslation();
   const fileInputRef = useRef(null);
 

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 
 import routes from "../routes.js";

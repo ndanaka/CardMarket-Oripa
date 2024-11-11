@@ -12,7 +12,7 @@ import vnFlag from "../../assets/img/icons/vn.png";
 
 function ChangeLanguage({ type }) {
   const { i18n } = useTranslation();
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const [bgColor] = useAtom(bgColorAtom);
   const currentLanguage = i18n.language;
 

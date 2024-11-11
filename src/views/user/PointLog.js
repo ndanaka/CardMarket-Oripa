@@ -13,7 +13,7 @@ import Spinner from "../../components/Others/Spinner";
 function PointLog() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
 
   const [pointLog, setPointLog] = useState();
   const [spinFlag, setSpinFlag] = useState(false);

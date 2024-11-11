@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
@@ -43,7 +43,7 @@ function ImageCarousel() {
         {carousels?.map((carousel, i) => {
           return (
             <SwiperSlide key={i}>
-              <a href={carousel.link} target="_blank">
+              <a href={carousel.link} target="_blank" rel="noopener">
                 <img
                   src={process.env.REACT_APP_SERVER_ADDRESS + carousel.img_url}
                   className="w-full max-h-80 object-cover rounded-lg cursor-pointer bg-blend-lighten hover:opacity-50"

@@ -20,7 +20,7 @@ const Auth = () => {
   const [,setBgColor] = useAtom(bgColorAtom);
   const [,setLogo] = useAtom(logoAtom);
 
-  const [affId, setAffId] = useState(null);
+  const [, setAffId] = useState(null);
 
   useEffect(() => {
     getThemeData();

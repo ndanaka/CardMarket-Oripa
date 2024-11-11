@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Nav } from "reactstrap";
 
 const Sidebar = (props) => {
+  const { routes } = props;
+
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -32,20 +34,6 @@ const Sidebar = (props) => {
       } else return null;
     });
   };
-
-  const { routes, logo } = props;
-  let navbarBrandProps;
-  if (logo && logo.innerLink) {
-    navbarBrandProps = {
-      to: logo.innerLink,
-      tag: Link,
-    };
-  } else if (logo && logo.outterLink) {
-    navbarBrandProps = {
-      href: logo.outterLink,
-      target: "_blank",
-    };
-  }
 
   return (
     <div className="absolute top-0 left-0 z-10 bg-admin_theme_color border-r-2 border-gray-300 min-h-full hidden xxsm:block xxsm:relative transition-all duration-300">

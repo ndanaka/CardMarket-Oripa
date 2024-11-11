@@ -15,7 +15,7 @@ import Spinner from "../../components/Others/Spinner";
 function Users() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [user, setUser] = usePersistedUser("");
+  const [user] = usePersistedUser("");
 
   const [userList, setUserList] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -8,7 +8,6 @@ import { setAuthToken } from "../../utils/setHeader";
 import { setMultipart, removeMultipart } from "../../utils/setHeader";
 
 import PageHeader from "../../components/Forms/PageHeader";
-import Spinner from "../../components/Others/Spinner";
 import uploadimage from "../../assets/img/icons/upload.png";
 
 function Theme() {
@@ -18,7 +17,7 @@ function Theme() {
   const [imgUrl, setImgUrl] = useState(null);
   const [bgColor, setBgColor] = useState("#e50e0e");
   const [formData, setFormData] = useState({ bgColor: "", file: null });
-  const [spinFlag, setSpinFlag] = useState(false);
+  const [, setSpinFlag] = useState(false);
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];

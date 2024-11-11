@@ -30,7 +30,7 @@ const User = (props) => {
   const [, setBgColor] = useAtom(bgColorAtom);
   const [, setLogo] = useAtom(logoAtom);
 
-  const [affId, setAffId] = useState("");
+  const [, setAffId] = useState("");
   const [isOpenToggleMenu, setIsOpenToggleMenu] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
