@@ -69,7 +69,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
         <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between py-[8px] xsm:px-[28px]">
           <Link className="h4 mb-0 text-white text-uppercase xxsm:block" to="/">
             <div className="flex flex-wrap justify-between">
-              {location.pathname === "/user/gacha-detail" ? (
+              {location.pathname === "/user/gachaDetail" ? (
                 <button
                   className="flex xsm:ruby px-2 py-[4px] rounded-lg border-[1px] text-center text-white text-sm hover:opacity-50"
                   onClick={() => navigate("/user/index")}
@@ -100,7 +100,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                       <button className="flex items-center">
                         <div
                           className="flex flex-wrap text-base text-white font-extrabold items-center"
-                          onClick={() => navigate("/user/pur-point")}
+                          onClick={() => navigate("/user/purchasePoint")}
                         >
                           <img
                             alt=""
@@ -236,7 +236,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                     className="rounded-md hover:opacity-50 text-center hover:bg-opacity-50 text-white outline-none w-full py-2"
                                     onClick={() => {
                                       setIsOpenToggleMenu(!isOpenToggleMenu);
-                                      navigate("/user/pur-point");
+                                      navigate("/user/purchasePoint");
                                     }}
                                     style={{ backgroundColor: bgColor }}
                                   >
@@ -247,17 +247,17 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                   className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
                                   onClick={() => {
                                     setIsOpenToggleMenu(!isOpenToggleMenu);
-                                    navigate("/user/point-log");
+                                    navigate("/user/pointsHistory");
                                   }}
                                 >
-                                  <span>{t("pointHistory")}</span>
+                                  <span>{t("pointsHistory")}</span>
                                   <i className="fa fa-chevron-right"></i>
                                 </li>
                                 <li
                                   className="cursor-pointer flex flex-wrap justify-between items-center mx-2 mb-2 mt-4 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
                                   onClick={() => {
                                     setIsOpenToggleMenu(!isOpenToggleMenu);
-                                    navigate("/user/user-profile");
+                                    navigate("/user/profile");
                                   }}
                                 >
                                   <span>{t("profile")}</span>
@@ -267,7 +267,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                   className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
                                   onClick={() => {
                                     setIsOpenToggleMenu(!isOpenToggleMenu);
-                                    navigate("/user/userShiping");
+                                    navigate("/user/changeShippingAddress");
                                   }}
                                 >
                                   <span>{t("shipAddress")}</span>
@@ -277,7 +277,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                   className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
                                   onClick={() => {
                                     setIsOpenToggleMenu(!isOpenToggleMenu);
-                                    navigate("/user/delivery");
+                                    navigate("/user/acquisitionHistory");
                                   }}
                                 >
                                   <span>{t("acquisitionHistory")}</span>

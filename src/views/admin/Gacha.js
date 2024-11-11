@@ -80,8 +80,8 @@ function Gacha() {
     }
   };
 
-  const toGachaDetail = (gachaId) => {
-    navigate("/admin/gacha-detail", { state: { gachaId: gachaId } });
+  const toGachaEdit = (gachaId) => {
+    navigate("/admin/gachaEdit", { state: { gachaId: gachaId } });
   };
 
   const changeFormData = (e) => {
@@ -450,7 +450,7 @@ function Gacha() {
                           <div className="flex flex-wrap justify-center">
                             <button
                               className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
-                              onClick={() => toGachaDetail(data._id)}
+                              onClick={() => toGachaEdit(data._id)}
                             >
                               {t("gacha") + " " + t("detail")}
                             </button>

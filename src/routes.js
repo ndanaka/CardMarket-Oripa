@@ -8,7 +8,6 @@ import User from "./views/admin/User.js";
 import Gacha from "./views/admin/Gacha.js";
 import Point from "./views/admin/Point.js";
 import GachaEdit from "./views/admin/GachaEdit.js";
-import NotionPage from "./views/admin/NotionPage.js";
 import UseTerms from "./views/admin/UseTerms.js";
 import Administrators from "./views/admin/Administrators.js";
 import UserDetail from "./views/admin/UserDetail.js";
@@ -18,13 +17,12 @@ import Register from "./views/auth/Register.js";
 import Profile from "./views/user/Profile.js";
 import PurchasePoint from "./views/user/PurchasePoint.js";
 import PointLog from "./views/user/PointLog.js";
-import UserDelivery from "./views/user/UserDelivery.js";
-import UserCard from "./views/user/UserCard.js";
+import AcquisitionHistory from "./views/user/AcquisitionHistory.js";
 import GachaDetail from "./views/user/GachaDetail.js";
 import Blog from "./views/user/Blog.js";
 import BlogDetail from "./views/user/BlogDetail.js";
-import Shipping from "./views/user/Shipping.js";
-import ShippingAdd from "./views/user/ShippingAdd.js";
+import ChangeShippingAddress from "./views/user/ChangeShippingAddress.js";
+import AddShippingAddress from "./views/user/AddShippingAddress.js";
 import Rank from "./views/admin/Rank.js";
 import Theme from "./views/admin/Theme.js";
 import Carousel from "./views/admin/Carousel.js";
@@ -45,63 +43,56 @@ var routes = [
     layout: "/user",
   },
   {
-    path: "/blog-detail",
+    path: "/blogDetail",
     name: "Blog Detail",
     icon: "ni ni-tv-2 text-primary",
     component: <BlogDetail />,
     layout: "/user",
   },
   {
-    path: "/user-profile",
+    path: "/profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: <Profile />,
     layout: "/user",
   },
   {
-    path: "/pur-point",
+    path: "/purchasePoint",
     name: "Purchase Point",
     icon: "ni ni-single-02 text-yellow",
     component: <PurchasePoint />,
     layout: "/user",
   },
   {
-    path: "/userShiping",
+    path: "/changeShippingAddress",
     name: "user shiping",
     icon: "fa fa-users",
-    component: <Shipping />,
+    component: <ChangeShippingAddress />,
     layout: "/user",
   },
   {
-    path: "/userShipingAdd",
+    path: "/addShippingAddress",
     name: "user shiping",
     icon: "fa fa-users",
-    component: <ShippingAdd />,
+    component: <AddShippingAddress />,
     layout: "/user",
   },
   {
-    path: "/point-log",
-    name: "point log",
+    path: "/pointsHistory",
+    name: "Point History",
     icon: "ni ni-single-02 text-yellow",
     component: <PointLog />,
     layout: "/user",
   },
   {
-    path: "/delivery",
-    name: "My delivery",
+    path: "/acquisitionHistory",
+    name: "Acquisition History",
     icon: "ni ni-single-02 text-yellow",
-    component: <UserDelivery />,
+    component: <AcquisitionHistory />,
     layout: "/user",
   },
   {
-    path: "/card",
-    name: "My Card",
-    icon: "ni ni-single-02 text-yellow",
-    component: <UserCard />,
-    layout: "/user",
-  },
-  {
-    path: "/gacha-detail",
+    path: "/gachaDetail",
     name: "My Card",
     icon: "ni ni-single-02 text-yellow",
     component: <GachaDetail />,
@@ -129,7 +120,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/user-detail",
+    path: "/userDetail",
     name: "user detail",
     icon: "fa fa-users",
     component: <UserDetail />,
@@ -178,7 +169,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/gacha-detail",
+    path: "/gachaEdit",
     name: "gacha",
     icon: "fa fa-modx",
     component: <GachaEdit />,
@@ -191,13 +182,6 @@ var routes = [
     component: <Delivering />,
     layout: "/admin",
   },
-  // {
-  //   path: "/notion",
-  //   name: "notion",
-  //   icon: "fa-solid fa-file-contract",
-  //   component: <NotionPage />,
-  //   layout: "/admin",
-  // },
   {
     path: "/useterm",
     name: "userterms",

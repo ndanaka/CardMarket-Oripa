@@ -12,7 +12,7 @@ import { bgColorAtom } from "../../store/theme";
 
 import Spinner from "../../components/Others/Spinner";
 
-function Shipping() {
+function ChangeShippingAddress() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
@@ -140,7 +140,7 @@ function Shipping() {
                   <button
                     className="hover:opacity-50 rounded-md text-center px-3 py-1 hover:bg-red-800 text-white outline-none"
                     onClick={() =>
-                      navigate("/user/userShipingAdd", {
+                      navigate("/user/addShippingAddress", {
                         state: { initialData: data },
                       })
                     }
@@ -163,7 +163,7 @@ function Shipping() {
           </button>
           <button
             className="hover:opacity-50 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-red-800 text-white outline-none"
-            onClick={() => navigate("/user/userShipingAdd")}
+            onClick={() => navigate("/user/addShippingAddress")}
             style={{ backgroundColor: bgColor }}
           >
             {"+ " + t("addAddress")}
@@ -174,4 +174,4 @@ function Shipping() {
   );
 }
 
-export default Shipping;
+export default ChangeShippingAddress;

@@ -130,6 +130,10 @@ const Profile = () => {
       <div className={`relative w-full md:w-2/3 mx-auto mt-14 p-3`}>
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
+            <i
+              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              onClick={() => navigate(-1)}
+            ></i>
             {t("my") + " " + t("profile")}
           </div>
           <hr className="w-full my-2"></hr>

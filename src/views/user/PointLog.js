@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import api from "../../utils/api";
 import { setAuthToken } from "../../utils/setHeader";
-import { showToast } from "../../utils/toastUtil";
 
 import usePersistedUser from "../../store/usePersistedUser";
 
-import SubHeader from "../../components/Forms/SubHeader";
 import Pointlog from "../../components/Others/Pointlog";
 import Spinner from "../../components/Others/Spinner";
 
 function PointLog() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [user, setUser] = usePersistedUser();
 
   const [pointLog, setPointLog] = useState();
@@ -35,7 +35,16 @@ function PointLog() {
     <div className="flex flex-grow">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-14">
-        <SubHeader text={t("pointHistory")} />
+        <div className="w-full py-2">
+          <div className="text-center text-xl text-slate-600">
+            <i
+              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              onClick={() => navigate(-1)}
+            ></i>
+            {t("pointHistory")}
+          </div>
+          <hr className="w-full my-2"></hr>
+        </div>
         <div className="flex flex-col">
           {pointLog?.length > 0
             ? pointLog.map((data, i) => (
