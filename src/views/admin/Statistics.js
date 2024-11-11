@@ -163,7 +163,7 @@ const Statistics = () => {
                 {t("Pending") + " " + t("cards")}
               </span>
               <select
-                className="form-control form-control-sm w-32 cursor-pointer"
+                className="w-32 cursor-pointer border rounded-md text-sm"
                 name="changePendingPeriod"
                 id="changePendingPeriod"
                 autoComplete="changePendingPeriod"
@@ -189,7 +189,7 @@ const Statistics = () => {
                 {t("Delivering") + " " + t("cards")}
               </span>
               <select
-                className="form-control form-control-sm w-32 cursor-pointer"
+                className="w-32 cursor-pointer border rounded-md text-sm"
                 name="changeDeliveringPeriod"
                 id="changeDeliveringPeriod"
                 autoComplete="changeDeliveringPeriod"
@@ -218,7 +218,7 @@ const Statistics = () => {
               {t("Delivered") + " " + t("cards")}
             </span>
             <select
-              className="form-control form-control-sm w-32 cursor-pointer"
+              className="w-32 cursor-pointer border rounded-md text-sm"
               name="changeDeliveredPeriod"
               id="changeDeliveredPeriod"
               autoComplete="changeDeliveredPeriod"

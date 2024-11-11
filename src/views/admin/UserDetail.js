@@ -98,7 +98,7 @@ function UserDetail() {
                     <tr key={i}>
                       <td>{i + 1}</td>
                       <td>{formatPrice(log.point_num)}pt</td>
-                      <td>{log.usage}</td>
+                      <td>{t(log.usage)}</td>
                       <td>{formatDate(log.date)}</td>
                     </tr>
                   ))
