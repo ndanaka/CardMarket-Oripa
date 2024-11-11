@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
 
 import api from "../../utils/api";
-import { showToast } from "../../utils/toastUtil";
 
 import Spinner from "../../components/Others/Spinner";
 

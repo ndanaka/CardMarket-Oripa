@@ -86,8 +86,7 @@ const Index = () => {
       case "popularity":
         filteredGachas?.sort(
           (a, b) =>
-            Number(b.total_number - b.remain_prizes.length) -
-            Number(a.total_number - a.remain_prizes.length)
+            Number(b.poped_prizes.length) - Number(a.poped_prizes.length)
         );
         break;
 

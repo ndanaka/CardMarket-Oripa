@@ -15,7 +15,7 @@ import Spinner from "../../components/Others/Spinner";
 function ChangeShippingAddress() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const [bgColor] = useAtom(bgColorAtom);
 
   const [pickedShipAddress, setPickedShipAddress] = useState();

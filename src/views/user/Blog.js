@@ -15,7 +15,7 @@ import Spinner from "../../components/Others/Spinner";
 
 const Blog = () => {
   const { t } = useTranslation();
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const [bgColor] = useAtom(bgColorAtom);
 
   const [isOpen, setIsOpen] = useState(false);

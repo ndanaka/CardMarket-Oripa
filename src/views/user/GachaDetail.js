@@ -209,33 +209,25 @@ function GachaDetail() {
 
       const res = await api.post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
-        drawCounts: selGacha[1],
-        drawDate: new Date(),
+        counts: selGacha[1],
       });
       console.log(res.data);
 
       if (res.data.status === 1) {
         showToast(t("drawnSuccess"), "success");
-        // setPopedPrizes(res.data.prizes);
-        // setExistLastFlag(res.data.existLastFlag);
-        // setLastEffect(res.data.lastEffect);
-        // setShowCardFlag(true);
-        // updateUserData();
+        updateUserData();
       } else {
         switch (res.data.msg) {
-          // case 0:
-          //   showToast(t("dranAdmin"), "error");
-          //   break;
-
           case 0:
-            showToast(t("noEnoughPoints"), "error");
-            break;
-
-          case 1:
             showToast(t("drawnEnoughPrize"), "error");
             break;
 
+          case 1:
+            showToast(t("noEnoughPoints"), "error");
+            break;
+
           default:
+            showToast(t("faileReq", "error"));
             break;
         }
       }

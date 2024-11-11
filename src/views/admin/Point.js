@@ -14,7 +14,7 @@ import Spinner from "../../components/Others/Spinner";
 import uploadimage from "../../assets/img/icons/upload.png";
 
 function Point() {
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
   const { t } = useTranslation();
   const fileInputRef = useRef(null);
 

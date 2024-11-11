@@ -11,18 +11,16 @@ import { useEffect } from "react";
 
 const PostBlogModal = (props) => {
   const { t } = useTranslation();
-  const bgColor = localStorage.getItem("bgColor");
-
   const { userId, isOpen, setIsOpen, setBlogs } = props;
 
   const [showErrMessage, setShowErrMessage] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     author: userId,
     file: null,
   });
-  const [imgUrl, setImgUrl] = useState(""); //local image url when file selected
 
   useEffect(() => {
     setAuthToken();
