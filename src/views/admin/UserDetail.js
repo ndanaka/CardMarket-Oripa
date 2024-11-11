@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import api from "../../utils/api";
 import formatDate from "../../utils/formatDate";
 import formatPrice from "../../utils/formatPrice";
-import { showToast } from "../../utils/toastUtil";
 
 import Label from "../../components/Forms/Label";
 import GroupHeader from "../../components/Forms/GroupHeader";
@@ -66,18 +65,6 @@ function UserDetail() {
             <Label htmlFor="text" text="email" classname="pr-3" />
             {user?.email}
           </div>
-          {/* <div className="w-full px-2">
-            <Label htmlFor="text" text="address" classname="pr-3" />
-            {user?.address}
-          </div>
-          <div className="w-full md:w-1/2 px-2">
-            <Label htmlFor="text" text="city" classname="pr-3" />
-            {user?.city}
-          </div>
-          <div className="w-full md:w-1/2 px-2">
-            <Label htmlFor="text" text="country" classname="pr-3" />
-            {user?.country}
-          </div> */}
         </div>
         <hr className="my-2"></hr>
         <div className="flex flex-wrap justify-between">

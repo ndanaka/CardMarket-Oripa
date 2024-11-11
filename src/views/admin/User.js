@@ -83,7 +83,7 @@ function Users() {
                 <tr key={i} className="cursor-pointer">
                   <td
                     onClick={() =>
-                      navigate("/admin/user-detail", {
+                      navigate("/admin/userDetail", {
                         state: { userId: data._id },
                       })
                     }
@@ -92,7 +92,7 @@ function Users() {
                   </td>
                   <td
                     onClick={() =>
-                      navigate("/admin/user-detail", {
+                      navigate("/admin/userDetail", {
                         state: { userId: data._id },
                       })
                     }
@@ -101,7 +101,7 @@ function Users() {
                   </td>
                   <td
                     onClick={() =>
-                      navigate("/admin/user-detail", {
+                      navigate("/admin/userDetail", {
                         state: { userId: data._id },
                       })
                     }
@@ -110,7 +110,7 @@ function Users() {
                   </td>
                   <td
                     onClick={() =>
-                      navigate("/admin/user-detail", {
+                      navigate("/admin/userDetail", {
                         state: { userId: data._id },
                       })
                     }
@@ -119,7 +119,7 @@ function Users() {
                   </td>
                   <td
                     onClick={() =>
-                      navigate("/admin/user-detail", {
+                      navigate("/admin/userDetail", {
                         state: { userId: data._id },
                       })
                     }

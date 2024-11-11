@@ -84,7 +84,7 @@ const User = (props) => {
 
         if (
           prop.path !== "/index" &&
-          prop.path !== "/gacha-detail" &&
+          prop.path !== "/gachaDetail" &&
           prop.path !== "/blog" &&
           !token
         )
@@ -130,7 +130,7 @@ const User = (props) => {
         <Route path="*" element={<Navigate to="/user/index" replace />} />
       </Routes>
       <ScrollToTop />
-      {location.pathname !== "/user/gacha-detail" && <Footer />}
+      {location.pathname !== "/user/gachaDetail" && <Footer />}
     </div>
   );
 };

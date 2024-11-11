@@ -366,7 +366,7 @@ function GachaDetail() {
         <NotEnoughPoints
           headerText={t("noEnoughPoints")}
           bodyText={t("noEnoughPointsDesc")}
-          okBtnClick={() => navigate("/user/pur-point")}
+          okBtnClick={() => navigate("/user/purchasePoint")}
           isOpen={isOpenPointModal}
           setIsOpen={setIsOpenPointModal}
           bgColor={bgColor}

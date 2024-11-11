@@ -7,7 +7,7 @@ const Card = ({ blog }) => {
     <div
       className="border-1 bg-gray-100 shadow-md shadow-gray-400 border-gray-300 blog-card cursor-pointer hover:scale-[101%] outline-2 hover:outline-pink-500"
       onClick={() => {
-        navigate("/user/blog-detail", { state: { blog: blog } });
+        navigate("/user/blogDetail", { state: { blog: blog } });
       }}
     >
       <img

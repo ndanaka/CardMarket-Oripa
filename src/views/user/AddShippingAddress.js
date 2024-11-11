@@ -13,7 +13,7 @@ import { bgColorAtom } from "../../store/theme";
 import InputGroup from "../../components/Forms/InputGroup";
 import Spinner from "../../components/Others/Spinner";
 
-function ShippingAdd() {
+function AddShippingAddress() {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -324,4 +324,4 @@ function ShippingAdd() {
   );
 }
 
-export default ShippingAdd;
+export default AddShippingAddress;

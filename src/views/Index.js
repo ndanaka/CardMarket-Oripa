@@ -9,7 +9,6 @@ import { showToast } from "../utils/toastUtil";
 import subCategories from "../utils/subCategories";
 
 import GachaModal from "../components/Modals/GachaModal";
-import PrizeCard from "../components/Others/PrizeCard";
 import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ImageCarousel from "../components/Others/ImageCarousel";
@@ -87,7 +86,8 @@ const Index = () => {
       case "popularity":
         filteredGachas?.sort(
           (a, b) =>
-            Number(b.poped_prizes.length) - Number(a.poped_prizes.length)
+            Number(b.total_number - b.remain_prizes.length) -
+            Number(a.total_number - a.remain_prizes.length)
         );
         break;
 
@@ -105,7 +105,7 @@ const Index = () => {
 
     // Set the final filtered array
     setFilteredGacha(filteredGachas);
-  }, [gacha, filter]);
+  }, [gacha, filter, categoryFilter, order]);
 
   // update user data and update localstorage
   const updateUserData = async () => {
@@ -256,28 +256,25 @@ const Index = () => {
 
       const res = await api.post("/admin/gacha/draw_gacha", {
         gachaId: selGacha[0]._id,
-        drawCounts: selGacha[1],
+        counts: selGacha[1],
       });
       console.log(res.data);
 
       if (res.data.status === 1) {
         showToast(t("drawnSuccess"), "success");
-        // setPopedPrizes(res.data.prizes);
-        // setExistLastFlag(res.data.existLastFlag);
-        // setLastEffect(res.data.lastEffect);
-        // setShowCardFlag(true);
-        // updateUserData();
+        updateUserData();
       } else {
         switch (res.data.msg) {
           case 0:
-            showToast(t("noEnoughPoints"), "error");
-            break;
-
-          case 1:
             showToast(t("drawnEnoughPrize"), "error");
             break;
 
+          case 1:
+            showToast(t("noEnoughPoints"), "error");
+            break;
+
           default:
+            showToast(t("faileReq", "error"));
             break;
         }
       }
@@ -427,7 +424,7 @@ const Index = () => {
                     <button
                       className="relative cursor-pointer w-full"
                       onClick={() => {
-                        navigate("/user/gacha-detail", {
+                        navigate("/user/gachaDetail", {
                           state: { gachaId: data._id },
                         });
                       }}
@@ -436,6 +433,7 @@ const Index = () => {
                         src={
                           process.env.REACT_APP_SERVER_ADDRESS + data.img_url
                         }
+                        alt="img_url"
                         className="rounded-t h-[200px] xsm:h-[243px] xxsm:h-[276px] md:h-[300px] w-full object-cover"
                       />
                       <div className="w-full h-[35px]">
@@ -535,7 +533,7 @@ const Index = () => {
       <NotEnoughPoints
         headerText={t("noEnoughPoints")}
         bodyText={t("noEnoughPointsDesc")}
-        okBtnClick={() => navigate("/user/pur-point")}
+        okBtnClick={() => navigate("/user/purchasePoint")}
         isOpen={isOpenPointModal}
         setIsOpen={setIsOpenPointModal}
         bgColor={bgColor}
