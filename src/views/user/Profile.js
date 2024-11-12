@@ -127,11 +127,11 @@ const Profile = () => {
   return (
     <div className="flex flex-grow">
       {spinFlag && <Spinner />}
-      <div className={`relative w-full md:w-2/3 mx-auto mt-14 p-3`}>
+      <div className={`relative w-full lg:w-2/3 mx-auto mt-14 p-3`}>
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             <i
-              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              className="fa fa-chevron-left mt-2 float-left items-center cursor-pointer"
               onClick={() => navigate(-1)}
             ></i>
             {t("my") + " " + t("profile")}
@@ -139,14 +139,14 @@ const Profile = () => {
           <hr className="w-full my-2"></hr>
         </div>
         <div className="flex flex-wrap justify-between">
-          <div className="w-full xxsm:w-1/2 p-2">
+          <div className="w-full xxsm:w-1/2 px-2">
             <div className="flex flex-wrap rounded-lg bg-white">
-              <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
+              <p className="w-full text-2xl text-center text-theme_headertext_color">
                 {t("information")}
               </p>
               <hr className="py-2"></hr>
               <div className="flex flex-wrap w-full">
-                <div className="w-full md:w-1/2 px-2">
+                <div className="w-full px-2">
                   <InputGroup
                     label={t("name")}
                     type="text"
@@ -156,7 +156,7 @@ const Profile = () => {
                     onChange={handleSetUserData}
                   />
                 </div>
-                <div className="w-full md:w-1/2 px-2">
+                <div className="w-full px-2">
                   <InputGroup
                     label={t("email")}
                     type="email"
@@ -166,27 +166,7 @@ const Profile = () => {
                     onChange={handleSetUserData}
                   />
                 </div>
-                <div className="w-full  px-2">
-                  <InputGroup
-                    label={t("address")}
-                    type="text"
-                    name="address"
-                    value={userData?.address || ""}
-                    placeholder="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                    onChange={handleSetUserData}
-                  />
-                </div>
-                <div className="w-full md:w-1/2 px-2">
-                  <InputGroup
-                    label={t("city")}
-                    type="text"
-                    name="city"
-                    value={userData?.city || ""}
-                    placeholder="New York"
-                    onChange={handleSetUserData}
-                  />
-                </div>
-                <div className="w-full md:w-1/2 px-2">
+                <div className="w-full px-2">
                   <InputGroup
                     label={t("country")}
                     type="text"
@@ -208,10 +188,10 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="w-full xxsm:w-1/2 p-2">
-            <div className="w-full rounded-lg bg-white p-2 mb-3">
+          <div className="w-full xxsm:w-1/2 px-2">
+            <div className="w-full rounded-lg bg-white">
               <div className="flex flex-wrap">
-                <p className="w-full text-2xl text-center text-theme_headertext_color py-2">
+                <p className="w-full text-2xl text-center text-theme_headertext_color">
                   {t("changePass")}
                 </p>
                 <hr className="py-2"></hr>
@@ -248,12 +228,11 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full rounded-lg bg-white p-2 mt-3">
-              <p className="text-xl text-center text-theme_headertext_color py-2">
+            <div className="w-full rounded-lg bg-white mt-3">
+              <p className="w-full text-2xl text-center text-theme_headertext_color">
                 {t("account")}
               </p>
-              <hr></hr>
-              <p className="py-4 px-2">{t("withdrawalDes")}</p>
+              <p className="py-2">{t("withdrawalDes")}</p>
               <div className="flex flex-wrap w-full justify-end px-2">
                 <button
                   className="hover:opacity-50 px-4 py-2 my-1 rounded-md text-white"

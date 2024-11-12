@@ -38,10 +38,10 @@ function PointLog() {
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             <i
-              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              className="fa fa-chevron-left mt-2 float-left items-center cursor-pointer"
               onClick={() => navigate(-1)}
             ></i>
-            {t("pointHistory")}
+            {t("pointsHistory")}
           </div>
           <hr className="w-full my-2"></hr>
         </div>
@@ -53,7 +53,6 @@ function PointLog() {
                     date={data.date}
                     point_num={data.point_num}
                     usage={data.usage}
-                    ioFlag={data.ioFlag}
                   />
                 </div>
               ))

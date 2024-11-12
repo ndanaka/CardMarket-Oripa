@@ -25,6 +25,7 @@ function Gacha() {
   const lang = i18n.language;
 
   const [formData, setFormData] = useState({
+    type: 1,
     name: "",
     price: 0,
     category: "",
@@ -148,6 +149,7 @@ function Gacha() {
           fileInputRef.current.value = null;
           setFormData({
             ...formData,
+            type: 1,
             name: "",
             price: 0,
             awardRarity: 0,
@@ -219,7 +221,7 @@ function Gacha() {
       <div className="flex flex-wrap">
         <div className="flex flex-col w-full lg:w-[35%] mb-2 border-1 h-fit">
           <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
-            {t("rank") + " " + t("add")}
+            {t("add") + " " + t("gacha")}
           </div>
           <div className="flex flex-col justify-between items-center p-2 w-full">
             <label htmlFor="fileInput" className="text-gray-700 p-1 mb-2">
@@ -244,6 +246,22 @@ function Gacha() {
             />
           </div>
           <div className="flex flex-col p-2">
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="type" className="text-gray-700">
+                {t("type")}
+              </label>
+              <select
+                name="type"
+                className="p-1 w-full form-control cursor-pointer"
+                onChange={changeFormData}
+                value={formData.type}
+                id="type"
+                autoComplete="type"
+              >
+                <option value={1}>{t("gacha")} 1</option>
+                <option value={2}>{t("gacha")} 2</option>
+              </select>
+            </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="name" className="text-gray-700">
                 {t("name")}
@@ -370,14 +388,15 @@ function Gacha() {
           </div>
         </div>
         <div className="overflow-auto flex flex-wrap w-full lg:w-[65%] h-fit">
-          <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
-            {t("currentPrizeList")}
+          <div className="border-1 py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+            {t("gacha") + " " + t("list")}
           </div>
           <table className="w-full m-auto">
             <thead className="bg-admin_theme_color font-bold text-gray-200">
               <tr>
                 <th>{t("no")}</th>
                 <th>{t("image")}</th>
+                <th>{t("type")}</th>
                 <th>{t("name")}</th>
                 <th>{t("price")}</th>
                 <th>{t("category")}</th>
@@ -429,6 +448,7 @@ function Gacha() {
                           />
                         </td>
                         <td>{data.name}</td>
+                        <td>{t("gacha") + " " + data.type}</td>
                         <td>{formatPrice(data.price)}pt</td>
                         <td>{catName}</td>
                         <td>
@@ -446,7 +466,7 @@ function Gacha() {
                           data.isRelease ? "bg-[#f2f2f2]" : ""
                         }`}
                       >
-                        <td colSpan="8">
+                        <td colSpan="9">
                           <div className="flex flex-wrap justify-center">
                             <button
                               className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
@@ -479,7 +499,7 @@ function Gacha() {
                 })
               ) : (
                 <tr>
-                  <td colSpan="8">{t("nogacha")}</td>
+                  <td colSpan="9">{t("nogacha")}</td>
                 </tr>
               )}
             </tbody>

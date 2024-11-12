@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-function LoginSucceedModal({ isOpen, setIsOpen }) {
+function SucceedModal({ isOpen, setIsOpen, text }) {
   const { t } = useTranslation();
 
   const closeModal = () => {
@@ -16,7 +16,7 @@ function LoginSucceedModal({ isOpen, setIsOpen }) {
     >
       <div className="bg-white p-3 rounded shadow-lg">
         <div className="flex justify-around items-center">
-          <h4 className="text-lg my-4 mx-8">{t("successLogin")}</h4>
+          <h4 className="text-lg my-4 mx-8">{text}</h4>
         </div>
         <div>
           <button
@@ -31,4 +31,4 @@ function LoginSucceedModal({ isOpen, setIsOpen }) {
   );
 }
 
-export default LoginSucceedModal;
+export default SucceedModal;

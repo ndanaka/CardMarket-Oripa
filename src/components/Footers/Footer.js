@@ -30,7 +30,7 @@ const Footer = () => {
           <div className="py-1 px-3 hover:cursor-pointer">
             <span
               className="text-white"
-              onClick={() => navigate("/auth/terms")}
+              onClick={() => navigate("/user/terms")}
             >
               {t("userterms")}
             </span>

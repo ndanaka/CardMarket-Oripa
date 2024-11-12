@@ -11,6 +11,7 @@ import usePersistedUser from "../../store/usePersistedUser";
 import { bgColorAtom } from "../../store/theme";
 
 import Spinner from "../../components/Others/Spinner";
+import SucceedModal from "../../components/Modals/SucceedModal";
 
 function ChangeShippingAddress() {
   const { t } = useTranslation();
@@ -21,6 +22,8 @@ function ChangeShippingAddress() {
   const [pickedShipAddress, setPickedShipAddress] = useState();
   const [shipAddressData, setShipAddressData] = useState();
   const [spinFlag, setSpinFlag] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     setAuthToken();
@@ -42,20 +45,21 @@ function ChangeShippingAddress() {
     }
   };
 
-  const saveShipAddress = async () => {
+  const setShipAddress = async () => {
     try {
       if (!pickedShipAddress) {
         return showToast(t("selectShipAddr"), "error");
       }
       setSpinFlag(true);
-      const res = await api.post("user/add_shipping_address", {
+      const res = await api.post("user/set_shipping_address", {
         userId: user?._id,
-        shipAddress: pickedShipAddress,
+        shipAddressId: pickedShipAddress,
       });
       setSpinFlag(false);
 
       if (res.data.status === 1) {
-        showToast(t("successSet"), "success");
+        setIsOpen(true);
+        setText(t("successSet"));
       } else {
         showToast(t("failedSet"), "error");
       }
@@ -88,7 +92,7 @@ function ChangeShippingAddress() {
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             <i
-              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              className="fa fa-chevron-left mt-2 float-left items-center cursor-pointer"
               onClick={() => navigate(-1)}
             ></i>
             {t("setShippingAddress")}
@@ -120,11 +124,44 @@ function ChangeShippingAddress() {
                   </label>
                   <div className="flex flex-col px-2 text-gray-600">
                     <span className="font-bold">
-                      {data.firstName} {data.lastName}
+                      {data.lastName} {data.firstName}
                     </span>
                     <span>
-                      {data.postCode} {data.prefecture} {data.address}{" "}
-                      {data.building}
+                      {(data.country !== undefined
+                        ? t(data.country + ", ")
+                        : "") +
+                        (data.prefecture !== undefined
+                          ? data.prefecture + ", "
+                          : "") +
+                        (data.address !== undefined
+                          ? data.address + ", "
+                          : "") +
+                        (data.addressLine1 !== undefined
+                          ? data.addressLine1
+                          : "") +
+                        (data.building !== undefined
+                          ? data.building + ", "
+                          : "") +
+                        (data.districtCity !== undefined
+                          ? data.districtCity
+                          : "") +
+                        (data.cityTown !== undefined
+                          ? data.cityTown + ", "
+                          : "") +
+                        (data.cityDistrict !== undefined
+                          ? data.cityDistrict
+                          : "") +
+                        (data.islandCity !== undefined
+                          ? data.islandCity + ", "
+                          : "") +
+                        (data.suburbCity !== undefined
+                          ? data.suburbCity + ", "
+                          : "") +
+                        (data.state !== undefined ? data.state + ", " : "") +
+                        (data.stateProvinceRegion !== undefined
+                          ? data.stateProvinceRegion + ", "
+                          : "") +
+                        (data.zipCode !== undefined ? data.zipCode + ", " : "")}
                     </span>
                   </div>
                 </div>
@@ -156,20 +193,21 @@ function ChangeShippingAddress() {
         })}
         <div className="w-full xxsm:w-2/3 flex flex-col justify-center mx-auto my-4">
           <button
-            className="bg-gray-600 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-gray-700 text-white outline-none"
-            onClick={saveShipAddress}
-          >
-            {t("decide")}
-          </button>
-          <button
             className="hover:opacity-50 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-red-800 text-white outline-none"
             onClick={() => navigate("/user/addShippingAddress")}
             style={{ backgroundColor: bgColor }}
           >
             {"+ " + t("addAddress")}
           </button>
+          <button
+            className="bg-gray-600 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-gray-700 text-white outline-none"
+            onClick={setShipAddress}
+          >
+            {t("decide")}
+          </button>
         </div>
       </div>
+      <SucceedModal isOpen={isOpen} setIsOpen={setIsOpen} text={text} />
     </div>
   );
 }

@@ -69,7 +69,7 @@ function UserDetail() {
         <hr className="my-2"></hr>
         <div className="flex flex-wrap justify-between">
           <div className="w-full">
-            <GroupHeader text="pointHistory" />
+            <GroupHeader text="pointsHistory" />
             <table className="w-full">
               <thead className="bg-admin_theme_color font-bold text-gray-200">
                 <tr>

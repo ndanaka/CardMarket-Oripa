@@ -13,7 +13,7 @@ import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ImageCarousel from "../components/Others/ImageCarousel";
 import NotEnoughPoints from "../components/Modals/NotEnoughPoints";
-import LoginSucceedModal from "../components/Modals/LoginSucceedModal";
+import SucceedModal from "../components/Modals/SucceedModal";
 import Spinner from "../components/Others/Spinner";
 
 import usePersistedUser from "../store/usePersistedUser";
@@ -484,7 +484,7 @@ const Index = () => {
                                   {t("drawTen")}
                                 </button>
                               )}
-                              {gachaNum !== 1 && (
+                              {data.type === 2 && gachaNum !== 1 && (
                                 <button
                                   className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
                                   onClick={() => {
@@ -537,7 +537,11 @@ const Index = () => {
         setIsOpen={setIsOpenPointModal}
         bgColor={bgColor}
       />
-      <LoginSucceedModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <SucceedModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        text={t("successLogin")}
+      />
     </div>
   );
 };

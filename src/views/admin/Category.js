@@ -131,7 +131,7 @@ function Category() {
       <div className="flex flex-wrap">
         <div className="flex flex-col w-full md:w-[35%] lg:w-[25%] border-1 h-fit">
           <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
-            {t("category") + " " + t("add")}
+            {t("add") + " " + t("category")}
           </div>
           <div className="flex flex-col px-2 py-1">
             <label htmlFor="jpName" className="text-gray-700 px-1">
@@ -213,6 +213,9 @@ function Category() {
           </div>
         </div>
         <div className="flex flex-wrap w-full md:w-[65%] lg:w-[75%] h-fit overflow-auto">
+          <div className="border-1 py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+            {t("category") + " " + t("list")}
+          </div>
           <table className="w-full">
             <thead className="bg-admin_theme_color font-bold text-gray-200">
               <tr>

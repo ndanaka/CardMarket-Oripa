@@ -378,8 +378,8 @@ const Prize = () => {
               ""
             )}
           </div>
-          <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
-            {t("currentPrizeList")}
+          <div className="border-1 py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+            {t("prize") + " " + t("list")}
           </div>
           <PrizeList
             trigger={trigger}
