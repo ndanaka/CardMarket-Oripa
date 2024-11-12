@@ -13,7 +13,7 @@ import Spinner from "../../components/Others/Spinner";
 import usePersistedUser from "../../store/usePersistedUser";
 import { bgColorAtom } from "../../store/theme";
 
-const Login = () => {
+const AdminLogin = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [, setUser] = usePersistedUser();
@@ -54,7 +54,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     try {
       setSpinFlag(true);
-      const res = await api.post("/user/login", formData);
+      const res = await api.post("/admin/login", formData);
       setSpinFlag(false);
 
       if (res.data.status === 1) {
@@ -86,7 +86,7 @@ const Login = () => {
           {spinFlag && <Spinner />}
           <div className="p-lg-4 p-2">
             <div className="text-center mb-5 mt-3 font-bold text-2xl">
-              {t("sign_in")}
+              {t("admin") + " " + t("sign_in")}
             </div>
             <Form role="form">
               <FormGroup>
@@ -162,26 +162,6 @@ const Login = () => {
                 >
                   {t("sign_in")}
                 </button>
-                <button
-                  className="text-light"
-                  onClick={() => navigate("/auth/forgotPass")}
-                >
-                  <div className="text-md my-3 text-blue-500 hover:text-blue-700 py-1">
-                    {t("forgot_pass")}
-                  </div>
-                </button>
-                <hr className="my-1"></hr>
-                <div className="flex flex-col mt-3">
-                  <span className="text-lg">{t("notHaveAccount")}</span>
-                  <button
-                    className="text-light cursor-pointer"
-                    onClick={() => navigate("/auth/register")}
-                  >
-                    <div className="text-lg my-3 text-blue-500 hover:text-blue-700">
-                      {t("sign_up_btn")}
-                    </div>
-                  </button>
-                </div>
               </div>
             </Form>
           </div>
@@ -191,4 +171,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

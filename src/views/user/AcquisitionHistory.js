@@ -9,6 +9,10 @@ import { showToast } from "../../utils/toastUtil";
 import formatDate from "../../utils/formatDate";
 
 import PrizeCard from "../../components/Others/PrizeCard";
+import NavBar from "../../components/Aquicision/NavBar";
+import NotSelected from "../../components/Aquicision/NotSelected";
+import Awaiting from "../../components/Aquicision/Awaiting";
+import Shipped from "../../components/Aquicision/Shipped";
 import Spinner from "../../components/Others/Spinner";
 
 import usePersistedUser from "../../store/usePersistedUser";
@@ -20,10 +24,11 @@ function AcquisitionHistory() {
   const [user, setUser] = usePersistedUser();
   const [bgColor] = useAtom(bgColorAtom);
 
+  const [spinFlag, setSpinFlag] = useState(false);
+  const [navItem, setNavItem] = useState("notSelected");
+  const [flag, setFlag] = useState(false);
   const [pendingDelievers, setPendingDelievers] = useState([]);
   const [delieveringDelievers, setDelieveringDelievers] = useState([]);
-  const [flag, setFlag] = useState(false);
-  const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     setAuthToken();
@@ -95,106 +100,24 @@ function AcquisitionHistory() {
     <div className="flex flex-grow">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-4/6 p-3 mx-auto mt-14">
-        <div className="w-full py-2">
-          <div className="text-center text-xl text-slate-600">
-            <i
-              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
-              onClick={() => navigate(-1)}
-            ></i>
-            {t("my") + " " + t("delivery")}
-          </div>
-          <hr className="w-full my-2"></hr>
+        <div className="text-center text-xl text-slate-600 py-2">
+          <i
+            className="fa fa-chevron-left mt-2 float-left cursor-pointer"
+            onClick={() => navigate(-1)}
+          ></i>
+          {t("acquisitionHistory")}
+          <hr className="w-full mt-2"></hr>
         </div>
-        <div className="w-full w-full">
-          <p className="text-center text-xl text-base font-Lexend font-bold text-gray-500">
-            {t("Pending") + " " + t("cards")} ({t("returnable")})
-          </p>
-          {pendingDelievers?.length > 0 ? (
-            pendingDelievers.map((data, i) => {
-              return (
-                <div key={i} className="my-1 pb-3">
-                  <div className="text-center">{data.gacha_name}</div>
-                  <div className="text-center">
-                    {formatDate(data.gacha_date)}
-                  </div>
-                  <div className="mt-2 mr-2 flex flex-wrap justify-center items-stretch">
-                    {data.prizes?.length > 0
-                      ? data.prizes.map((card, i) => (
-                          <div key={i} className="group relative">
-                            <PrizeCard img_url={card.img_url} />
-                            <div
-                              className="hover:opacity-90 w-[calc(100%-8px)] hidden rounded-b-md absolute bottom-1 left-1 group-hover:block transition-all duration-300 text-base text-white text-center cursor-pointer z-3 animate-[displayEase_linear]"
-                              style={{ backgroundColor: bgColor }}
-                            >
-                              {flag === true ? (
-                                <div className="flex justify-center">
-                                  <i
-                                    className="fa fa-check text-2xl font-extrabold text-green-600 px-2"
-                                    onClick={() =>
-                                      returnPrize(data._id, card._id)
-                                    }
-                                  ></i>
-                                  <i
-                                    className="fa fa-close text-2xl font-extrablod text-red-600 px-2"
-                                    onClick={() => setFlag(false)}
-                                  ></i>
-                                </div>
-                              ) : (
-                                <div className="py-1">
-                                  <span onClick={() => setFlag(true)}>
-                                    {t("returnCard")}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        ))
-                      : null}
-                  </div>{" "}
-                  {i === pendingDelievers.length - 1 ? (
-                    ""
-                  ) : (
-                    <hr className="w-full my-2"></hr>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <div className="text-lg text-gray-600 text-center">
-              {t("noDeliveringCards")}
-            </div>
-          )}
-        </div>
-        <hr className="w-full my-2"></hr>
-        <div className="w-full w-full">
-          <p className="text-center text-xl text-base font-Lexend font-bold text-gray-500">
-            {t("Delivering") + " " + t("cards")}
-          </p>
-          {delieveringDelievers?.length > 0 ? (
-            delieveringDelievers.map((data, i) => {
-              return (
-                <div key={i} className="my-1 pb-3">
-                  <div className="text-center">{data.gacha_name}</div>
-                  <div className="text-center">
-                    {formatDate(data.gacha_date)}
-                  </div>
-                  <div className="mt-2 mr-2 flex flex-wrap justify-center items-stretch">
-                    {data.prizes?.length > 0
-                      ? data.prizes.map((card) => (
-                          <PrizeCard key={card._id} img_url={card.img_url} />
-                        ))
-                      : null}
-                  </div>
-                  <hr className="w-full my-2"></hr>
-                </div>
-              );
-            })
-          ) : (
-            <div className="text-lg text-gray-600 text-center">
-              {t("noPendingCards")}
-            </div>
-          )}
-        </div>
+        <NavBar setNavItem={setNavItem} navItem={navItem} />
+        {navItem === "notSelected" ? (
+          <NotSelected />
+        ) : navItem === "awaiting" ? (
+          <Awaiting />
+        ) : navItem === "shipped" ? (
+          <Shipped />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

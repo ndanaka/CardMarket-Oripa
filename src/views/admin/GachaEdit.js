@@ -207,6 +207,7 @@ const GachaEdit = () => {
             <tr>
               <td>{t("category")}</td>
               <td>{t("image")}</td>
+              <td>{t("type")}</td>
               <td>{t("name")}</td>
               <td>{t("price")}</td>
               <td>{t("kind")}</td>
@@ -222,9 +223,10 @@ const GachaEdit = () => {
                   <img
                     src={process.env.REACT_APP_SERVER_ADDRESS + gacha.img_url}
                     alt="img"
-                    className="m-auto w-[100px] h-auto"
+                    className="m-auto h-[70px] w-auto"
                   />
                 </td>
+                <td>{t("gacha") + " " + gacha?.type}</td>
                 <td>{gacha?.name}</td>
                 <td>{formatPrice(gacha?.price)}pt</td>
                 <td>

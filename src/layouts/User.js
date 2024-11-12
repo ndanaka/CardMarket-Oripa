@@ -86,6 +86,7 @@ const User = (props) => {
           prop.path !== "/index" &&
           prop.path !== "/gachaDetail" &&
           prop.path !== "/blog" &&
+          prop.path !== "/terms" &&
           !token
         )
           return (

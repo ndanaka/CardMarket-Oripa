@@ -322,7 +322,7 @@ function GachaDetail() {
                       {t("drawTen")}
                     </button>
                   )}
-                  {gachaNum !== 1 && (
+                  {gacha.type === 2 && gachaNum !== 1 && (
                     <button
                       className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
                       onClick={() => {

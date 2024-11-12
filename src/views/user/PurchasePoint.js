@@ -101,7 +101,7 @@ function PurchasePoint() {
           setWaiting(false);
           updateUserData();
           navigate("user/index");
-        }, 5000);
+        }, 4000);
       } else showToast(t(res.data.msg), "error");
     } catch (error) {
       showToast(error, "error");
@@ -205,7 +205,7 @@ function PurchasePoint() {
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             <i
-              className="fa fa-chevron-left mt-1 float-left items-center cursor-pointer"
+              className="fa fa-chevron-left mt-2 float-left items-center cursor-pointer"
               onClick={() => navigate(-1)}
             ></i>
             {t("purchasePoints")}

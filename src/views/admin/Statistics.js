@@ -8,7 +8,7 @@ import formatPrice from "../../utils/formatPrice";
 import PageHeader from "../../components/Forms/PageHeader";
 import PieChart from "../../components/Charts/PieChart";
 import LineChart from "../../components/Charts/LineChart";
-import LoginSucceedModal from "../../components/Modals/LoginSucceedModal";
+import SucceedModal from "../../components/Modals/SucceedModal";
 import Spinner from "../../components/Others/Spinner";
 
 const Statistics = () => {
@@ -240,7 +240,11 @@ const Statistics = () => {
         </div>
       </div>
 
-      <LoginSucceedModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <SucceedModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        text={t("successLogin")}
+      />
     </div>
   );
 };

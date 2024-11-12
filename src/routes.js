@@ -12,6 +12,7 @@ import UseTerms from "./views/admin/UseTerms.js";
 import Administrators from "./views/admin/Administrators.js";
 import UserDetail from "./views/admin/UserDetail.js";
 import Delivering from "./views/admin/Delivering.js";
+import AdminLogin from "./views/auth/AdminLogin.js";
 import Login from "./views/auth/Login.js";
 import Register from "./views/auth/Register.js";
 import Profile from "./views/user/Profile.js";
@@ -96,6 +97,13 @@ var routes = [
     name: "My Card",
     icon: "ni ni-single-02 text-yellow",
     component: <GachaDetail />,
+    layout: "/user",
+  },
+  {
+    path: "/terms",
+    name: "terms",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Terms />,
     layout: "/user",
   },
   {
@@ -197,6 +205,13 @@ var routes = [
     layout: "/admin",
   },
   {
+    path: "/admin-amlkh741hgw45q88jajg223qw-login",
+    name: "Admin Login",
+    icon: "ni ni-key-25 text-info",
+    component: <AdminLogin />,
+    layout: "/auth",
+  },
+  {
     path: "/login",
     name: "Login",
     icon: "ni ni-key-25 text-info",
@@ -215,13 +230,6 @@ var routes = [
     name: "lisence",
     icon: "ni ni-circle-08 text-pink",
     component: <MitLiscence />,
-    layout: "/auth",
-  },
-  {
-    path: "/terms",
-    name: "terms",
-    icon: "ni ni-circle-08 text-pink",
-    component: <Terms />,
     layout: "/auth",
   },
 ];

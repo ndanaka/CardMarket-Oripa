@@ -151,7 +151,7 @@ function Carousel() {
       <div className="flex flex-wrap">
         <div className="flex flex-col w-full md:w-[35%] border-1 mb-2 h-fit">
           <div className="py-2 bg-admin_theme_color text-gray-200 text-center">
-            {t("carousel") + " " + t("add")}
+            {t("add") + " " + t("carousel")}
           </div>
           <div className="flex flex-col justify-between items-center p-2 w-full">
             <label
@@ -208,6 +208,9 @@ function Carousel() {
           </div>
         </div>
         <div className="overflow-auto flex flex-wrap w-full md:w-[65%] h-fit">
+          <div className="border-1 py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+            {t("carousel") + " " + t("list")}
+          </div>
           <table className="w-full">
             <thead>
               <tr className="bg-admin_theme_color font-bold text-gray-200">
