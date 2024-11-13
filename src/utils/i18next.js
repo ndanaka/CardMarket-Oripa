@@ -1998,6 +1998,8 @@ i18n.use(initReactI18next).init({
         ChiayiCounty: "Chiayi County",
         requiredKatakana: "Please enter in Katakana",
         invalideZipCode: "Please enter 7-digit number",
+        trackingNumber: "Tracking Number",
+        deliveryCompany: "Delivery Company",
       },
     },
   },

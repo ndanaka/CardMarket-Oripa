@@ -250,7 +250,7 @@ function GachaDetail() {
           <img
             src={process.env.REACT_APP_SERVER_ADDRESS + gacha?.img_url}
             alt="gacha thumnail"
-            className="object-contain"
+            className="object-contain w-full"
           />
         </div>
         <div

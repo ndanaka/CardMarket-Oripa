@@ -249,7 +249,25 @@ const GachaEdit = () => {
       </div>
       <hr className="my-2" />
 
-      <div className="w-full">
+      <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
+        {t("currentPrizeList")}
+      </div>
+      <div className="py-2 border-1 text-center w-full">
+        {firstPrizes.length > 0 && drawPrizesByKind(firstPrizes, "first")}
+        {secondPrizes.length > 0 && drawPrizesByKind(secondPrizes, "second")}
+        {thirdPrizes.length > 0 && drawPrizesByKind(thirdPrizes, "third")}
+        {fourthPrizes.length > 0 && drawPrizesByKind(fourthPrizes, "fourth")}
+        {extraPrizes.length > 0 && drawPrizesByKind(extraPrizes, "extra_prize")}
+        {roundPrizes.length > 0 &&
+          drawPrizesByKind(roundPrizes, "round_number_prize")}
+        {lastPrizes.length > 0 && drawPrizesByKind(lastPrizes, "last_prize")}
+
+        {gachaNum === 0 && (
+          <div className="py-2 text-center">{t("noprize")}</div>
+        )}
+      </div>
+
+      <div className="w-full mt-2">
         <div className="text-lg text-center font-bold">{t("load_prizes")}</div>
         <div className="flex justify-between my-2 overflow-auto">
           <button
@@ -311,24 +329,6 @@ const GachaEdit = () => {
         ) : null}
       </div>
       <hr className="my-2" />
-
-      <div className="py-2 bg-admin_theme_color text-gray-200 text-center w-full">
-        {t("currentPrizeList")}
-      </div>
-      <div className="py-2 border-1 text-center w-full">
-        {firstPrizes.length > 0 && drawPrizesByKind(firstPrizes, "first")}
-        {secondPrizes.length > 0 && drawPrizesByKind(secondPrizes, "second")}
-        {thirdPrizes.length > 0 && drawPrizesByKind(thirdPrizes, "third")}
-        {fourthPrizes.length > 0 && drawPrizesByKind(fourthPrizes, "fourth")}
-        {extraPrizes.length > 0 && drawPrizesByKind(extraPrizes, "extra_prize")}
-        {roundPrizes.length > 0 &&
-          drawPrizesByKind(roundPrizes, "round_number_prize")}
-        {lastPrizes.length > 0 && drawPrizesByKind(lastPrizes, "last_prize")}
-
-        {gachaNum === 0 && (
-          <div className="py-2 text-center">{t("noprize")}</div>
-        )}
-      </div>
     </div>
   );
 };

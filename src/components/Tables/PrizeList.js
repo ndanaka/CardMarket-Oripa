@@ -90,9 +90,10 @@ function PrizeList({
     setFormData({
       id: prizes[index]._id,
       name: prizes[index].name,
-      rarity: prizes[index].rarity,
       cashBack: prizes[index].cashback,
       kind: prizes[index].kind,
+      trackingNumber: prizes[index].trackingNumber,
+      deliveryCompany: prizes[index].deliveryCompany,
     });
     setCuFlag(0);
     setImgUrl(process.env.REACT_APP_SERVER_ADDRESS + prizes[index].img_url);
@@ -159,9 +160,10 @@ function PrizeList({
             <th>{t("no")}</th>
             <th>{t("image")}</th>
             <th>{t("name")}</th>
-            <th>{t("rarity")}</th>
             <th>{t("cashback")}</th>
             <th>{t("kind")}</th>
+            <th>{t("trackingNumber")}</th>
+            <th>{t("deliveryCompany")}</th>
             <th>{t("action")}</th>
           </tr>
         </thead>
@@ -188,9 +190,10 @@ function PrizeList({
                     />
                   </td>
                   <td>{data.name}</td>
-                  <td>{data.rarity}</td>
                   <td>{formatPrice(data.cashback)}pt</td>
                   <td>{t(data.kind)}</td>
+                  <td>{data.trackingNumber}</td>
+                  <td>{data.deliveryCompany}</td>
                   <td>
                     {role === "gacha" ? (
                       <button
@@ -221,7 +224,7 @@ function PrizeList({
             })
           ) : (
             <tr>
-              <td colSpan="7">{t("noprize")}</td>
+              <td colSpan="8">{t("noprize")}</td>
             </tr>
           )}
         </tbody>

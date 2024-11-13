@@ -34,10 +34,11 @@ const Prize = () => {
   const [formData, setFormData] = useState({
     id: "",
     name: "",
-    rarity: 0,
     cashBack: 0,
     file: null,
     kind: "first",
+    trackingNumber: "",
+    deliveryCompany: "",
   });
 
   const handleFileInputChange = (event) => {
@@ -70,19 +71,21 @@ const Prize = () => {
       setAuthToken();
       setMultipart();
 
-      if (formData.name.trim() === "") {
-        showToast(t("requiredName"), "error");
-      } else if (parseFloat(formData.rarity) <= 0) {
-        showToast(t("rarity") + " " + t("greaterThan"), "error");
-      } else if (parseInt(formData.cashBack) <= 0) {
-        showToast(t("cashback") + " " + t("greaterThan"), "error");
-      } else if (
+      if (
         cuflag === 1 &&
         (formData.file === NaN ||
           formData.file === null ||
           formData.file === undefined)
       ) {
         showToast(t("selectImage"), "error");
+      } else if (formData.name.trim() === "") {
+        showToast(t("requiredName"), "error");
+      } else if (parseInt(formData.cashBack) <= 0) {
+        showToast(t("cashback") + " " + t("greaterThan"), "error");
+      } else if (formData.trackingNumber.trim() === "") {
+        showToast(t("trackingNumber") + " " + t("isRequired"), "error");
+      } else if (formData.deliveryCompany.trim() === "") {
+        showToast(t("deliveryCompany") + " " + t("isRequired"), "error");
       } else {
         setSpinFlag(true);
         const res = await api.post("/admin/prize", formData);
@@ -96,10 +99,11 @@ const Prize = () => {
             ...formData,
             id: "",
             name: "",
-            rarity: 0,
             cashBack: 0,
             file: null,
             kind: "first",
+            trackingNumber: "",
+            deliveryCompany: "",
           });
           removeMultipart();
           showToast(t(res.data.msg), "success");
@@ -222,23 +226,11 @@ const Prize = () => {
               ></input>
             </div>
             <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
-              <label htmlFor="rarity" className="text-gray-700">
-                {t("rarity")}
-              </label>
-              <input
-                name="rarity"
-                className="p-1 w-full form-control"
-                onChange={changeFormData}
-                value={formData.rarity}
-                id="rarity"
-                autoComplete="name"
-              ></input>
-            </div>
-            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
               <label htmlFor="cashBack" className="text-gray-700">
                 {t("cashback")} (pt)
               </label>
               <input
+                type="number"
                 name="cashBack"
                 className="p-1 w-full form-control"
                 onChange={changeFormData}
@@ -268,6 +260,32 @@ const Prize = () => {
                 })}
               </select>
             </div>
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="trackingNumber" className="text-gray-700">
+                {t("trackingNumber")}
+              </label>
+              <input
+                name="trackingNumber"
+                className="p-1 w-full form-control"
+                onChange={changeFormData}
+                value={formData.trackingNumber}
+                id="trackingNumber"
+                autoComplete="name"
+              />
+            </div>
+            <div className="flex flex-wrap justify-between items-center my-1 px-2 w-full">
+              <label htmlFor="deliveryCompany" className="text-gray-700">
+                {t("deliveryCompany")}
+              </label>
+              <input
+                name="deliveryCompany"
+                className="p-1 w-full form-control"
+                onChange={changeFormData}
+                value={formData.deliveryCompany}
+                id="deliveryCompany"
+                autoComplete="name"
+              />
+            </div>
             <div className="flex flex-wrap justify-end">
               {cuflag ? (
                 <AgreeButton name={t("add")} onClick={addPrize} />
@@ -282,10 +300,11 @@ const Prize = () => {
                         ...formData,
                         id: "",
                         name: "",
-                        rarity: 0,
                         cashBack: 0,
                         file: null,
                         kind: "first",
+                        trackingNumber: "",
+                        deliveryCompany: "",
                       });
                     }}
                   >
@@ -344,9 +363,10 @@ const Prize = () => {
                       <td>{t("no")}</td>
                       <td>{t("image")}</td>
                       <td>{t("name")}</td>
-                      <td>{t("rarity")}</td>
                       <td>{t("cashback")}</td>
                       <td>{t("kind")}</td>
+                      <td>{t("trackingNumber")}</td>
+                      <td>{t("deliveryComapny")}</td>
                     </tr>
                   </thead>
                   <tbody>
@@ -366,9 +386,10 @@ const Prize = () => {
                           ></img>
                         </td>
                         <td>{data.name}</td>
-                        <td>{data.rarity}</td>
                         <td>{formatPrice(data.cashback)}pt</td>
                         <td>{t(data.kind)}</td>
+                        <td>{data.trackingNumber}</td>
+                        <td>{data.deliveryCompany}</td>
                       </tr>
                     ))}
                   </tbody>
