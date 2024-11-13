@@ -1,7 +1,11 @@
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai";
+
+import { bgColorAtom } from "../../store/theme";
 
 function SucceedModal({ isOpen, setIsOpen, text }) {
   const { t } = useTranslation();
+  const [bgColor] = useAtom(bgColorAtom);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -20,8 +24,9 @@ function SucceedModal({ isOpen, setIsOpen, text }) {
         </div>
         <div>
           <button
-            className="mr-6 hover:opacity-50 bg-blue-700 text-white py-2 px-4 rounded w-full"
+            className="mr-6 hover:opacity-50 text-white py-2 px-4 rounded w-full"
             onClick={closeModal}
+            style={{ backgroundColor: bgColor }}
           >
             {t("ok")}
           </button>
