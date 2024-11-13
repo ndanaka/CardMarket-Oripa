@@ -447,8 +447,8 @@ function Gacha() {
                             alt="gacha thumnail"
                           />
                         </td>
-                        <td>{data.name}</td>
                         <td>{t("gacha") + " " + data.type}</td>
+                        <td>{data.name}</td>
                         <td>{formatPrice(data.price)}pt</td>
                         <td>{catName}</td>
                         <td>
