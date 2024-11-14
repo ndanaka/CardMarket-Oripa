@@ -213,7 +213,7 @@ function Rank() {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`${imgUrl ? "w-auto h-[250px]" : ""} object-cover`}
+              className={`cursor-pointer ${imgUrl ? "w-auto h-[250px]" : ""} object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
