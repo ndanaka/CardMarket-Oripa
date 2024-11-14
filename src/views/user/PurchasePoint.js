@@ -201,11 +201,11 @@ function PurchasePoint() {
     <div className="flex flex-grow">
       {spinFlag && <Spinner />}
       {waiting && <PuchaseSpinner />}
-      <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto mt-14">
+      <div className="w-full md:w-2/3 lg:w-1/2 p-3 mx-auto">
         <div className="w-full py-2">
           <div className="text-center text-xl text-slate-600">
             <i
-              className="fa fa-chevron-left mt-2 float-left items-center cursor-pointer"
+              className="fa fa-chevron-left mt-1.5 float-left items-center cursor-pointer"
               onClick={() => navigate(-1)}
             ></i>
             {t("purchasePoints")}
@@ -266,7 +266,7 @@ function PurchasePoint() {
                           </button>
                         </div>
                       </div>
-                      {points.length !== i + 1 && <hr className="py-1"></hr>}
+                      <hr className="py-1" />
                     </div>
                   ))
                 ) : (

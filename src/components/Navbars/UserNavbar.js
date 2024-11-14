@@ -62,7 +62,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
 
   return (
     <div
-      className={`w-full p-2 fixed max-h-[100px] z-20`}
+      className={`w-full py-2 fixed max-h-[100px] z-20`}
       style={{ backgroundColor: bgColor }}
     >
       <div className="w-full navbar-dark">

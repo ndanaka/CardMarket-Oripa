@@ -99,13 +99,13 @@ function AcquisitionHistory() {
   return (
     <div className="flex flex-grow">
       {spinFlag && <Spinner />}
-      <div className="w-full md:w-4/6 p-3 mx-auto mt-14">
-        <div className="text-center text-xl text-slate-600 py-2">
-          <i
-            className="fa fa-chevron-left mt-2 float-left cursor-pointer"
-            onClick={() => navigate(-1)}
-          ></i>
-          {t("acquisitionHistory")}
+      <div className="w-full md:w-4/6 p-3 mx-auto">
+        <div
+          className="text-start text-xl text-slate-600 py-2 cursor-pointer"
+          onClick={() => navigate(-1)}
+        >
+          <i className="fa fa-chevron-left m-1.5 float-left"></i>
+          {t("back")}
           <hr className="w-full mt-2"></hr>
         </div>
         <NavBar setNavItem={setNavItem} navItem={navItem} />

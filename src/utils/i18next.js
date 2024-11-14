@@ -415,6 +415,7 @@ i18n.use(initReactI18next).init({
         noData: "データなし",
         selectFile: "ファイルを選択してください",
         invalidMp4: ".mp4ファイルのみを選択してください。",
+        back: "戻る",
       },
     },
     ch1: {
@@ -821,6 +822,7 @@ i18n.use(initReactI18next).init({
         noData: "没有数据",
         selectFile: "请选择文件",
         invalidMp4: "仅选择 .mp4 文件",
+        back: "返回",
       },
     },
     ch2: {
@@ -1209,6 +1211,7 @@ i18n.use(initReactI18next).init({
         noData: "沒有資料",
         selectFile: "請選擇檔案",
         invalidMp4: "僅選擇 .mp4 檔案",
+        back: "返回",
       },
     },
     vn: {
@@ -1622,6 +1625,7 @@ i18n.use(initReactI18next).init({
         noData: "Không có dữ liệu",
         selectFile: "Vui lòng chọn tệp",
         invalidMp4: "Chỉ chọn tệp .mp4",
+        back: "Quay lại",
       },
     },
     en: {
@@ -2033,6 +2037,7 @@ i18n.use(initReactI18next).init({
         noData: "No data",
         selectFile: "Please select file",
         invalidMp4: "Only choose .mp4 file",
+        back: "Back",
       },
     },
   },

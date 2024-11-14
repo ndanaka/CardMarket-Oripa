@@ -227,7 +227,7 @@ function GachaDetail() {
     <div className="xxsm:mx-auto" ref={mainContent}>
       {spinFlag && <Spinner />}
       <div
-        className={`w-full xxsm:w-[500px] fixed top-0 transition-all duration-100 bg-gray-800 h-screen h-[calc(100vh-160px)] shadow-md shadow-gray-400 mt-[66px] mx-auto`}
+        className={`w-full xxsm:w-[500px] fixed top-0 transition-all duration-100 bg-gray-800 h-screen h-[calc(100vh-160px)] shadow-md shadow-gray-400 mt-16 mx-auto`}
         style={{
           filter: `blur(${blurLevel}px)`,
           transition: "filter 0.2s ease",
