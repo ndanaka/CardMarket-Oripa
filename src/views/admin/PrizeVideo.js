@@ -229,7 +229,7 @@ function PrizeVideo() {
                 prizeVideos.map((prizeVideo, i) => (
                   <tr key={prizeVideo._id} className="border-2">
                     <td>{i + 1}</td>
-                    <td>{prizeVideo.kind}</td>
+                    <td>{t(prizeVideo.kind)}</td>
                     <td>
                       <span
                         id={prizeVideo._id}
