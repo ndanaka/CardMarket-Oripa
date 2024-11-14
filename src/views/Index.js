@@ -246,9 +246,9 @@ const Index = () => {
         counts: counts,
       });
       setSpinFlag(false);
-      console.log(res.data.prizes);
 
       if (res.data.status === 1) {
+        console.log(res.data.prizes);
         showToast(t("drawnSuccess"), "success");
         updateUserData();
       } else {
