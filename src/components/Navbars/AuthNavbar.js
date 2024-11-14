@@ -12,7 +12,7 @@ const AuthNavbar = () => {
 
   return (
     <div
-      className="w-full p-2 fixed z-10 max-h-[100px] z-20"
+      className="w-full py-2 fixed max-h-[100px] z-20"
       style={{ backgroundColor: bgColor }}
     >
       <Navbar className="w-full navbar-dark">

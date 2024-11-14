@@ -120,18 +120,32 @@ const User = (props) => {
 
   return (
     <div className="flex flex-col h-auto min-h-screen">
-      <UserNavbar
-        {...props}
-        brandText={getBrandText(props?.location?.pathname)}
-        isOpenToggleMenu={isOpenToggleMenu}
-        setIsOpenToggleMenu={setIsOpenToggleMenu}
-      />
+      {location.pathname !== "/user/acquisitionHistory" &&
+        location.pathname !== "/user/changeShippingAddress" &&
+        location.pathname !== "/user/addShippingAddress" &&
+        location.pathname !== "/user/pointsHistory" &&
+        location.pathname !== "/user/profile" &&
+        location.pathname !== "/user/purchasePoint" && (
+          <UserNavbar
+            {...props}
+            brandText={getBrandText(props?.location?.pathname)}
+            isOpenToggleMenu={isOpenToggleMenu}
+            setIsOpenToggleMenu={setIsOpenToggleMenu}
+          />
+        )}
+
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/user/index" replace />} />
       </Routes>
       <ScrollToTop />
-      {location.pathname !== "/user/gachaDetail" && <Footer />}
+      {location.pathname !== "/user/gachaDetail" &&
+        location.pathname !== "/user/acquisitionHistory" &&
+        location.pathname !== "/user/changeShippingAddress" &&
+        location.pathname !== "/user/addShippingAddress" &&
+        location.pathname !== "/user/pointsHistory" &&
+        location.pathname !== "/user/profile" &&
+        location.pathname !== "/user/purchasePoint" && <Footer />}
     </div>
   );
 };
