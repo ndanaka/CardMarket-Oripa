@@ -8,7 +8,6 @@ import { setAuthToken } from "../utils/setHeader";
 import { showToast } from "../utils/toastUtil";
 import subCategories from "../utils/subCategories";
 
-import GachaModal from "../components/Modals/GachaModal";
 import Progressbar from "../components/Others/progressbar";
 import GachaPriceLabel from "../components/Others/GachaPriceLabel";
 import ImageCarousel from "../components/Others/ImageCarousel";
@@ -34,16 +33,12 @@ const Index = () => {
   const [filter, setFilter] = useState(["all"]);
   const [order, setOrder] = useState("recommended");
   const [isOpenPointModal, setIsOpenPointModal] = useState(false);
-  const [isOpenGachaModal, setIsOpenGachaModal] = useState(false);
-  const [selGacha, setSelGacha] = useState([0, 0]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [label, setLabel] = useState("");
-  const [totalNum, setTotalNum] = useState("");
+  const [isOpenLoggedModal, setIsOpenLoggedModal] = useState(false);
   const [spinFlag, setSpinFlag] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("loggedIn")) {
-      setIsOpen(true);
+      setIsOpenLoggedModal(true);
     }
 
     getCategory();
@@ -222,8 +217,8 @@ const Index = () => {
     setOrder(e.currentTarget.value);
   };
 
-  // check draw conditions
-  const drawGacha = (gacha, num, label, totalNum) => {
+  // draw gacha
+  const submitDrawGacha = async (gacha, counts) => {
     if (!user) {
       navigate("/auth/login");
       return;
@@ -234,30 +229,24 @@ const Index = () => {
       return;
     }
 
-    const totalPoints = gacha.price * (num === "all" ? totalNum : num);
+    const totalPoints =
+      gacha.price * (counts === "all" ? gacha.remain_prizes.length : counts);
     const remainPoints = user.point_remain;
     if (remainPoints < totalPoints) {
       setIsOpenPointModal(true);
       return;
     }
 
-    setSelGacha([gacha, num]);
-    setLabel(label);
-    setTotalNum(totalNum);
-    setIsOpenGachaModal(true);
-  };
-
-  // draw gacha
-  const submitDrawGacha = async () => {
     try {
       setAuthToken();
-      setIsOpenGachaModal(false);
 
+      setSpinFlag(true);
       const res = await api.post("/admin/gacha/draw_gacha", {
-        gachaId: selGacha[0]._id,
-        counts: selGacha[1],
+        gachaId: gacha._id,
+        counts: counts,
       });
-      console.log(res.data);
+      setSpinFlag(false);
+      console.log(res.data.prizes);
 
       if (res.data.status === 1) {
         showToast(t("drawnSuccess"), "success");
@@ -412,8 +401,6 @@ const Index = () => {
             </div>
           ) : (
             filteredGacha.map((data, i) => {
-              const gachaNum = data.remain_prizes.length;
-
               return (
                 <div
                   className="w-full xsm:w-[90%] xxsm:w-[70%] md:w-[50%] mx-auto p-2 p-1"
@@ -439,15 +426,22 @@ const Index = () => {
                         <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-0 text-center">
                           <GachaPriceLabel price={data.price} />
                           <Progressbar
-                            progress={(gachaNum / data.total_number) * 100}
-                            label={gachaNum + " / " + data.total_number}
+                            progress={
+                              (data.remain_prizes.length / data.total_number) *
+                              100
+                            }
+                            label={
+                              data.remain_prizes.length +
+                              " / " +
+                              data.total_number
+                            }
                             height={20}
                           />
                         </div>
                       </div>
                     </button>
                     <div className="w-full flex flex-wrap justify-center">
-                      {gachaNum === 0 ? (
+                      {data.remain_prizes.length === 0 ? (
                         <button
                           className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
                           disabled={true}
@@ -462,7 +456,7 @@ const Index = () => {
                               backgroundColor: bgColor,
                             }}
                             onClick={() => {
-                              drawGacha(data, 1, t("drawOne"), gachaNum);
+                              submitDrawGacha(data, 1);
                             }}
                           >
                             {t("drawOne")}
@@ -471,11 +465,11 @@ const Index = () => {
                             (item) => item.value === "once_per_day"
                           ) ? (
                             <>
-                              {gachaNum >= 10 && (
+                              {data.remain_prizes.length >= 10 && (
                                 <button
                                   className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
                                   onClick={() => {
-                                    drawGacha(data, 10, t("drawTen"), gachaNum);
+                                    submitDrawGacha(data, 10);
                                   }}
                                   style={{
                                     backgroundColor: bgColor,
@@ -484,24 +478,20 @@ const Index = () => {
                                   {t("drawTen")}
                                 </button>
                               )}
-                              {data.type === 2 && gachaNum !== 1 && (
-                                <button
-                                  className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
-                                  onClick={() => {
-                                    drawGacha(
-                                      data,
-                                      "all",
-                                      t("drawAll"),
-                                      gachaNum
-                                    );
-                                  }}
-                                  style={{
-                                    backgroundColor: bgColor,
-                                  }}
-                                >
-                                  {t("drawAll")}
-                                </button>
-                              )}
+                              {data.type === 2 &&
+                                data.remain_prizes.length !== 1 && (
+                                  <button
+                                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
+                                    onClick={() => {
+                                      submitDrawGacha(data, "all");
+                                    }}
+                                    style={{
+                                      backgroundColor: bgColor,
+                                    }}
+                                  >
+                                    {t("drawAll")}
+                                  </button>
+                                )}
                             </>
                           ) : (
                             ""
@@ -516,19 +506,6 @@ const Index = () => {
           )}
         </div>
       </div>
-      {selGacha?.length > 0 ? (
-        <GachaModal
-          label={label}
-          gachaName={selGacha[0].name}
-          price={selGacha[0].price}
-          draws={selGacha[1]}
-          totalNum={totalNum}
-          onDraw={submitDrawGacha}
-          isOpen={isOpenGachaModal}
-          setIsOpen={setIsOpenGachaModal}
-          bgColor={bgColor}
-        />
-      ) : null}
       <NotEnoughPoints
         headerText={t("noEnoughPoints")}
         bodyText={t("noEnoughPointsDesc")}
@@ -538,8 +515,8 @@ const Index = () => {
         bgColor={bgColor}
       />
       <SucceedModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isOpenLoggedModal}
+        setIsOpen={setIsOpenLoggedModal}
         text={t("successLogin")}
       />
     </div>

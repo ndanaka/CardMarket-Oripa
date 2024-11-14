@@ -3,6 +3,7 @@ import MitLiscence from "./views/auth/MitLiscence.js";
 import Terms from "./views/auth/Terms.js";
 import Category from "./views/admin/Category.js";
 import Prize from "./views/admin/Prize.js";
+import PrizeVideo from "./views/admin/PrizeVideo.js";
 import Statistics from "./views/admin/Statistics.js";
 import User from "./views/admin/User.js";
 import Gacha from "./views/admin/Gacha.js";
@@ -167,6 +168,13 @@ var routes = [
     name: "prize",
     icon: "fa fa-gift",
     component: <Prize />,
+    layout: "/admin",
+  },
+  {
+    path: "/prizeVideo",
+    name: "prizeVideo",
+    icon: "fa fa-film",
+    component: <PrizeVideo />,
     layout: "/admin",
   },
   {

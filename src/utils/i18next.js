@@ -408,6 +408,8 @@ i18n.use(initReactI18next).init({
         selectProducts: "配送商品を選択",
         requiredKatakana: "カタカナで入力してください",
         invalideZipCode: "7桁の数字を入力してください",
+        trackingNumber: "追跡番号",
+        deliveryCompany: "配送会社",
       },
     },
     ch1: {
@@ -807,6 +809,8 @@ i18n.use(initReactI18next).init({
         selectProducts: "选择运输产品",
         requiredKatakana: "请用片假名输入",
         invalideZipCode: "请输入7位数字",
+        trackingNumber: "追踪号码",
+        deliveryCompany: "物流公司",
       },
     },
     ch2: {
@@ -1188,6 +1192,8 @@ i18n.use(initReactI18next).init({
         selectProducts: "選擇運輸產品",
         requiredKatakana: "請用片假名輸入",
         invalideZipCode: "請輸入7位數字",
+        trackingNumber: "追蹤號碼",
+        deliveryCompany: "物流公司",
       },
     },
     vn: {
@@ -1594,6 +1600,8 @@ i18n.use(initReactI18next).init({
         selectProducts: "Chọn sản phẩm vận chuyển",
         requiredKatakana: "Vui lòng nhập bằng Katakana",
         invalideZipCode: "Vui lòng nhập số 7 chữ số",
+        trackingNumber: "Số theo dõi",
+        deliveryCompany: "Công ty giao hàng",
       },
     },
     en: {
@@ -2000,6 +2008,10 @@ i18n.use(initReactI18next).init({
         invalideZipCode: "Please enter 7-digit number",
         trackingNumber: "Tracking Number",
         deliveryCompany: "Delivery Company",
+        prizeVideo: "Prize Video",
+        video: "Video",
+        noData: "No data",
+        selectFile: "Please select file",
       },
     },
   },
