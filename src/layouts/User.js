@@ -16,7 +16,7 @@ import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
-import ScrollToTop from "../components/Others/ScrollTop.js";
+// import ScrollToTop from "../components/Others/ScrollTop.js";
 import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 import usePersistedUser from "../store/usePersistedUser.js";
@@ -125,7 +125,10 @@ const User = (props) => {
         location.pathname !== "/user/addShippingAddress" &&
         location.pathname !== "/user/pointsHistory" &&
         location.pathname !== "/user/profile" &&
-        location.pathname !== "/user/purchasePoint" && (
+        location.pathname !== "/user/purchasePoint" &&
+        location.pathname !== "/user/showDrawedPrizes" &&
+        location.pathname !== "/user/decideShip" &&
+        location.pathname !== "/user/redrawGacha" && (
           <UserNavbar
             {...props}
             brandText={getBrandText(props?.location?.pathname)}
@@ -138,14 +141,17 @@ const User = (props) => {
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/user/index" replace />} />
       </Routes>
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       {location.pathname !== "/user/gachaDetail" &&
         location.pathname !== "/user/acquisitionHistory" &&
         location.pathname !== "/user/changeShippingAddress" &&
         location.pathname !== "/user/addShippingAddress" &&
         location.pathname !== "/user/pointsHistory" &&
         location.pathname !== "/user/profile" &&
-        location.pathname !== "/user/purchasePoint" && <Footer />}
+        location.pathname !== "/user/purchasePoint" &&
+        location.pathname !== "/user/showDrawedPrizes" &&
+        location.pathname !== "/user/decideShip" &&
+        location.pathname !== "/user/redrawGacha" && <Footer />}
     </div>
   );
 };

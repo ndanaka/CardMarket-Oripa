@@ -101,11 +101,14 @@ function PrizeVideo() {
 
         if (res.data.status === 1) {
           showToast(t("successAdded"), "success");
-          handleCancel();
-          getPrizeVideos();
+        } else if (res.data.status === 2) {
+          showToast(t("successUpdated"), "success");
         } else {
           showToast(t(res.data.msg), "error");
         }
+
+        handleCancel();
+        getPrizeVideos();
       }
     } catch (error) {
       showToast(t("failedReq"), "error");
@@ -132,7 +135,7 @@ function PrizeVideo() {
 
   const handleCancel = () => {
     fileInputRef.current.value = null;
-    setFormData({ id: "", kind: "", file: null });
+    setFormData({ id: "", kind: "first", file: null });
     setCuFlag(1);
     removeMultipart();
   };

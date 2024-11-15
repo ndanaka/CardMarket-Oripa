@@ -81,7 +81,8 @@ const Index = () => {
       case "popularity":
         filteredGachas?.sort(
           (a, b) =>
-            Number(b.poped_prizes.length) - Number(a.poped_prizes.length)
+            Number(b.total_number - b.remain_prizes.length) -
+            Number(a.total_number - a.remain_prizes.length)
         );
         break;
 
@@ -248,9 +249,11 @@ const Index = () => {
       setSpinFlag(false);
 
       if (res.data.status === 1) {
-        console.log(res.data.prizes);
-        showToast(t("drawnSuccess"), "success");
         updateUserData();
+
+        navigate("/user/showDrawedPrizes", {
+          state: { prizes: res.data.prizes },
+        });
       } else {
         switch (res.data.msg) {
           case 0:
@@ -342,7 +345,7 @@ const Index = () => {
             } flex justify-start items-center overflow-auto px-2 pt-2`}
           >
             <div
-              className={`p-2 px-3 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+              className={`py-2 px-3 rounded-2xl min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                 filter.includes("all") ? "text-white" : ""
               }`}
               style={{
@@ -356,7 +359,7 @@ const Index = () => {
               return (
                 <div
                   key={i}
-                  className={`p-2 px-3 mx-1 rounded-full min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                  className={`p-2 mx-1 rounded-2xl min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
                     filter.includes(category) ? "text-white" : ""
                   }`}
                   style={{
@@ -443,7 +446,7 @@ const Index = () => {
                     <div className="w-full flex flex-wrap justify-center">
                       {data.remain_prizes.length === 0 ? (
                         <button
-                          className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
+                          className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
                           disabled={true}
                         >
                           {t("soldOut")}
@@ -451,7 +454,7 @@ const Index = () => {
                       ) : (
                         <>
                           <button
-                            className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
+                            className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
                             style={{
                               backgroundColor: bgColor,
                             }}
@@ -467,7 +470,7 @@ const Index = () => {
                             <>
                               {data.remain_prizes.length >= 10 && (
                                 <button
-                                  className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
+                                  className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
                                   onClick={() => {
                                     submitDrawGacha(data, 10);
                                   }}
@@ -481,7 +484,7 @@ const Index = () => {
                               {data.type === 2 &&
                                 data.remain_prizes.length !== 1 && (
                                   <button
-                                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
+                                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
                                     onClick={() => {
                                       submitDrawGacha(data, "all");
                                     }}

@@ -16,7 +16,7 @@ const AuthNavbar = () => {
       style={{ backgroundColor: bgColor }}
     >
       <Navbar className="w-full navbar-dark">
-        <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between xsm:px-[28px]">
+        <div className="px-2 w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between xsm:px-[28px]">
           <div>
             <Link className="h4 mb-0 text-white text-uppercase" to="/">
               <div className="flex items-center">
