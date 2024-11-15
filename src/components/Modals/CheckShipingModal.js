@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { useAtom } from "jotai";
+import { useNavigate } from "react-router-dom";
 
 import { bgColorAtom } from "../../store/theme";
 
-function SucceedModal({ isOpen, setIsOpen, text }) {
+function CheckShippingModal({ isOpen, setIsOpen, text }) {
   const { t } = useTranslation();
   const [bgColor] = useAtom(bgColorAtom);
+  const navigate = useNavigate();
 
   const closeModal = () => {
     setIsOpen(false);
@@ -24,11 +26,17 @@ function SucceedModal({ isOpen, setIsOpen, text }) {
         </div>
         <div>
           <button
-            className="hover:opacity-50 text-white py-2 px-4 rounded w-full"
-            onClick={closeModal}
+            className="hover:opacity-50 px-4 py-2 my-1 text-white rounded w-full outline-none"
+            onClick={() => navigate("/user/changeShippingAddress")}
             style={{ backgroundColor: bgColor }}
           >
-            {t("ok")}
+            {t("setShippingAddress")}
+          </button>
+          <button
+            className="hover:opacity-50 py-2 px-4 mt-1 text-white rounded w-full outline-none bg-gray-600"
+            onClick={closeModal}
+          >
+            {t("cancel")}
           </button>
         </div>
       </div>
@@ -36,4 +44,4 @@ function SucceedModal({ isOpen, setIsOpen, text }) {
   );
 }
 
-export default SucceedModal;
+export default CheckShippingModal;

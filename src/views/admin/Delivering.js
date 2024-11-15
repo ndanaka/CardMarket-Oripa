@@ -39,12 +39,12 @@ function Delivering() {
   const getDeliverData = async () => {
     try {
       setSpinFlag(true);
-      const res = await api.get("/admin/get_deliver");
+      const res = await api.get("/admin/deliveries");
       setSpinFlag(false);
 
       if (res.data.status === 1) {
-        setDeliverData(res.data.deliverData);
-        setFilteredData(res.data.deliverData);
+        setDeliverData(res.data.deliveries);
+        setFilteredData(res.data.deliveries);
       }
     } catch (error) {
       showToast(error, "error");

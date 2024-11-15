@@ -42,6 +42,21 @@ function GachaDetail() {
     getGacha();
   }, [bgColor]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const handleScroll = () => {
+      const scrollPos = window.scrollY;
+      const newBlurLevel = Math.min(scrollPos / 50, 20);
+      setBlurLevel(newBlurLevel);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [location]);
+
   // update user data and update localstorage
   const updateUserData = async () => {
     setAuthToken();

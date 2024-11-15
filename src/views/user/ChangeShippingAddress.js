@@ -127,41 +127,46 @@ function ChangeShippingAddress() {
                       {data.lastName} {data.firstName}
                     </span>
                     <span>
-                      {(data.country !== undefined
-                        ? t(data.country + ", ")
+                      {(data?.country !== undefined
+                        ? t(data?.country) + ", "
                         : "") +
-                        (data.prefecture !== undefined
-                          ? data.prefecture + ", "
+                        (data?.prefecture !== undefined
+                          ? data?.prefecture + ", "
                           : "") +
-                        (data.address !== undefined
-                          ? data.address + ", "
+                        (data?.address !== undefined
+                          ? data?.address + ", "
                           : "") +
-                        (data.addressLine1 !== undefined
-                          ? data.addressLine1
+                        (data?.addressLine1 !== undefined
+                          ? data?.addressLine1 + ", "
                           : "") +
-                        (data.building !== undefined
-                          ? data.building + ", "
+                        (data?.addressLine2 !== undefined
+                          ? data?.addressLine2 + ", "
                           : "") +
-                        (data.districtCity !== undefined
-                          ? data.districtCity
+                        (data?.building !== undefined
+                          ? data?.building + ", "
                           : "") +
-                        (data.cityTown !== undefined
-                          ? data.cityTown + ", "
+                        (data?.districtCity !== undefined
+                          ? data?.districtCity + ", "
                           : "") +
-                        (data.cityDistrict !== undefined
-                          ? data.cityDistrict
+                        (data?.cityTown !== undefined
+                          ? data?.cityTown + ", "
                           : "") +
-                        (data.islandCity !== undefined
-                          ? data.islandCity + ", "
+                        (data?.cityDistrict !== undefined
+                          ? data?.cityDistrict + ", "
                           : "") +
-                        (data.suburbCity !== undefined
-                          ? data.suburbCity + ", "
+                        (data?.islandCity !== undefined
+                          ? data?.islandCity + ", "
                           : "") +
-                        (data.state !== undefined ? data.state + ", " : "") +
-                        (data.stateProvinceRegion !== undefined
-                          ? data.stateProvinceRegion + ", "
+                        (data?.suburbCity !== undefined
+                          ? data?.suburbCity + ", "
                           : "") +
-                        (data.zipCode !== undefined ? data.zipCode + ", " : "")}
+                        (data?.state !== undefined ? data?.state + ", " : "") +
+                        (data?.stateProvinceRegion !== undefined
+                          ? data?.stateProvinceRegion + ", "
+                          : "") +
+                        (data?.zipCode !== undefined
+                          ? data?.zipCode + ", "
+                          : "")}
                     </span>
                   </div>
                 </div>
@@ -175,7 +180,7 @@ function ChangeShippingAddress() {
                     {t("delete")}
                   </button>
                   <button
-                    className="hover:opacity-50 rounded-md text-center px-3 py-1 hover:bg-red-800 text-white outline-none"
+                    className="hover:opacity-50 rounded-md text-center px-3 py-1 text-white outline-none"
                     onClick={() =>
                       navigate("/user/addShippingAddress", {
                         state: { initialData: data },
@@ -193,14 +198,14 @@ function ChangeShippingAddress() {
         })}
         <div className="w-full xxsm:w-2/3 flex flex-col justify-center mx-auto my-4">
           <button
-            className="hover:opacity-50 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-red-800 text-white outline-none"
+            className="hover:opacity-50 rounded-md text-center m-2 px-5 py-2 text-white outline-none"
             onClick={() => navigate("/user/addShippingAddress")}
             style={{ backgroundColor: bgColor }}
           >
             {"+ " + t("addAddress")}
           </button>
           <button
-            className="bg-gray-600 rounded-md text-center mx-2 px-5 py-2 my-2 hover:bg-gray-700 text-white outline-none"
+            className="hover:opacity-50 rounded-md text-center m-2 px-5 py-2 text-white outline-none bg-gray-600"
             onClick={setShipAddress}
           >
             {t("decide")}

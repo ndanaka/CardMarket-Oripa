@@ -119,7 +119,7 @@ const User = (props) => {
   };
 
   return (
-    <div className="flex flex-col h-auto min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       {location.pathname !== "/user/acquisitionHistory" &&
         location.pathname !== "/user/changeShippingAddress" &&
         location.pathname !== "/user/addShippingAddress" &&

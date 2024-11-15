@@ -423,7 +423,7 @@ const Index = () => {
                           process.env.REACT_APP_SERVER_ADDRESS + data.img_url
                         }
                         alt="img_url"
-                        className="rounded-t h-[200px] xsm:h-[243px] xxsm:h-[276px] md:h-[300px] w-full object-cover"
+                        className="rounded-t h-[250px] xsm:h-[300px] xxsm:h-[300px] md:h-[320px] lg:h-[350px] w-full object-cover"
                       />
                       <div className="w-full h-[35px]">
                         <div className="w-4/6 flex flex-col justify-center items-center absolute left-1/2 -translate-x-1/2 bottom-0 text-center">

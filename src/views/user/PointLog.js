@@ -50,7 +50,7 @@ function PointLog() {
             ? pointLog.map((data, i) => (
                 <div key={i}>
                   <Pointlog
-                    date={data.date}
+                    date={data.createdAt}
                     point_num={data.point_num}
                     usage={data.usage}
                   />
