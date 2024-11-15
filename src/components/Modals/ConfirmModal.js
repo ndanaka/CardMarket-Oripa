@@ -24,7 +24,7 @@ function ConfirmModal(props) {
         isOpen ? "" : "hidden"
       }`}
     >
-      <div className="w-2/5 bg-white rounded-xl shadow-xl shadow-gray-500 m-auto p-2 z-10 animate-[fadeIn_1s_ease-in-out]">
+      <div className="w-full xxsm:w-[400px] bg-white rounded-xl shadow-xl shadow-gray-500 mx-4 md:mx-0 p-2 z-10 animate-[fadeIn_1s_ease-in-out]">
         <div className="flex justify-between">
           <div className="w-full text-2xl text-theme_text_color text-center py-2">
             {headerText}

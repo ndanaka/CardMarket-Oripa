@@ -37,7 +37,7 @@ function ConfirmShippingModal({
           <div className="flex justify-around text-center items-center">
             <p className="my-2 mx-8 text-lg">{desc}</p>
           </div>
-          <div className="flex flex-wrap justify-between items-center border-1 rounded-md p-2 my-4 border-gray-300">
+          <div className="flex flex-wrap justify-between items-center border-1 rounded-md p-2 my-3 border-gray-300">
             <p>{t("cashback") + " " + t("point")}</p>
             <div className="flex flex-wrap justify-end items-center p-2">
               {/* <img alt="coin-img" src={coinImg} className="w-6 mx-1" /> */}
@@ -46,14 +46,14 @@ function ConfirmShippingModal({
           </div>
           <div>
             <button
-              className="mr-6 hover:opacity-50 text-white py-2 px-4 my-2 rounded w-full"
+              className="mr-6 hover:opacity-50 text-white py-2 px-4 my-1 rounded w-full"
               onClick={submitOk}
               style={{ backgroundColor: bgColor }}
             >
               {t("confirm")}
             </button>
             <button
-              className="mr-6 hover:opacity-50 bg-gray-500 text-white py-2 px-4 my-2 rounded w-full"
+              className="mr-6 hover:opacity-50 bg-gray-600 text-white py-2 px-4 my-1 rounded w-full"
               onClick={closeModal}
             >
               {t("cancel")}

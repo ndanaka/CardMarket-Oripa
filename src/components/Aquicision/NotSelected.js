@@ -11,20 +11,22 @@ import usePersistedUser from "../../store/usePersistedUser";
 import Spinner from "../Others/Spinner";
 import Card from "./Card";
 import ConfirmShippingModal from "../Modals/ConfirmShippingModal";
+import CheckShippingModal from "../Modals/CheckShipingModal";
 
 const NotSelected = ({ initialPrizes }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [bgColor] = useAtom(bgColorAtom);
-  const [user, setUser] = usePersistedUser();
+  const [user] = usePersistedUser();
 
   const [cashback, setCashback] = useState(0);
-  const [popedPrizes, setPopedPrizes] = useState([]);
-  const [returnedPrizes, setReturnedPrizes] = useState([]);
+  const [shippingPrizes, setShippingPrizes] = useState([]);
+  const [returningPrizes, setReturningPrizes] = useState([]);
   const [notSelectedPrizes, setNotSelectedPrizes] = useState([]);
   const [spinFlag, setSpinFlag] = useState(false);
   const [shipAddress, setShipAddress] = useState(null);
   const [isOpenConfirmModal, setIsConfirmOpenModal] = useState(false);
+  const [isOpenCheckModal, setIsCheckOpenModal] = useState(false);
 
   useEffect(() => {
     setInitialData();
@@ -35,40 +37,42 @@ const NotSelected = ({ initialPrizes }) => {
 
     try {
       setSpinFlag(true);
-      const res = await api.get(`user/getUserData/${user?._id}`);
+      const res = await api.get(`user/obtainedPrizes/${user?._id}`);
       setSpinFlag(false);
 
+      if (res.data.status === 1 && res.data.shipAddress) {
+        setShipAddress(res.data.shipAddress);
+      }
+
+      let tempPrizes = [];
       if (initialPrizes) {
-        // calculate total return cashbacks
-        calcCashbak(initialPrizes);
-
-        // sort array based on priz kind
-        const order = ["last_prize", "round_number_prize", "extra_prize"];
-        initialPrizes.sort((a, b) => {
-          const indexA = order.indexOf(a.kind);
-          const indexB = order.indexOf(b.kind);
-
-          if (indexA === -1 && indexB === -1) return 0; // both are not in the order
-          if (indexA === -1) return 1; // a is not in the order, b comes first
-          if (indexB === -1) return -1; // b is not in the order, a comes first
-
-          return indexA - indexB; // sort based on the defined order
-        });
-
-        setNotSelectedPrizes(initialPrizes);
-        setReturnedPrizes(initialPrizes);
+        tempPrizes = initialPrizes;
       } else {
         if (res.data.status === 1) {
-          if (res.data.userData.shipAddress_id)
-            setShipAddress(res.data.userData.shipAddress_id);
-          setNotSelectedPrizes(res.data.userData.notselected_prizes);
-          setReturnedPrizes(res.data.userData.notselected_prizes);
-          calcCashbak(res.data.userData.notselected_prizes);
+          tempPrizes = res.data.obtainedPrizes;
+          tempPrizes = tempPrizes.filter(
+            (item) => item.deliverStatus === "notSelected"
+          );
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+
+      // sort array based on priz kind
+      const order = ["last_prize", "round_number_prize", "extra_prize"];
+      tempPrizes.sort((a, b) => {
+        const indexA = order.indexOf(a.kind);
+        const indexB = order.indexOf(b.kind);
+
+        if (indexA === -1 && indexB === -1) return 0; // both are not in the order
+        if (indexA === -1) return 1; // a is not in the order, b comes first
+        if (indexB === -1) return -1; // b is not in the order, a comes first
+
+        return indexA - indexB; // sort based on the defined order
+      });
+
+      setNotSelectedPrizes(tempPrizes);
+      setReturningPrizes(tempPrizes);
+      calcCashbak(tempPrizes);
+    } catch (error) {}
   };
 
   // calculate total cashback of prize to return
@@ -82,22 +86,35 @@ const NotSelected = ({ initialPrizes }) => {
     setCashback(total);
   };
 
+  // check shipment
+  const checkShipment = () => {
+    if (!shipAddress) {
+      setIsCheckOpenModal(true);
+    } else {
+      setIsConfirmOpenModal(true);
+    }
+  };
+
   // shipping selected prize and return unselected prize
   const submitShipping = async () => {
     setIsConfirmOpenModal(false);
 
     setSpinFlag(true);
     const res = await api.post("/admin/gacha/shipping", {
-      popedPrizes: popedPrizes,
-      returnedPrizes: returnedPrizes,
+      shippingPrizes: shippingPrizes,
+      returningPrizes: returningPrizes,
       cashback: cashback,
     });
     setSpinFlag(false);
 
-    if (res.data.status === 1 && initialPrizes) {
-      navigate("/user/redrawGacha", {
-        state: { gachaId: notSelectedPrizes[0].gacha_id },
-      });
+    if (res.data.status === 1) {
+      if (initialPrizes) {
+        navigate("/user/redrawGacha", {
+          state: { gachaId: initialPrizes[0].gacha_id },
+        });
+      } else {
+        setInitialData();
+      }
     }
   };
 
@@ -122,8 +139,8 @@ const NotSelected = ({ initialPrizes }) => {
     );
 
     // Log or use the arrays as needed
-    setPopedPrizes(selectedPrizes);
-    setReturnedPrizes(unselectedPrizes);
+    setShippingPrizes(selectedPrizes);
+    setReturningPrizes(unselectedPrizes);
     calcCashbak(unselectedPrizes);
   };
 
@@ -131,54 +148,127 @@ const NotSelected = ({ initialPrizes }) => {
     <>
       {spinFlag && <Spinner />}
       <p className="py-2">{t("selectProducts")}</p>
-      <div className="card-list overflow-auto py-2 flex flex-wrap max-h-[650px]">
+      <div className="pb-2 card-list mb-2 overflow-auto flex flex-wrap max-h-[580px]">
         {notSelectedPrizes?.length !== 0 &&
           notSelectedPrizes?.map((prize, i) => {
             return (
               <div
                 key={i}
-                className="relative w-full md:w-1/2 cursor-pointer"
+                className="w-full md:w-1/2 cursor-pointer"
                 onClick={() => onChangePrize(i)}
               >
-                <Card prize={prize} />
+                <Card prize={prize} checkbox={true} />
               </div>
             );
           })}
       </div>
+      {shippingPrizes.length !== 0 && (
+        <>
+          <p className="p-1">{t("shippingAddress")}</p>
+          <div
+            className="border w-full p-2 rounded-md cursor-pointer hover:opacity-50"
+            onClick={() => navigate("/user/changeShippingAddress")}
+          >
+            {shipAddress ? (
+              <div className="flex flex-wrap items-center cursor-pointer flex-grow">
+                <div className="flex flex-col px-2 text-gray-600">
+                  <span className="font-bold">
+                    {shipAddress?.lastName} {shipAddress?.firstName}
+                  </span>
+                  <span>
+                    {(shipAddress?.country !== undefined
+                      ? t(shipAddress?.country) + ", "
+                      : "") +
+                      (shipAddress?.prefecture !== undefined
+                        ? shipAddress?.prefecture + ", "
+                        : "") +
+                      (shipAddress?.address !== undefined
+                        ? shipAddress?.address + ", "
+                        : "") +
+                      (shipAddress?.addressLine1 !== undefined
+                        ? shipAddress?.addressLine1 + ", "
+                        : "") +
+                      (shipAddress?.addressLine2 !== undefined
+                        ? shipAddress?.addressLine2 + ", "
+                        : "") +
+                      (shipAddress?.building !== undefined
+                        ? shipAddress?.building + ", "
+                        : "") +
+                      (shipAddress?.districtCity !== undefined
+                        ? shipAddress?.districtCity + ", "
+                        : "") +
+                      (shipAddress?.cityTown !== undefined
+                        ? shipAddress?.cityTown + ", "
+                        : "") +
+                      (shipAddress?.cityDistrict !== undefined
+                        ? shipAddress?.cityDistrict + ", "
+                        : "") +
+                      (shipAddress?.islandCity !== undefined
+                        ? shipAddress?.islandCity + ", "
+                        : "") +
+                      (shipAddress?.suburbCity !== undefined
+                        ? shipAddress?.suburbCity + ", "
+                        : "") +
+                      (shipAddress?.state !== undefined
+                        ? shipAddress?.state + ", "
+                        : "") +
+                      (shipAddress?.stateProvinceRegion !== undefined
+                        ? shipAddress?.stateProvinceRegion + ", "
+                        : "") +
+                      (shipAddress?.zipCode !== undefined
+                        ? shipAddress?.zipCode + ", "
+                        : "")}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center p-2.5">{t("noShippingAddress")}</div>
+            )}
+          </div>
+        </>
+      )}
       {notSelectedPrizes?.length !== 0 && (
         <div
-          className="rounded-md hover:opacity-50 flex flex-wrap items-center hover:bg-opacity-50 text-white outline-none w-full min-h-[70px] cursor-pointer p-2 mt-3"
+          className="my-2 rounded-md hover:opacity-50 flex flex-wrap items-center text-white outline-none w-full min-h-[55px] cursor-pointer"
           style={{ backgroundColor: bgColor }}
-          onClick={() => setIsConfirmOpenModal(true)}
+          onClick={checkShipment}
         >
-          {popedPrizes.length === 0 ? (
-            <div className="flex flex-col mx-auto">
+          <div className="flex flex-col mx-auto text-center">
+            {shippingPrizes.length === 0 ? (
               <p>{t("allReturn")}</p>
-              <div className="flex flex-wrap justify-center items-center">
-                <img
-                  alt="pointImg"
-                  src={require("../../assets/img/icons/coin.png")}
-                  className="text-center w-6"
-                />
-                <p className="px-2">{cashback}</p>
-              </div>
+            ) : (
+              <p>{t("selectedShipping")}</p>
+            )}
+            <div className="flex flex-wrap justify-center items-center">
+              {shippingPrizes.length !== 0 && (
+                <p className="px-2">{t("unselectedReturn")}</p>
+              )}
+              <img
+                alt="pointImg"
+                src={require("../../assets/img/icons/coin.png")}
+                className="text-center w-6"
+              />
+              <p className="px-2">{cashback}</p>
             </div>
-          ) : (
-            <span className="mx-auto">{t("selectedShipping")}</span>
-          )}
+          </div>
         </div>
       )}
       <ConfirmShippingModal
         isOpen={isOpenConfirmModal}
         setIsOpen={setIsConfirmOpenModal}
         title={
-          popedPrizes.length === 0 ? t("allReturn") : t("selectedShipping")
+          shippingPrizes.length === 0 ? t("allReturn") : t("selectedShipping")
         }
         cashback={cashback}
         desc={
-          popedPrizes.length === 0 ? t("shippingDesc1") : t("shippingDesc2")
+          shippingPrizes.length === 0 ? t("shippingDesc1") : t("shippingDesc2")
         }
         submitShipping={submitShipping}
+      />
+      <CheckShippingModal
+        isOpen={isOpenCheckModal}
+        setIsOpen={setIsCheckOpenModal}
+        text={t("noShippingAddress")}
       />
     </>
   );

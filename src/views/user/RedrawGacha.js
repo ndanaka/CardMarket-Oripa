@@ -207,7 +207,7 @@ const RedrawGacha = () => {
           <p className="text-center font-bold">{t("gotPoints")}</p>
           <p className="text-center">{t("gotPointsDesc")}</p>
           <button
-            className="mx-auto text-white bg-gray-500 hover:opacity-50 px-1 py-2.5 rounded-md w-[60%] mt-3"
+            className="mx-auto text-white bg-gray-600 hover:opacity-50 px-1 py-2.5 rounded-md w-[60%] mt-3"
             onClick={() => navigate("/")}
           >
             {t("returnHome")}

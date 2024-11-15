@@ -1,7 +1,7 @@
 import PrizeCard from "../Others/PrizeCard";
 import { useTranslation } from "react-i18next";
 
-const Card = ({ prize }) => {
+const Card = ({ prize, checkbox }) => {
   const { t } = useTranslation();
 
   return (
@@ -20,11 +20,17 @@ const Card = ({ prize }) => {
           />
         </div>
         <div className="flex flex-col justify-between p-1">
-          <div className="flex flex-wrap justify-end">
-            <div className={`mt-[-12px] ${prize.selected ? "bg-green-500":"bg-gray-300"} h-6 w-6 rounded-full p-2 flex items-center justify-center`}>
-              <i className="fa fa-check text-white text-sm"></i>
+          {checkbox && (
+            <div className="flex flex-wrap justify-end">
+              <div
+                className={`mt-[-12px] ${
+                  prize.selected ? "bg-green-500" : "bg-gray-300"
+                } h-6 w-6 rounded-full p-2 flex items-center justify-center`}
+              >
+                <i className="fa fa-check text-white text-sm"></i>
+              </div>
             </div>
-          </div>
+          )}
           <div className="flex flex-wrap justify-end p-2">
             <p className="text-gray-600 font-bold">{prize.name}</p>
           </div>
