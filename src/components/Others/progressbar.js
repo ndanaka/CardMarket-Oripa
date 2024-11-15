@@ -1,6 +1,6 @@
 const Progress_bar = ({ label, progress }) => {
   return (
-    <div className="w-full ">
+    <div className="w-full text-center">
       <div className="h-[20px] bg-[#bbb] flex items-center w-full">
         <div
           className={`h-[18px] mx-[1px]`}

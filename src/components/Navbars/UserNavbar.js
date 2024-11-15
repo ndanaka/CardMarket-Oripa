@@ -66,7 +66,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
       style={{ backgroundColor: bgColor }}
     >
       <div className="w-full navbar-dark">
-        <div className="w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between py-[8px] xsm:px-[28px]">
+        <div className="px-2 w-full lg:w-3/4 mx-auto flex flex-wrap justify-between items-center content-end md:content-between py-[8px] xsm:px-[28px]">
           <Link className="h4 mb-0 text-white text-uppercase xxsm:block" to="/">
             <div className="flex flex-wrap justify-between">
               {location.pathname === "/user/gachaDetail" ? (
@@ -91,7 +91,7 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
               )}
             </div>
           </Link>
-          <div className="flex flex-wrap justify-between">
+          <div className="flex flex-wrap justify-between ">
             <Nav navbar>
               {user ? (
                 <div className="flex items-center">

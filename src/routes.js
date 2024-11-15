@@ -25,6 +25,9 @@ import Blog from "./views/user/Blog.js";
 import BlogDetail from "./views/user/BlogDetail.js";
 import ChangeShippingAddress from "./views/user/ChangeShippingAddress.js";
 import AddShippingAddress from "./views/user/AddShippingAddress.js";
+import ShowDrawedPrizes from "./views/user/ShowDrawedPrizes.js";
+import DecideShip from "./views/user/DecideShip.js";
+import RedrawGacha from "./views/user/RedrawGacha.js";
 import Rank from "./views/admin/Rank.js";
 import Theme from "./views/admin/Theme.js";
 import Carousel from "./views/admin/Carousel.js";
@@ -94,6 +97,13 @@ var routes = [
     layout: "/user",
   },
   {
+    path: "/redrawGacha",
+    name: "Redraw Gacha",
+    icon: "ni ni-single-02 text-yellow",
+    component: <RedrawGacha />,
+    layout: "/user",
+  },
+  {
     path: "/gachaDetail",
     name: "My Card",
     icon: "ni ni-single-02 text-yellow",
@@ -105,6 +115,20 @@ var routes = [
     name: "terms",
     icon: "ni ni-circle-08 text-pink",
     component: <Terms />,
+    layout: "/user",
+  },
+  {
+    path: "/showDrawedPrizes",
+    name: "showDrawedPrizes",
+    icon: "fa fa-film",
+    component: <ShowDrawedPrizes />,
+    layout: "/user",
+  },
+  {
+    path: "/decideShip",
+    name: "decideShip",
+    icon: "fa fa-film",
+    component: <DecideShip />,
     layout: "/user",
   },
   {

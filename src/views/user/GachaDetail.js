@@ -42,21 +42,6 @@ function GachaDetail() {
     getGacha();
   }, [bgColor]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    const handleScroll = () => {
-      const scrollPos = window.scrollY;
-      const newBlurLevel = Math.min(scrollPos / 50, 20);
-      setBlurLevel(newBlurLevel);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [location]);
-
   // update user data and update localstorage
   const updateUserData = async () => {
     setAuthToken();
@@ -160,8 +145,8 @@ function GachaDetail() {
         )}
         <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
-            <div className="group relative" key={i}>
-              <PrizeCard img_url={prize?.img_url} />
+            <div className="group relative m-1" key={i}>
+              <PrizeCard img_url={prize?.img_url} width={100} height={150} />
             </div>
           ))}
         </div>
@@ -198,11 +183,13 @@ function GachaDetail() {
         counts: counts,
       });
       setSpinFlag(false);
-      console.log(res.data.prizes);
 
       if (res.data.status === 1) {
-        showToast(t("drawnSuccess"), "success");
         updateUserData();
+
+        navigate("/user/showDrawedPrizes", {
+          state: { prizes: res.data.prizes },
+        });
       } else {
         switch (res.data.msg) {
           case 0:
@@ -269,12 +256,12 @@ function GachaDetail() {
         />
       </div>
       <div
-        className="z-10 w-full xxsm:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-8 bg-[#f3f4f6]"
+        className="z-10 w-full xxsm:w-[500px] fixed bottom-0 flex justify-center pb-3 pt-12 px-2 bg-[#f3f4f6]"
         style={{ boxShadow: "10px 10px 100px 0px rgba(0, 0, 0, 0.5)" }}
       >
         {gacha?.remain_prizes.length === 0 ? (
           <button
-            className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
+            className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
             disabled={true}
           >
             {t("soldOut")}
@@ -282,7 +269,7 @@ function GachaDetail() {
         ) : (
           <>
             <button
-              className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
+              className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
               style={{
                 backgroundColor: bgColor,
               }}
@@ -296,7 +283,7 @@ function GachaDetail() {
               <>
                 {gacha?.remain_prizes.length >= 10 && (
                   <button
-                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
+                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
                     onClick={() => {
                       submitDrawGacha(gacha, 10);
                     }}
@@ -309,7 +296,7 @@ function GachaDetail() {
                 )}
                 {gacha?.type === 2 && gacha?.remain_prizes.length !== 1 && (
                   <button
-                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-3 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
+                    className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
                     onClick={() => {
                       submitDrawGacha(gacha, "all");
                     }}

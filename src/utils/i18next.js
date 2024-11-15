@@ -142,7 +142,7 @@ i18n.use(initReactI18next).init({
         nouadmin: "管理者はいない。",
 
         //confirm
-        confirm: "本気ですか？",
+        areSure: "本気ですか？",
         del_confirm: "一度削除すると元に戻せません。",
         //others
         cancel: "キャンセル",
@@ -416,6 +416,20 @@ i18n.use(initReactI18next).init({
         selectFile: "ファイルを選択してください",
         invalidMp4: ".mp4ファイルのみを選択してください。",
         back: "戻る",
+        next: "次へ",
+        skipVideo: "ビデオをスキップ",
+        finish: "完了",
+        skipShipping: "配送をスキップ",
+        selectedShipping: "選択された賞品の配送",
+        confirm: "確認",
+        shippingDesc1:
+          "すべての商品はポイントに変換され、ポイントに追加されます。",
+        shippingDesc2:
+          "選択した商品はあなたに送られます。選択されていない商品はポイントに変換され、ポイントに追加されます。",
+        gachaAgain: "再ガチャ",
+        gotPoints: "ポイントを返しました。",
+        gotPointsDesc: "返されたポイントがあなたのポイントに追加されました。",
+        returnHome: "ホームページに戻る",
       },
     },
     ch1: {
@@ -554,7 +568,7 @@ i18n.use(initReactI18next).init({
         nopoint: "没有积分。",
 
         //confirm
-        confirm: "您确定吗？",
+        areSure: "您确定吗？",
         del_confirm: "一旦删除，无法恢复。",
         //others
         cancel: "取消",
@@ -823,6 +837,19 @@ i18n.use(initReactI18next).init({
         selectFile: "请选择文件",
         invalidMp4: "仅选择 .mp4 文件",
         back: "返回",
+        next: "下一步",
+        skipVideo: "跳过视频",
+        finish: "完成",
+        skipShipping: "跳过配送",
+        selectedShipping: "运输所选奖品",
+        confirm: "确认",
+        shippingDesc1: "所有奖品将转换为积分，并将添加到您的积分中。",
+        shippingDesc2:
+          "所选奖品将会邮寄给您。未选择的奖品将转换为积分，并将添加到您的积分中。",
+        gachaAgain: "再次抽卡",
+        gotPoints: "我得到了积分",
+        gotPointsDesc: "您返回的积分已添加到您的积分中",
+        returnHome: "返回主页",
       },
     },
     ch2: {
@@ -944,7 +971,7 @@ i18n.use(initReactI18next).init({
         noprize: "沒有獎品。",
         nolastprize: "沒有最後獎品。",
         nopoint: "沒有點數。",
-        confirm: "您確定嗎？",
+        areSure: "您確定嗎？",
         del_confirm: "刪除後無法恢復。",
         cancel: "取消",
         Delivered: "已配送",
@@ -1212,6 +1239,19 @@ i18n.use(initReactI18next).init({
         selectFile: "請選擇檔案",
         invalidMp4: "僅選擇 .mp4 檔案",
         back: "返回",
+        next: "下一步",
+        skipVideo: "跳過影片",
+        finish: "完成",
+        skipShipping: "跳過運送",
+        selectedShipping: "運送選定的獎品",
+        confirm: "確認",
+        shippingDesc1: "所有獎品將轉換為積分，並將添加到您的積分中。",
+        shippingDesc2:
+          "選定的獎品將寄給您。未選定的獎品將轉換為積分，並將添加到您的積分中。",
+        gachaAgain: "再抽一次",
+        gotPoints: "我獲得了積分",
+        gotPointsDesc: "您退回的積分已添加到您的積分中",
+        returnHome: "返回首頁",
       },
     },
     vn: {
@@ -1349,7 +1389,7 @@ i18n.use(initReactI18next).init({
         nopoint: "Không có điểm.",
 
         //confirm
-        confirm: "Bạn có chắc chắn?",
+        areSure: "Bạn có chắc chắn?",
         del_confirm: "Sau khi xóa, không thể hoàn tác.",
         //others
         cancel: "Hủy bỏ",
@@ -1626,6 +1666,20 @@ i18n.use(initReactI18next).init({
         selectFile: "Vui lòng chọn tệp",
         invalidMp4: "Chỉ chọn tệp .mp4",
         back: "Quay lại",
+        next: "Tiếp theo",
+        skipVideo: "Bỏ qua video",
+        finish: "Hoàn thành",
+        skipShipping: "Bỏ qua giao hàng",
+        selectedShipping: "Vận chuyển các giải thưởng đã chọn",
+        confirm: "Xác nhận",
+        shippingDesc1:
+          "Tất cả các giải thưởng sẽ được chuyển đổi thành điểm, và sẽ được cộng vào điểm của bạn.",
+        shippingDesc2:
+          "Các giải thưởng đã chọn sẽ được gửi đến bạn. Các giải thưởng không chọn sẽ được chuyển đổi thành điểm, và sẽ được cộng vào điểm của bạn.",
+        gachaAgain: "Gacha lại",
+        gotPoints: "Tôi đã nhận lại điểm",
+        gotPointsDesc: "Điểm bạn đã trả lại đã được cộng vào điểm của bạn",
+        returnHome: "Quay lại trang chủ",
       },
     },
     en: {
@@ -1764,7 +1818,7 @@ i18n.use(initReactI18next).init({
         nopoint: "There is no point.",
 
         //confirm
-        confirm: "Are you sure?",
+        areSure: "Are you sure?",
         del_confirm: "Once deleted, it can't be undone.",
         //others
         cancel: "Cancel",
@@ -2038,6 +2092,20 @@ i18n.use(initReactI18next).init({
         selectFile: "Please select file",
         invalidMp4: "Only choose .mp4 file",
         back: "Back",
+        next: "Next",
+        skipVideo: "Skip video",
+        finish: "Finish",
+        skipShipping: "Skip shipping",
+        selectedShipping: "Shipping selected prizes",
+        shippingDesc1:
+          "All prizes will be converted into points, which will be added to your points.",
+        shippingDesc2:
+          "Selected prizes will be shipped to you. Unselected prizes will be converted into points, which will be added to your points.",
+        confirm: "Confirm",
+        gachaAgain: "Gacha again",
+        gotPoints: "I got points back",
+        gotPointsDesc: "The points you returned have been added to your points",
+        returnHome: "Return to home page",
       },
     },
   },

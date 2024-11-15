@@ -42,7 +42,7 @@ const Blog = () => {
   return (
     <div className="flex flex-grow">
       {spinFlag && <Spinner />}
-      <div className="w-full xxsm:w-[80%] lg:w-[70%] xl:w-[60%] mt-14 mx-4 mx-auto px-2">
+      <div className="w-full xxsm:w-[80%] lg:w-[70%] xl:w-[60%] mt-16 mx-4 mx-auto px-2">
         <div className="w-full py-2">
           <div className="w-full text-center">
             <span className="text-xl text-slate-600">{t("blog")}</span>

@@ -145,7 +145,9 @@ const GachaEdit = () => {
         <div className="flex flex-wrap justify-center items-stretch">
           {prizes.map((prize, i) => (
             <div className="group relative" key={i}>
-              <PrizeCard img_url={prize?.img_url} />
+              <div className="m-1">
+                <PrizeCard img_url={prize?.img_url} width={100} height={150} />
+              </div>
               <button
                 className="absolute top-1 right-1 rounded-bl-[100%] w-8 h-8 hidden group-hover:block text-center bg-red-500 z-10 opacity-80 hover:opacity-100"
                 onClick={() => unsetPrize(prize._id)}
