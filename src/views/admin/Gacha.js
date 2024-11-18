@@ -213,7 +213,7 @@ function Gacha() {
   };
 
   return (
-    <div className="relative px-3 pt-2 py-24">
+    <div className="relative px-3 pt-2 py-12">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("gacha")} />
@@ -443,7 +443,8 @@ function Gacha() {
                               process.env.REACT_APP_SERVER_ADDRESS +
                               data.img_url
                             }
-                            className="h-[100px] mx-auto"
+                            width="100"
+                            className="mx-auto"
                             alt="gacha thumnail"
                           />
                         </td>

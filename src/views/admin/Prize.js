@@ -17,6 +17,7 @@ import PrizeList from "../../components/Tables/PrizeList";
 import PageHeader from "../../components/Forms/PageHeader";
 import uploadimage from "../../assets/img/icons/upload.png";
 import Spinner from "../../components/Others/Spinner";
+import PrizeCard from "../../components/Others/PrizeCard";
 
 import usePersistedUser from "../../store/usePersistedUser";
 
@@ -176,7 +177,7 @@ const Prize = () => {
   };
 
   return (
-    <div className="px-3 pt-2 py-24">
+    <div className="px-3 pt-2 py-12">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("prize")} />
@@ -205,7 +206,9 @@ const Prize = () => {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`cursor-pointer ${imgUrl ? "w-auto h-[250px]" : ""} object-cover`}
+              className={`cursor-pointer ${
+                imgUrl ? "w-auto h-[250px]" : ""
+              } object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
@@ -374,16 +377,13 @@ const Prize = () => {
                       <tr key={i}>
                         <td>{i + 1}</td>
                         <td>
-                          <img
-                            width="100"
-                            height="200"
-                            src={
-                              process.env.REACT_APP_SERVER_ADDRESS +
-                              data.img_url
-                            }
-                            alt="prize"
-                            className="m-auto"
-                          ></img>
+                          <div className="mx-auto w-[60px]">
+                            <PrizeCard
+                              img_url={data.img_url}
+                              width={50}
+                              height={80}
+                            />
+                          </div>
                         </td>
                         <td>{data.name}</td>
                         <td>{formatPrice(data.cashback)}pt</td>

@@ -217,7 +217,7 @@ var routes = [
   },
   {
     path: "/delivering",
-    name: "Delivering",
+    name: "delivering",
     icon: "fa fa-truck",
     component: <Delivering />,
     layout: "/admin",

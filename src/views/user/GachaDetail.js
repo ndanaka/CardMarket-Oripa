@@ -196,6 +196,7 @@ function GachaDetail() {
       const res = await api.post("/admin/gacha/draw_gacha", {
         gachaId: gacha._id,
         counts: counts,
+        drawDate: new Date(),
       });
       setSpinFlag(false);
 

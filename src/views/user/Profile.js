@@ -139,8 +139,8 @@ const Profile = () => {
           <hr className="w-full my-2"></hr>
         </div>
         <div className="flex flex-wrap justify-between">
-          <div className="w-full xxsm:w-1/2 px-2">
-            <div className="flex flex-wrap rounded-lg bg-white">
+          <div className="w-full xxsm:w-1/2 px-2 mb-3">
+            <div className="flex flex-wrap rounded-lg bg-white p-2">
               <p className="w-full text-2xl text-center text-theme_headertext_color">
                 {t("information")}
               </p>
@@ -189,7 +189,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="w-full xxsm:w-1/2 px-2">
-            <div className="w-full rounded-lg bg-white">
+            <div className="w-full rounded-lg bg-white p-2">
               <div className="flex flex-wrap">
                 <p className="w-full text-2xl text-center text-theme_headertext_color">
                   {t("changePass")}
@@ -228,11 +228,11 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full rounded-lg bg-white mt-3">
+            <div className="w-full rounded-lg bg-white mt-3 p-2">
               <p className="w-full text-2xl text-center text-theme_headertext_color">
                 {t("account")}
               </p>
-              <p className="py-2">{t("withdrawalDes")}</p>
+              <p className="p-2">{t("withdrawalDes")}</p>
               <div className="flex flex-wrap w-full justify-end px-2">
                 <button
                   className="hover:opacity-50 px-4 py-2 my-1 rounded-md text-white"

@@ -42,7 +42,7 @@ function UserDetail() {
   };
 
   return (
-    <div className="w-full md:w-[70%] m-auto px-3 pt-2 py-24">
+    <div className="w-full md:w-[70%] m-auto px-3 pt-2 py-12">
       {spinFlag && <Spinner />}
       <div className="text-center">
         <i

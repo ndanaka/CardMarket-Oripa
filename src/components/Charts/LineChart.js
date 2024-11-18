@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from "chart.js";
 
 // Register required components for Chart.js
@@ -24,17 +24,23 @@ ChartJS.register(
   Filler
 );
 
-const LineChart = ({ data }) => {
+const LineChart = ({ data, type }) => {
   const { t } = useTranslation();
 
   const initialData = {
     labels: [],
     datasets: [
       {
-        label: t("income") + " (¥)",
+        label: t("Count"),
         data: [],
-        borderColor: "rgba(75,192,192,1)",
-        backgroundColor: "rgba(75,192,192,0.2)",
+        backgroundColor:
+          type === "pending"
+            ? "rgba(54, 162, 235, 0.3)"
+            : "rgba(255, 0, 0, 0.2)",
+        borderColor:
+          type === "pending"
+            ? "rgba(54, 162, 235, 0.5)"
+            : "rgba(255, 0, 0, 0.4)",
         fill: true,
       },
     ],
