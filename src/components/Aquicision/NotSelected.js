@@ -113,6 +113,8 @@ const NotSelected = ({ initialPrizes }) => {
           state: { gachaId: initialPrizes[0].gacha_id },
         });
       } else {
+        setShippingPrizes([]);
+        setReturningPrizes([]);
         setInitialData();
       }
     }

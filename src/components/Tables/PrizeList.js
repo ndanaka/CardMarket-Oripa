@@ -10,6 +10,7 @@ import usePersistedUser from "../../store/usePersistedUser";
 
 import DeleteConfirmModal from "../Modals/DeleteConfirmModal";
 import Spinner from "../Others/Spinner";
+import PrizeCard from "../Others/PrizeCard";
 
 function PrizeList({
   trigger,
@@ -154,7 +155,7 @@ function PrizeList({
   return (
     <div className="overflow-auto w-full">
       {spinFlag && <Spinner />}
-      <table className="w-full m-auto">
+      <table className="w-full">
         <thead className="bg-admin_theme_color text-gray-200">
           <tr>
             <th>{t("no")}</th>
@@ -177,17 +178,19 @@ function PrizeList({
               return (
                 <tr
                   key={data._id}
-                  className={`border-2 ${
+                  className={`${
                     data.status === "set" ? "bg-[#f2f2f2]" : ""
                   }`}
                 >
                   <td>{i + 1}</td>
                   <td>
-                    <img
-                      className="m-auto object-cover h-[50px] w-[100px]"
-                      src={process.env.REACT_APP_SERVER_ADDRESS + data.img_url}
-                      alt={data.name}
-                    />
+                    <div className="mx-auto w-[60px]">
+                      <PrizeCard
+                        img_url={data.img_url}
+                        width={50}
+                        height={80}
+                      />
+                    </div>
                   </td>
                   <td>{data.name}</td>
                   <td>{formatPrice(data.cashback)}pt</td>

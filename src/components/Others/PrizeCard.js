@@ -5,8 +5,9 @@ function PrizeCard({ img_url, width, height, rounded }) {
     >
       <img
         src={process.env.REACT_APP_SERVER_ADDRESS + img_url}
-        className={`w-[${width}px] h-[${height}px] object-cover rounded-${rounded}`}
+        className={`object-cover rounded-${rounded}`}
         alt="img"
+        style={{ width: `${width}px`, height: `${height}px`}}
       />
     </div>
   );

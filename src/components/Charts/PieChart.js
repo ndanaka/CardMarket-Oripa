@@ -13,22 +13,15 @@ ChartJS.register(ArcElement, Tooltip, Legend, Filler);
 
 const PieChart = ({ data }) => {
   const { t } = useTranslation();
+
   const initialData = {
-    labels: [t("Pending"), t("Delivering"), t("Delivered")],
+    labels: [t("pending"), t("delivering")],
     datasets: [
       {
         label: "# of Votes",
-        data: [0, 0, 0],
-        backgroundColor: [
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 206, 86, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 99, 132, 1)",
-        ],
+        data: [0, 0],
+        backgroundColor: ["rgba(54, 162, 235, 0.5)", "rgba(255, 0, 0, 0.3)"],
+        borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 0, 0, 0.6)"],
         borderWidth: 1,
       },
     ],

@@ -189,7 +189,7 @@ const GachaEdit = () => {
   };
 
   return (
-    <div className="px-3 pt-2 py-24 w-full h-full md:w-[70%] m-auto">
+    <div className="px-3 pt-2 py-12 w-full h-full md:w-[70%] m-auto">
       {spinFlag && <Spinner />}
 
       <div className="text-center">

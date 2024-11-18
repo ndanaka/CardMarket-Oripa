@@ -12,16 +12,14 @@ import SucceedModal from "../../components/Modals/SucceedModal";
 import Spinner from "../../components/Others/Spinner";
 
 const Statistics = () => {
-  const [totalIncome, setTotalIncome] = useState(0);
-  const [gachaData, setGachaData] = useState([]);
-  const [selPendingPeriod, setSelPendingPeriod] = useState(7);
-  const [pendingData, setPendingData] = useState([]);
-  const [selDeliveringPeriod, setSelDeliveringPeriod] = useState(7);
-  const [deliveringData, setDeliveringData] = useState([]);
-  const [selDeliveredPeriod, setSelDeliveredPeriod] = useState(7);
-  const [deliveredData, setDeliveredData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [spinFlag, setSpinFlag] = useState(false);
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [prizeStatus, setPrizeStatus] = useState([0, 0]);
+  const [pendingPeriod, setPendingPeriod] = useState("7");
+  const [pendingData, setPendingData] = useState([]);
+  const [deliveringPeriod, setDeliveringPeriod] = useState("7");
+  const [deliveringData, setDeliveringData] = useState([]);
 
   const { t } = useTranslation();
 
@@ -30,108 +28,109 @@ const Statistics = () => {
       setIsOpen(true);
     }
 
+    getStatisticsData();
+  }, [pendingPeriod, deliveringPeriod]);
+
+  const getStatisticsData = async () => {
     setAuthToken();
-    getTotalData();
-    getStatusIncome("Pending", selPendingPeriod);
-    getStatusIncome("Delivering", selDeliveringPeriod);
-    getStatusIncome("Delivered", selDeliveredPeriod);
-  }, [selPendingPeriod, selDeliveringPeriod, selDeliveredPeriod]);
 
-  const getTotalData = async () => {
     try {
-      setSpinFlag(true);
-      const res = await api.get("/admin/get_statistics");
-      setSpinFlag(false);
-
-      setTotalIncome(res.data.totalIncome);
-      setGachaData(res.data.gachaData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getStatusIncome = async (type, period) => {
-    try {
-      // get start date
-      const startDate = new Date(
-        Date.now() - (period - 1) * 24 * 60 * 60 * 1000
+      const pendingStartDate = new Date(
+        Date.now() - (pendingPeriod - 1) * 24 * 60 * 60 * 1000
+      );
+      const deliveringStartDate = new Date(
+        Date.now() - (deliveringPeriod - 1) * 24 * 60 * 60 * 1000
       );
 
       setSpinFlag(true);
-      const res = await api.post("admin/getStatusIncome", {
-        status: type,
-        startDate: startDate,
+      const res = await api.post("/admin/statistics", {
+        pendingStartDate: pendingStartDate,
+        deliveringStartDate: deliveringStartDate,
       });
       setSpinFlag(false);
 
-      const pendingIncomes = res.data.pendingIncomes;
-      const endDate = new Date(); // Most recent date from your existing data
-
-      const dateArray = [];
-      const priceArray = [];
-
-      // Convert existing data into an object for easier lookup
-      const totalPriceByDate = {};
-      pendingIncomes.forEach((item) => {
-        totalPriceByDate[item.date] = item.total;
-      });
-
-      // Loop through dates from start date to end date
-      for (
-        let date = startDate;
-        date <= endDate;
-        date.setDate(date.getDate() + 1)
-      ) {
-        const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month and pad
-        const day = String(date.getDate()).padStart(2, "0"); // Get day and pad
-        const formattedDate = `${month}-${day}`; // Format date as MM-DD
-
-        dateArray.push(formattedDate); // Add to dateArray
-        priceArray.push(
-          totalPriceByDate[`${date.getFullYear()}-${month}-${day}`] || 0
-        ); // Add total or 0 to priceArray
-      }
-
-      switch (type) {
-        case "Pending":
-          setPendingData([dateArray, priceArray]);
-          break;
-        case "Delivering":
-          setDeliveringData([dateArray, priceArray]);
-          break;
-        case "Delivered":
-          setDeliveredData([dateArray, priceArray]);
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      // set total income
+      setTotalIncome(res.data.totalIncome);
+      // set prize status
+      setPrizeStatus(res.data.prizeStatus);
+      // get counts of prize as period and status
+      caclCounts(res.data.periodPendings, Number(pendingPeriod), "pending");
+      caclCounts(res.data.periodDeliverings, Number(deliveringPeriod), "delivering");
+    } catch (error) {}
   };
 
   const changePeriod = (type, e) => {
     switch (type) {
       case "Pending":
-        setSelPendingPeriod(e.currentTarget.value);
-        getStatusIncome("Pending", e.currentTarget.value);
+        setPendingPeriod(e.currentTarget.value);
         break;
       case "Delivering":
-        setSelDeliveringPeriod(e.currentTarget.value);
-        getStatusIncome("Delivering", e.currentTarget.value);
+        setDeliveringPeriod(e.currentTarget.value);
         break;
-      case "Delivered":
-        setSelDeliveredPeriod(e.currentTarget.value);
-        getStatusIncome("Delivered", e.currentTarget.value);
-        break;
+
       default:
         break;
     }
   };
 
+  const caclCounts = (data, period, type) => {
+    // make dateArray
+    const dateArray = [];
+    const startDate = new Date(Date.now() - (period - 1) * 24 * 60 * 60 * 1000);
+    const start = new Date(startDate);
+    const endDate = new Date();
+
+    // Loop through the dates
+    for (let date = start; date <= endDate; date.setDate(date.getDate() + 1)) {
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (0-indexed)
+      const day = String(date.getDate()).padStart(2, "0"); // Get day
+      const formattedDate = `${month}-${day}`; // Format as MM-DD
+      dateArray.push(formattedDate); // Add to the array
+    }
+
+    if (period === 30) {
+      // Get today's date
+      const today = new Date();
+
+      // Extract the month and day
+      let month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+      let day = String(today.getDate()).padStart(2, "0"); // Get the day of the month
+
+      // Format the date as MM-DD
+      const formattedDate = `${month}-${day}`;
+
+      dateArray.push(formattedDate);
+    }
+
+    // make countArray
+    let countArray = [];
+    dateArray.forEach((date) => {
+      let counts = 0;
+
+      data.forEach((prize) => {
+        // Convert drawDate to a Date object
+        let drawDateObj = new Date(prize.drawDate);
+
+        // Extract the month and day from drawDate
+        let month = String(drawDateObj.getUTCMonth() + 1).padStart(2, "0");
+        let day = String(drawDateObj.getUTCDate()).padStart(2, "0");
+        // Format the extracted date as MM-DD
+        let formattedDrawDate = `${month}-${day}`;
+
+        if (formattedDrawDate === date) {
+          counts++;
+        }
+      });
+
+      countArray.push(counts);
+    });
+
+    if (type === "pending") setPendingData([dateArray, countArray]);
+    if (type === "delivering") setDeliveringData([dateArray, countArray]);
+  };
+
   return (
-    <div className="px-3 pt-2 py-24">
+    <div className="px-3 pt-2 py-4">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-[100%] lg:w-[70%] mx-auto">
         <PageHeader text={t("statistics")} />
@@ -143,7 +142,7 @@ const Statistics = () => {
               {t("total") + " " + t("income")}
             </span>
             <span className="text-3xl text-slate-600">
-              ¥ {formatPrice(totalIncome)}
+              ¥{formatPrice(totalIncome)}
             </span>
           </div>
           <div className="h-full flex flex-col overflow-auto w-full bg-white border-[1px] border-gray-200 rounded-md shadow-md shadow-gray-300 my-2 p-4">
@@ -152,7 +151,7 @@ const Statistics = () => {
             </span>
             <hr className="my-2 w-full text-sm mx-auto"></hr>
             <div className="chart mt-4">
-              <PieChart data={gachaData} />
+              <PieChart data={prizeStatus} />
             </div>
           </div>
         </div>
@@ -160,7 +159,7 @@ const Statistics = () => {
           <div className="h-full flex flex-col overflow-auto w-full bg-white border-[1px] border-gray-200 rounded-md shadow-md shadow-gray-300 my-2 p-4">
             <div className="flex flex-wrap justify-between">
               <span className="text-3xl text-slate-600">
-                {t("Pending") + " " + t("cards")}
+                {t("pending") + " " + t("prize")}
               </span>
               <select
                 className="w-32 cursor-pointer border rounded-md text-sm"
@@ -168,7 +167,7 @@ const Statistics = () => {
                 id="changePendingPeriod"
                 autoComplete="changePendingPeriod"
                 onChange={(e) => changePeriod("Pending", e)}
-                value={selPendingPeriod}
+                value={pendingPeriod}
               >
                 <option value="7" className="p-2">
                   {t("last") + " 7 " + t("days")}
@@ -180,13 +179,13 @@ const Statistics = () => {
             </div>
             <hr className="my-2 w-full text-sm mx-auto"></hr>
             <div className="chart mt-4">
-              <LineChart data={pendingData} />
+              <LineChart data={pendingData} type="pending" />
             </div>
           </div>
           <div className="h-full flex flex-col overflow-auto w-full bg-white border-[1px] border-gray-200 rounded-md shadow-md shadow-gray-300 my-2 p-4">
             <div className="flex flex-wrap justify-between">
               <span className="text-3xl text-slate-600">
-                {t("Delivering") + " " + t("cards")}
+                {t("delivering") + " " + t("prize")}
               </span>
               <select
                 className="w-32 cursor-pointer border rounded-md text-sm"
@@ -194,7 +193,7 @@ const Statistics = () => {
                 id="changeDeliveringPeriod"
                 autoComplete="changeDeliveringPeriod"
                 onChange={(e) => changePeriod("Delivering", e)}
-                value={selDeliveringPeriod}
+                value={deliveringPeriod}
               >
                 <option value="7" className="p-2">
                   {t("last") + " 7 " + t("days")}
@@ -206,36 +205,8 @@ const Statistics = () => {
             </div>
             <hr className="my-2 w-full text-sm mx-auto"></hr>
             <div className="chart mt-4">
-              <LineChart data={deliveringData} />
+              <LineChart data={deliveringData} type="delivering" />
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-wrap justify-between items-start w-full lg:w-[90%] xl:w-[70%] mx-auto px-2">
-        <div className="h-full flex flex-col overflow-auto w-full bg-white border-[1px] border-gray-200 rounded-md shadow-md shadow-gray-300 my-2 p-4">
-          <div className="flex flex-wrap justify-between">
-            <span className="text-3xl text-slate-600">
-              {t("Delivered") + " " + t("cards")}
-            </span>
-            <select
-              className="w-32 cursor-pointer border rounded-md text-sm"
-              name="changeDeliveredPeriod"
-              id="changeDeliveredPeriod"
-              autoComplete="changeDeliveredPeriod"
-              onChange={(e) => changePeriod("Delivered", e)}
-              value={selDeliveredPeriod}
-            >
-              <option value="7" className="p-2">
-                {t("last") + " 7 " + t("days")}
-              </option>
-              <option value="30" className="p-2">
-                {t("last") + " 30 " + t("days")}
-              </option>
-            </select>
-          </div>
-          <hr className="my-2 w-full text-sm mx-auto"></hr>
-          <div className="chart mt-4">
-            <LineChart data={deliveredData} />
           </div>
         </div>
       </div>

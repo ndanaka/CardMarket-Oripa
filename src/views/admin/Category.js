@@ -123,7 +123,7 @@ function Category() {
   };
 
   return (
-    <div className="px-3 pt-2 py-24">
+    <div className="px-3 pt-2 py-12">
       {spinFlag && <Spinner />}
       <div className="w-full md:w-[70%] mx-auto">
         <PageHeader text={t("category")} />

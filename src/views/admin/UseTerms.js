@@ -70,7 +70,7 @@ const UseTerms = () => {
   };
 
   return (
-    <div className="w-full md:w-[70%] px-3 pt-2 py-24 mx-auto">
+    <div className="w-full md:w-[70%] px-3 pt-2 py-12 mx-auto">
       {spinFlag && <Spinner />}
       <div className="w-full mx-auto">
         <PageHeader text={t("userterms")} />

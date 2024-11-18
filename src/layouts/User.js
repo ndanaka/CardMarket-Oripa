@@ -16,7 +16,6 @@ import useAxiosInterceptor from "../utils/AxiosInterceptors.js";
 
 import UserNavbar from "../components/Navbars/UserNavbar.js";
 import Footer from "../components/Footers/Footer.js";
-// import ScrollToTop from "../components/Others/ScrollTop.js";
 import iniLogoImg from "../assets/img/brand/oripa-logo.png";
 
 import usePersistedUser from "../store/usePersistedUser.js";
