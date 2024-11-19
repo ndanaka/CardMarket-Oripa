@@ -55,7 +55,7 @@ const ShowDrawedPrizes = () => {
     <>
       <div className={`${showPrizeFlag ? "hidden" : ""}`}>
         <video
-          className="min-h-screen max-h-screen object-cover"
+          className="min-h-screen max-h-screen object-cover w-full"
           ref={videoRef}
           onEnded={skipVideo}
           src={process.env.REACT_APP_SERVER_ADDRESS + prizes[index].video}
