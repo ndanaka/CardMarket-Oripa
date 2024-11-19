@@ -268,10 +268,11 @@ const GachaEdit = () => {
           <div className="py-2 text-center">{t("noprize")}</div>
         )}
       </div>
+      <hr className="my-2" />
 
       <div className="w-full mt-2">
         <div className="text-lg text-center font-bold">{t("load_prizes")}</div>
-        <div className="flex justify-between my-2 overflow-auto">
+        <div className="flex justify-start my-2 overflow-auto">
           <button
             className="button-38"
             onClick={() => {
@@ -282,7 +283,7 @@ const GachaEdit = () => {
             {t("uploadAll")}
           </button>
           <button
-            className="button-38"
+            className="button-38 mx-2"
             onClick={() => {
               setLoadFlag(true);
               setPrizeType("grade");
@@ -291,6 +292,15 @@ const GachaEdit = () => {
             {t("grade_prizes")}
           </button>
           <button
+            className="button-38"
+            onClick={() => {
+              setLoadFlag(true);
+              setPrizeType("last");
+            }}
+          >
+            {t("last_prize")}
+          </button>
+          {/* <button
             className="button-38"
             onClick={() => {
               setLoadFlag(true);
@@ -307,16 +317,7 @@ const GachaEdit = () => {
             }}
           >
             {t("extra_prize")}
-          </button>
-          <button
-            className="button-38"
-            onClick={() => {
-              setLoadFlag(true);
-              setPrizeType("last");
-            }}
-          >
-            {t("last_prize")}
-          </button>
+          </button> */}
         </div>
         {loadFlag ? (
           <div className="overflow-auto">
@@ -330,7 +331,6 @@ const GachaEdit = () => {
           </div>
         ) : null}
       </div>
-      <hr className="my-2" />
     </div>
   );
 };
