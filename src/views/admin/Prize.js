@@ -369,7 +369,7 @@ const Prize = () => {
                       <td>{t("cashback")}</td>
                       <td>{t("kind")}</td>
                       <td>{t("trackingNumber")}</td>
-                      <td>{t("deliveryComapny")}</td>
+                      <td>{t("deliveryCompany")}</td>
                     </tr>
                   </thead>
                   <tbody>
