@@ -2113,6 +2113,7 @@ i18n.use(initReactI18next).init({
         gotPointsDesc: "The points you returned have been added to your points",
         returnHome: "Return to home page",
         shippingAddress: "Sipping address",
+        lessThan100: "Less than 100",
       },
     },
   },
