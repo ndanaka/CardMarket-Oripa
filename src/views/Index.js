@@ -104,6 +104,15 @@ const Index = () => {
         break;
     }
 
+    // sort that place to at the end remain_prizes length is 0
+    filteredGachas = filteredGachas.sort((a, b) => {
+      return a.remain_prizes.length === 0
+        ? 1
+        : b.remain_prizes.length === 0
+        ? -1
+        : 0;
+    });
+
     // Set the final filtered array
     setFilteredGacha(filteredGachas);
   }, [gacha, filter, categoryFilter, order]);
