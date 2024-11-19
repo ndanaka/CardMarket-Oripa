@@ -57,14 +57,20 @@ const Index = () => {
     );
 
     // Get gachas by sub category
-    if (!filter.includes("all")) {
-      filter.forEach((element) => {
-        filteredGachas = filteredGachas.filter((item) =>
-          Array.isArray(item.kind)
-            ? item.kind.some((kindItem) => kindItem.value === element)
-            : item.kind.value === element
-        );
-      });
+    if (filter.includes("lessThan100")) {
+      filteredGachas = filteredGachas.filter(
+        (item) => item.remain_prizes.length <= 100
+      );
+    }
+    if (filter.includes("last_prize")) {
+    }
+    if (filter.includes("last_prize")) {
+      filteredGachas = filteredGachas.filter((item) =>
+        // Array.isArray(item.kind)
+        //   ? item.kind.some((kindItem) => kindItem.value === "last_prize")
+        //   : item.kind.value === "last_prize"
+        item.remain_prizes.some((item) => item.kind === "last_prize")
+      );
     }
 
     // Get gachas by order
@@ -186,27 +192,27 @@ const Index = () => {
       }
     }
 
-    // Ordering selected categories by selecting
-    if (!selSubCats.includes("all")) {
-      if (filter.includes(selSubGat)) {
-        const restCategories = subCategory.filter(
-          (item) => !selSubCats.includes(item)
-        );
-        // Add those values to the filter array
-        const updatedFilter = [...selSubCats, ...restCategories];
-        setSubCategory(updatedFilter);
-      } else {
-        // Find values from subCategory that are not in the filter array
-        const restCategories = subCategory.filter(
-          (item) => !selSubCats.includes(item)
-        );
-        // Add those values to the filter array
-        const updatedFilter = [...selSubCats, ...restCategories];
-        setSubCategory(updatedFilter);
-      }
-    } else {
-      setSubCategory(subCategories);
-    }
+    // // Ordering selected categories by selecting
+    // if (!selSubCats.includes("all")) {
+    //   if (filter.includes(selSubGat)) {
+    //     const restCategories = subCategory.filter(
+    //       (item) => !selSubCats.includes(item)
+    //     );
+    //     // Add those values to the filter array
+    //     const updatedFilter = [...selSubCats, ...restCategories];
+    //     setSubCategory(updatedFilter);
+    //   } else {
+    //     // Find values from subCategory that are not in the filter array
+    //     const restCategories = subCategory.filter(
+    //       (item) => !selSubCats.includes(item)
+    //     );
+    //     // Add those values to the filter array
+    //     const updatedFilter = [...selSubCats, ...restCategories];
+    //     setSubCategory(updatedFilter);
+    //   }
+    // } else {
+    //   setSubCategory(subCategories);
+    // }
 
     // Set the final selSubCats array in one go
     setFilter(selSubCats);
@@ -374,6 +380,19 @@ const Index = () => {
                 </div>
               );
             })}
+            <div
+              className={`py-2 px-3 rounded-2xl min-w-fit text-gray-700 hover:text-white text-sm font-bold mr-1 cursor-pointer ${
+                filter.includes("lessThan100") ? "text-white" : ""
+              }`}
+              style={{
+                backgroundColor: filter.includes("lessThan100")
+                  ? bgColor
+                  : "#e2e8f0",
+              }}
+              onClick={() => changeSubCat("lessThan100")}
+            >
+              {t("lessThan100")}
+            </div>
           </div>
           <div
             className={`${

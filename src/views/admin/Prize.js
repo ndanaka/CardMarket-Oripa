@@ -192,7 +192,7 @@ const Prize = () => {
               htmlFor="fileInput"
               className="text-gray-700 px-1 justify-start flex flex-wrap w-full"
             >
-              {t("rank") + " " + t("image")}
+              {t("prize") + " " + t("image")}
             </label>
             <input
               name="fileInput"

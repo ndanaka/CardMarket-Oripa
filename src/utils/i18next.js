@@ -82,6 +82,7 @@ i18n.use(initReactI18next).init({
         load_prizes: "賞品リストから追加",
         grade_prizes: "等級別の商品",
         round_prizes: "ラウンド番号の賞金",
+        lessThan100: "100未満",
         set_as_lastPrize: "最後の賞品として設定",
         // point page
         amount: "数量",
@@ -514,6 +515,7 @@ i18n.use(initReactI18next).init({
         load_prizes: "从奖品列表中添加",
         grade_prizes: "等级产品",
         round_prizes: "回合编号奖金",
+        lessThan100: "少于100",
         set_as_lastPrize: "设置为最后奖品",
 
         //point page
@@ -925,6 +927,7 @@ i18n.use(initReactI18next).init({
         load_prizes: "從獎品列表中添加",
         grade_prizes: "等級產品",
         round_prizes: "回合編號獎金",
+        lessThan100: "少於100",
         set_as_lastPrize: "設定為最後獎品",
         amount: "數量",
         username: "使用者名稱",
@@ -1335,6 +1338,7 @@ i18n.use(initReactI18next).init({
         load_prizes: "Thêm từ danh sách giải thưởng",
         grade_prizes: "Sản phẩm theo cấp độ",
         round_prizes: "Giải thưởng theo số vòng",
+        lessThan100: "Ít hơn 100",
         set_as_lastPrize: "Nhập danh sách giải thưởng",
 
         //point page
@@ -1535,7 +1539,8 @@ i18n.use(initReactI18next).init({
         tryLogin: "Vui lòng thử đăng nhập lại.",
         noPermission: "Bạn không có quyền thực hiện hành động này.",
         requiredAll: "Yêu cầu tất cả các trường.",
-        validDeliver: "Trạng thái không thể thay đổi vì hiện tại đang được vận chuyển.",
+        validDeliver:
+          "Trạng thái không thể thay đổi vì hiện tại đang được vận chuyển.",
         requiredGachaName: "Tên Gacha là bắt buộc.",
         greaterThan: "Phải lớn hơn 0.",
         selectImage: "Vui lòng chọn hình ảnh.",
@@ -1763,6 +1768,7 @@ i18n.use(initReactI18next).init({
         load_prizes: "Add from the prize list",
         grade_prizes: "Grade prize",
         round_prizes: "Round number prize",
+        lessThanOneHundred: "Less than 100",
         set_as_lastPrize: "Set as LastPrize",
 
         //point page

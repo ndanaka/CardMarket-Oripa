@@ -3,9 +3,9 @@ const prizeType = [
   "second",
   "third",
   "fourth",
-  "round_number_prize",
+  // "round_number_prize",
   "last_prize",
-  "extra_prize",
+  // "extra_prize",
 ];
 
 export default prizeType;

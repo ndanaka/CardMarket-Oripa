@@ -15,7 +15,8 @@ const Admin = (props) => {
   const { isLoggedOut } = useAxiosInterceptor();
 
   useEffect(() => {
-    if (isLoggedOut) navigate("/auth/login");
+    console.log(isLoggedOut);
+    if (isLoggedOut) navigate("/");
     if (user?.role !== "admin") navigate("/user/index");
   }, []);
 
