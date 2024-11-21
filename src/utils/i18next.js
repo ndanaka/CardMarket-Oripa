@@ -424,8 +424,7 @@ i18n.use(initReactI18next).init({
         confirm: "確認",
         shippingDesc1:
           "すべての商品はポイントに変換され、ポイントに追加されます。",
-        shippingDesc2:
-          "選択した商品はあなたに送られます。選択されていない商品はポイントに変換され、ポイントに追加されます。",
+        shippingDesc2: "選択した商品はあなたに送られます。",
         gachaAgain: "再ガチャ",
         gotPoints: "ポイントを返しました。",
         gotPointsDesc: "返されたポイントがあなたのポイントに追加されました。",
@@ -845,8 +844,7 @@ i18n.use(initReactI18next).init({
         selectedShipping: "選択した商品の発送",
         confirm: "确认",
         shippingDesc1: "所有奖品将转换为积分，并将添加到您的积分中。",
-        shippingDesc2:
-          "所选奖品将会邮寄给您。未选择的奖品将转换为积分，并将添加到您的积分中。",
+        shippingDesc2: "所选奖品将会邮寄给您。",
         gachaAgain: "再次抽卡",
         gotPoints: "我得到了积分",
         gotPointsDesc: "您返回的积分已添加到您的积分中",
@@ -1248,8 +1246,7 @@ i18n.use(initReactI18next).init({
         selectedShipping: "發送所選產品",
         confirm: "確認",
         shippingDesc1: "所有獎品將轉換為積分，並將添加到您的積分中。",
-        shippingDesc2:
-          "選定的獎品將寄給您。未選定的獎品將轉換為積分，並將添加到您的積分中。",
+        shippingDesc2: "選定的獎品將寄給您。",
         gachaAgain: "再抽一次",
         gotPoints: "我獲得了積分",
         gotPointsDesc: "您退回的積分已添加到您的積分中",
@@ -1678,8 +1675,7 @@ i18n.use(initReactI18next).init({
         confirm: "Xác nhận",
         shippingDesc1:
           "Tất cả các giải thưởng sẽ được chuyển đổi thành điểm, và sẽ được cộng vào điểm của bạn.",
-        shippingDesc2:
-          "Các giải thưởng đã chọn sẽ được gửi đến bạn. Các giải thưởng không chọn sẽ được chuyển đổi thành điểm, và sẽ được cộng vào điểm của bạn.",
+        shippingDesc2: "Các giải thưởng đã chọn sẽ được gửi đến bạn.",
         gachaAgain: "Gacha lại",
         gotPoints: "Tôi đã nhận lại điểm",
         gotPointsDesc: "Điểm bạn đã trả lại đã được cộng vào điểm của bạn",
@@ -2105,8 +2101,7 @@ i18n.use(initReactI18next).init({
         selectedShipping: "Ship selected products",
         shippingDesc1:
           "All prizes will be converted into points, which will be added to your points.",
-        shippingDesc2:
-          "Selected prizes will be shipped to you. Unselected prizes will be converted into points, which will be added to your points.",
+        shippingDesc2: "Selected prizes will be shipped to you.",
         confirm: "Confirm",
         gachaAgain: "Gacha again",
         gotPoints: "I got points back",
