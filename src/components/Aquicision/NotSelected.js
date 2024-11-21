@@ -88,6 +88,13 @@ const NotSelected = ({ initialPrizes }) => {
 
   // check shipment
   const checkShipment = () => {
+    // if (shippingPrizes.length === 0) {
+    //   // return all prizes
+    //   setIsConfirmOpenModal(true);
+    // } else {
+    //   console.log("go to ship address page");
+    // }
+
     if (!shipAddress) {
       setIsCheckOpenModal(true);
     } else {
@@ -237,21 +244,20 @@ const NotSelected = ({ initialPrizes }) => {
         >
           <div className="flex flex-col mx-auto text-center">
             {shippingPrizes.length === 0 ? (
-              <p>{t("allReturn")}</p>
+              <>
+                <p>{t("allReturn")}</p>
+                <div className="flex flex-wrap justify-center items-center">
+                  <img
+                    alt="pointImg"
+                    src={require("../../assets/img/icons/coin.png")}
+                    className="text-center w-6"
+                  />
+                  <p className="px-2">{cashback}</p>
+                </div>
+              </>
             ) : (
               <p>{t("selectedShipping")}</p>
             )}
-            <div className="flex flex-wrap justify-center items-center">
-              {shippingPrizes.length !== 0 && (
-                <p className="px-2">{t("unselectedReturn")}</p>
-              )}
-              <img
-                alt="pointImg"
-                src={require("../../assets/img/icons/coin.png")}
-                className="text-center w-6"
-              />
-              <p className="px-2">{cashback}</p>
-            </div>
           </div>
         </div>
       )}
@@ -265,6 +271,7 @@ const NotSelected = ({ initialPrizes }) => {
         desc={
           shippingPrizes.length === 0 ? t("shippingDesc1") : t("shippingDesc2")
         }
+        shippingPrizes={shippingPrizes}
         submitShipping={submitShipping}
       />
       <CheckShippingModal

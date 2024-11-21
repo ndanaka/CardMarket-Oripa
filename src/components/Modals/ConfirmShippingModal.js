@@ -9,6 +9,7 @@ function ConfirmShippingModal({
   setIsOpen,
   title,
   desc,
+  shippingPrizes,
   cashback,
   submitShipping,
 }) {
@@ -37,13 +38,15 @@ function ConfirmShippingModal({
           <div className="flex justify-around text-center items-center">
             <p className="my-2 mx-8 text-lg">{desc}</p>
           </div>
-          <div className="flex flex-wrap justify-between items-center border-1 rounded-md p-2 my-3 border-gray-300">
-            <p>{t("cashback") + " " + t("point")}</p>
-            <div className="flex flex-wrap justify-end items-center p-2">
-              {/* <img alt="coin-img" src={coinImg} className="w-6 mx-1" /> */}
-              <p className="text-gray-600 font-bold">{cashback} pt</p>
+          {shippingPrizes.length === 0 && (
+            <div className="flex flex-wrap justify-between items-center border-1 rounded-md p-2 my-3 border-gray-300">
+              <p>{t("cashback") + " " + t("point")}</p>
+              <div className="flex flex-wrap justify-end items-center p-2">
+                <img alt="coin-img" src={coinImg} className="w-6 mx-1" />
+                <p className="text-gray-600 font-bold">{cashback}</p>
+              </div>
             </div>
-          </div>
+          )}
           <div>
             <button
               className="mr-6 hover:opacity-50 text-white py-2 px-4 my-1 rounded w-full"

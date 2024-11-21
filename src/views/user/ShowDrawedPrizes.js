@@ -19,6 +19,7 @@ const ShowDrawedPrizes = () => {
   const [index, setIndex] = useState(0);
   const [showPrizeFlag, setShowPrizeFlag] = useState(false);
   const [showNext, setShowNext] = useState(true);
+  const [showVideoFlag, setShowFlagVideo] = useState(false);
 
   useEffect(() => {
     // Reset to the beginning and play
@@ -32,6 +33,12 @@ const ShowDrawedPrizes = () => {
 
   // skip video
   const skipVideo = () => {
+    setShowFlagVideo(true);
+    setShowPrizeFlag(true);
+  };
+
+  // end video
+  const endVideo = () => {
     setShowPrizeFlag(true);
   };
 
@@ -39,7 +46,7 @@ const ShowDrawedPrizes = () => {
   const nextPrize = () => {
     videoRef.current.pause();
     setIndex(index + 1);
-    setShowPrizeFlag(false);
+    if (!showVideoFlag) setShowPrizeFlag(false);
   };
 
   // go to shipping page
@@ -57,7 +64,7 @@ const ShowDrawedPrizes = () => {
         <video
           className="min-h-screen max-h-screen object-cover w-full"
           ref={videoRef}
-          onEnded={skipVideo}
+          onEnded={endVideo}
           src={process.env.REACT_APP_SERVER_ADDRESS + prizes[index].video}
         />
         <button
