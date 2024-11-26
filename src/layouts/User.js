@@ -127,7 +127,8 @@ const User = (props) => {
         location.pathname !== "/user/purchasePoint" &&
         location.pathname !== "/user/showDrawedPrizes" &&
         location.pathname !== "/user/decideShip" &&
-        location.pathname !== "/user/redrawGacha" && (
+        location.pathname !== "/user/redrawGacha" &&
+        location.pathname !== "/user/inviteFriend" && (
           <UserNavbar
             {...props}
             brandText={getBrandText(props?.location?.pathname)}
@@ -150,7 +151,8 @@ const User = (props) => {
         location.pathname !== "/user/purchasePoint" &&
         location.pathname !== "/user/showDrawedPrizes" &&
         location.pathname !== "/user/decideShip" &&
-        location.pathname !== "/user/redrawGacha" && <Footer />}
+        location.pathname !== "/user/redrawGacha" &&
+        location.pathname !== "/user/inviteFriend" && <Footer />}
     </div>
   );
 };

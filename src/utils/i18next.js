@@ -430,6 +430,13 @@ i18n.use(initReactI18next).init({
         gotPointsDesc: "返されたポイントがあなたのポイントに追加されました。",
         returnHome: "ホームページに戻る",
         shippingAddress: "配送先住所",
+        inviteFriend: "友達の招待",
+        inviteTitle: "招待リンクの作成と送信",
+        inviteDesc:
+          "友だちを招待するには、招待リンクを作成して友だちに送信します。",
+        generateLink: "リンク生成",
+        copyLink: "リンクのコピー",
+        copied: "リンクをコピーしました",
       },
     },
     ch1: {
@@ -850,6 +857,13 @@ i18n.use(initReactI18next).init({
         gotPointsDesc: "您返回的积分已添加到您的积分中",
         returnHome: "返回主页",
         shippingAddress: "收货地址",
+        inviteFriend: "邀请朋友",
+        inviteTitle: "生成邀请链接并发送",
+        inviteDesc:
+          "要邀请朋友，生成邀请链接并将其发送给你的朋友。当你的朋友注册账户后，你将获得1000点。",
+        generateLink: "生成链接",
+        copyLink: "复制链接",
+        copied: "已复制链接",
       },
     },
     ch2: {
@@ -1252,6 +1266,13 @@ i18n.use(initReactI18next).init({
         gotPointsDesc: "您退回的積分已添加到您的積分中",
         returnHome: "返回首頁",
         shippingAddress: "寄送地址",
+        inviteFriend: "邀請朋友",
+        inviteTitle: "生成邀請連結並發送",
+        inviteDesc:
+          "要邀請朋友，生成邀請連結並將其發送給你的朋友。當你的朋友註冊帳戶後，你將獲得1000點。",
+        generateLink: "生成連結",
+        copyLink: "複製連結",
+        copied: "已複製連結",
       },
     },
     vn: {
@@ -1681,6 +1702,13 @@ i18n.use(initReactI18next).init({
         gotPointsDesc: "Điểm bạn đã trả lại đã được cộng vào điểm của bạn",
         returnHome: "Quay lại trang chủ",
         shippingAddress: "Địa chỉ giao hàng",
+        inviteFriend: "Mời bạn",
+        inviteTitle: "Tạo liên kết mời và gửi đi",
+        inviteDesc:
+          "Để mời một người bạn, hãy tạo một liên kết mời và gửi cho bạn của bạn. Khi bạn của bạn đăng ký tài khoản, bạn sẽ nhận được 1000 điểm.",
+        generateLink: "Tạo liên kết",
+        copyLink: "Sao chép liên kết",
+        copied: "Đã sao chép liên kết",
       },
     },
     en: {
@@ -2109,6 +2137,13 @@ i18n.use(initReactI18next).init({
         returnHome: "Return to home page",
         shippingAddress: "Sipping address",
         lessThan100: "Less than 100",
+        inviteFriend: "Invite Friend",
+        inviteTitle: "Generate invite link and send it",
+        inviteDesc:
+          "To invite a friend, generate an invite link and send it to your friend. When your friend signs up for an account, you will receive 1000 points.",
+        generateLink: "Generate link",
+        copyLink: "Copy link",
+        copied: "Copied link",
       },
     },
   },

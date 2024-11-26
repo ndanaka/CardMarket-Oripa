@@ -69,6 +69,8 @@ const Register = () => {
     if (affId) formData.affId = affId;
     const linkId = localStorage.getItem("linkId");
     if (linkId) formData.linkId = linkId;
+    const userId = localStorage.getItem("userId");
+    if (userId) formData.userId = userId;
 
     setSpinFlag(true);
     const res = await api.post("/user/register", formData);
@@ -80,6 +82,7 @@ const Register = () => {
       localStorage.removeItem("affId");
       localStorage.removeItem("linkId");
       localStorage.removeItem("first");
+      localStorage.removeItem("userId");
     } else showToast(t(res.data.msg), "error");
   };
 
