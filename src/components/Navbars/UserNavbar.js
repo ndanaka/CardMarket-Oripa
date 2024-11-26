@@ -283,6 +283,16 @@ const UserNavbar = ({ isOpenToggleMenu, setIsOpenToggleMenu }) => {
                                   <span>{t("acquisitionHistory")}</span>
                                   <i className="fa fa-chevron-right"></i>
                                 </li>
+                                <li
+                                  className="cursor-pointer flex flex-wrap justify-between items-center mx-2 my-2 p-3 text-gray-600 border-solid border-1 border-gray-400 rounded-lg"
+                                  onClick={() => {
+                                    setIsOpenToggleMenu(!isOpenToggleMenu);
+                                    navigate("/user/inviteFriend");
+                                  }}
+                                >
+                                  <span>{t("inviteFriend")}</span>
+                                  <i className="fa fa-chevron-right"></i>
+                                </li>
                                 <li className="p-2 my-3 flex flex-wrap justify-start">
                                   <ChangeLanguage type="menu" />
                                 </li>

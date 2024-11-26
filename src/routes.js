@@ -28,6 +28,7 @@ import AddShippingAddress from "./views/user/AddShippingAddress.js";
 import ShowDrawedPrizes from "./views/user/ShowDrawedPrizes.js";
 import DecideShip from "./views/user/DecideShip.js";
 import RedrawGacha from "./views/user/RedrawGacha.js";
+import InviteFriend from "./views/user/InviteFriend.js";
 import Rank from "./views/admin/Rank.js";
 import Theme from "./views/admin/Theme.js";
 import Carousel from "./views/admin/Carousel.js";
@@ -129,6 +130,13 @@ var routes = [
     name: "decideShip",
     icon: "fa fa-film",
     component: <DecideShip />,
+    layout: "/user",
+  },
+  {
+    path: "/inviteFriend",
+    name: "inviteFriend",
+    icon: "fa fa-film",
+    component: <InviteFriend />,
     layout: "/user",
   },
   {

@@ -10,12 +10,14 @@ const useAffiliateID = (callback) => {
     const params = new URLSearchParams(location.search);
     const affiliateID = params.get("aff_id");
     const linkID = params.get("link_id");
+    const userID = params.get("user_id");
     const first = params.get("first");
 
     if (first) {
       // Add click counts of affiliate
       localStorage.setItem("affId", affiliateID);
       localStorage.setItem("linkId", linkID);
+      localStorage.setItem("userId", userID);
 
       api
         .post("/api/affiliate/status/addClicks", {
