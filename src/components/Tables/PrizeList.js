@@ -29,6 +29,7 @@ function PrizeList({
   const [delPrizeId, setDelPrizeId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [spinFlag, setSpinFlag] = useState(false);
+  const [order, setOrder] = useState();
 
   useEffect(() => {
     setAuthToken();
@@ -124,7 +125,11 @@ function PrizeList({
     }
   };
 
-  const setPrize = async (prizeId) => {
+  const changeOrder = (e) => {
+    setOrder(e.target.value);
+  };
+
+  const addPrize = async (prizeId) => {
     try {
       if (!user.authority["gacha"]["write"]) {
         showToast(t("noPermission"), "error");
@@ -135,6 +140,7 @@ function PrizeList({
         gachaId: gachaId,
         prizeId: prizeId,
       };
+      if (order) formData.order = order;
 
       setSpinFlag(true);
       const res = await api.post("/admin/gacha/set_prize", formData);
@@ -144,6 +150,7 @@ function PrizeList({
         showToast(t("successSet"), "success");
         getGacha();
         getPrizes();
+        setOrder("");
       } else {
         showToast(t("failedSet"), "error");
       }
@@ -165,6 +172,7 @@ function PrizeList({
             <th>{t("kind")}</th>
             <th>{t("trackingNumber")}</th>
             <th>{t("deliveryCompany")}</th>
+            {role === "gacha" && <th>{t("order")}</th>}
             <th>{t("action")}</th>
           </tr>
         </thead>
@@ -178,9 +186,7 @@ function PrizeList({
               return (
                 <tr
                   key={data._id}
-                  className={`${
-                    data.status === "set" ? "bg-[#f2f2f2]" : ""
-                  }`}
+                  className={`${data.status === "set" ? "bg-[#f2f2f2]" : ""}`}
                 >
                   <td>{i + 1}</td>
                   <td>
@@ -197,11 +203,20 @@ function PrizeList({
                   <td>{t(data.kind)}</td>
                   <td>{data.trackingNumber}</td>
                   <td>{data.deliveryCompany}</td>
+                  {role === "gacha" && (
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control w-28 mx-auto"
+                        onChange={changeOrder}
+                      />
+                    </td>
+                  )}
                   <td>
                     {role === "gacha" ? (
                       <button
                         className="bg-[#0276ff] text-white text-md py-1 px-3 rounded-md cursor-pointer"
-                        onClick={() => setPrize(data._id)}
+                        onClick={() => addPrize(data._id)}
                       >
                         {t("add")}
                       </button>

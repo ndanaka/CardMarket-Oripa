@@ -51,7 +51,7 @@ const GachaEdit = () => {
       if (res.data.status === 1) {
         setGacha(res.data.gacha);
         devideRemainPrizes(res.data.gacha);
-        setGachaNum(res.data.gacha.remain_prizes.length);
+        setGachaNum(res.data.gacha.remain_prizes.filter((item) => item.order != 0).length);
 
         switch (lang) {
           case "ch1":
@@ -264,9 +264,9 @@ const GachaEdit = () => {
           drawPrizesByKind(roundPrizes, "round_number_prize")}
         {lastPrizes.length > 0 && drawPrizesByKind(lastPrizes, "last_prize")}
 
-        {gachaNum === 0 && (
+        {/* {gachaNum === 0 && (
           <div className="py-2 text-center">{t("noprize")}</div>
-        )}
+        )} */}
       </div>
       <hr className="my-2" />
 
@@ -300,24 +300,6 @@ const GachaEdit = () => {
           >
             {t("last_prize")}
           </button>
-          {/* <button
-            className="button-38"
-            onClick={() => {
-              setLoadFlag(true);
-              setPrizeType("round");
-            }}
-          >
-            {t("round_prizes")}
-          </button>
-          <button
-            className="button-38"
-            onClick={() => {
-              setLoadFlag(true);
-              setPrizeType("extra");
-            }}
-          >
-            {t("extra_prize")}
-          </button> */}
         </div>
         {loadFlag ? (
           <div className="overflow-auto">

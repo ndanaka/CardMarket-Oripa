@@ -59,7 +59,8 @@ const Index = () => {
     // Get gachas by sub category
     if (filter.includes("lessThan100")) {
       filteredGachas = filteredGachas.filter(
-        (item) => item.remain_prizes.length <= 100
+        (item) =>
+          item.remain_prizes.filter((item) => item.order != 0).length <= 100
       );
     }
     if (filter.includes("last_prize")) {
@@ -87,8 +88,14 @@ const Index = () => {
       case "popularity":
         filteredGachas?.sort(
           (a, b) =>
-            Number(b.total_number - b.remain_prizes.length) -
-            Number(a.total_number - a.remain_prizes.length)
+            Number(
+              b.total_number -
+                b.remain_prizes.filter((item) => item.order != 0).length
+            ) -
+            Number(
+              a.total_number -
+                a.remain_prizes.filter((item) => item.order != 0).length
+            )
         );
         break;
 
@@ -106,9 +113,9 @@ const Index = () => {
 
     // sort that place to at the end remain_prizes length is 0
     filteredGachas = filteredGachas?.sort((a, b) => {
-      return a.remain_prizes.length === 0
+      return a.remain_prizes.filter((item) => item.order != 0).length === 0
         ? 1
-        : b.remain_prizes.length === 0
+        : b.remain_prizes.filter((item) => item.order != 0).length === 0
         ? -1
         : 0;
     });
@@ -246,7 +253,10 @@ const Index = () => {
     }
 
     const totalPoints =
-      gacha.price * (counts === "all" ? gacha.remain_prizes.length : counts);
+      gacha.price *
+      (counts === "all"
+        ? gacha.remain_prizes.filter((item) => item.order != 0).length
+        : counts);
     const remainPoints = user.point_remain;
     if (remainPoints < totalPoints) {
       setIsOpenPointModal(true);
@@ -459,11 +469,16 @@ const Index = () => {
                           <GachaPriceLabel price={data.price} />
                           <Progressbar
                             progress={
-                              (data.remain_prizes.length / data.total_number) *
+                              (data.remain_prizes.filter(
+                                (item) => item.order != 0
+                              ).length /
+                                data.total_number) *
                               100
                             }
                             label={
-                              data.remain_prizes.length +
+                              data.remain_prizes.filter(
+                                (item) => item.order != 0
+                              ).length +
                               " / " +
                               data.total_number
                             }
@@ -473,7 +488,8 @@ const Index = () => {
                       </div>
                     </button>
                     <div className="w-full flex flex-wrap justify-center">
-                      {data.remain_prizes.length === 0 ? (
+                      {data.remain_prizes.filter((item) => item.order != 0)
+                        .length === 0 ? (
                         <button
                           className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
                           disabled={true}
@@ -497,7 +513,9 @@ const Index = () => {
                             (item) => item.value === "once_per_day"
                           ) ? (
                             <>
-                              {data.remain_prizes.length >= 10 && (
+                              {data.remain_prizes.filter(
+                                (item) => item.order != 0
+                              ).length >= 10 && (
                                 <button
                                   className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
                                   onClick={() => {
@@ -511,7 +529,9 @@ const Index = () => {
                                 </button>
                               )}
                               {data.type === 2 &&
-                                data.remain_prizes.length !== 1 && (
+                                data.remain_prizes.filter(
+                                  (item) => item.order != 0
+                                ).length !== 1 && (
                                   <button
                                     className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
                                     onClick={() => {

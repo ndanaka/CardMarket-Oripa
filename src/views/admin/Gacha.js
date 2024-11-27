@@ -40,6 +40,7 @@ function Gacha() {
   const [delGachaId, setDelGachaId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [spinFlag, setSpinFlag] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const subCats = subCategories.map((prize) => ({
     value: prize,
@@ -81,7 +82,7 @@ function Gacha() {
     }
   };
 
-  const toGachaEdit = (gachaId) => {
+  const addPrizeToGacha = (gachaId) => {
     navigate("/admin/gachaEdit", { state: { gachaId: gachaId } });
   };
 
@@ -169,6 +170,8 @@ function Gacha() {
     }
   };
 
+  const releaseGacha = () => {};
+
   const setRelease = async (gachaId) => {
     try {
       if (!user.authority["gacha"]["write"]) {
@@ -239,7 +242,9 @@ function Gacha() {
             <img
               src={imgUrl ? imgUrl : uploadimage}
               alt="prize"
-              className={`cursor-pointer ${imgUrl ? "w-auto h-[250px]" : ""}  object-cover`}
+              className={`cursor-pointer ${
+                imgUrl ? "w-auto h-[250px]" : ""
+              }  object-cover`}
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
@@ -458,7 +463,11 @@ function Gacha() {
                           ))}
                         </td>
                         <td>
-                          {data.remain_prizes.length} / {data.total_number}
+                          {
+                            data.remain_prizes.filter((item) => item.order != 0)
+                              .length
+                          }{" "}
+                          / {data.total_number}
                         </td>
                         <td>{data.order}</td>
                       </tr>
@@ -471,9 +480,15 @@ function Gacha() {
                           <div className="flex flex-wrap justify-center">
                             <button
                               className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
-                              onClick={() => toGachaEdit(data._id)}
+                              onClick={() => {
+                                if (data.isRelease) {
+                                  showToast(t("notAllowed"), "error");
+                                } else {
+                                  addPrizeToGacha(data._id);
+                                }
+                              }}
                             >
-                              {t("gacha") + " " + t("detail")}
+                              {t("edit") + " " + t("gacha")}
                             </button>
                             <button
                               className="py-1 px-4 m-1 bg-gray-200 text-center text-gray-600"
@@ -486,8 +501,12 @@ function Gacha() {
                             <button
                               className="py-1 px-4 m-1 bg-red-500 text-center text-gray-200"
                               onClick={() => {
-                                setDelGachaId(data._id);
-                                setIsModalOpen(true);
+                                if (data.isRelease) {
+                                  showToast(t("notAllowed"), "error");
+                                } else {
+                                  setDelGachaId(data._id);
+                                  setIsModalOpen(true);
+                                }
                               }}
                             >
                               {t("delete") + " " + t("gacha")}
