@@ -76,7 +76,7 @@ const RedrawGacha = () => {
     }
 
     const totalPoints =
-      gacha?.price * (counts === "all" ? gacha?.remain_prizes.length : counts);
+      gacha?.price * (counts === "all" ? gacha?.remain_prizes.filter((item) => item.order != 0).length : counts);
     const remainPoints = user.point_remain;
     if (remainPoints < totalPoints) {
       setIsOpenPointModal(true);
@@ -136,10 +136,10 @@ const RedrawGacha = () => {
               <GachaPriceLabel price={gacha?.price} />
               <Progressbar
                 progress={
-                  (gacha?.remain_prizes.length / gacha?.total_number) * 100
+                  (gacha?.remain_prizes.filter((item) => item.order != 0).length / gacha?.total_number) * 100
                 }
                 label={
-                  gacha?.remain_prizes.length + " / " + gacha?.total_number
+                  gacha?.remain_prizes.filter((item) => item.order != 0).length + " / " + gacha?.total_number
                 }
                 height={20}
               />
@@ -147,7 +147,7 @@ const RedrawGacha = () => {
           </div>
         </div>
         <div className="w-full flex flex-wrap justify-center py-2">
-          {gacha?.remain_prizes.length === 0 ? (
+          {gacha?.remain_prizes.filter((item) => item.order != 0).length === 0 ? (
             <button
               className="mx-1 text-white cursor-not-allowed bg-gray-400 text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[60%]"
               disabled={true}
@@ -169,7 +169,7 @@ const RedrawGacha = () => {
               </button>
               {!gacha?.kind.some((item) => item.value === "once_per_day") ? (
                 <>
-                  {gacha?.remain_prizes.length >= 10 && (
+                  {gacha?.remain_prizes.filter((item) => item.order != 0).length >= 10 && (
                     <button
                       className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5 border-r-[1px] border-t-2 border-white rounded-lg m-0 xs:px-4 w-[30%]"
                       onClick={() => {
@@ -182,7 +182,7 @@ const RedrawGacha = () => {
                       {t("drawTen")}
                     </button>
                   )}
-                  {gacha?.type === 2 && gacha?.remain_prizes.length !== 1 && (
+                  {gacha?.type === 2 && gacha?.remain_prizes.filter((item) => item.order != 0).length !== 1 && (
                     <button
                       className="mx-1 cursor-pointer hover:opacity-50 text-white text-center px-1 py-2.5  rounded-lg border-t-2 border-white m-0 xs:px-4 w-[30%]"
                       onClick={() => {

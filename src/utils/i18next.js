@@ -71,7 +71,7 @@ i18n.use(initReactI18next).init({
         date: "日付",
         detail: "詳細",
         release: "リリース",
-        unrelease: "リリース中止",
+        unrelease: "未解放",
         delete: "削除",
         //gacha detail page
         list: "リスト",
@@ -437,6 +437,8 @@ i18n.use(initReactI18next).init({
         generateLink: "リンク生成",
         copyLink: "リンクのコピー",
         copied: "リンクをコピーしました",
+        notAllowed:
+          "このガチャはすでにリリースされているため、この操作は許可されていません。",
       },
     },
     ch1: {
@@ -864,6 +866,7 @@ i18n.use(initReactI18next).init({
         generateLink: "生成链接",
         copyLink: "复制链接",
         copied: "已复制链接",
+        notAllowed: "不允许这样做，因为这个抽奖已经发布了。",
       },
     },
     ch2: {
@@ -1273,6 +1276,7 @@ i18n.use(initReactI18next).init({
         generateLink: "生成連結",
         copyLink: "複製連結",
         copied: "已複製連結",
+        notAllowed: "不允許這樣做，因為這個扭蛋已經發布了。",
       },
     },
     vn: {
@@ -1709,6 +1713,7 @@ i18n.use(initReactI18next).init({
         generateLink: "Tạo liên kết",
         copyLink: "Sao chép liên kết",
         copied: "Đã sao chép liên kết",
+        notAllowed: "Điều này không được phép vì gacha này đã được phát hành.",
       },
     },
     en: {
@@ -2144,6 +2149,7 @@ i18n.use(initReactI18next).init({
         generateLink: "Generate link",
         copyLink: "Copy link",
         copied: "Copied link",
+        notAllowed: "It's not allowed because this gacha has already released.",
       },
     },
   },
