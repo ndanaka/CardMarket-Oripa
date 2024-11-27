@@ -32,7 +32,7 @@ const Admin = (props) => {
   };
 
   return (
-    <div className="relative min-w-full min-h-full flex">
+    <div className="relative min-w-full min-h-[100vh] flex ">
       <div className="bg-alert_success hover:bg-alert_error hidden"></div>
       <div className="bg-alert_error hidden"></div>
       <div>
