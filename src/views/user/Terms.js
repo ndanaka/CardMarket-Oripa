@@ -31,9 +31,9 @@ const Terms = () => {
   };
 
   return (
-    <div className="w-full md:w-4/6 p-3 mx-auto mt-14">
+    <div className="flex-grow w-full md:w-4/6 p-3 mx-auto mt-20">
       {spinFlag && <Spinner />}
-      <div className="flex flex-wrap mb-2">
+      <div className="flex flex-wrap mb-4">
         <div className=" border-l-[6px] border-blue-500"></div>
         <p className="text-3xl text-center text-gray-700 font-Lexend font-extrabold pl-4">
           {t("userterms")}

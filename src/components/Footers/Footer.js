@@ -30,6 +30,17 @@ const Footer = () => {
           <div className="py-1 px-3 hover:cursor-pointer">
             <span
               className="text-white"
+              onClick={() => navigate("/user/specialLaw")}
+            >
+              {t("specialLaw")}
+            </span>
+          </div>
+        </NavItem>
+
+        <NavItem>
+          <div className="py-1 px-3 hover:cursor-pointer">
+            <span
+              className="text-white"
               onClick={() => navigate("/user/terms")}
             >
               {t("userterms")}
@@ -49,20 +60,9 @@ const Footer = () => {
           <div className="py-1 px-3 hover:cursor-pointer">
             <span
               className="text-white hover:underline-offset-2"
-              onClick={() => navigate("/auth/lisence")}
+              onClick={() => navigate("/user/lisence")}
             >
               {t("license")}
-            </span>
-          </div>
-        </NavItem>
-
-        <NavItem>
-          <div className="py-1 px-3 hover:cursor-pointer">
-            <span
-              className="text-white"
-              onClick={() => navigate("/auth/about-us")}
-            >
-              {t("aboutus")}
             </span>
           </div>
         </NavItem>
