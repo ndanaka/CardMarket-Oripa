@@ -1,6 +1,7 @@
 import Index from "./views/Index.js";
-import MitLiscence from "./views/auth/MitLiscence.js";
-import Terms from "./views/auth/Terms.js";
+import License from "./views/user/License.js";
+import Terms from "./views/user/Terms.js";
+import SpecialLaw from "./views/user/SpecialLaw.js";
 import Category from "./views/admin/Category.js";
 import Prize from "./views/admin/Prize.js";
 import PrizeVideo from "./views/admin/PrizeVideo.js";
@@ -116,6 +117,20 @@ var routes = [
     name: "terms",
     icon: "ni ni-circle-08 text-pink",
     component: <Terms />,
+    layout: "/user",
+  },
+  {
+    path: "/lisence",
+    name: "lisence",
+    icon: "ni ni-circle-08 text-pink",
+    component: <License />,
+    layout: "/user",
+  },
+  {
+    path: "/specialLaw",
+    name: "specialLaw",
+    icon: "ni ni-circle-08 text-pink",
+    component: <SpecialLaw />,
     layout: "/user",
   },
   {
@@ -263,13 +278,6 @@ var routes = [
     name: "Register",
     icon: "ni ni-circle-08 text-pink",
     component: <Register />,
-    layout: "/auth",
-  },
-  {
-    path: "/lisence",
-    name: "lisence",
-    icon: "ni ni-circle-08 text-pink",
-    component: <MitLiscence />,
     layout: "/auth",
   },
 ];
