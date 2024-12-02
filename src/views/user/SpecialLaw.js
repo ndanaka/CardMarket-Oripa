@@ -58,7 +58,7 @@ function SpecialLaw() {
         </div>
         <div className="flex flex-wrap py-1">
           <p className="text-lg font-bold px-1">- {t("phone")} : </p>
-          <p className="text-lg px-1">{"08067927495"}</p>
+          <p className="text-lg px-1">{"05088895361"}</p>
         </div>
         <div className="flex flex-wrap py-1">
           <p className="text-lg font-bold px-1">- {t("email")} : </p>
